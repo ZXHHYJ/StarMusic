@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_playing"
+        android:icon="@drawable/ic_round_music_video_24"
+        android:title="" />
+    <item
+        android:id="@+id/navigation_lyric"
+        android:icon="@drawable/ic_round_translate_24"
+        android:title="" />
+    <item
+        android:id="@+id/navigation_play_queue"
+        android:icon="@drawable/ic_round_format_list_bulleted_24"
+        android:title="" />
+</menu>

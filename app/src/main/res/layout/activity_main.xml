@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout
+        android:id="@+id/main_sliding_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        app:umanoOverlay="true"
+        app:umanoPanelHeight="0dp"
+        app:umanoParallaxOffset="100dp"
+        app:umanoShadowHeight="@dimen/umano_shadow_height">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/main_fragment_page"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <com.github.mmin18.realtimeblurview.widget.RealtimeBlurView
+                android:id="@+id/status_bar_blur_background"
+                style="@style/IosBlurViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/play_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/controller_fragment"
+                android:name="studio.mandysa.music.ui.controller.ControllerFragment"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/controller_height" />
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/play_fragment"
+                android:name="studio.mandysa.music.ui.play.PlayFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0" />
+
+        </FrameLayout>
+
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+    <com.github.mmin18.realtimeblurview.widget.BlurLayout
+        android:id="@+id/main_bottom_nav_layout"
+        style="@style/IosBlurViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/main_bottom_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:background="@android:color/transparent"
+            android:outlineProvider="none"
+            app:itemIconTint="@color/bottom_btn_selected_color"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/main_bottom_nav_menu">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/dividerVertical" />
+        </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+    </com.github.mmin18.realtimeblurview.widget.BlurLayout>
+
+</FrameLayout>
