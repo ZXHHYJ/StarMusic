@@ -1,42 +1,40 @@
 <resources>
+
     <string name="CHANNEL_ID">media channel</string>
     <string name="CHANNEL_NAME">媒体控制器</string>
     <string name="CHANNEL_DESCRIPTION">播放控制</string>
 
     <string name="app_name">MandySa Music</string>
-    <string name="home">浏览</string>
-    <string name="search">搜索</string>
+
     <string name="me">我的</string>
 
     <string name="recommend_playlist">推荐歌单</string>
     <string name="recommend_song">推荐歌曲</string>
-    <string name="playlist_square">歌单广场</string>
     <string name="me_playlist">我的歌单</string>
 
-    <string name="mobile_phone">手机号</string>
-    <string name="password">密码</string>
-    <string name="login">登录</string>
-    <string name="new_song_express">新歌速递</string>
-    <string name="recommended_playlist">推荐歌单</string>
-    <string name="recommended_song">推荐歌曲</string>
     <string name="playlist">歌单</string>
-    <string name="database">资料库</string>
     <string name="search_hint">输入歌曲或歌手名称</string>
+
     <string name="empty">什么都没有</string>
     <string name="you_are_offline">你已离线</string>
     <string name="check_the_network">请检查网络后点击重试</string>
-    <string name="error">没有更多了</string>
-    <string name="search_history">搜索历史</string>
-    <string name="add_database">添加到资料库</string>
-    <string name="my_playlist">我的歌单</string>
+
+    <string name="phone">手机号</string>
+    <string name="password">密码</string>
+
+    <string name="login">登录</string>
+
+    <string name="playlist_square">歌单广场</string>
+
     <string name="browse">浏览</string>
 
-    <!--<string name="cd_cover">封面</string>
-    <string name="cd_pause_play">暂停</string>
-    <string name="cd_next_song">下一曲</string>-->
-
-    <string-array name="search_list_tabs">
-        <item>单曲</item>
-        <item>歌手</item>
-    </string-array>
+    <string name="singer">歌手</string>
+    <string name="clear">清除</string>
+    <string name="play_queue">播放队列</string>
+    <string name="search">搜索</string>
+    <string name="exit">退出</string>
+    <string name="login_to">登录到</string>
+    <string name="mobile_phone_login">手机号登录</string>
+    <string name="add_to_my_likes">添加到我喜欢</string>
+    <string name="remove_from_my_likes">从我喜欢中移除</string>
 </resources>

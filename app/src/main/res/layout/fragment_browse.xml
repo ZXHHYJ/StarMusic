@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <studio.mandysa.statelayout.StateLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_state_layout"
+    android:id="@+id/browse_state_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/main_recycle"
+        android:id="@+id/browse_recycle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never"
         android:clipToPadding="false"
+        android:overScrollMode="never"
         android:scrollbars="none" />
 
 </studio.mandysa.statelayout.StateLayout>

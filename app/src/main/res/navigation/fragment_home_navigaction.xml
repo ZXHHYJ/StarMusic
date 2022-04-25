@@ -2,11 +2,11 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_home_navigaction"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/browseFragment">
 
     <fragment
-        android:id="@+id/homeFragment"
-        android:name="studio.mandysa.music.ui.home.HomeFragment"
+        android:id="@+id/browseFragment"
+        android:name="studio.mandysa.music.ui.browse.BrowseFragment"
         android:label="HomeFragment">
         <action
             android:id="@+id/action_homeFragment_to_playlistFragment"

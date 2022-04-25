@@ -15,7 +15,7 @@
 
     <fragment
         android:id="@+id/searchListFragment"
-        android:name="studio.mandysa.music.ui.main.searchlist.SearchListFragment"
+        android:name="studio.mandysa.music.ui.searchlist.SearchListFragment"
         android:label="SearchListFragment">
         <argument
             android:name="search_content"

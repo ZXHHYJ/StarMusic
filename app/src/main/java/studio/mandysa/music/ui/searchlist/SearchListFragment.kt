@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.main.searchlist
+package studio.mandysa.music.ui.searchlist
 
 import android.os.Bundle
 import android.view.LayoutInflater

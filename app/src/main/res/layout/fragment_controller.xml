@@ -1,49 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.github.mmin18.realtimeblurview.widget.BlurLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/IosBlurViewStyle"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/controller_height">
+    android:layout_height="@dimen/controller_height"
+    android:gravity="center_vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/controller_cover"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/controller_title"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:gravity="center_vertical">
+        android:layout_margin="8dp"
+        android:layout_weight="1.0"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
 
-        <ImageView
-            android:id="@+id/controller_cover"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            tools:ignore="ContentDescription" />
+    <ImageView
+        android:id="@+id/controller_playOrPause"
+        android:layout_width="55dp"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:src="@drawable/ic_play"
+        tools:ignore="ContentDescription" />
 
-        <TextView
-            android:id="@+id/controller_title"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="8dp"
-            android:layout_weight="1.0"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:singleLine="true"
-            android:textColor="@android:color/black"
-            android:textSize="16sp" />
+    <ImageView
+        android:id="@+id/controller_nextSong"
+        android:layout_width="55dp"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:src="@drawable/ic_skip_next"
+        tools:ignore="ContentDescription" />
 
-        <ImageView
-            android:id="@+id/controller_playOrPause"
-            android:layout_width="55dp"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:src="@drawable/ic_play"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:id="@+id/controller_nextSong"
-            android:layout_width="55dp"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:src="@drawable/ic_skip_next"
-            tools:ignore="ContentDescription" />
-
-    </LinearLayout>
-</com.github.mmin18.realtimeblurview.widget.BlurLayout>
+</LinearLayout>

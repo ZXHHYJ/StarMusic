@@ -1,11 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Theme.Mandysa_music" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Mandysa_music" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
         <item name="colorPrimaryDark">@android:color/white</item>
         <item name="colorAccent">@color/theme_color</item>
         <item name="colorPrimary">@color/theme_color</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-        <item name="android:navigationBarColor" tools:targetApi="o_mr1">@android:color/white</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
     </style>
 </resources>

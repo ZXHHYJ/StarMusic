@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="IosBlurViewStyle">
-        <item name="realtimeBlurRadius">20dp</item>
-    </style>
-
     <style name="ImageCardViewStyle">
         <item name="cardBackgroundColor">@color/widget_bg_color_light</item>
         <item name="cardCornerRadius">@dimen/card_radius</item>

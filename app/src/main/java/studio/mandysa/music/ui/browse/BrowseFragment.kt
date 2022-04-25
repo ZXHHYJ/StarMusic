@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.home
+package studio.mandysa.music.ui.browse
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -38,29 +38,16 @@ import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.ui.event.EventViewModel
 
 
-class HomeFragment : Fragment() {
+class BrowseFragment : Fragment() {
 
-    private val mBinding: FragmentHomeBinding by viewBinding()
+    private val mBinding: FragmentBrowseBinding by viewBinding()
 
     private val mEvent: EventViewModel by activityViewModels()
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ViewCompat.setOnApplyWindowInsetsListener(mBinding.root) { _, insets ->
-            val navigationBarSize =
-                insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
-            mBinding.mainRecycle.setPadding(
-                0,
-                0,
-                0,
-                resources.getDimensionPixelSize(R.dimen.controller_height) + resources.getDimensionPixelSize(
-                    R.dimen.nav_height
-                ) + navigationBarSize
-            )
-            insets
-        }
-        mBinding.mainRecycle.linear().setup {
+        mBinding.browseRecycle.linear().setup {
             addType<TitleModel>(R.layout.item_title) {
                 ItemTitleBinding.bind(itemView).titleTv.text =
                     getModel<TitleModel>().title
@@ -107,7 +94,7 @@ class HomeFragment : Fragment() {
                                         }
                                         1000 -> {
                                             it.findNavController().navigate(
-                                                HomeFragmentDirections.actionHomeFragmentToPlaylistFragment(
+                                                BrowseFragmentDirections.actionHomeFragmentToPlaylistFragment(
                                                     model.encodeId
                                                 )
                                             )
@@ -142,7 +129,7 @@ class HomeFragment : Fragment() {
                                 playlistTitle.text = model.name
                                 itemView.setOnClickListener {
                                     it.findNavController().navigate(
-                                        HomeFragmentDirections.actionHomeFragmentToPlaylistFragment(
+                                        BrowseFragmentDirections.actionHomeFragmentToPlaylistFragment(
                                             model.id
                                         )
                                     )
@@ -169,7 +156,7 @@ class HomeFragment : Fragment() {
                                 )
                                 playlistCover.setOnClickListener {
                                     it.findNavController().navigate(
-                                        HomeFragmentDirections.actionHomeFragmentToPlaylistFragment(
+                                        BrowseFragmentDirections.actionHomeFragmentToPlaylistFragment(
                                             model.id
                                         )
                                     )
@@ -181,7 +168,7 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-        mBinding.mainStateLayout.showLoading {
+        mBinding.browseStateLayout.showLoading {
             mEvent.getCookieLiveData().observe(viewLifecycleOwner) { cookie ->
                 if (cookie == null) return@observe
                 viewLifecycleOwner.lifecycle.coroutineScope.launch(Dispatchers.IO) {
@@ -193,7 +180,7 @@ class HomeFragment : Fragment() {
                             val playlistSquare = it.getPlaylistSquare()
                             val recommendedSong = it.getRecommendedSong(cookie)
                             withContext(Dispatchers.Main) {
-                                mBinding.mainRecycle.recyclerAdapter.headers = listOf(
+                                mBinding.browseRecycle.recyclerAdapter.headers = listOf(
                                     TitleModel(context.getString(R.string.browse)),
                                     bannerModel,
                                     SubTitleModel(getString(R.string.recommend_playlist)),
@@ -202,20 +189,20 @@ class HomeFragment : Fragment() {
                                     playlistSquare,
                                     SubTitleModel(getString(R.string.recommend_song))
                                 )
-                                mBinding.mainRecycle.addModels(recommendedSong.list!!)
-                                mBinding.mainStateLayout.showContentState()
+                                mBinding.browseRecycle.addModels(recommendedSong.list!!)
+                                mBinding.browseStateLayout.showContentState()
                             }
                         }
                     } catch (e: AnnaException) {
-                        mBinding.mainStateLayout.showErrorState()
+                        mBinding.browseStateLayout.showErrorState()
                     }
                 }
             }
         }
-        mBinding.mainStateLayout.showError {
-            mBinding.mainRecycle.recyclerAdapter.clearModels()
+        mBinding.browseStateLayout.showError {
+            mBinding.browseRecycle.recyclerAdapter.clearModels()
         }
-        mBinding.mainStateLayout.showLoadingState()
+        mBinding.browseStateLayout.showLoadingState()
     }
 
     override fun onCreateView(

@@ -11,9 +11,11 @@ import com.sothree.slidinguppanel.PanelSlideListener
 import com.sothree.slidinguppanel.PanelState
 import com.yanzhenjie.sofia.Sofia
 import studio.mandysa.music.databinding.ActivityMainBinding
+import studio.mandysa.music.databinding.LayoutStartBinding
 import studio.mandysa.music.logic.ktx.createFragmentStateAdapter
 import studio.mandysa.music.logic.ktx.viewBinding
 import studio.mandysa.music.service.playmanager.PlayManager
+import studio.mandysa.music.ui.login.LoginFragment
 import studio.mandysa.music.ui.me.MeFragment
 
 
@@ -24,7 +26,20 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(mBinding.root)
-        Sofia.with(this).invasionStatusBar().invasionNavigationBar()
+        Sofia.with(this).let {
+            it.invasionStatusBar().invasionNavigationBar()
+            it.statusBarDarkFont().navigationBarDarkFont()
+        }
+        mBinding.mainStateLayout.showEmpty {
+            val layoutStartBinding = LayoutStartBinding.bind(this)
+            layoutStartBinding.btnLogin.setOnClickListener {
+                LoginFragment().show(supportFragmentManager, null)
+            }
+            layoutStartBinding.btnExit.setOnClickListener {
+                finish()
+            }
+        }
+        mBinding.mainStateLayout.showEmptyState()
         mBinding.apply {
             mainFragmentPage.isUserInputEnabled = false
             mainFragmentPage.adapter = createFragmentStateAdapter(
@@ -32,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                 NavHostFragment.create(R.navigation.fragment_search_navigation),
                 MeFragment()
             )
-            mainBottomView.setOnItemSelectedListener { item ->
+            (mainBottomNav ?: mainNavRail)?.setOnItemSelectedListener { item ->
                 mainFragmentPage.setCurrentItem(
                     when (item.itemId) {
                         R.id.navigation_home -> 0
@@ -47,14 +62,14 @@ class MainActivity : AppCompatActivity() {
                 val startBarSize = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
                 val navigationBarSize =
                     insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
-                statusBarBlurBackground.layoutParams.height = startBarSize
-                mainBottomView.setPadding(
+                mainFragmentPage.setPadding(0, startBarSize, 0, 0)
+                mainBottomNav?.setPadding(
                     0,
                     0,
                     0,
                     navigationBarSize
                 )
-                mainBottomNavLayout.layoutParams.height =
+                mainBottomNav?.layoutParams?.height =
                     resources.getDimensionPixelSize(
                         R.dimen.nav_height
                     ) + navigationBarSize
@@ -68,10 +83,12 @@ class MainActivity : AppCompatActivity() {
                             mBinding.root.bottom - (resources.getDimensionPixelSize(R.dimen.nav_height) + navigationBarSize)
                         object : PanelSlideListener {
                             override fun onPanelSlide(panel: View, slideOffset: Float) {
-                                val by: Float =
-                                    y + mainBottomNavLayout.height * slideOffset * 8
-                                if (by < y) return
-                                mainBottomNavLayout.y = by
+                                if (mainBottomNav != null) {
+                                    val by: Float =
+                                        y + mainBottomNav.height * slideOffset * 8
+                                    if (by < y) return
+                                    mainBottomNav.y = by
+                                }
                                 val alpha = slideOffset * 40
                                 playFragment.alpha = alpha
                                 controllerFragment.alpha = (1 - alpha).also {
@@ -91,15 +108,15 @@ class MainActivity : AppCompatActivity() {
                                             .statusBarLightFont()
                                     }
                                     PanelState.DRAGGING -> {
-                                        if (mBinding.playBackground.background == null)
-                                            mBinding.playBackground.background =
+                                        if (mBinding.mainPlayBackground.background == null)
+                                            mBinding.mainPlayBackground.background =
                                                 ContextCompat.getDrawable(
                                                     this@MainActivity,
                                                     android.R.color.white
                                                 )
                                     }
                                     else -> {
-                                        mBinding.playBackground.background = null
+                                        mBinding.mainPlayBackground.background = null
                                         Sofia.with(this@MainActivity)
                                             .statusBarDarkFont()
                                     }
