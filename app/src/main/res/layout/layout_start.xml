@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_activity_login"
@@ -25,7 +26,8 @@
         android:background="@drawable/btn_white"
         android:text="@string/mobile_phone_login"
         android:textColor="@android:color/black"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        app:backgroundTint="@null" />
 
     <Button
         android:id="@+id/btn_exit"
@@ -37,6 +39,7 @@
         android:background="@drawable/btn_white"
         android:text="@string/exit"
         android:textColor="@android:color/black"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        app:backgroundTint="@null" />
 
 </LinearLayout>

@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Theme.Mandysa_music" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
+    <style name="Theme.Mandysa_music" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimaryDark">@android:color/white</item>
         <item name="colorAccent">@color/theme_color</item>
         <item name="colorPrimary">@color/theme_color</item>

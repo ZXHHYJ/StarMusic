@@ -1,12 +1,17 @@
 package studio.mandysa.music
 
 import android.os.Bundle
+import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.Column
+import androidx.compose.runtime.Composable
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.fragment.NavHostFragment
+import com.drake.spannable.addSpan
+import com.drake.spannable.setSpan
 import com.sothree.slidinguppanel.PanelSlideListener
 import com.sothree.slidinguppanel.PanelState
 import com.yanzhenjie.sofia.Sofia
@@ -21,6 +26,13 @@ import studio.mandysa.music.ui.me.MeFragment
 
 class MainActivity : AppCompatActivity() {
 
+    @Composable
+    fun MainCompose() {
+        Column() {
+
+        }
+    }
+
     private val mBinding: ActivityMainBinding by viewBinding()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +44,14 @@ class MainActivity : AppCompatActivity() {
         }
         mBinding.mainStateLayout.showEmpty {
             val layoutStartBinding = LayoutStartBinding.bind(this)
+            layoutStartBinding.slogan.text = getString(R.string.login_to).setSpan(
+                ForegroundColorSpan(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.translucent_white
+                    )
+                )
+            ).addSpan(context.getString(R.string.app_name))
             layoutStartBinding.btnLogin.setOnClickListener {
                 LoginFragment().show(supportFragmentManager, null)
             }
