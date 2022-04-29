@@ -3,9 +3,8 @@ package studio.mandysa.music
 import android.os.Bundle
 import android.text.style.ForegroundColorSpan
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.Column
-import androidx.compose.runtime.Composable
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -20,20 +19,16 @@ import studio.mandysa.music.databinding.LayoutStartBinding
 import studio.mandysa.music.logic.ktx.createFragmentStateAdapter
 import studio.mandysa.music.logic.ktx.viewBinding
 import studio.mandysa.music.service.playmanager.PlayManager
+import studio.mandysa.music.ui.event.EventViewModel
 import studio.mandysa.music.ui.login.LoginFragment
 import studio.mandysa.music.ui.me.MeFragment
 
 
 class MainActivity : AppCompatActivity() {
 
-    @Composable
-    fun MainCompose() {
-        Column() {
-
-        }
-    }
-
     private val mBinding: ActivityMainBinding by viewBinding()
+
+    private val mEvent by viewModels<EventViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +54,13 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
         }
-        mBinding.mainStateLayout.showEmptyState()
+        if (mEvent.getCookieLiveData().value == null) {
+            mBinding.mainStateLayout.showEmptyState()
+            mEvent.getCookieLiveData().observe(this) {
+                if (it != null)
+                    mBinding.mainStateLayout.showContentState()
+            }
+        } else mBinding.mainStateLayout.showContentState()
         mBinding.apply {
             mainFragmentPage.isUserInputEnabled = false
             mainFragmentPage.adapter = createFragmentStateAdapter(
@@ -82,7 +83,14 @@ class MainActivity : AppCompatActivity() {
                 val startBarSize = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
                 val navigationBarSize =
                     insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
-                mainFragmentPage.setPadding(0, startBarSize, 0, 0)
+                mainFragmentPage.setPadding(
+                    0,
+                    startBarSize,
+                    0,
+                    if (mainBottomNav != null) resources.getDimensionPixelSize(
+                        R.dimen.nav_height
+                    ) + navigationBarSize else 0
+                )
                 mainBottomNav?.setPadding(
                     0,
                     0,
@@ -95,6 +103,12 @@ class MainActivity : AppCompatActivity() {
                     ) + navigationBarSize
                 PlayManager.changeMusicLiveData()
                     .observe(this@MainActivity) { _ ->
+                        mainFragmentPage.setPadding(
+                            0,
+                            startBarSize,
+                            0,
+                            0
+                        )
                         mainSlidingView.panelHeight =
                             resources.getDimensionPixelSize(R.dimen.controller_height) + resources.getDimensionPixelSize(
                                 R.dimen.nav_height
@@ -111,10 +125,7 @@ class MainActivity : AppCompatActivity() {
                                 }
                                 val alpha = slideOffset * 40
                                 playFragment.alpha = alpha
-                                controllerFragment.alpha = (1 - alpha).also {
-                                    mBinding.controllerFragment.visibility =
-                                        if (it > 0f) View.VISIBLE else View.GONE
-                                }
+                                controllerFragment.alpha = 1 - alpha
                             }
 
                             override fun onPanelStateChanged(
@@ -126,19 +137,21 @@ class MainActivity : AppCompatActivity() {
                                     PanelState.EXPANDED -> {
                                         Sofia.with(this@MainActivity)
                                             .statusBarLightFont()
+                                        controllerFragment.visibility = View.GONE
                                     }
                                     PanelState.DRAGGING -> {
-                                        if (mBinding.mainPlayBackground.background == null)
-                                            mBinding.mainPlayBackground.background =
+                                        if (mainPlayBackground.background == null)
+                                            mainPlayBackground.background =
                                                 ContextCompat.getDrawable(
                                                     this@MainActivity,
                                                     android.R.color.white
                                                 )
+                                        controllerFragment.visibility = View.VISIBLE
                                     }
                                     else -> {
-                                        mBinding.mainPlayBackground.background = null
                                         Sofia.with(this@MainActivity)
                                             .statusBarDarkFont()
+                                        mainPlayBackground.background = null
                                     }
                                 }
                             }

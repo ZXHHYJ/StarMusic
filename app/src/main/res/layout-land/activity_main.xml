@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="bottom"
-        app:umanoOverlay="true"
         app:umanoPanelHeight="0dp"
         app:umanoParallaxOffset="100dp"
         app:umanoShadowHeight="@dimen/umano_shadow_height">

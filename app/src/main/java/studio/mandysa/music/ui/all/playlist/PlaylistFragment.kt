@@ -10,10 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import studio.mandysa.jiuwo.utils.addFooter
-import studio.mandysa.jiuwo.utils.addHeader
-import studio.mandysa.jiuwo.utils.linear
-import studio.mandysa.jiuwo.utils.setup
+import studio.mandysa.jiuwo.ktx.addFooter
+import studio.mandysa.jiuwo.ktx.addHeader
+import studio.mandysa.jiuwo.ktx.linear
+import studio.mandysa.jiuwo.ktx.setup
 import studio.mandysa.music.R
 import studio.mandysa.music.databinding.FragmentPlaylistBinding
 import studio.mandysa.music.databinding.ItemPlaylistHeaderBinding
@@ -67,7 +67,6 @@ class PlaylistFragment : Fragment() {
         mBinding.playlistState.showLoadingState()
         mBinding.playlistRecycle.linear().setup {
             addType<PlaylistInfoModel>(R.layout.item_playlist_header) {
-                val model = getModel<PlaylistInfoModel>()
                 ItemPlaylistHeaderBinding.bind(itemView).apply {
                     playlistCover.load(model.coverImgUrl)
                     playlistTitle.text = model.name
@@ -75,7 +74,6 @@ class PlaylistFragment : Fragment() {
                 }
             }
             addType<MusicModel>(R.layout.item_song) {
-                val model = getModel<MusicModel>()
                 ItemSongBinding.bind(itemView).apply {
                     songIndex.text = (modelPosition + 1).toString()
                     songName.text = model.title

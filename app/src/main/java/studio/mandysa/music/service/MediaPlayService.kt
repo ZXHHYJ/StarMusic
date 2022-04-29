@@ -95,7 +95,7 @@ class MediaPlayService : LifecycleService() {
                                         drawable.bitmap.copy(
                                             Bitmap.Config.RGB_565,
                                             false
-                                        ), 150, 150, true
+                                        ), 200, 200, true
                                     )
                                 )
                             ).build()

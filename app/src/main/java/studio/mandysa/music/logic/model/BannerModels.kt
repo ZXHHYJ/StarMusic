@@ -10,7 +10,7 @@ class BannerModels {
 
     class BannerModel {
         @Value("pic")
-        val pic = ""
+        var pic = ""
 
         @Path("song/al")
         @Value("id")
@@ -23,7 +23,7 @@ class BannerModels {
         val targetType = 0
 
         @Value("typeTitle")
-        val typeTitle = ""
+        var typeTitle = ""
 
         @Value("url")
         val url = ""
