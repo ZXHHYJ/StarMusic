@@ -1,32 +1,14 @@
 package studio.mandysa.music
 
 import android.os.Bundle
-import android.text.style.ForegroundColorSpan
-import android.view.View
-import androidx.activity.viewModels
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.navigation.fragment.NavHostFragment
-import com.drake.spannable.addSpan
-import com.drake.spannable.setSpan
-import com.sothree.slidinguppanel.PanelSlideListener
-import com.sothree.slidinguppanel.PanelState
 import com.yanzhenjie.sofia.Sofia
-import studio.mandysa.music.databinding.ActivityMainBinding
-import studio.mandysa.music.databinding.LayoutStartBinding
-import studio.mandysa.music.logic.ktx.createFragmentStateAdapter
-import studio.mandysa.music.logic.ktx.viewBinding
-import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.ui.event.EventViewModel
-import studio.mandysa.music.ui.login.LoginFragment
-import studio.mandysa.music.ui.me.MeFragment
 
 
 class MainActivity : AppCompatActivity() {
 
-    private val mBinding: ActivityMainBinding by viewBinding()
+/*    private val mBinding: ActivityMainBinding by viewBinding()
 
     private val mEvent by viewModels<EventViewModel>()
 
@@ -61,29 +43,15 @@ class MainActivity : AppCompatActivity() {
                     mBinding.mainStateLayout.showContentState()
             }
         } else mBinding.mainStateLayout.showContentState()
-        mBinding.apply {
-            mainFragmentPage.isUserInputEnabled = false
-            mainFragmentPage.adapter = createFragmentStateAdapter(
-                NavHostFragment.create(R.navigation.fragment_home_navigaction),
-                NavHostFragment.create(R.navigation.fragment_search_navigation),
-                MeFragment()
-            )
-            (mainBottomNav ?: mainNavRail)?.setOnItemSelectedListener { item ->
-                mainFragmentPage.setCurrentItem(
-                    when (item.itemId) {
-                        R.id.navigation_home -> 0
-                        R.id.navigation_search -> 1
-                        R.id.navigation_me -> 2
-                        else -> 0
-                    }, false
-                )
-                true
+        mBinding.run {
+            mainComposeView.setContent {
+                MainScreen()
             }
             ViewCompat.setOnApplyWindowInsetsListener(root) { _, insets ->
                 val startBarSize = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
                 val navigationBarSize =
                     insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
-                mainFragmentPage.setPadding(
+                mainComposeView.setPadding(
                     0,
                     startBarSize,
                     0,
@@ -103,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                     ) + navigationBarSize
                 PlayManager.changeMusicLiveData()
                     .observe(this@MainActivity) { _ ->
-                        mainFragmentPage.setPadding(
+                        mainComposeView.setPadding(
                             0,
                             startBarSize,
                             0,
@@ -170,6 +138,17 @@ class MainActivity : AppCompatActivity() {
         if (mBinding.mainSlidingView.panelState == PanelState.EXPANDED) {
             mBinding.mainSlidingView.panelState = PanelState.COLLAPSED
         } else super.onBackPressed()
+    }*/
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            MainScreen()
+        }
+        Sofia.with(this).let {
+            it.invasionStatusBar().invasionNavigationBar()
+            it.statusBarDarkFont().navigationBarDarkFont()
+        }
     }
 
 }

@@ -68,16 +68,24 @@ dependencies {
     // RecyclerViewUtils https://gitee.com/liuxiaoliu66/jiuwo
     implementation 'com.gitee.liuxiaoliu66:jiuwo:1.6.3-beta.1'
     // 底部上滑展示控件 https://gitee.com/liuxiaoliu66/AndroidSlidingUpPanel
-    implementation 'com.gitee.liuxiaoliu66:AndroidSlidingUpPanel:4.5.8'
+    implementation 'com.gitee.liuxiaoliu66:AndroidSlidingUpPanel:5.0.0-alpha.1'
+
+    implementation 'io.github.shenzhen2017:compose-statelayout:1.0.0'
 
     implementation 'com.gitee.liuxiaoliu66:state-layout:1.0.0'
+
+    implementation 'io.github.shenzhen2017:compose-statelayout:1.0.0'
+
+    implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-insets:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-swiperefresh:$accompanist_version"
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.4.0'
 
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-compose:$nav_version"
 
     implementation "androidx.paging:paging-runtime-ktx:3.1.1"
 
