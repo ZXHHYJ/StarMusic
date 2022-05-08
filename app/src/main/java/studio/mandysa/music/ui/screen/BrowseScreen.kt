@@ -3,10 +3,13 @@ package studio.mandysa.music.ui.screen
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,9 +18,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import com.zj.statelayout.PageState
-import com.zj.statelayout.PageStateData
-import studio.mandysa.music.ui.all.DefaultStateLayout
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import studio.mandysa.music.ui.common.ItemSubTitleScreen
 import studio.mandysa.music.ui.event.EventViewModel
 
 
@@ -56,14 +59,19 @@ private fun BannerItem(typeTitle: String, bannerUrl: String, onClick: () -> Unit
 @Composable
 fun BrowseScreen(mEvent: EventViewModel = viewModel()) {
     val swipeRefreshState = rememberSwipeRefreshState(true)
-
+    var list = remember {
+        mutableStateListOf<Any>()
+    }
     SwipeRefresh(
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding(),
         state = swipeRefreshState,
         onRefresh = { /* todo */ },
     ) {
-        LazyColumn {
-            items(30) { index ->
-                // TODO: list items
+        LazyColumn() {
+            item {
+                ItemSubTitleScreen("abs")
             }
         }
     }

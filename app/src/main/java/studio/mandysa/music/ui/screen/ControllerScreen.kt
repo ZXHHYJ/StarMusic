@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
 import coil.compose.AsyncImage
-import com.google.accompanist.insets.navigationBarsHeight
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.theme.navHeight
@@ -26,7 +25,7 @@ import studio.mandysa.music.ui.theme.navHeight
 fun ControllerScreen() {
     Row(
         modifier = Modifier
-            .navigationBarsHeight()
+            .navigationBarsPadding()
             .fillMaxWidth()
             .height(navHeight)
             .padding(start = 16.dp), verticalAlignment = Alignment.CenterVertically
