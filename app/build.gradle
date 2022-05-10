@@ -47,6 +47,7 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+    namespace 'studio.mandysa.music'
 }
 
 dependencies {
@@ -65,19 +66,15 @@ dependencies {
     implementation 'com.gitee.liuxiaoliu66:anna:2.3.1'
     // 状态栏和导航栏管理 https://gitee.com/liuxiaoliu66/sofia
     implementation 'com.gitee.liuxiaoliu66:sofia:1.1.5'
-    // RecyclerViewUtils https://gitee.com/liuxiaoliu66/jiuwo
-    implementation 'com.gitee.liuxiaoliu66:jiuwo:1.6.3-beta.1'
     // 底部上滑展示控件 https://gitee.com/liuxiaoliu66/AndroidSlidingUpPanel
     implementation 'com.gitee.liuxiaoliu66:AndroidSlidingUpPanel:5.0.0-alpha.1'
 
     implementation 'io.github.shenzhen2017:compose-statelayout:1.0.0'
 
-    implementation 'com.gitee.liuxiaoliu66:state-layout:1.0.0'
-
-    implementation 'io.github.shenzhen2017:compose-statelayout:1.0.0'
-
-  /*  implementation "com.google.accompanist:accompanist-pager:$accompanist_version"*/
+    implementation "com.google.accompanist:accompanist-navigation-material:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
     implementation "com.google.accompanist:accompanist-swiperefresh:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-navigation-material:$accompanist_version"
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
@@ -93,7 +90,6 @@ dependencies {
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
-    implementation "androidx.compose.ui:ui-viewbinding:$compose_version"
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"

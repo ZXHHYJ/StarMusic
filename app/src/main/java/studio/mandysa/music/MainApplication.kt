@@ -6,7 +6,6 @@ import simon.tuke.Tuke
 import studio.mandysa.music.logic.ktx.playManager
 import studio.mandysa.music.service.MediaPlayService
 import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.statelayout.StateLayout
 
 /**
  * @author liuxiaoliu66
@@ -17,14 +16,6 @@ class MainApplication : Application() {
 
         //初始化Tuke
         Tuke.init(this)
-
-        //配置StateLayout
-        StateLayout.let {
-            it.loadingLayout = R.layout.layout_loading
-            it.emptyLayout = R.layout.layout_empty
-            it.errorLayout = R.layout.layout_error
-            it.setRetryId(R.id.cl_error_check)
-        }
 
         //初始化播放管理器
         PlayManager.init(this)

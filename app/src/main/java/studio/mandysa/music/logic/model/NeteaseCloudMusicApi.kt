@@ -32,7 +32,8 @@ interface NeteaseCloudMusicApi {
 
     //获取推荐歌曲
     @Get("recommend/songs")
-    fun getRecommendedSong(@Query("cookie") cookie: String): RecommendSongs
+    @Path("data/dailySongs")
+    fun getRecommendedSong(@Query("cookie") cookie: String): List<RecommendSong>
 
     //获取推荐歌单
     @Get("recommend/resource")
@@ -96,7 +97,8 @@ interface NeteaseCloudMusicApi {
 
     //主页轮播图
     @Get("banner?type=1")
-    fun getBannerList(): BannerModels
+    @Path("banners")
+    fun getBannerList(): List<BannerModel>
 
 //    @Get("personal_fm")
 //    @Path("data")

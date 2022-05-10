@@ -26,6 +26,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.sothree.slidinguppanel.ktx.SlidingPanel
 import studio.mandysa.music.R
+import studio.mandysa.music.ui.theme.navHeight
 
 sealed class Screen(
     val route: String,
@@ -50,15 +51,21 @@ fun MainScreen() {
             }
         } else {
             Box {
-                SlidingPanel(modifier = Modifier
-                    .statusBarsPadding(),
+                SlidingPanel(modifier = Modifier,
                     gravity = Gravity.BOTTOM,
-                    panelHeight = LocalDensity.current.run { 56.dp.roundToPx() },
-                    shadowHeight = LocalDensity.current.run { 5.dp.roundToPx() },
+                    panelHeight = with(LocalDensity.current) {
+                        WindowInsets.navigationBars.getBottom(
+                            LocalDensity.current
+                        ) + navHeight.roundToPx()
+                    },
+                    shadowHeight = with(LocalDensity.current) { 5.dp.roundToPx() },
                     content = {
                         NavHost(
                             navController,
-                            startDestination = Screen.Browse.route
+                            startDestination = Screen.Browse.route,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .statusBarsPadding()
                         ) {
                             composable(Screen.Browse.route) { BrowseScreen() }
                             composable(Screen.Me.route) { }
@@ -70,8 +77,17 @@ fun MainScreen() {
                 BottomNavigation(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp)
-                        .align(Alignment.BottomCenter), backgroundColor = Color.White
+                        .height(with(LocalDensity.current) {
+                            WindowInsets.navigationBars
+                                .getBottom(
+                                    LocalDensity.current
+                                )
+                                .toDp() + navHeight
+                        })
+                        .align(Alignment.BottomCenter)
+                        .navigationBarsPadding(),
+                    elevation = 0.dp,
+                    backgroundColor = Color.White
                 ) {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val currentDestination = navBackStackEntry?.destination

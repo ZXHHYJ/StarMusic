@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.event
+package studio.mandysa.music.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import studio.mandysa.music.R
-import studio.mandysa.music.ui.event.EventViewModel
+import studio.mandysa.music.ui.viewmodel.EventViewModel
 
 class LoginFragment : BottomSheetDialogFragment() {
 

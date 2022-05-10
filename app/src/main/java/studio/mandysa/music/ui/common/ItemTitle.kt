@@ -12,14 +12,14 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 @Preview
-fun ItemSubTitleScreen(title: String = "默认标题") {
+fun ItemTitle(title: String = "默认标题") {
     Text(
         text = title,
         color = Color.Black,
-        fontSize = 19.sp,
+        fontSize = 34.sp,
         fontWeight = FontWeight.Bold,
         modifier = Modifier
             .padding(horizontal = 16.dp)
-            .padding(top = 30.dp, bottom = 10.dp)
+            .padding(top = 100.dp, bottom = 10.dp)
     )
 }

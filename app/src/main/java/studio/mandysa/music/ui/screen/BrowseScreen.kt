@@ -8,20 +8,27 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import studio.mandysa.music.R
 import studio.mandysa.music.ui.common.ItemSubTitleScreen
-import studio.mandysa.music.ui.event.EventViewModel
+import studio.mandysa.music.ui.common.ItemTitle
+import studio.mandysa.music.ui.viewmodel.BrowseViewModel
+import studio.mandysa.music.ui.viewmodel.EventViewModel
 
 
 @Composable
@@ -32,6 +39,7 @@ private fun BannerItem(typeTitle: String, bannerUrl: String, onClick: () -> Unit
         modifier = Modifier
             .fillMaxWidth()
             .height(150.dp)
+            .padding(horizontal = 16.dp)
     ) {
         Box(
             modifier = Modifier
@@ -39,7 +47,12 @@ private fun BannerItem(typeTitle: String, bannerUrl: String, onClick: () -> Unit
                 .clickable(onClick = onClick)
         )
         {
-            AsyncImage(model = bannerUrl, contentDescription = null)
+            AsyncImage(
+                model = bannerUrl,
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
                 Text(
                     text = typeTitle,
@@ -55,23 +68,64 @@ private fun BannerItem(typeTitle: String, bannerUrl: String, onClick: () -> Unit
     }
 }
 
+@OptIn(ExperimentalPagerApi::class)
 @SuppressLint("SetTextI18n")
 @Composable
-fun BrowseScreen(mEvent: EventViewModel = viewModel()) {
-    val swipeRefreshState = rememberSwipeRefreshState(true)
-    var list = remember {
-        mutableStateListOf<Any>()
-    }
+fun BrowseScreen(
+    event: EventViewModel = viewModel(),
+    viewModel: BrowseViewModel = viewModel()
+) {
+    val isRefreshing by viewModel.isRefresh().observeAsState(true)
+    val bannerItems by viewModel.getBanners().observeAsState(arrayListOf())
+    viewModel.refresh()
     SwipeRefresh(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding(),
-        state = swipeRefreshState,
-        onRefresh = { /* todo */ },
+        state = rememberSwipeRefreshState(isRefreshing),
+        onRefresh = { viewModel.refresh() },
     ) {
-        LazyColumn() {
+        LazyColumn {
             item {
-                ItemSubTitleScreen("abs")
+                ItemTitle(stringResource(R.string.browse))
+            }
+            item {
+                HorizontalPager(count = bannerItems.size) {
+                    val model = bannerItems[it]
+                    BannerItem(typeTitle = model.typeTitle, bannerUrl = model.pic) {
+                        when (model.targetType) {
+                            3000 -> {
+
+                            }
+                            1000 -> {
+
+                            }
+                            1 -> {
+
+                            }
+                            else -> {
+
+                            }
+                        }
+                    }
+                }
+            }
+            item {
+                ItemSubTitleScreen(stringResource(R.string.recommend_playlist))
+            }
+            item {
+                /*LazyRow(contentPadding = PaddingValues(10.dp), content = {
+                    items(recommendSongItems.size) {
+                        val model = recommendSongItems[it]
+                        SongItem(
+                            position = it + 1,
+                            title = model.title,
+                            singer = model.artist.allArtist()
+                        ) {
+
+                        }
+                    }
+                })*/
             }
         }
     }
