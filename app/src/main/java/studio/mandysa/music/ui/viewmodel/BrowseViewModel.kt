@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import mandysax.anna2.exception.AnnaException
 import studio.mandysa.music.logic.model.BannerModel
 import studio.mandysa.music.logic.model.NeteaseCloudMusicApi
 import studio.mandysa.music.logic.network.ServiceCreator
@@ -25,8 +26,12 @@ class BrowseViewModel : ViewModel() {
     fun refresh() {
         mIsRefreshLiveData.value = true
         viewModelScope.launch(Dispatchers.IO) {
-            ServiceCreator.create(NeteaseCloudMusicApi::class.java).let {
-                mBanners.postValue(it.getBannerList())
+            try {
+                ServiceCreator.create(NeteaseCloudMusicApi::class.java).let {
+                    mBanners.postValue(it.getBannerList())
+                }
+            } catch (e: AnnaException) {
+
             }
         }
         mIsRefreshLiveData.value = false

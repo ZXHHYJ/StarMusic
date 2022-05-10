@@ -9,6 +9,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.verticalMargin
 
 @Composable
 @Preview
@@ -19,7 +21,7 @@ fun ItemTitle(title: String = "默认标题") {
         fontSize = 34.sp,
         fontWeight = FontWeight.Bold,
         modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .padding(top = 100.dp, bottom = 10.dp)
+            .padding(horizontal = horizontalMargin)
+            .padding(top = 100.dp, bottom = verticalMargin)
     )
 }
