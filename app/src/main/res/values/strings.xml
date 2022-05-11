@@ -33,7 +33,7 @@
     <string name="play_queue">播放队列</string>
     <string name="search">搜索</string>
     <string name="exit">退出</string>
-    <string name="login_to">登录到</string>
+
     <string name="mobile_phone_login">手机号登录</string>
     <string name="add_to_my_likes">添加到我喜欢</string>
     <string name="remove_from_my_likes">从我喜欢中移除</string>
