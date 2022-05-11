@@ -1,38 +1,47 @@
 package studio.mandysa.music.ui.theme
 
+import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 
-private val DarkColorPalette = darkColors(
-    primary = Color.Black,
-    primaryVariant = Color.Black,
-    secondary = Color.Black,
-    background = Color.Black
+val Blue10 = Color(0xFF000965)
+val Blue20 = Color(0xFF00159E)
+val Blue30 = Color(0xFF0023DA)
+val Blue40 = Color(0xFF1E40FF)
+val Blue80 = Color(0xFFBBC3FF)
+val Blue90 = Color(0xFFDDE0FF)
+
+private val LightColorScheme = lightColorScheme(
+    primary = Blue40,
+    onPrimary = Color.White,
+    primaryContainer = Blue90,
+    onPrimaryContainer = Blue10,
 )
 
-private val LightColorPalette = lightColors(
-    primary = Color.Blue,
-    primaryVariant = Color.Blue,
-    secondary = Color.Blue,
-    background = Color.White
+private val DarkColorScheme = darkColorScheme(
+    primary = Blue80,
+    onPrimary = Blue20,
+    primaryContainer = Blue30,
+    onPrimaryContainer = Blue90,
 )
 
 @Composable
-fun MandySaMusicTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-    val colors = if (darkTheme) {
-        DarkColorPalette
+fun MandySaMusicTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    dynamic: Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S,
+    content: @Composable () -> Unit
+) {
+    val colorScheme = if (dynamic) {
+        val context = LocalContext.current
+        if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
     } else {
-        LightColorPalette
+        if (darkTheme) DarkColorScheme else LightColorScheme
     }
-
     MaterialTheme(
-        colors = colors,
-        typography = Typography,
-        shapes = Shapes,
-        content = content
+        colorScheme = colorScheme,
+        content = content,
     )
 }

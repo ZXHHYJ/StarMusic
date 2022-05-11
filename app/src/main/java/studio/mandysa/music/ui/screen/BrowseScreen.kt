@@ -18,6 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -25,8 +27,10 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import studio.mandysa.music.R
+import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.ui.common.ItemSubTitleScreen
 import studio.mandysa.music.ui.common.ItemTitle
+import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.viewmodel.BrowseViewModel
 import studio.mandysa.music.ui.viewmodel.EventViewModel
 
@@ -73,10 +77,15 @@ private fun BannerItem(typeTitle: String, bannerUrl: String, onClick: () -> Unit
 @Composable
 fun BrowseScreen(
     event: EventViewModel = viewModel(),
-    viewModel: BrowseViewModel = viewModel()
+    viewModel: BrowseViewModel = viewModel(factory = object : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return BrowseViewModel(event.getCookieLiveData().value!!) as T
+        }
+    })
 ) {
     val isRefreshing by viewModel.isRefresh().observeAsState(true)
     val bannerItems by viewModel.getBanners().observeAsState(arrayListOf())
+    val recommendSongs by viewModel.getRecommendSongs().observeAsState(arrayListOf())
     viewModel.refresh()
     SwipeRefresh(
         modifier = Modifier
@@ -114,18 +123,17 @@ fun BrowseScreen(
                 ItemSubTitleScreen(stringResource(R.string.recommend_playlist))
             }
             item {
-                /*LazyRow(contentPadding = PaddingValues(10.dp), content = {
-                    items(recommendSongItems.size) {
-                        val model = recommendSongItems[it]
-                        SongItem(
-                            position = it + 1,
-                            title = model.title,
-                            singer = model.artist.allArtist()
-                        ) {
+                ItemSubTitleScreen(stringResource(R.string.recommend_song))
+            }
+            items(recommendSongs.size) {
+                val model = recommendSongs[it]
+                SongItem(
+                    position = it + 1,
+                    title = model.title,
+                    singer = model.artist.allArtist()
+                ) {
 
-                        }
-                    }
-                })*/
+                }
             }
         }
     }

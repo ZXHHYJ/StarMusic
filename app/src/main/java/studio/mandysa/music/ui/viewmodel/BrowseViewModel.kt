@@ -9,15 +9,20 @@ import kotlinx.coroutines.launch
 import mandysax.anna2.exception.AnnaException
 import studio.mandysa.music.logic.model.BannerModel
 import studio.mandysa.music.logic.model.NeteaseCloudMusicApi
+import studio.mandysa.music.logic.model.RecommendSong
 import studio.mandysa.music.logic.network.ServiceCreator
 
-class BrowseViewModel : ViewModel() {
+class BrowseViewModel(private val cookie: String) : ViewModel() {
 
     private val mIsRefreshLiveData = MutableLiveData(false)
 
-    private val mBanners = MutableLiveData(listOf<BannerModel>())
+    private val mBanners = MutableLiveData<List<BannerModel>>()
+
+    private val mRecommendSongs = MutableLiveData<List<RecommendSong>>()
 
     fun getBanners(): LiveData<List<BannerModel>> = mBanners
+
+    fun getRecommendSongs(): LiveData<List<RecommendSong>> = mRecommendSongs
 
     fun isRefresh(): LiveData<Boolean> {
         return mIsRefreshLiveData
@@ -29,6 +34,7 @@ class BrowseViewModel : ViewModel() {
             try {
                 ServiceCreator.create(NeteaseCloudMusicApi::class.java).let {
                     mBanners.postValue(it.getBannerList())
+                    mRecommendSongs.postValue(it.getRecommendedSong(cookie))
                 }
             } catch (e: AnnaException) {
 

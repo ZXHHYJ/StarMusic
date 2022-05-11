@@ -2,9 +2,10 @@ package studio.mandysa.music.ui.screen
 
 import android.view.Gravity
 import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -12,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -27,11 +27,10 @@ import studio.mandysa.music.ui.theme.navHeight
 
 sealed class Screen(
     val route: String,
-    @StringRes val resourceId: Int,
-    @DrawableRes val iconId: Int
+    @DrawableRes val resourceId: Int
 ) {
-    object Browse : Screen("browse", R.string.browse, R.drawable.ic_round_contactless_24)
-    object Me : Screen("me", R.string.me, R.drawable.ic_round_person_24)
+    object Browse : Screen("browse", R.drawable.ic_round_contactless_24)
+    object Me : Screen("me", R.drawable.ic_round_person_24)
 }
 
 @Composable
@@ -71,7 +70,7 @@ fun MainScreen() {
                     panel = {
                         ControllerScreen()
                     })
-                BottomNavigation(
+                NavigationBar(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(with(LocalDensity.current) {
@@ -83,20 +82,18 @@ fun MainScreen() {
                         })
                         .align(Alignment.BottomCenter)
                         .navigationBarsPadding(),
-                    elevation = 0.dp,
-                    backgroundColor = Color.White
+                    containerColor = Color.White
                 ) {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val currentDestination = navBackStackEntry?.destination
                     items.forEach { screen ->
-                        BottomNavigationItem(
+                        NavigationBarItem(
                             icon = {
                                 Icon(
-                                    ImageVector.vectorResource(screen.iconId),
+                                    ImageVector.vectorResource(screen.resourceId),
                                     contentDescription = null
                                 )
                             },
-                            label = { Text(stringResource(screen.resourceId)) },
                             selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                             onClick = {
                                 navController.navigate(screen.route) {
