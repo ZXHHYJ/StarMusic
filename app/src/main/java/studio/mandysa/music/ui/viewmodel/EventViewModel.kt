@@ -23,8 +23,6 @@ class EventViewModel : ViewModel() {
 
     private val mCookieLiveData = MutableLiveData<String>(Tuke.tukeGet(mCookieKey))
 
-    fun isNotLogin(): Boolean = mCookieLiveData.value == null
-
     fun login(mobilePhone: String, password: String): LiveData<LoginModel?> {
         return MutableLiveData<LoginModel?>().also {
             viewModelScope.launch(Dispatchers.IO) {
@@ -47,6 +45,6 @@ class EventViewModel : ViewModel() {
 
     fun getCookieLiveData(): LiveData<String> = mCookieLiveData
 
-    fun getUserIdLiveData(): LiveData<String> = mUserIdLiveData
+    fun etUserIdLiveData(): LiveData<String> = mUserIdLiveData
 
 }

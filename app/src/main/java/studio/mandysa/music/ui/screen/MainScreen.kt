@@ -25,7 +25,7 @@ import com.sothree.slidinguppanel.ktx.SlidingPanel
 import studio.mandysa.music.R
 import studio.mandysa.music.ui.theme.navHeight
 
-sealed class Screen(
+private sealed class Screen(
     val route: String,
     @DrawableRes val resourceId: Int
 ) {

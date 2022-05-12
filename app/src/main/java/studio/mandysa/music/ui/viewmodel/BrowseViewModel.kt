@@ -12,7 +12,15 @@ import studio.mandysa.music.logic.model.NeteaseCloudMusicApi
 import studio.mandysa.music.logic.model.RecommendSong
 import studio.mandysa.music.logic.network.ServiceCreator
 
-class BrowseViewModel(private val cookie: String) : ViewModel() {
+class BrowseViewModel : ViewModel() {
+
+    sealed class Status {
+        data class Banners(val value: List<BannerModel>) : Status()
+        data class RecommendSongs(val value: List<RecommendSong>) : Status()
+        data class Error(val e: AnnaException) : Status()
+    }
+
+    private lateinit var mCookie: String
 
     private val mIsRefreshLiveData = MutableLiveData(false)
 
@@ -28,13 +36,17 @@ class BrowseViewModel(private val cookie: String) : ViewModel() {
         return mIsRefreshLiveData
     }
 
+    fun initialize(cookie: String) {
+        mCookie = cookie;
+    }
+
     fun refresh() {
         mIsRefreshLiveData.value = true
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 ServiceCreator.create(NeteaseCloudMusicApi::class.java).let {
                     mBanners.postValue(it.getBannerList())
-                    mRecommendSongs.postValue(it.getRecommendedSong(cookie))
+                    mRecommendSongs.postValue(it.getRecommendedSong(mCookie))
                 }
             } catch (e: AnnaException) {
 

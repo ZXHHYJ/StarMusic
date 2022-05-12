@@ -18,8 +18,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -77,16 +75,16 @@ private fun BannerItem(typeTitle: String, bannerUrl: String, onClick: () -> Unit
 @Composable
 fun BrowseScreen(
     event: EventViewModel = viewModel(),
-    viewModel: BrowseViewModel = viewModel(factory = object : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return BrowseViewModel(event.getCookieLiveData().value!!) as T
-        }
-    })
+    viewModel: BrowseViewModel = viewModel()
 ) {
     val isRefreshing by viewModel.isRefresh().observeAsState(true)
     val bannerItems by viewModel.getBanners().observeAsState(arrayListOf())
     val recommendSongs by viewModel.getRecommendSongs().observeAsState(arrayListOf())
-    viewModel.refresh()
+    val cookie = event.getCookieLiveData().observeAsState()
+    if (cookie.value != null) {
+        viewModel.initialize(cookie.value!!)
+        viewModel.refresh()
+    }
     SwipeRefresh(
         modifier = Modifier
             .fillMaxSize()

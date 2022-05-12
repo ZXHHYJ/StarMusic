@@ -4,60 +4,56 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+import com.google.accompanist.navigation.material.ModalBottomSheetLayout
+import com.google.accompanist.navigation.material.bottomSheet
+import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 import com.yanzhenjie.sofia.Sofia
-import com.zj.statelayout.ComposeStateLayout
-import com.zj.statelayout.PageState
-import com.zj.statelayout.PageStateData
-import studio.mandysa.music.ui.common.MultiBottomSheetLayout
 import studio.mandysa.music.ui.screen.LoginScreen
 import studio.mandysa.music.ui.screen.MainScreen
+import studio.mandysa.music.ui.screen.SelectLoginScreen
 import studio.mandysa.music.ui.screen.StartScreen
 import studio.mandysa.music.ui.theme.MandySaMusicTheme
 import studio.mandysa.music.ui.viewmodel.EventViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val mEvent by viewModels<EventViewModel>()
+    sealed class Screen(
+        val route: String
+    ) {
+        object Start : Screen("start")
+        object Login : Screen("login")
+        object Main : Screen("main")
+        object SelectLogin : Screen("select_login")
+    }
+    
 
+    @OptIn(ExperimentalMaterialNavigationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MandySaMusicTheme {
-                var pageStateData by remember {
-                    mutableStateOf(PageStateData(PageState.CONTENT))
-                }
-                mEvent.getCookieLiveData().observe(this) {
-                    if (it == null) {
-                        pageStateData = PageStateData(PageState.EMPTY)
-                        return@observe
+                val bottomSheetNavigator = rememberBottomSheetNavigator()
+                val navController = rememberNavController(bottomSheetNavigator)
+                ModalBottomSheetLayout(bottomSheetNavigator) {
+                    NavHost(navController = navController, startDestination = Screen.Start.route) {
+                        composable(Screen.Start.route) {
+                            StartScreen(navController)
+                        }
+                        composable(Screen.SelectLogin.route) {
+                            SelectLoginScreen(this@MainActivity, navController)
+                        }
+                        composable(Screen.Main.route) {
+                            MainScreen()
+                        }
+                        bottomSheet(Screen.Login.route) {
+                            LoginScreen()
+                        }
                     }
-                    pageStateData = PageStateData(PageState.CONTENT)
                 }
-                ComposeStateLayout(
-                    modifier = Modifier.fillMaxSize(),
-                    pageStateData = pageStateData,
-                    empty = {
-                        MultiBottomSheetLayout(
-                            sheetElevation = 10.dp,
-                            sheetShape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp),
-                            sheetContent = {
-                                LoginScreen()
-                            }, mainContent = { openSheet ->
-                                StartScreen(openSheet)
-                            })
-                    },
-                    content = {
-                        MainScreen()
-                    }
-                )
             }
         }
         Sofia.with(this).apply {

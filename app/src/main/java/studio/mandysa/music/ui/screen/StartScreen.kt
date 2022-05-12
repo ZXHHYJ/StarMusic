@@ -1,46 +1,37 @@
 package studio.mandysa.music.ui.screen
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import android.os.Handler
+import android.os.Looper
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
-import coil.compose.AsyncImage
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import coil.compose.rememberImagePainter
+import studio.mandysa.music.MainActivity
 import studio.mandysa.music.R
-import studio.mandysa.music.ui.common.MultiBottomSheet
+import studio.mandysa.music.ui.viewmodel.EventViewModel
 
 @Composable
-fun StartScreen(openSheet: (MultiBottomSheet.Intent) -> Unit) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Bottom
-    ) {
-        AsyncImage(
-            model = "https://static-ali.ihansen.org/app/bg1440/9b9d6yKkago.jpg!o",
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1.0f)
+fun StartScreen(navController: NavHostController, viewModel: EventViewModel = viewModel()) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Image(
+            painter = rememberImagePainter(R.mipmap.ic_launcher),
+            contentDescription = null, modifier = Modifier.size(50.dp)
         )
-        Row(modifier = Modifier
-            .navigationBarsPadding()) {
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1.0f),
-                onClick = { openSheet.invoke(MultiBottomSheet.Intent()) }) {
-                Text(text = stringResource(id = R.string.login), color = Color.Black)
-            }
-            Button(modifier = Modifier
-                .fillMaxWidth()
-                .weight(1.0f), onClick = { }) {
-                Text(text = stringResource(id = R.string.exit), color = Color.Black)
-            }
-        }
     }
+    val cookie = viewModel.getCookieLiveData().observeAsState()
+    Handler(Looper.myLooper()!!).postDelayed(
+        {
+            navController.navigate(if (cookie.value != null) MainActivity.Screen.Main.route else MainActivity.Screen.SelectLogin.route) {
+                launchSingleTop = true
+            }
+        }, 500
+    )
 }
