@@ -8,6 +8,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,6 +24,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.sothree.slidinguppanel.ktx.SlidingPanel
 import studio.mandysa.music.R
+import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.theme.navHeight
 
 private sealed class Screen(
@@ -52,9 +54,11 @@ fun MainScreen() {
                     panelHeight = with(LocalDensity.current) {
                         WindowInsets.navigationBars.getBottom(
                             LocalDensity.current
-                        ) + navHeight.roundToPx()
+                        ) + navHeight.roundToPx() * if (PlayManager.changePlayListLiveData()
+                                .observeAsState().value?.isEmpty() != false
+                        ) 1 else 2
                     },
-                    shadowHeight = with(LocalDensity.current) { 5.dp.roundToPx() },
+                    shadowHeight = with(LocalDensity.current) { 2.dp.roundToPx() },
                     content = {
                         NavHost(
                             navController,
@@ -68,7 +72,12 @@ fun MainScreen() {
                         }
                     },
                     panel = {
-                        ControllerScreen()
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.TopStart
+                        ) {
+                            ControllerScreen()
+                        }
                     })
                 NavigationBar(
                     modifier = Modifier
@@ -80,8 +89,7 @@ fun MainScreen() {
                                 )
                                 .toDp() + navHeight
                         })
-                        .align(Alignment.BottomCenter)
-                        .navigationBarsPadding(),
+                        .align(Alignment.BottomCenter),
                     containerColor = Color.White
                 ) {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()

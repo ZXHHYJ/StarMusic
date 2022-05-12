@@ -10,21 +10,40 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import studio.mandysa.music.MainActivity
 import studio.mandysa.music.R
-import studio.mandysa.music.ui.theme.Blue40
+import studio.mandysa.music.ui.dialog.LoginDialog
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.verticalMargin
 import studio.mandysa.music.ui.viewmodel.EventViewModel
 
 @Composable
-@Preview
-fun LoginScreen(event: EventViewModel = viewModel()) {
+fun LoginScreen(navController: NavHostController, event: EventViewModel = viewModel()) {
+    val loginStatus = event.loginStatus.observeAsState()
+    when (loginStatus.value) {
+        is EventViewModel.Status.LoggingIn -> {
+            LoginDialog()
+        }
+        is EventViewModel.Status.Fail -> {
+
+        }
+        is EventViewModel.Status.Ok -> {
+            navController.navigate(MainActivity.Screen.Main.route) {
+                launchSingleTop = true
+            }
+        }
+        is EventViewModel.Status.Error -> {
+
+        }
+        else -> {}
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -59,7 +78,7 @@ fun LoginScreen(event: EventViewModel = viewModel()) {
             TextButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Blue40)
+                    .background(androidx.compose.material3.MaterialTheme.colorScheme.primary)
                     .navigationBarsPadding(),
                 onClick = {
                     event.login(mobilePhone = phone, password = password)

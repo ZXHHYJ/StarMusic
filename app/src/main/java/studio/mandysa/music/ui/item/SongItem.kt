@@ -1,9 +1,9 @@
 package studio.mandysa.music.ui.item
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,26 +39,25 @@ fun SongItem(position: Int, title: String, singer: String, onClick: () -> Unit) 
             modifier = Modifier
                 .fillMaxSize()
                 .weight(1.0f),
-            verticalArrangement = Arrangement.Center
         ) {
             Text(
                 text = title,
                 color = Color.Black,
                 fontSize = 15.sp,
+                textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .fillMaxWidth()
                     .weight(1.0f)
             )
             Text(
                 text = singer,
                 color = textColorLight,
                 fontSize = 13.sp,
+                textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .fillMaxWidth()
                     .weight(1.0f)
             )
         }
-        Image(
+        Icon(
             painter = painterResource(id = R.drawable.ic_round_more_vert_24),
             contentDescription = null, modifier = Modifier.padding(end = horizontalMargin)
         )

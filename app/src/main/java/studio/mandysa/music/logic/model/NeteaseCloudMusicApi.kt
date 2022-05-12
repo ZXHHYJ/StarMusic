@@ -37,11 +37,13 @@ interface NeteaseCloudMusicApi {
 
     //获取推荐歌单
     @Get("recommend/resource")
-    fun getRecommendPlaylist(@Query("cookie") cookie: String): RecommendPlaylist
+    @Path("recommend")
+    fun getRecommendPlaylist(@Query("cookie") cookie: String): List<PlaylistModel>
 
     //歌单广场
     @Get("personalized")
-    fun getPlaylistSquare(): PlaylistSquareModel
+    @Path("result")
+    fun getPlaylistSquare():  List<PlaylistModel>
 
     //获取歌词
     @Get("lyric")

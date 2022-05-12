@@ -19,6 +19,7 @@ import androidx.lifecycle.map
 import coil.compose.AsyncImage
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
+import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.navHeight
 
 @Composable
@@ -28,7 +29,7 @@ fun ControllerScreen() {
             .navigationBarsPadding()
             .fillMaxWidth()
             .height(navHeight)
-            .padding(start = 16.dp), verticalAlignment = Alignment.CenterVertically
+            .padding(start = horizontalMargin), verticalAlignment = Alignment.CenterVertically
     ) {
         Card(
             shape = RoundedCornerShape(8.dp),

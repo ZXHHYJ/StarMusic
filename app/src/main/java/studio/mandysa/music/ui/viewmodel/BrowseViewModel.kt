@@ -9,49 +9,46 @@ import kotlinx.coroutines.launch
 import mandysax.anna2.exception.AnnaException
 import studio.mandysa.music.logic.model.BannerModel
 import studio.mandysa.music.logic.model.NeteaseCloudMusicApi
+import studio.mandysa.music.logic.model.PlaylistModel
 import studio.mandysa.music.logic.model.RecommendSong
 import studio.mandysa.music.logic.network.ServiceCreator
 
 class BrowseViewModel : ViewModel() {
 
-    sealed class Status {
-        data class Banners(val value: List<BannerModel>) : Status()
-        data class RecommendSongs(val value: List<RecommendSong>) : Status()
-        data class Error(val e: AnnaException) : Status()
-    }
-
     private lateinit var mCookie: String
-
-    private val mIsRefreshLiveData = MutableLiveData(false)
 
     private val mBanners = MutableLiveData<List<BannerModel>>()
 
     private val mRecommendSongs = MutableLiveData<List<RecommendSong>>()
 
+    private val mRecommendPlaylist = MutableLiveData<List<PlaylistModel>>()
+
+    private val mPlaylistSquare = MutableLiveData<List<PlaylistModel>>()
+
     fun getBanners(): LiveData<List<BannerModel>> = mBanners
 
     fun getRecommendSongs(): LiveData<List<RecommendSong>> = mRecommendSongs
 
-    fun isRefresh(): LiveData<Boolean> {
-        return mIsRefreshLiveData
-    }
+    fun getRecommendPlaylist(): LiveData<List<PlaylistModel>> = mRecommendPlaylist
+
+    fun getPlaylistSquare(): LiveData<List<PlaylistModel>> = mPlaylistSquare
 
     fun initialize(cookie: String) {
-        mCookie = cookie;
+        mCookie = cookie
     }
 
     fun refresh() {
-        mIsRefreshLiveData.value = true
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 ServiceCreator.create(NeteaseCloudMusicApi::class.java).let {
                     mBanners.postValue(it.getBannerList())
                     mRecommendSongs.postValue(it.getRecommendedSong(mCookie))
+                    mRecommendPlaylist.postValue(it.getRecommendPlaylist(mCookie))
+                    mPlaylistSquare.postValue(it.getPlaylistSquare())
                 }
             } catch (e: AnnaException) {
 
             }
         }
-        mIsRefreshLiveData.value = false
     }
 }

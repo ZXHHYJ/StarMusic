@@ -8,12 +8,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import mandysax.anna2.exception.AnnaException
 import simon.tuke.Tuke
-import studio.mandysa.music.logic.model.LoginModel
 import studio.mandysa.music.logic.model.NeteaseCloudMusicApi
 import studio.mandysa.music.logic.network.ServiceCreator
 
 
 class EventViewModel : ViewModel() {
+
+    sealed class Status {
+        data class Ok(val value: String) : Status()
+        data class LoggingIn(val value: String) : Status()
+        data class Fail(val value: String) : Status()
+        data class Error(val e: AnnaException) : Status()
+    }
 
     private val mCookieKey = "cookie_key"
 
@@ -23,22 +29,28 @@ class EventViewModel : ViewModel() {
 
     private val mCookieLiveData = MutableLiveData<String>(Tuke.tukeGet(mCookieKey))
 
-    fun login(mobilePhone: String, password: String): LiveData<LoginModel?> {
-        return MutableLiveData<LoginModel?>().also {
-            viewModelScope.launch(Dispatchers.IO) {
-                try {
-                    val model = ServiceCreator.create(NeteaseCloudMusicApi::class.java)
-                        .login(mobilePhone, password, System.currentTimeMillis()).execute()
-                    it.postValue(model)
-                    if (model.cookie.isNotEmpty()) {
-                        Tuke.tukeWrite(mCookieKey, model.cookie)
-                        Tuke.tukeWrite(mUserIdKey, model.id)
-                        mCookieLiveData.postValue(model.cookie)
-                        mUserIdLiveData.postValue(model.id)
-                    }
-                } catch (e: AnnaException) {
-                    it.postValue(null)
+    private val mLoginStatus = MutableLiveData<Status>()
+
+    val loginStatus: LiveData<Status>
+        get() = mLoginStatus
+
+    fun login(mobilePhone: String, password: String) {
+        mLoginStatus.value = Status.LoggingIn("")
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val model = ServiceCreator.create(NeteaseCloudMusicApi::class.java)
+                    .login(mobilePhone, password, System.currentTimeMillis()).execute()
+                if (model.cookie.isNotEmpty()) {
+                    Tuke.tukeWrite(mCookieKey, model.cookie)
+                    Tuke.tukeWrite(mUserIdKey, model.id)
+                    mCookieLiveData.postValue(model.cookie)
+                    mUserIdLiveData.postValue(model.id)
+                    mLoginStatus.postValue(Status.Ok(model.cookie))
+                    return@launch
                 }
+                mLoginStatus.postValue(Status.Fail(model.msg))
+            } catch (e: AnnaException) {
+                mLoginStatus.postValue(Status.Error(e))
             }
         }
     }

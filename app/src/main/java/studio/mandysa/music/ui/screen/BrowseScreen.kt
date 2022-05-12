@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
@@ -22,13 +23,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import studio.mandysa.music.R
+import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.ui.common.ItemSubTitleScreen
 import studio.mandysa.music.ui.common.ItemTitle
+import studio.mandysa.music.ui.item.PlaylistItem
 import studio.mandysa.music.ui.item.SongItem
+import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.viewmodel.BrowseViewModel
 import studio.mandysa.music.ui.viewmodel.EventViewModel
 
@@ -77,189 +79,83 @@ fun BrowseScreen(
     event: EventViewModel = viewModel(),
     viewModel: BrowseViewModel = viewModel()
 ) {
-    val isRefreshing by viewModel.isRefresh().observeAsState(true)
     val bannerItems by viewModel.getBanners().observeAsState(arrayListOf())
     val recommendSongs by viewModel.getRecommendSongs().observeAsState(arrayListOf())
+    val recommendPlaylist by viewModel.getRecommendPlaylist().observeAsState(arrayListOf())
+    val playlistSquare by viewModel.getPlaylistSquare().observeAsState(arrayListOf())
     val cookie = event.getCookieLiveData().observeAsState()
     if (cookie.value != null) {
         viewModel.initialize(cookie.value!!)
         viewModel.refresh()
     }
-    SwipeRefresh(
-        modifier = Modifier
-            .fillMaxSize()
-            .statusBarsPadding(),
-        state = rememberSwipeRefreshState(isRefreshing),
-        onRefresh = { viewModel.refresh() },
-    ) {
-        LazyColumn {
-            item {
-                ItemTitle(stringResource(R.string.browse))
-            }
-            item {
-                HorizontalPager(count = bannerItems.size) {
-                    val model = bannerItems[it]
-                    BannerItem(typeTitle = model.typeTitle, bannerUrl = model.pic) {
-                        when (model.targetType) {
-                            3000 -> {
+    LazyColumn {
+        item {
+            ItemTitle(stringResource(R.string.browse))
+        }
+        item {
+            HorizontalPager(count = bannerItems.size) {
+                val model = bannerItems[it]
+                BannerItem(typeTitle = model.typeTitle, bannerUrl = model.pic) {
+                    when (model.targetType) {
+                        3000 -> {
 
-                            }
-                            1000 -> {
+                        }
+                        1000 -> {
 
-                            }
-                            1 -> {
+                        }
+                        1 -> {
 
-                            }
-                            else -> {
+                        }
+                        else -> {
 
-                            }
                         }
                     }
                 }
             }
-            item {
-                ItemSubTitleScreen(stringResource(R.string.recommend_playlist))
-            }
-            item {
-                ItemSubTitleScreen(stringResource(R.string.recommend_song))
-            }
-            items(recommendSongs.size) {
-                val model = recommendSongs[it]
-                SongItem(
-                    position = it + 1,
-                    title = model.title,
-                    singer = model.artist.allArtist()
-                ) {
+        }
+        item {
+            ItemSubTitleScreen(stringResource(R.string.recommend_playlist))
+        }
+        item {
+            LazyRow(
+                modifier = Modifier.fillMaxWidth(), contentPadding = PaddingValues(horizontalMargin)
+            ) {
+                items(recommendPlaylist.size) {
+                    val model = recommendPlaylist[it]
+                    PlaylistItem(title = model.name, coverUrl = model.picUrl) {
 
+                    }
                 }
+            }
+        }
+        item {
+            ItemSubTitleScreen(stringResource(R.string.playlist_square))
+        }
+        item {
+            LazyRow(
+                modifier = Modifier.fillMaxWidth(), contentPadding = PaddingValues(horizontalMargin)
+            ) {
+                items(playlistSquare.size) {
+                    val model = playlistSquare[it]
+                    PlaylistItem(title = model.name, coverUrl = model.picUrl) {
+
+                    }
+                }
+            }
+        }
+        item {
+            ItemSubTitleScreen(stringResource(R.string.recommend_song))
+        }
+        items(recommendSongs.size) {
+            val model = recommendSongs[it]
+            SongItem(
+                position = it + 1,
+                title = model.title,
+                singer = model.artist.allArtist()
+            ) {
+                PlayManager.loadPlaylist(recommendSongs, it)
+                PlayManager.play()
             }
         }
     }
-    /*AndroidViewBinding(FragmentBrowseBinding::inflate) {
-        browseRecycle.linear().setup {
-            addViewBinding<TitleModel, ItemTitleBinding> { holder ->
-                titleTv.text = holder.model.title
-            }
-            addCompose<SubTitleModel> {
-                ItemSubTitleScreen(model.title)
-            }
-            addCompose<RecommendSongs.RecommendSong> {
-                SongItem(
-                    position = modelPosition + 1,
-                    title = model.title,
-                    singer = model.artist.allArtist()
-                ) {
-                    PlayManager.loadPlaylist(
-                        models,
-                        modelPosition
-                    )
-                }
-            }
-            addCompose<BannerModels> {
-                Linear(
-                    orientation = RecyclerView.HORIZONTAL,
-                    init = { PagerSnapHelper().attachToRecyclerView(this) },
-                    models = model.list!!
-                ) {
-                    addCompose<BannerModels.BannerModel> {
-                        BannerItem(typeTitle = model.typeTitle, bannerUrl = model.pic) {
-                            when (model.targetType) {
-                                3000 -> {
-                                    *//* val uri: Uri = Uri.parse(model.url)
-                                     val intent = Intent(Intent.ACTION_VIEW, uri)
-                                     startActivity(intent)*//*
-                                }
-                                1000 -> {
-                                    *//* it.findNavController().navigate(
-                                         BrowseFragmentDirections.actionHomeFragmentToPlaylistFragment(
-                                             model.encodeId
-                                         )
-                                     )*//*
-                                }
-                                1 -> {
-
-                                }
-                                else -> {
-
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            addCompose<PlaylistSquareModel> {
-                Linear(
-                    orientation = RecyclerView.HORIZONTAL,
-                    models = model.playlist!!,
-                    init = {
-                        addItemDecoration(HorizontalAlbumItemDecoration())
-                        LinearSnapHelper().attachToRecyclerView(this)
-                    }) {
-                    addCompose<PlaylistModel> {
-                        PlaylistItem(title = model.name, coverUrl = model.picUrl) {
-                            *//*  it.findNavController().navigate(
-                                  BrowseFragmentDirections.actionHomeFragmentToPlaylistFragment(
-                                      model.id
-                                  )
-                              )*//*
-                        }
-                    }
-                }
-            }
-            addCompose<RecommendPlaylist> {
-                Linear(
-                    orientation = RecyclerView.HORIZONTAL,
-                    models = model.playlist!!,
-                    init = {
-                        addItemDecoration(HorizontalAlbumItemDecoration())
-                    }) {
-                    addCompose<PlaylistModel> {
-                        PlaylistItem(title = model.name, coverUrl = model.picUrl) {
-                            *//* it.findNavController().navigate(
-                                 BrowseFragmentDirections.actionHomeFragmentToPlaylistFragment(
-                                     model.id
-                                 )
-                             )*//*
-                        }
-                    }
-                }
-            }
-        }
-        browseStateLayout.showLoading {
-            *//*val mCookie = mEvent.getCookieLiveData().observeAsState()
-            mEvent.getCookieLiveData().observe(viewLifecycleOwner) { cookie ->
-                if (cookie == null) return@observe
-                viewLifecycleOwner.lifecycle.coroutineScope.launch(Dispatchers.IO) {
-                    try {
-                        ServiceCreator.create(NeteaseCloudMusicApi::class.java).let {
-                            val bannerModel = it.getBannerList()
-                            val recommendPlaylist =
-                                it.getRecommendPlaylist(cookie)
-                            val playlistSquare = it.getPlaylistSquare()
-                            val recommendedSong = it.getRecommendedSong(cookie)
-                            withContext(Dispatchers.Main) {
-                                browseRecycle.recyclerAdapter.headers = listOf(
-                                    TitleModel(context.getString(R.string.browse)),
-                                    bannerModel,
-                                    SubTitleModel(getString(R.string.recommend_playlist)),
-                                    recommendPlaylist,
-                                    SubTitleModel(getString(R.string.playlist_square)),
-                                    playlistSquare,
-                                    SubTitleModel(getString(R.string.recommend_song))
-                                )
-                                browseRecycle.recyclerAdapter.models = recommendedSong.list!!
-                                browseStateLayout.showContentState()
-                            }
-                        }
-                    } catch (e: AnnaException) {
-                        browseStateLayout.showErrorState()
-                    }
-                }
-            }*//*
-        }
-        browseStateLayout.showError {
-            browseRecycle.recyclerAdapter.clearModels()
-        }
-        browseStateLayout.showLoadingState()
-    }*/
 }

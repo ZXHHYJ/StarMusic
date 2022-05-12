@@ -1,37 +1,50 @@
 package studio.mandysa.music.ui.screen
 
-import android.os.Handler
-import android.os.Looper
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
-import coil.compose.rememberImagePainter
+import coil.compose.AsyncImage
 import studio.mandysa.music.MainActivity
 import studio.mandysa.music.R
-import studio.mandysa.music.ui.viewmodel.EventViewModel
 
 @Composable
-fun StartScreen(navController: NavHostController, viewModel: EventViewModel = viewModel()) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Image(
-            painter = rememberImagePainter(R.mipmap.ic_launcher),
-            contentDescription = null, modifier = Modifier.size(50.dp)
+fun StartScreen(activity: MainActivity, navController: NavHostController) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Bottom
+    ) {
+        AsyncImage(
+            model = "https://i.hexuexiao.cn/up/b1/c3/29/cc0ec73b1b1d8d4cbbfed2297d29c3b1.jpg",
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1.0f)
         )
-    }
-    val cookie = viewModel.getCookieLiveData().observeAsState()
-    Handler(Looper.myLooper()!!).postDelayed(
-        {
-            navController.navigate(if (cookie.value != null) MainActivity.Screen.Main.route else MainActivity.Screen.SelectLogin.route) {
-                launchSingleTop = true
+        Row {
+            TextButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1.0f)
+                    .background(androidx.compose.material3.MaterialTheme.colorScheme.primary)
+                    .navigationBarsPadding(),
+                onClick = { navController.navigate(MainActivity.Screen.Login.route) }) {
+                Text(text = stringResource(id = R.string.login), color = Color.White)
             }
-        }, 500
-    )
+            TextButton(modifier = Modifier
+                .fillMaxWidth()
+                .weight(1.0f)
+                .navigationBarsPadding(), onClick = { activity.finish() }) {
+                Text(text = stringResource(id = R.string.exit), color = Color.Black)
+            }
+        }
+    }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -14,7 +15,6 @@ import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 import com.yanzhenjie.sofia.Sofia
 import studio.mandysa.music.ui.screen.LoginScreen
 import studio.mandysa.music.ui.screen.MainScreen
-import studio.mandysa.music.ui.screen.SelectLoginScreen
 import studio.mandysa.music.ui.screen.StartScreen
 import studio.mandysa.music.ui.theme.MandySaMusicTheme
 import studio.mandysa.music.ui.viewmodel.EventViewModel
@@ -24,12 +24,12 @@ class MainActivity : AppCompatActivity() {
     sealed class Screen(
         val route: String
     ) {
-        object Start : Screen("start")
         object Login : Screen("login")
         object Main : Screen("main")
-        object SelectLogin : Screen("select_login")
+        object Start : Screen("start")
     }
-    
+
+    private val mEvent by viewModels<EventViewModel>()
 
     @OptIn(ExperimentalMaterialNavigationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,18 +39,19 @@ class MainActivity : AppCompatActivity() {
                 val bottomSheetNavigator = rememberBottomSheetNavigator()
                 val navController = rememberNavController(bottomSheetNavigator)
                 ModalBottomSheetLayout(bottomSheetNavigator) {
-                    NavHost(navController = navController, startDestination = Screen.Start.route) {
-                        composable(Screen.Start.route) {
-                            StartScreen(navController)
-                        }
-                        composable(Screen.SelectLogin.route) {
-                            SelectLoginScreen(this@MainActivity, navController)
-                        }
+                    val cookie = mEvent.getCookieLiveData().observeAsState()
+                    NavHost(
+                        navController = navController,
+                        startDestination = if (cookie.value != null) Screen.Main.route else Screen.Start.route
+                    ) {
                         composable(Screen.Main.route) {
                             MainScreen()
                         }
+                        composable(Screen.Start.route) {
+                            StartScreen(this@MainActivity, navController)
+                        }
                         bottomSheet(Screen.Login.route) {
-                            LoginScreen()
+                            LoginScreen(navController)
                         }
                     }
                 }
