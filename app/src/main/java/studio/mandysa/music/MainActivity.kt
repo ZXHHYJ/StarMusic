@@ -1,9 +1,9 @@
 package studio.mandysa.music
 
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -19,7 +19,7 @@ import studio.mandysa.music.ui.screen.StartScreen
 import studio.mandysa.music.ui.theme.MandySaMusicTheme
 import studio.mandysa.music.ui.viewmodel.EventViewModel
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
     sealed class Screen(
         val route: String
