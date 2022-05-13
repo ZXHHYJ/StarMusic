@@ -15,19 +15,21 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import studio.mandysa.music.ui.theme.horizontalMargin
 
 @Composable
 fun PlaylistItem(title: String, coverUrl: String, onClick: () -> Unit) {
     val configuration = LocalConfiguration.current
     val screenWidth =
         if (configuration.screenWidthDp.dp <= configuration.screenHeightDp.dp) configuration.screenWidthDp.dp else configuration.screenHeightDp.dp
+    val width = (screenWidth - horizontalMargin * 3) / 3
     Column(
         modifier = Modifier
-            .width(screenWidth / 3)
+            .width(width)
     ) {
         Card(
             elevation = 0.dp, shape = RoundedCornerShape(8.dp), modifier = Modifier
-                .size(screenWidth / 3)
+                .size(width)
         ) {
             AsyncImage(
                 model = coverUrl,
@@ -37,6 +39,6 @@ fun PlaylistItem(title: String, coverUrl: String, onClick: () -> Unit) {
                     .clickable(onClick = onClick)
             )
         }
-        Text(text = title, color = Color.Black, fontSize = 13.sp)
+        Text(text = title, color = Color.Black, fontSize = 13.sp, maxLines = 2)
     }
 }

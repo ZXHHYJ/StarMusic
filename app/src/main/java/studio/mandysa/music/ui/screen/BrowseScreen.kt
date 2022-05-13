@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
@@ -26,8 +27,8 @@ import com.google.accompanist.pager.HorizontalPager
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.allArtist
-import studio.mandysa.music.ui.common.ItemSubTitleScreen
-import studio.mandysa.music.ui.common.ItemTitle
+import studio.mandysa.music.ui.item.ItemSubTitleScreen
+import studio.mandysa.music.ui.item.ItemTitle
 import studio.mandysa.music.ui.item.PlaylistItem
 import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.theme.horizontalMargin
@@ -118,10 +119,11 @@ fun BrowseScreen(
         }
         item {
             LazyRow(
-                modifier = Modifier.fillMaxWidth(), contentPadding = PaddingValues(horizontalMargin)
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(horizontal = horizontalMargin),
+                horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2),
             ) {
-                items(recommendPlaylist.size) {
-                    val model = recommendPlaylist[it]
+                items(recommendPlaylist) { model ->
                     PlaylistItem(title = model.name, coverUrl = model.picUrl) {
 
                     }
@@ -133,10 +135,11 @@ fun BrowseScreen(
         }
         item {
             LazyRow(
-                modifier = Modifier.fillMaxWidth(), contentPadding = PaddingValues(horizontalMargin)
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(horizontal = horizontalMargin),
+                horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2),
             ) {
-                items(playlistSquare.size) {
-                    val model = playlistSquare[it]
+                items(playlistSquare) { model ->
                     PlaylistItem(title = model.name, coverUrl = model.picUrl) {
 
                     }

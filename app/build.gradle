@@ -1,6 +1,5 @@
 plugins {
     id 'com.android.application'
-    id 'androidx.navigation.safeargs'
     id 'kotlin-android'
 }
 
@@ -52,8 +51,6 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.?ar'], dir: 'libs')
-    // SpannableStringUtils https://github.com/liangjingkanji/spannable
-    implementation 'com.github.liangjingkanji:spannable:1.1.0'
     // 映射存储库 https://gitee.com/simon9102/Tuke
     implementation 'com.gitee.simon9102:Tuke:1.0.0'
     // 媒体缓存库 https://github.com/danikula/AndroidVideoCache
@@ -67,7 +64,7 @@ dependencies {
     // 状态栏和导航栏管理 https://gitee.com/liuxiaoliu66/sofia
     implementation 'com.gitee.liuxiaoliu66:sofia:1.1.5'
     // 底部上滑展示控件 https://gitee.com/liuxiaoliu66/AndroidSlidingUpPanel
-    implementation 'com.gitee.liuxiaoliu66:AndroidSlidingUpPanel:5.0.0-alpha.1'
+    implementation 'com.gitee.liuxiaoliu66:AndroidSlidingUpPanel:5.0.1'
 
     implementation 'io.github.shenzhen2017:compose-statelayout:1.0.0'
 
@@ -88,13 +85,9 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.0.0-alpha10")
     implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha10")
 
-
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-service:$lifecycle_version"
-
-    implementation 'androidx.activity:activity-compose:1.4.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

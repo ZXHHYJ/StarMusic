@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.common
+package studio.mandysa.music.ui.item
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text

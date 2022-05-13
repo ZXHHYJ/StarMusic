@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.view
+package studio.mandysa.music.ui.compose
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -7,12 +7,41 @@ import android.graphics.Matrix
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.view.animation.LinearInterpolator
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.viewinterop.AndroidView
 import coil.load
 import com.flaviofaria.kenburnsview.KenBurnsView
+import com.flaviofaria.kenburnsview.RandomTransitionGenerator
 import com.google.android.renderscript.Toolkit
 import studio.mandysa.music.R
 
-class KenBurnsView : KenBurnsView {
+@Composable
+fun MandySaMusicKenBurns(modifier: Modifier, imageUrl: String, paused: Boolean) {
+    AndroidView(factory = {
+        MandySaMusicKenBurnsView(it).apply {
+            setTransitionGenerator(
+                RandomTransitionGenerator(
+                    2000,
+                    LinearInterpolator()
+                )
+            )
+        }
+    }, modifier = modifier) {
+        it.load(imageUrl)
+        if (paused) {
+            it.pause()
+        } else {
+            it.resume()
+        }
+    }
+}
+
+class MandySaMusicKenBurnsView : KenBurnsView {
+
+    private var mUrl = ""
+
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(
@@ -22,18 +51,22 @@ class KenBurnsView : KenBurnsView {
     )
 
     fun load(url: String) {
-        load(url) {}
+        if (url != mUrl) {
+            load(url) {}
+            mUrl = url
+        }
     }
 
     override fun setImageDrawable(drawable: Drawable?) {
-        drawable ?: return
         if (drawable is BitmapDrawable) {
-            val blurBitmap =
-                handleImageBlur(
-                    context,
-                    drawable.bitmap
+            super.setImageDrawable(
+                BitmapDrawable(
+                    resources, handleImageBlur(
+                        context,
+                        drawable.bitmap
+                    )
                 )
-            super.setImageDrawable(BitmapDrawable(resources, blurBitmap))
+            )
         }
     }
 
