@@ -6,8 +6,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,6 +18,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import studio.mandysa.music.ui.theme.horizontalMargin
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlaylistItem(title: String, coverUrl: String, onClick: () -> Unit) {
     val configuration = LocalConfiguration.current
@@ -28,7 +30,7 @@ fun PlaylistItem(title: String, coverUrl: String, onClick: () -> Unit) {
             .width(width)
     ) {
         Card(
-            elevation = 0.dp, shape = RoundedCornerShape(8.dp), modifier = Modifier
+            shape = RoundedCornerShape(8.dp), modifier = Modifier
                 .size(width)
         ) {
             AsyncImage(

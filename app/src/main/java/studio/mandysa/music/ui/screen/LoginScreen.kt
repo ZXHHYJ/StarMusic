@@ -35,7 +35,7 @@ fun LoginScreen(navController: NavHostController, event: EventViewModel = viewMo
 
         }
         is EventViewModel.Status.Ok -> {
-            navController.navigate(MainActivity.Screen.Main.route) {
+            navController.navigate(MainActivity.NavScreen.Main.route) {
                 launchSingleTop = true
             }
         }

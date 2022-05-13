@@ -7,8 +7,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -35,12 +36,11 @@ import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.viewmodel.BrowseViewModel
 import studio.mandysa.music.ui.viewmodel.EventViewModel
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun BannerItem(typeTitle: String, bannerUrl: String, onClick: () -> Unit) {
     Card(
         shape = RoundedCornerShape(8.dp),
-        elevation = 0.dp,
         modifier = Modifier
             .fillMaxWidth()
             .height(150.dp)

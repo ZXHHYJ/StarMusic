@@ -36,20 +36,20 @@ import studio.mandysa.music.ui.theme.navHeight
  * Happy 22nd Birthday Shuangshengzi
  */
 
-private sealed class Screen(
+private sealed class MainNavScreen(
     val route: String,
     @DrawableRes val resourceId: Int
 ) {
-    object Browse : Screen("browse", R.drawable.ic_round_contactless_24)
-    object Me : Screen("me", R.drawable.ic_round_person_24)
+    object Browse : MainNavScreen("browse", R.drawable.ic_round_contactless_24)
+    object Me : MainNavScreen("me", R.drawable.ic_round_person_24)
 }
 
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
     val items = listOf(
-        Screen.Browse,
-        Screen.Me,
+        MainNavScreen.Browse,
+        MainNavScreen.Me,
     )
     var panelState by remember {
         mutableStateOf(PanelState.HIDDEN)
@@ -92,13 +92,13 @@ fun MainScreen() {
                     content = {
                         NavHost(
                             navController,
-                            startDestination = Screen.Browse.route,
+                            startDestination = MainNavScreen.Browse.route,
                             modifier = Modifier
                                 .fillMaxSize()
                                 .statusBarsPadding()
                         ) {
-                            composable(Screen.Browse.route) { BrowseScreen() }
-                            composable(Screen.Me.route) { }
+                            composable(MainNavScreen.Browse.route) { BrowseScreen() }
+                            composable(MainNavScreen.Me.route) { }
                         }
                     },
                     panel = {
@@ -154,7 +154,7 @@ fun MainScreen() {
                     Spacer(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.background)
+                            .background(MaterialTheme.colorScheme.surface)
                             .navigationBarsPadding()
                     )
                 }

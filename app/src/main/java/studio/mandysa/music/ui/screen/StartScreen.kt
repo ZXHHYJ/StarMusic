@@ -36,7 +36,7 @@ fun StartScreen(activity: MainActivity, navController: NavHostController) {
                     .weight(1.0f)
                     .background(androidx.compose.material3.MaterialTheme.colorScheme.primary)
                     .navigationBarsPadding(),
-                onClick = { navController.navigate(MainActivity.Screen.Login.route) }) {
+                onClick = { navController.navigate(MainActivity.NavScreen.Login.route) }) {
                 Text(text = stringResource(id = R.string.login), color = Color.White)
             }
             TextButton(modifier = Modifier

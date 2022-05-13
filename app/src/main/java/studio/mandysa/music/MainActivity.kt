@@ -21,12 +21,12 @@ import studio.mandysa.music.ui.viewmodel.EventViewModel
 
 class MainActivity : ComponentActivity() {
 
-    sealed class Screen(
+    sealed class NavScreen(
         val route: String
     ) {
-        object Login : Screen("login")
-        object Main : Screen("main")
-        object Start : Screen("start")
+        object Login : NavScreen("login")
+        object Main : NavScreen("main")
+        object Start : NavScreen("start")
     }
 
     private val mEvent by viewModels<EventViewModel>()
@@ -42,15 +42,15 @@ class MainActivity : ComponentActivity() {
                     val cookie = mEvent.getCookieLiveData().observeAsState()
                     NavHost(
                         navController = navController,
-                        startDestination = if (cookie.value != null) Screen.Main.route else Screen.Start.route
+                        startDestination = if (cookie.value != null) NavScreen.Main.route else NavScreen.Start.route
                     ) {
-                        composable(Screen.Main.route) {
+                        composable(NavScreen.Main.route) {
                             MainScreen()
                         }
-                        composable(Screen.Start.route) {
+                        composable(NavScreen.Start.route) {
                             StartScreen(this@MainActivity, navController)
                         }
-                        bottomSheet(Screen.Login.route) {
+                        bottomSheet(NavScreen.Login.route) {
                             LoginScreen(navController)
                         }
                     }

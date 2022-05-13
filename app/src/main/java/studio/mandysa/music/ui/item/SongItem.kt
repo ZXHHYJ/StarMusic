@@ -26,35 +26,36 @@ fun SongItem(position: Int, title: String, singer: String, onClick: () -> Unit) 
             .clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = "$position",
-            fontSize = 16.sp,
-            color = textColorLight,
-            textAlign = TextAlign.Center,
+        Box(
             modifier = Modifier
                 .padding(verticalMargin)
-                .size(50.dp)
-        )
+                .size(50.dp), contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "$position",
+                fontSize = 16.sp,
+                color = textColorLight,
+                textAlign = TextAlign.Center,
+            )
+        }
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .weight(1.0f),
+                .weight(1.0f)
+                .padding(vertical = verticalMargin),
         ) {
             Text(
                 text = title,
                 color = Color.Black,
                 fontSize = 15.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .weight(1.0f)
+                textAlign = TextAlign.Center
             )
+            Spacer(modifier = Modifier.weight(1.0f))
             Text(
                 text = singer,
                 color = textColorLight,
                 fontSize = 13.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .weight(1.0f)
+                textAlign = TextAlign.Center
             )
         }
         Icon(
