@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -12,7 +13,6 @@ import com.google.accompanist.navigation.material.ExperimentalMaterialNavigation
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.google.accompanist.navigation.material.bottomSheet
 import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
-import com.yanzhenjie.sofia.Sofia
 import studio.mandysa.music.ui.screen.LoginScreen
 import studio.mandysa.music.ui.screen.MainScreen
 import studio.mandysa.music.ui.screen.StartScreen
@@ -35,6 +35,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            WindowCompat.setDecorFitsSystemWindows(window, false)
             MandySaMusicTheme {
                 val bottomSheetNavigator = rememberBottomSheetNavigator()
                 val navController = rememberNavController(bottomSheetNavigator)
@@ -56,10 +57,6 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
-        }
-        Sofia.with(this).apply {
-            invasionStatusBar().invasionNavigationBar()
-            statusBarDarkFont().navigationBarDarkFont()
         }
     }
 

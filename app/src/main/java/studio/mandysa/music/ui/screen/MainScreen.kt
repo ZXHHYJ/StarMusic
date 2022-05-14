@@ -15,6 +15,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -25,6 +26,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.sothree.slidinguppanel.PanelState
 import com.sothree.slidinguppanel.ktx.SlidingPanel
 import studio.mandysa.music.R
@@ -52,6 +54,9 @@ fun MainScreen() {
     )
     var panelState by remember {
         mutableStateOf(PanelState.COLLAPSED)
+    }
+    rememberSystemUiController().apply {
+        setSystemBarsColor(Color.Transparent, panelState != PanelState.EXPANDED)
     }
     val showPanel by PlayManager.changeMusicLiveData().map {
         return@map true
@@ -81,7 +86,6 @@ fun MainScreen() {
                             PanelState.DRAGGING -> {
                                 alpha = slideOffset * 40
                             }
-                            PanelState.HIDDEN -> {}
                             else -> {
                                 panelState = state
                             }

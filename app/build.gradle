@@ -61,8 +61,6 @@ dependencies {
     implementation 'com.flaviofaria:kenburnsview:1.0.7'
     // 网络请求库 https://gitee.com/liuxiaoliu66/anna
     implementation 'com.gitee.liuxiaoliu66:anna:2.3.1'
-    // 状态栏和导航栏管理 https://gitee.com/liuxiaoliu66/sofia
-    implementation 'com.gitee.liuxiaoliu66:sofia:1.1.5'
     // 底部上滑展示控件 https://gitee.com/liuxiaoliu66/AndroidSlidingUpPanel
     implementation 'com.gitee.liuxiaoliu66:AndroidSlidingUpPanel:5.0.2'
 
@@ -70,6 +68,8 @@ dependencies {
 
     implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
 /*    implementation "com.google.accompanist:accompanist-swiperefresh:$accompanist_version"*/
+    // 状态栏和导航栏管理 https://gitee.com/liuxiaoliu66/sofia
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
     implementation "com.google.accompanist:accompanist-navigation-material:$accompanist_version"
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
