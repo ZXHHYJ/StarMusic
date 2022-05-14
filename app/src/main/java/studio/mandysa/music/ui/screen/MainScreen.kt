@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.map
@@ -52,14 +51,11 @@ fun MainScreen() {
         MainNavScreen.Me,
     )
     var panelState by remember {
-        mutableStateOf(PanelState.HIDDEN)
-    }.apply {
-        PlayManager.changeMusicLiveData().map {
-            if (value == PanelState.HIDDEN) {
-                value = PanelState.COLLAPSED
-            }
-        }.observeAsState()
+        mutableStateOf(PanelState.COLLAPSED)
     }
+    val showPanel by PlayManager.changeMusicLiveData().map {
+        return@map true
+    }.observeAsState(false)
     var alpha by remember {
         mutableStateOf(0f)
     }
@@ -73,10 +69,11 @@ fun MainScreen() {
             }
         } else {
             Box {
+                val navigationBarHeight = WindowInsets.navigationBars
                 SlidingPanel(modifier = Modifier,
                     gravity = Gravity.BOTTOM,
-                    panelHeight = with(LocalDensity.current) {
-                        WindowInsets.navigationBars.getBottom(LocalDensity.current) + navHeight.roundToPx() * 2
+                    panelHeight = {
+                        navigationBarHeight.getBottom(this) + navHeight.roundToPx() * if (showPanel) 2 else 1
                     },
                     panelState = panelState,
                     panelStateChange = { state, slideOffset ->
@@ -84,6 +81,7 @@ fun MainScreen() {
                             PanelState.DRAGGING -> {
                                 alpha = slideOffset * 40
                             }
+                            PanelState.HIDDEN -> {}
                             else -> {
                                 panelState = state
                             }

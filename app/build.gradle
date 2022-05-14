@@ -64,7 +64,7 @@ dependencies {
     // 状态栏和导航栏管理 https://gitee.com/liuxiaoliu66/sofia
     implementation 'com.gitee.liuxiaoliu66:sofia:1.1.5'
     // 底部上滑展示控件 https://gitee.com/liuxiaoliu66/AndroidSlidingUpPanel
-    implementation 'com.gitee.liuxiaoliu66:AndroidSlidingUpPanel:5.0.1'
+    implementation 'com.gitee.liuxiaoliu66:AndroidSlidingUpPanel:5.0.2'
 
     implementation 'io.github.shenzhen2017:compose-statelayout:1.0.0'
 

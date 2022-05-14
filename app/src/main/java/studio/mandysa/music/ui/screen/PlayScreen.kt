@@ -1,12 +1,14 @@
 package studio.mandysa.music.ui.screen
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Slider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -18,7 +20,9 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
+import androidx.lifecycle.switchMap
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -138,6 +142,45 @@ private fun CurrentPlayScreen() {
                 model = coverUrl,
                 modifier = Modifier
                     .fillMaxSize(),
+                contentDescription = null
+            )
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            val playPauseState by PlayManager.pauseLiveData().switchMap {
+                MutableLiveData<Int>().apply {
+                    value = if (it) R.drawable.ic_play else R.drawable.ic_pause
+                }
+            }.observeAsState(R.drawable.ic_play)
+            Icon(
+                modifier = Modifier.size(60.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_previous),
+                tint = Color.White,
+                contentDescription = null
+            )
+           /* val musicPlaybackProgress = PlayManager.playingMusicProgressLiveData().observeAsState()
+            Slider(value = musicPlaybackProgress, onValueChange = {})*/
+            Box(modifier = Modifier.padding(horizontal = 40.dp)) {
+                Icon(
+                    modifier = Modifier
+                        .size(80.dp)
+                        .clickable {
+                            if (PlayManager.pauseLiveData().value == true)
+                                PlayManager.play()
+                            else PlayManager.pause()
+                        },
+                    imageVector = ImageVector.vectorResource(id = playPauseState),
+                    tint = Color.White,
+                    contentDescription = null
+                )
+            }
+            Icon(
+                modifier = Modifier.size(60.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_next),
+                tint = Color.White,
                 contentDescription = null
             )
         }
