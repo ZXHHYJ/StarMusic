@@ -15,7 +15,6 @@ import coil.load
 import com.flaviofaria.kenburnsview.KenBurnsView
 import com.flaviofaria.kenburnsview.RandomTransitionGenerator
 import com.google.android.renderscript.Toolkit
-import studio.mandysa.music.R
 
 @Composable
 fun MandySaMusicKenBurns(modifier: Modifier, imageUrl: String, paused: Boolean) {
@@ -62,7 +61,6 @@ class MandySaMusicKenBurnsView : KenBurnsView {
             super.setImageDrawable(
                 BitmapDrawable(
                     resources, handleImageBlur(
-                        context,
                         drawable.bitmap
                     )
                 )
@@ -70,11 +68,10 @@ class MandySaMusicKenBurnsView : KenBurnsView {
         }
     }
 
-    private fun handleImageBlur(context: Context, image: Bitmap): Bitmap {
-        var blurBitmap = drawCover(
-            image,
-            context.getColor(R.color.translucent_black)
-        )
+    private fun handleImageBlur(image: Bitmap): Bitmap {
+        var blurBitmap = image.copy(Bitmap.Config.ARGB_8888, true)
+        val canvas = Canvas(blurBitmap)
+        canvas.drawColor(0x40000000)
         blurBitmap = scaleBitmap(blurBitmap, blurBitmap.height * 150 / blurBitmap.width)
         blurBitmap = meshBitmap(blurBitmap, floats)
         blurBitmap = Toolkit.blur(blurBitmap, 25)
@@ -184,21 +181,8 @@ class MandySaMusicKenBurnsView : KenBurnsView {
         val scaleWidth = 150f / width
         val scaleHeight = newHeight.toFloat() / height
         val matrix = Matrix()
-        matrix.postScale(scaleWidth, scaleHeight)//使用后乘
+        matrix.postScale(scaleWidth, scaleHeight)
         return Bitmap.createBitmap(origin, 0, 0, width, height, matrix, false)
-    }
-
-    /**
-     * bitmap添加蒙层
-     * @param old 原始图像
-     * @param color 蒙层颜色
-     * @return 新bitmap
-     */
-    private fun drawCover(old: Bitmap, color: Int): Bitmap {
-        val newBit = old.copy(Bitmap.Config.ARGB_8888, true)
-        val canvas = Canvas(newBit)
-        canvas.drawColor(color)
-        return newBit
     }
 
 }
