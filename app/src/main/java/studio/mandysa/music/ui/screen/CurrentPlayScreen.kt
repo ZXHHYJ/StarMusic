@@ -1,13 +1,11 @@
 package studio.mandysa.music.ui.screen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -24,8 +22,8 @@ import androidx.lifecycle.map
 import coil.compose.AsyncImage
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.ui.compose.SeekBar
-import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.common.SeekBar
+import studio.mandysa.music.ui.theme.round
 import studio.mandysa.music.ui.theme.translucentWhite
 import studio.mandysa.music.ui.theme.verticalMargin
 
@@ -36,24 +34,10 @@ fun CurrentPlayScreen() {
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        verticalArrangement = Arrangement.Bottom, horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(modifier = Modifier.padding(vertical = verticalMargin)) {
-            Spacer(
-                modifier = Modifier
-                    .width(40.dp)
-                    .height(5.dp)
-                    .background(shape = RoundedCornerShape(5.dp), color = translucentWhite)
-            )
-        }
-        Column(
-            modifier = Modifier.weight(1.0f),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            AlbumCover()
-            TitleAndArtist()
-        }
+        AlbumCover()
+        TitleAndArtist()
         Spacer(modifier = Modifier.height(15.dp))
         MusicProgressBar()
         MusicControlBar()
@@ -61,12 +45,12 @@ fun CurrentPlayScreen() {
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AlbumCover() {
     Card(
-        modifier = Modifier
-            .size(LocalConfiguration.current.screenWidthDp.dp * 0.8f)
+        modifier = Modifier.size(LocalConfiguration.current.screenWidthDp.dp * 0.8f),
+        elevation = 5.dp,
+        shape = RoundedCornerShape(round)
     ) {
         val coverUrl by PlayManager.changeMusicLiveData().map { return@map it.coverUrl }
             .observeAsState()
@@ -142,7 +126,9 @@ private fun MusicProgressBar() {
 @Composable
 private fun MusicControlBar() {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 50.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -151,7 +137,7 @@ private fun MusicControlBar() {
         }.observeAsState(R.drawable.ic_play)
         Icon(
             modifier = Modifier
-                .size(50.dp)
+                .size(60.dp)
                 .clickable {
                     PlayManager.skipToPrevious()
                 },
@@ -159,10 +145,10 @@ private fun MusicControlBar() {
             tint = Color.White,
             contentDescription = null
         )
-        Box(modifier = Modifier.padding(horizontal = horizontalMargin)) {
+        Box(modifier = Modifier.padding(horizontal = 35.dp)) {
             Icon(
                 modifier = Modifier
-                    .size(70.dp)
+                    .size(85.dp)
                     .clickable {
                         if (PlayManager.pauseLiveData().value == true)
                             PlayManager.play()
@@ -175,7 +161,7 @@ private fun MusicControlBar() {
         }
         Icon(
             modifier = Modifier
-                .size(50.dp)
+                .size(60.dp)
                 .clickable {
                     PlayManager.skipToNext()
                 },

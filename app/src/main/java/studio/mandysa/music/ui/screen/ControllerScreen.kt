@@ -24,6 +24,7 @@ import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.navHeight
+import studio.mandysa.music.ui.theme.round
 
 @Composable
 fun ControllerScreen() {
@@ -35,7 +36,7 @@ fun ControllerScreen() {
             .padding(start = horizontalMargin), verticalAlignment = Alignment.CenterVertically
     ) {
         Card(
-            shape = RoundedCornerShape(8.dp),
+            shape = RoundedCornerShape(round),
             elevation = 0.dp,
             modifier = Modifier
                 .size(48.dp)

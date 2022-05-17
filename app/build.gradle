@@ -63,6 +63,8 @@ dependencies {
     // 底部上滑展示控件 https://gitee.com/liuxiaoliu66/AndroidSlidingUpPanel
     implementation 'com.gitee.liuxiaoliu66:AndroidSlidingUpPanel:5.0.2'
 
+    implementation 'com.github.Moriafly:LyricViewX:1.2.1'
+
     implementation 'io.github.shenzhen2017:compose-statelayout:1.0.0'
 
     implementation "com.google.accompanist:accompanist-pager:$accompanist_version"

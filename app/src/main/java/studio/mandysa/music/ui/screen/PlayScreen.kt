@@ -1,8 +1,11 @@
 package studio.mandysa.music.ui.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Abc
 import androidx.compose.material.icons.rounded.FontDownload
@@ -10,6 +13,7 @@ import androidx.compose.material.icons.rounded.FormatListBulleted
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -22,10 +26,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.ui.compose.KenBurns
+import studio.mandysa.music.ui.common.KenBurns
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.navHeight
 import studio.mandysa.music.ui.theme.translucentWhite
+import studio.mandysa.music.ui.theme.verticalMargin
 
 private sealed class PlayNavScreen(
     val route: String, val vector: ImageVector
@@ -55,6 +60,18 @@ fun PlayScreen() {
                 .statusBarsPadding()
                 .navigationBarsPadding()
         ) {
+            Box(
+                modifier = Modifier
+                    .padding(vertical = verticalMargin)
+                    .align(Alignment.CenterHorizontally)
+            ) {
+                Spacer(
+                    modifier = Modifier
+                        .width(40.dp)
+                        .height(5.dp)
+                        .background(shape = RoundedCornerShape(5.dp), color = translucentWhite)
+                )
+            }
             NavHost(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -78,14 +95,14 @@ fun PlayScreen() {
                     .height(navHeight)
                     .padding(horizontal = horizontalMargin),
                 elevation = 0.dp,
-                backgroundColor = Color.Transparent, contentColor = Color.White
+                backgroundColor = Color.Transparent
             ) {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
                 items.forEach { screen ->
                     BottomNavigationItem(
                         icon = {
-                            androidx.compose.material3.Icon(
+                            Icon(
                                 screen.vector,
                                 contentDescription = null
                             )

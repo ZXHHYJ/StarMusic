@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.compose
+package studio.mandysa.music.ui.common
 
 import android.content.Context
 import android.graphics.Bitmap

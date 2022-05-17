@@ -8,3 +8,4 @@ val verticalMargin = 10.dp
 
 val horizontalMargin = 16.dp
 
+val round = 8.dp
