@@ -104,7 +104,7 @@ fun MainScreen() {
                                 .statusBarsPadding()
                         ) {
                             composable(MainNavScreen.Browse.route) { BrowseScreen() }
-                            composable(MainNavScreen.Me.route) { }
+                            composable(MainNavScreen.Me.route) { MeScreen() }
                         }
                     },
                     panel = {
