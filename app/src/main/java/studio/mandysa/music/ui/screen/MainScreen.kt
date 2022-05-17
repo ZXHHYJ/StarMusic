@@ -2,10 +2,12 @@ package studio.mandysa.music.ui.screen
 
 import android.view.Gravity
 import androidx.activity.compose.BackHandler
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Contactless
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -21,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.map
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -33,7 +34,6 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.sothree.slidinguppanel.PanelState
 import com.sothree.slidinguppanel.ktx.SlidingPanel
-import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.theme.navHeight
 
@@ -43,10 +43,10 @@ import studio.mandysa.music.ui.theme.navHeight
 
 private sealed class MainNavScreen(
     val route: String,
-    @DrawableRes val resourceId: Int
+    val vector: ImageVector
 ) {
-    object Browse : MainNavScreen("browse", R.drawable.ic_round_contactless_24)
-    object Me : MainNavScreen("me", R.drawable.ic_round_person_24)
+    object Browse : MainNavScreen("browse", Icons.Rounded.Contactless)
+    object Me : MainNavScreen("me", Icons.Rounded.Person)
 }
 
 @Composable
@@ -140,7 +140,7 @@ fun MainScreen() {
                             NavigationBarItem(
                                 icon = {
                                     Icon(
-                                        ImageVector.vectorResource(screen.resourceId),
+                                        screen.vector,
                                         contentDescription = null
                                     )
                                 },

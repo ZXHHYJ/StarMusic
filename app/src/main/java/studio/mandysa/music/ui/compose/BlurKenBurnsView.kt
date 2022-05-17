@@ -17,9 +17,9 @@ import com.flaviofaria.kenburnsview.RandomTransitionGenerator
 import com.google.android.renderscript.Toolkit
 
 @Composable
-fun MandySaMusicKenBurns(modifier: Modifier, imageUrl: String, paused: Boolean) {
+fun KenBurns(modifier: Modifier, imageUrl: String, paused: Boolean) {
     AndroidView(factory = {
-        MandySaMusicKenBurnsView(it).apply {
+        BlurKenBurnsView(it).apply {
             setTransitionGenerator(
                 RandomTransitionGenerator(
                     2000,
@@ -37,7 +37,7 @@ fun MandySaMusicKenBurns(modifier: Modifier, imageUrl: String, paused: Boolean) 
     }
 }
 
-class MandySaMusicKenBurnsView : KenBurnsView {
+class BlurKenBurnsView : KenBurnsView {
 
     private var mUrl = ""
 

@@ -71,6 +71,6 @@ class MediaNotification(mService: MediaPlayService) : Notification.Builder(
             MediaStyle().setShowActionsInCompactView(0, 1, 2)
                 .setMediaSession(mService.getSessionToken())
         setCategory(Notification.CATEGORY_SERVICE)
-        setSmallIcon(R.drawable.ic_round_music_note_24)
+        setSmallIcon(R.drawable.ic_launcher_foreground)
     }
 }

@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "studio.mandysa.music"
-        minSdk 21
+        minSdk 26
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -66,10 +66,7 @@ dependencies {
 
     implementation 'io.github.shenzhen2017:compose-statelayout:1.0.0'
 
-    implementation "com.github.krottv:compose-sliders:0.1.4"
-
     implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
-/*    implementation "com.google.accompanist:accompanist-swiperefresh:$accompanist_version"*/
     // 状态栏和导航栏管理 https://gitee.com/liuxiaoliu66/sofia
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
     implementation "com.google.accompanist:accompanist-navigation-material:$accompanist_version"
@@ -84,6 +81,7 @@ dependencies {
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
     implementation "androidx.activity:activity-compose:1.4.0"
 
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
     implementation("androidx.compose.material3:material3:1.0.0-alpha11")
     implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha11")
 

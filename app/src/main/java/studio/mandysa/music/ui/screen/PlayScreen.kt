@@ -2,12 +2,16 @@ package studio.mandysa.music.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Abc
+import androidx.compose.material.icons.rounded.FontDownload
+import androidx.compose.material.icons.rounded.FormatListBulleted
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
@@ -20,44 +24,43 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
-import androidx.lifecycle.switchMap
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
-import com.github.krottv.compose.sliders.DefaultThumb
-import com.github.krottv.compose.sliders.DefaultTrack
-import com.github.krottv.compose.sliders.SliderValueHorizontal
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.ui.compose.MandySaMusicKenBurns
+import studio.mandysa.music.ui.compose.KenBurns
+import studio.mandysa.music.ui.compose.SeekBar
 import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.navHeight
 import studio.mandysa.music.ui.theme.translucentWhite
 import studio.mandysa.music.ui.theme.verticalMargin
 
 private sealed class PlayNavScreen(
-    val route: String
+    val route: String, val vector: ImageVector
 ) {
-    object CurrentPlay : PlayNavScreen("current_play")
-    object Lyric : PlayNavScreen("lyric")
-    object PlayList : PlayNavScreen("play_list")
+    object CurrentPlay : PlayNavScreen("current_play", Icons.Rounded.Abc)
+    object Lyric : PlayNavScreen("lyric", Icons.Rounded.FontDownload)
+    object PlayList : PlayNavScreen("play_list", Icons.Rounded.FormatListBulleted)
 }
 
 @Composable
 fun PlayScreen() {
+    val items = listOf(PlayNavScreen.Lyric, PlayNavScreen.PlayList)
     val navController = rememberNavController()
     Box {
         val coverUrl by PlayManager.changeMusicLiveData().map {
             it.coverUrl
         }.observeAsState("")
         val paused by PlayManager.pauseLiveData().observeAsState(true)
-        MandySaMusicKenBurns(
+        KenBurns(
             modifier = Modifier.fillMaxSize(),
             imageUrl = coverUrl,
             paused = paused
@@ -70,7 +73,7 @@ fun PlayScreen() {
         ) {
             NavHost(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
                     .weight(1.0f),
                 navController = navController,
                 startDestination = PlayNavScreen.CurrentPlay.route
@@ -85,14 +88,61 @@ fun PlayScreen() {
 
                 }
             }
-            LazyColumn(modifier = Modifier.fillMaxWidth()) {
-
+            BottomNavigation(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(navHeight)
+                    .padding(horizontal = horizontalMargin),
+                elevation = 0.dp,
+                backgroundColor = Color.Transparent, contentColor = Color.White
+            ) {
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentDestination = navBackStackEntry?.destination
+                items.forEach { screen ->
+                    BottomNavigationItem(
+                        icon = {
+                            androidx.compose.material3.Icon(
+                                screen.vector,
+                                contentDescription = null
+                            )
+                        },
+                        selectedContentColor = Color.White,
+                        unselectedContentColor = translucentWhite,
+                        selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                        onClick = {
+                            navController.navigate(screen.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        }
+                    )
+                }
             }
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun AlbumCover() {
+    Card(
+        modifier = Modifier
+            .size(LocalConfiguration.current.screenWidthDp.dp * 0.8f)
+    ) {
+        val coverUrl by PlayManager.changeMusicLiveData().map { return@map it.coverUrl }
+            .observeAsState()
+        AsyncImage(
+            model = coverUrl,
+            modifier = Modifier
+                .fillMaxSize(),
+            contentDescription = null
+        )
+    }
+}
+
 @Composable
 private fun CurrentPlayScreen() {
     Column(
@@ -110,89 +160,63 @@ private fun CurrentPlayScreen() {
                     .background(shape = RoundedCornerShape(5.dp), color = translucentWhite)
             )
         }
-        Card(
-            modifier = Modifier
-                .size(LocalConfiguration.current.screenWidthDp.dp * 0.8f)
-                .align(Alignment.CenterHorizontally)
-        ) {
-            val coverUrl by PlayManager.changeMusicLiveData().map { return@map it.coverUrl }
-                .observeAsState()
-            AsyncImage(
-                model = coverUrl,
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentDescription = null
-            )
-        }
-        Spacer(modifier = Modifier.height(15.dp))
         Column(
-            modifier = Modifier.padding(vertical = verticalMargin),
+            modifier = Modifier.weight(1.0f),
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val title by PlayManager.changeMusicLiveData().map { return@map it.title }
-                .observeAsState("")
-            val musician by PlayManager.changeMusicLiveData().map {
-                it.artist[0].name
-            }.observeAsState("")
-            Text(
-                text = title,
-                color = Color.White,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(modifier = Modifier.padding(top = 2.dp))
-            Text(
-                text = musician,
-                color = translucentWhite,
-                fontSize = 16.sp
-            )
+            AlbumCover()
+            TitleAndArtist()
         }
+        Spacer(modifier = Modifier.height(15.dp))
         MusicProgressBar()
         MusicControlBar()
     }
 }
 
 @Composable
+private fun TitleAndArtist() {
+    Column(
+        modifier = Modifier
+            .padding(vertical = verticalMargin, horizontal = 35.dp)
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.Start
+    ) {
+        val title by PlayManager.changeMusicLiveData().map { return@map it.title }
+            .observeAsState("")
+        val musician by PlayManager.changeMusicLiveData().map {
+            it.artist[0].name
+        }.observeAsState("")
+        Text(
+            text = title,
+            color = Color.White,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.padding(top = 2.dp))
+        Text(
+            text = musician,
+            color = translucentWhite,
+            fontSize = 16.sp
+        )
+    }
+}
+
+@Composable
 private fun MusicProgressBar() {
     val musicPlaybackProgress by PlayManager.playingMusicProgressLiveData().map {
-        it.toFloat()
-    }.observeAsState(0f)
+        it
+    }.observeAsState(0)
     val musicDuration by PlayManager.playingMusicDurationLiveData().map {
-        it.toFloat()
-    }.observeAsState(1f)
-    SliderValueHorizontal(
-        musicPlaybackProgress, { PlayManager.seekTo(it.toInt()) },
+        it
+    }.observeAsState(1)
+    SeekBar(
         modifier = Modifier
             .fillMaxWidth()
-            .height(10.dp)
             .padding(horizontal = 35.dp),
-        valueRange = 0f..musicDuration,
-        thumbHeightMax = true,
-        track = { modifier: Modifier,
-                  fraction: Float,
-                  interactionSource: MutableInteractionSource,
-                  tickFractions: List<Float>,
-                  enabled: Boolean ->
-            DefaultTrack(
-                modifier,
-                fraction,
-                interactionSource,
-                tickFractions,
-                enabled,
-                height = 4.dp, colorProgress = Color.White, colorTrack = translucentWhite
-            )
-        },
-        thumb = { modifier: Modifier,
-                  offset: Dp,
-                  interactionSource: MutableInteractionSource,
-                  enabled: Boolean,
-                  thumbSize: DpSize ->
-            DefaultThumb(
-                modifier, offset, interactionSource, enabled, thumbSize,
-                color = Color.White,
-                scaleOnPress = 1.3f
-            )
-        }
+        value = musicPlaybackProgress,
+        maxValue = musicDuration,
+        onValueChange = { PlayManager.seekTo(it) }
     )
     Row(
         modifier = Modifier
@@ -205,8 +229,8 @@ private fun MusicProgressBar() {
     }
 }
 
-private fun Float.toTime(): String {
-    val s: Int = this.toInt() / 1000
+private fun Int.toTime(): String {
+    val s: Int = this / 1000
     return (s / 60).toString() + ":" + s % 60
 }
 
@@ -217,10 +241,8 @@ private fun MusicControlBar() {
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val playPauseState by PlayManager.pauseLiveData().switchMap {
-            MutableLiveData<Int>().apply {
-                value = if (it) R.drawable.ic_play else R.drawable.ic_pause
-            }
+        val playPauseState by PlayManager.pauseLiveData().map {
+            if (it) R.drawable.ic_play else R.drawable.ic_pause
         }.observeAsState(R.drawable.ic_play)
         Icon(
             modifier = Modifier

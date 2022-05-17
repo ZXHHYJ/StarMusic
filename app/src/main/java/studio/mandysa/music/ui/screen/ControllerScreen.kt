@@ -18,9 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
-import androidx.lifecycle.switchMap
 import coil.compose.AsyncImage
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
@@ -54,18 +52,16 @@ fun ControllerScreen() {
         val title by PlayManager.changeMusicLiveData().map { return@map it.title }
             .observeAsState("")
         Text(
-            text = title,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Black,
             modifier = Modifier
                 .padding(start = 16.dp)
-                .weight(1.0f)
+                .weight(1.0f),
+            text = title,
+            fontSize = 16.sp, maxLines = 1,
+            fontWeight = FontWeight.Bold,
+            color = Color.Black
         )
-        val playPauseState by PlayManager.pauseLiveData().switchMap {
-            MutableLiveData<Int>().apply {
-                value = if (it) R.drawable.ic_play else R.drawable.ic_pause
-            }
+        val playPauseState by PlayManager.pauseLiveData().map {
+            if (it) R.drawable.ic_play else R.drawable.ic_pause
         }.observeAsState(R.drawable.ic_play)
         Icon(
             painter = painterResource(playPauseState),

@@ -3,16 +3,16 @@ package studio.mandysa.music.ui.item
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import studio.mandysa.music.R
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.textColorLight
 import studio.mandysa.music.ui.theme.verticalMargin
@@ -47,19 +47,19 @@ fun SongItem(position: Int, title: String, singer: String, onClick: () -> Unit) 
             Text(
                 text = title,
                 color = Color.Black,
-                fontSize = 15.sp,
+                fontSize = 15.sp, maxLines = 1,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.weight(1.0f))
             Text(
                 text = singer,
                 color = textColorLight,
-                fontSize = 13.sp,
+                fontSize = 13.sp, maxLines = 1,
                 textAlign = TextAlign.Center
             )
         }
         Icon(
-            painter = painterResource(id = R.drawable.ic_round_more_vert_24),
+            imageVector = Icons.Rounded.MoreVert,
             contentDescription = null, modifier = Modifier.padding(end = horizontalMargin)
         )
     }
