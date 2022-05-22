@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.map
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -35,6 +36,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.sothree.slidinguppanel.PanelState
 import com.sothree.slidinguppanel.ktx.SlidingPanel
 import studio.mandysa.music.service.playmanager.PlayManager
+import studio.mandysa.music.ui.screen.me.MeScreen
 import studio.mandysa.music.ui.theme.navHeight
 
 /**
@@ -60,7 +62,11 @@ fun MainScreen() {
         mutableStateOf(PanelState.COLLAPSED)
     }
     rememberSystemUiController().apply {
-        setSystemBarsColor(Color.Transparent, panelState != PanelState.EXPANDED)
+        setSystemBarsColor(
+            Color.Transparent,
+            panelState != PanelState.EXPANDED,
+            isNavigationBarContrastEnforced = false
+        )
     }
     val showPanel by PlayManager.changeMusicLiveData().map {
         return@map true
@@ -124,16 +130,22 @@ fun MainScreen() {
                             }
                         }
                     })
-                Column(
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .offset(y = navHeight * alpha / 10)
                         .align(Alignment.BottomCenter)
+                        .height(LocalDensity.current.run {
+                            navHeight + navigationBarHeight
+                                .getBottom(
+                                    this
+                                )
+                                .toDp()
+                        })
                 ) {
                     NavigationBar(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(navHeight)
+                            .fillMaxSize()
                     ) {
                         val navBackStackEntry by navController.currentBackStackEntryAsState()
                         val currentDestination = navBackStackEntry?.destination
@@ -158,12 +170,6 @@ fun MainScreen() {
                             )
                         }
                     }
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.surface)
-                            .navigationBarsPadding()
-                    )
                 }
             }
         }

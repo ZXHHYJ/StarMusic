@@ -14,7 +14,7 @@ import studio.mandysa.music.ui.theme.verticalMargin
 
 @Composable
 @Preview
-fun ItemSubTitleScreen(title: String = "默认标题") {
+fun ItemSubTitle(title: String = "默认标题") {
     Text(
         text = title,
         color = Color.Black,

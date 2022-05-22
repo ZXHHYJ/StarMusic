@@ -3,6 +3,7 @@ package studio.mandysa.music.logic.model
 import mandysax.anna2.annotation.*
 import mandysax.anna2.model.ResponseBody
 import mandysax.anna2.observable.Observable
+import studio.mandysa.music.logic.cookie.cookie
 
 /**
  * @author Huang hao
@@ -33,17 +34,17 @@ interface NeteaseCloudMusicApi {
     //获取推荐歌曲
     @Get("recommend/songs")
     @Path("data/dailySongs")
-    fun getRecommendedSong(@Query("cookie") cookie: String): List<RecommendSong>
+    fun getRecommendedSong(@Query("cookie") cookie: String = cookie()): List<RecommendSong>
 
     //获取推荐歌单
     @Get("recommend/resource")
     @Path("recommend")
-    fun getRecommendPlaylist(@Query("cookie") cookie: String): List<PlaylistModel>
+    fun getRecommendPlaylist(@Query("cookie") cookie: String = cookie()): List<PlaylistModel>
 
     //歌单广场
     @Get("personalized")
     @Path("result")
-    fun getPlaylistSquare():  List<PlaylistModel>
+    fun getPlaylistSquare(): List<PlaylistModel>
 
     //获取歌词
     @Get("lyric")
@@ -54,7 +55,7 @@ interface NeteaseCloudMusicApi {
     @Get("playlist/detail")
     @Path("playlist")
     fun getSongListInfo(
-        @Query("cookie") cookie: String,
+        @Query("cookie") cookie: String = cookie(),
         @Query("id") id: String
     ): PlaylistInfoModel
 
@@ -73,9 +74,9 @@ interface NeteaseCloudMusicApi {
     @Post("user/account")
     @Path("profile")
     fun getUserInfo(
-        @FormData("cookie") cookie: String,
+        @FormData("cookie") cookie: String = cookie(),
         @Query("timestamp") timestamp: Long
-    ): Observable<UserModel>
+    ): UserModel
 
     //获取用户详情
     @Post("user/detail")

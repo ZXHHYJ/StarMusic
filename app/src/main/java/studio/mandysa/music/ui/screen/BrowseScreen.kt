@@ -22,19 +22,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.allArtist
-import studio.mandysa.music.ui.item.ItemSubTitleScreen
+import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.ItemTitle
 import studio.mandysa.music.ui.item.PlaylistItem
 import studio.mandysa.music.ui.item.SongItem
+import studio.mandysa.music.ui.screen.playlist.PlaylistScreen
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.viewmodel.BrowseViewModel
-import studio.mandysa.music.ui.viewmodel.EventViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -76,19 +80,15 @@ private fun BannerItem(typeTitle: String, bannerUrl: String, onClick: () -> Unit
 @OptIn(ExperimentalPagerApi::class)
 @SuppressLint("SetTextI18n")
 @Composable
-fun BrowseScreen(
-    event: EventViewModel = viewModel(),
+private fun Main(
+    navController: NavHostController,
     viewModel: BrowseViewModel = viewModel()
 ) {
-    val bannerItems by viewModel.getBanners().observeAsState(arrayListOf())
-    val recommendSongs by viewModel.getRecommendSongs().observeAsState(arrayListOf())
-    val recommendPlaylist by viewModel.getRecommendPlaylist().observeAsState(arrayListOf())
-    val playlistSquare by viewModel.getPlaylistSquare().observeAsState(arrayListOf())
-    val cookie = event.getCookieLiveData().observeAsState()
-    if (cookie.value != null) {
-        viewModel.initialize(cookie.value!!)
-        viewModel.refresh()
-    }
+    val bannerItems by viewModel.getBanners().observeAsState(listOf())
+    val recommendSongs by viewModel.getRecommendSongs().observeAsState(listOf())
+    val recommendPlaylist by viewModel.getRecommendPlaylist().observeAsState(listOf())
+    val playlistSquare by viewModel.getPlaylistSquare().observeAsState(listOf())
+    viewModel.refresh()
     LazyColumn {
         item {
             ItemTitle(stringResource(R.string.browse))
@@ -115,7 +115,7 @@ fun BrowseScreen(
             }
         }
         item {
-            ItemSubTitleScreen(stringResource(R.string.recommend_playlist))
+            ItemSubTitle(stringResource(R.string.recommend_playlist))
         }
         item {
             LazyRow(
@@ -125,13 +125,13 @@ fun BrowseScreen(
             ) {
                 items(recommendPlaylist) { model ->
                     PlaylistItem(title = model.name, coverUrl = model.picUrl) {
-
+                        navController.navigate("playlist/${model.id}")
                     }
                 }
             }
         }
         item {
-            ItemSubTitleScreen(stringResource(R.string.playlist_square))
+            ItemSubTitle(stringResource(R.string.playlist_square))
         }
         item {
             LazyRow(
@@ -141,13 +141,13 @@ fun BrowseScreen(
             ) {
                 items(playlistSquare) { model ->
                     PlaylistItem(title = model.name, coverUrl = model.picUrl) {
-
+                        navController.navigate("playlist/${model.id}")
                     }
                 }
             }
         }
         item {
-            ItemSubTitleScreen(stringResource(R.string.recommend_song))
+            ItemSubTitle(stringResource(R.string.recommend_song))
         }
         items(recommendSongs.size) {
             val model = recommendSongs[it]
@@ -159,6 +159,27 @@ fun BrowseScreen(
                 PlayManager.loadPlaylist(recommendSongs, it)
                 PlayManager.play()
             }
+        }
+    }
+}
+
+
+@Composable
+fun BrowseScreen() {
+    val navController = rememberNavController()
+    NavHost(
+        navController,
+        startDestination = "main",
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+    ) {
+        composable("main") { Main(navController) }
+        composable("playlist/{id}") { backStackEntry ->
+            PlaylistScreen(
+                navController = navController,
+                id = backStackEntry.arguments!!.getString("id", "")
+            )
         }
     }
 }
