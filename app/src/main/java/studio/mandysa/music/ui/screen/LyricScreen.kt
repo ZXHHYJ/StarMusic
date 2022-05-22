@@ -2,7 +2,6 @@ package studio.mandysa.music.ui.screen
 
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.lifecycle.map
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -16,8 +15,8 @@ fun LyricScreen() {
     val musicId by PlayManager.changeMusicLiveData().map {
         it.id
     }.observeAsState()
-    var lyric by rememberSaveable { mutableStateOf(if (musicId != null) "正在获取歌词" else "") }
-    LaunchedEffect(lyric) {
+    var lyric by remember { mutableStateOf(if (musicId != null) "正在获取歌词" else "") }
+    LaunchedEffect(musicId) {
         withContext(Dispatchers.IO) {
             musicId?.let {
                 lyric = ServiceCreator.create(NeteaseCloudMusicApi::class.java).getLyric(it)

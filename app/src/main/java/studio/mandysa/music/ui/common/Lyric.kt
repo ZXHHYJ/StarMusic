@@ -31,8 +31,9 @@ import studio.mandysa.music.ui.theme.translucentWhite
 
 @Composable
 fun Lyric(modifier: Modifier = Modifier, lyric: String, liveTime: Int, onClick: (Int) -> Unit) {
-    AndroidView(modifier = modifier, factory = {
+    AndroidView(modifier = modifier, factory = { it ->
         LyricView(it).apply {
+            keepScreenOn = true
             getChildTimeLiveData().observeForever {
                 onClick.invoke(it)
             }
@@ -102,10 +103,10 @@ class LyricView : RecyclerView {
     }
 
     private fun scrollItemToTop(position: Int) {
+        mPosition.value = position + 1
         val smoothScroller: LinearSmoothScroller = LinearTopSmoothScroller(context)
         smoothScroller.targetPosition = position
         layoutManager?.startSmoothScroll(smoothScroller)
-        mPosition.value = position + 1
     }
 
     internal class LinearTopSmoothScroller(context: Context?) :

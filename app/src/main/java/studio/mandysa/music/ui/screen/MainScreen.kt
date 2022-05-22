@@ -84,6 +84,7 @@ fun MainScreen() {
                     panelHeight = {
                         navigationBarHeight.getBottom(this) + navHeight.roundToPx() * if (showPanel) 2 else 1
                     },
+                    enabledScrollable = true,
                     panelState = panelState,
                     panelStateChange = { state, slideOffset ->
                         when (state) {

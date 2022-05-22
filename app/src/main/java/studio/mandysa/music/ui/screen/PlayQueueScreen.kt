@@ -2,7 +2,6 @@ package studio.mandysa.music.ui.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
@@ -16,6 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import studio.mandysa.jiuwo.ktx.Linear
+import studio.mandysa.music.logic.model.RecommendSong
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.ui.theme.horizontalMargin
@@ -25,13 +26,14 @@ import studio.mandysa.music.ui.theme.verticalMargin
 @Composable
 fun PlayQueueScreen() {
     val playlist by PlayManager.changePlayListLiveData().observeAsState(listOf())
-    LazyColumn {
-        playlist?.size?.let {
-            items(it) {
-                val model = playlist!![it]
-                SongItem(position = it, title = model.title, singer = model.artist.allArtist()) {
+    Linear(models = playlist!!) {
+        addCompose<RecommendSong> {
+            SongItem(
+                position = bindingAdapterPosition + 1,
+                title = model.title,
+                singer = model.artist.allArtist()
+            ) {
 
-                }
             }
         }
     }
