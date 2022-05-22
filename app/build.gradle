@@ -55,20 +55,19 @@ dependencies {
     // 媒体缓存库 https://github.com/danikula/AndroidVideoCache
     implementation 'com.danikula:videocache:2.7.1'
     // 图片加载库 https://github.com/coil-kt/coil/blob/main/README-zh.md
-    implementation("io.coil-kt:coil-compose:2.0.0")
+    implementation("io.coil-kt:coil-compose:2.1.0")
     // 随机放大图片 https://github.com/flavioarfaria/KenBurnsView
     implementation 'com.flaviofaria:kenburnsview:1.0.7'
     // 网络请求库 https://gitee.com/liuxiaoliu66/anna
     implementation 'com.gitee.liuxiaoliu66:anna:2.3.1'
     // 底部上滑展示控件 https://gitee.com/liuxiaoliu66/AndroidSlidingUpPanel
     implementation 'com.gitee.liuxiaoliu66:AndroidSlidingUpPanel:5.0.2'
-
-    implementation 'com.github.Moriafly:LyricViewX:1.2.1'
+    // RecyclerViewUtils https://gitee.com/liuxiaoliu66/jiuwo
+    implementation 'com.gitee.liuxiaoliu66:jiuwo:1.6.4'
 
     implementation 'io.github.shenzhen2017:compose-statelayout:1.0.0'
 
     implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
-    // 状态栏和导航栏管理 https://gitee.com/liuxiaoliu66/sofia
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
     implementation "com.google.accompanist:accompanist-navigation-material:$accompanist_version"
 

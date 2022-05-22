@@ -47,8 +47,8 @@ interface NeteaseCloudMusicApi {
 
     //获取歌词
     @Get("lyric")
-    @Path("lrc")
-    fun getLyric(@Query("id") id: String): LyricModel
+    @Path("lrc/lyric")
+    fun getLyric(@Query("id") id: String): String
 
     //获取歌单详情
     @Get("playlist/detail")
