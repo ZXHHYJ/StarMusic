@@ -15,13 +15,11 @@ import coil.load
 import com.flaviofaria.kenburnsview.KenBurnsView
 import com.flaviofaria.kenburnsview.RandomTransitionGenerator
 import com.google.android.renderscript.Toolkit
-import studio.mandysa.music.R
 
 @Composable
 fun KenBurns(modifier: Modifier, imageUrl: String, paused: Boolean) {
     AndroidView(factory = {
         BlurKenBurnsView(it).apply {
-            setImageResource(R.drawable.album_not_loaded)
             setTransitionGenerator(
                 RandomTransitionGenerator(
                     2000,
@@ -41,8 +39,6 @@ fun KenBurns(modifier: Modifier, imageUrl: String, paused: Boolean) {
 
 private class BlurKenBurnsView : KenBurnsView {
 
-    private var mPaused = true
-
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(
@@ -50,21 +46,6 @@ private class BlurKenBurnsView : KenBurnsView {
         attrs,
         defStyle
     )
-
-    override fun pause() {
-        super.pause()
-        mPaused = true
-    }
-
-    override fun resume() {
-        super.resume()
-        mPaused = false
-    }
-
-    override fun restart() {
-        super.restart()
-        mPaused = false
-    }
 
     var imageUrl: String = ""
         set(value) {
@@ -83,11 +64,6 @@ private class BlurKenBurnsView : KenBurnsView {
                     )
                 )
             )
-            if (mPaused) {
-                //不执行resume进行绘图会导致图片没有铺满View而露馅
-                super.resume()
-                super.pause()
-            }
         }
     }
 

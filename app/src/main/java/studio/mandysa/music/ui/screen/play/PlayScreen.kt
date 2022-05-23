@@ -50,7 +50,9 @@ fun PlayScreen() {
         }.observeAsState("")
         val paused by PlayManager.pauseLiveData().observeAsState(true)
         KenBurns(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Gray),
             imageUrl = coverUrl,
             paused = paused
         )

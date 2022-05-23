@@ -35,7 +35,7 @@ fun PlaylistScreen(
     navController: NavHostController,
     id: String,
     playlist: PlaylistModel = viewModel(factory = object : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return PlaylistModel(id) as T
         }
     })
@@ -82,7 +82,9 @@ fun PlaylistScreen(
                         Text(
                             text = it.name,
                             fontSize = 17.sp,
-                            fontWeight = FontWeight.Bold, textAlign = TextAlign.Center
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.primary
                         )
                         Spacer(modifier = Modifier.height(5.dp))
                         Text(

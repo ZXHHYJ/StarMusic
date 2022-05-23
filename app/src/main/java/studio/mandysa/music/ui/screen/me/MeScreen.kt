@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccessTime
 import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.PlaylistPlay
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -36,6 +37,7 @@ import studio.mandysa.music.ui.item.ItemTitle
 import studio.mandysa.music.ui.screen.playlist.PlaylistScreen
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.round
+import studio.mandysa.music.ui.theme.verticalMargin
 
 data class BlockItem(@StringRes val id: Int, val imageVector: ImageVector)
 
@@ -46,7 +48,8 @@ private fun Main(navController: NavHostController, me: MeViewModel = viewModel()
     val userInfo by me.getUserInfo().observeAsState()
     val mores = listOf(
         BlockItem(R.string.i_like, Icons.Rounded.Favorite),
-        BlockItem(R.string.recently_played, Icons.Rounded.AccessTime)
+        BlockItem(R.string.recently_played, Icons.Rounded.AccessTime),
+        BlockItem(R.string.me_playlist, Icons.Rounded.PlaylistPlay)
     )
     val cols = 2
     LazyVerticalGrid(
@@ -94,11 +97,17 @@ private fun Main(navController: NavHostController, me: MeViewModel = viewModel()
             ItemSubTitle("More")
         }
         itemsIndexed(mores) { pos, model ->
-            Box(modifier = Modifier.run {
+            Box(modifier = Modifier.padding(top = if (pos > 1) verticalMargin else 0.dp).run {
                 if (pos % 2 == 0) {
-                    padding(start = horizontalMargin, end = horizontalMargin / 2)
+                    padding(
+                        start = horizontalMargin,
+                        end = horizontalMargin / 2
+                    )
                 } else {
-                    padding(start = horizontalMargin / 2, end = horizontalMargin)
+                    padding(
+                        start = horizontalMargin / 2,
+                        end = horizontalMargin
+                    )
                 }
             }) {
                 Card(shape = RoundedCornerShape(round)) {

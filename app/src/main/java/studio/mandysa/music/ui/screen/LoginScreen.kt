@@ -9,8 +9,12 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -49,8 +53,8 @@ fun LoginScreen(navController: NavHostController, event: EventViewModel = viewMo
             .fillMaxWidth()
     ) {
         Column {
-            var phone by remember { mutableStateOf("") }
-            var password by remember { mutableStateOf("") }
+            var phone by rememberSaveable { mutableStateOf("") }
+            var password by rememberSaveable { mutableStateOf("") }
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
