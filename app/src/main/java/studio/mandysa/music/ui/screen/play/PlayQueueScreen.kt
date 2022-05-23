@@ -15,7 +15,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import studio.mandysa.jiuwo.adapter.RecyclerAdapter
 import studio.mandysa.jiuwo.ktx.Linear
+import studio.mandysa.music.logic.model.MusicModel
 import studio.mandysa.music.logic.model.RecommendSong
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.allArtist
@@ -27,25 +29,35 @@ import studio.mandysa.music.ui.theme.verticalMargin
 fun PlayQueueScreen() {
     val playlist by PlayManager.changePlayListLiveData().observeAsState(listOf())
     Linear(models = playlist!!) {
-        addCompose<RecommendSong> {
+        addCompose<MusicModel> {
             SongItem(
-                position = bindingAdapterPosition + 1,
                 title = model.title,
                 singer = model.artist.allArtist()
-            ) {
-
-            }
+            )
+        }
+        addCompose<RecommendSong> {
+            SongItem(
+                title = model.title,
+                singer = model.artist.allArtist()
+            )
         }
     }
 }
 
 @Composable
-private fun SongItem(position: Int, title: String, singer: String, onClick: () -> Unit) {
+private fun RecyclerAdapter.BindingViewHolder<*>.SongItem(
+    position: Int = bindingAdapterPosition + 1,
+    title: String,
+    singer: String
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(70.dp)
-            .clickable(onClick = onClick),
+            .clickable(onClick = {
+                PlayManager.loadPlaylist(models, bindingAdapterPosition)
+                PlayManager.play()
+            }),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
