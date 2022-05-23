@@ -1,12 +1,18 @@
 package studio.mandysa.music.ui.screen.me
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.AccessTime
+import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -15,7 +21,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -29,17 +37,26 @@ import studio.mandysa.music.ui.screen.playlist.PlaylistScreen
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.round
 
+data class BlockItem(@StringRes val id: Int, val imageVector: ImageVector)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun Main(navController: NavHostController, me: MeViewModel = viewModel()) {
     me.refresh()
     val userInfo by me.getUserInfo().observeAsState()
-    LazyColumn {
-        item {
+    val mores = listOf(
+        BlockItem(R.string.i_like, Icons.Rounded.Favorite),
+        BlockItem(R.string.recently_played, Icons.Rounded.AccessTime)
+    )
+    val cols = 2
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(cols)
+    ) {
+        item(span = { GridItemSpan(cols) }) {
             ItemTitle(stringResource(R.string.me))
         }
         userInfo?.let {
-            item {
+            item(span = { GridItemSpan(cols) }) {
                 Card(
                     modifier = Modifier.padding(horizontal = horizontalMargin),
                     shape = RoundedCornerShape(round)
@@ -73,27 +90,35 @@ private fun Main(navController: NavHostController, me: MeViewModel = viewModel()
                 }
             }
         }
-        item {
+        item(span = { GridItemSpan(cols) }) {
             ItemSubTitle("More")
         }
-        item {
-            LazyVerticalGrid(columns = GridCells.Fixed(2), content = {
-                item { }
-                item { }
-                item { }
-            })
+        itemsIndexed(mores) { pos, model ->
+            Box(modifier = Modifier.run {
+                if (pos % 2 == 0) {
+                    padding(start = horizontalMargin, end = horizontalMargin / 2)
+                } else {
+                    padding(start = horizontalMargin / 2, end = horizontalMargin)
+                }
+            }) {
+                Card(shape = RoundedCornerShape(round)) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(55.dp)
+                            .padding(horizontal = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = Modifier.weight(1.0f),
+                            text = stringResource(model.id), fontSize = 17.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Icon(imageVector = model.imageVector, contentDescription = null)
+                    }
+                }
+            }
         }
-        item {
-            ItemSubTitle(stringResource(R.string.setting))
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun BlockItem(title: String, imageVector: ImageVector) {
-    Card() {
-
     }
 }
 

@@ -100,6 +100,8 @@ fun PlayScreen() {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
                 items.forEach { screen ->
+                    val selected =
+                        currentDestination?.hierarchy?.any { it.route == screen.route } == true
                     BottomNavigationItem(
                         icon = {
                             Icon(
@@ -109,8 +111,12 @@ fun PlayScreen() {
                         },
                         selectedContentColor = Color.White,
                         unselectedContentColor = translucentWhite,
-                        selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                        selected = selected,
                         onClick = {
+                            if (selected) {
+                                navController.popBackStack()
+                                return@BottomNavigationItem
+                            }
                             navController.navigate(screen.route) {
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true

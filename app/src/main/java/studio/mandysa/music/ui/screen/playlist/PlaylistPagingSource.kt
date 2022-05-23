@@ -18,7 +18,7 @@ class PlaylistPagingSource(
         return null
     }
 
-    private val mLoadNumber = 15
+    private val mLoadNumber = 30
 
     private lateinit var mateSongList: List<PlaylistInfoModel.SongList>
 
@@ -29,7 +29,7 @@ class PlaylistPagingSource(
                     mateSongList = ServiceCreator.create(NeteaseCloudMusicApi::class.java)
                         .getSongListInfo(id = id).songList!!
                 }
-                val nextPage = params.key ?: 1
+                val nextPage = params.key ?: 0
                 val list = ArrayList<PlaylistInfoModel.SongList>()
                 val difference = mLoadNumber * nextPage
                 for (i in difference until if (mateSongList.size - difference < mLoadNumber)
@@ -42,7 +42,7 @@ class PlaylistPagingSource(
                     ServiceCreator.create(NeteaseCloudMusicApi::class.java).getMusicInfo(list)
                 LoadResult.Page(
                     data = response,
-                    prevKey = if (nextPage == 1) null else nextPage - 1,
+                    prevKey = if (nextPage == 0) null else nextPage - 1,
                     nextKey = if (difference > mateSongList.size) null else nextPage + 1
                 )
             }

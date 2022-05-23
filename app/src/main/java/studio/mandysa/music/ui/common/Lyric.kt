@@ -14,7 +14,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -30,10 +32,19 @@ import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.translucentWhite
 
 @Composable
-fun Lyric(modifier: Modifier = Modifier, lyric: String, liveTime: Int, onClick: (Int) -> Unit) {
+fun Lyric(
+    modifier: Modifier = Modifier,
+    lyric: String,
+    liveTime: Int,
+    fadingEdgeLength: Dp = 0.dp,
+    onClick: (Int) -> Unit
+) {
+    val fadingEdgeLengthPx = LocalDensity.current.run { fadingEdgeLength.roundToPx() }
     AndroidView(modifier = modifier, factory = { it ->
         LyricView(it).apply {
             keepScreenOn = true
+            isVerticalFadingEdgeEnabled = fadingEdgeLengthPx != 0
+            setFadingEdgeLength(fadingEdgeLengthPx)
             getChildTimeLiveData().observeForever {
                 onClick.invoke(it)
             }
@@ -55,17 +66,13 @@ private class LyricView(context: Context, attrs: AttributeSet? = null, defStyleA
         get() = getLayoutManager() as LinearLayoutManager?
 
     private fun scrollItemToTop(position: Int) {
-        if (mPosition.value == null) {
-            layoutManager?.scrollToPositionWithOffset(position, 0)
-        } else {
-            val smoothScroller: LinearSmoothScroller = LinearTopSmoothScroller(context)
-            smoothScroller.targetPosition = position
-            layoutManager?.startSmoothScroll(smoothScroller)
-        }
+        val smoothScroller: LinearSmoothScroller = LinearTopSmoothScroller(context)
+        smoothScroller.targetPosition = position
+        layoutManager?.startSmoothScroll(smoothScroller)
         mPosition.value = position + 1
     }
 
-    internal class LinearTopSmoothScroller(context: Context?) :
+    class LinearTopSmoothScroller(context: Context?) :
         LinearSmoothScroller(context) {
 
         override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics): Float {
@@ -88,7 +95,7 @@ private class LyricView(context: Context, attrs: AttributeSet? = null, defStyleA
 
     private val mChildTime = MutableLiveData<Int>()
 
-    private val mPosition = MutableLiveData<Int>()
+    private val mPosition = MutableLiveData(0)
 
     private var mLastTouchTime: Long = 0
 

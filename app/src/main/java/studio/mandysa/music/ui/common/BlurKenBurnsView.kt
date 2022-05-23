@@ -41,7 +41,7 @@ fun KenBurns(modifier: Modifier, imageUrl: String, paused: Boolean) {
 
 private class BlurKenBurnsView : KenBurnsView {
 
-    private var mPaused = false
+    private var mPaused = true
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
