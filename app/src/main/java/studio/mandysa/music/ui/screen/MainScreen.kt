@@ -37,6 +37,7 @@ import com.sothree.slidinguppanel.PanelState
 import com.sothree.slidinguppanel.ktx.SlidingPanel
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.screen.me.MeScreen
+import studio.mandysa.music.ui.screen.play.PlayScreen
 import studio.mandysa.music.ui.theme.navHeight
 
 /**

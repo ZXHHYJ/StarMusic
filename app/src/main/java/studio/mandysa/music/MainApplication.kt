@@ -8,15 +8,13 @@ import studio.mandysa.music.service.MediaPlayService
 import studio.mandysa.music.service.playmanager.PlayManager
 
 /**
- * @author liuxiaoliu66
+ * @author Huang hao
  */
 class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-
         //初始化Tuke
         Tuke.init(this)
-
         //初始化播放管理器
         PlayManager.init(this)
         //确保播放音乐时播放启动服务

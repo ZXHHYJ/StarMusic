@@ -15,11 +15,13 @@ import coil.load
 import com.flaviofaria.kenburnsview.KenBurnsView
 import com.flaviofaria.kenburnsview.RandomTransitionGenerator
 import com.google.android.renderscript.Toolkit
+import studio.mandysa.music.R
 
 @Composable
 fun KenBurns(modifier: Modifier, imageUrl: String, paused: Boolean) {
     AndroidView(factory = {
         BlurKenBurnsView(it).apply {
+            setImageResource(R.drawable.album_not_loaded)
             setTransitionGenerator(
                 RandomTransitionGenerator(
                     2000,
@@ -28,7 +30,7 @@ fun KenBurns(modifier: Modifier, imageUrl: String, paused: Boolean) {
             )
         }
     }, modifier = modifier) {
-        it.load(imageUrl)
+        it.imageUrl = imageUrl
         if (paused) {
             it.pause()
         } else {
@@ -37,9 +39,9 @@ fun KenBurns(modifier: Modifier, imageUrl: String, paused: Boolean) {
     }
 }
 
-class BlurKenBurnsView : KenBurnsView {
+private class BlurKenBurnsView : KenBurnsView {
 
-    private var mUrl = ""
+    private var mPaused = false
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -49,12 +51,28 @@ class BlurKenBurnsView : KenBurnsView {
         defStyle
     )
 
-    fun load(url: String) {
-        if (url != mUrl) {
-            load(url) {}
-            mUrl = url
-        }
+    override fun pause() {
+        super.pause()
+        mPaused = true
     }
+
+    override fun resume() {
+        super.resume()
+        mPaused = false
+    }
+
+    override fun restart() {
+        super.restart()
+        mPaused = false
+    }
+
+    var imageUrl: String = ""
+        set(value) {
+            if (value != field) {
+                load(value) {}
+            }
+            field = value
+        }
 
     override fun setImageDrawable(drawable: Drawable?) {
         if (drawable is BitmapDrawable) {
@@ -65,6 +83,11 @@ class BlurKenBurnsView : KenBurnsView {
                     )
                 )
             )
+            if (mPaused) {
+                //不执行resume进行绘图会导致图片没有铺满View而露馅
+                super.resume()
+                super.pause()
+            }
         }
     }
 

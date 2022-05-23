@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.screen
+package studio.mandysa.music.ui.screen.play
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -14,12 +14,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.SeekBar
@@ -55,7 +58,10 @@ private fun AlbumCover() {
         val coverUrl by PlayManager.changeMusicLiveData().map { return@map it.coverUrl }
             .observeAsState()
         AsyncImage(
-            model = coverUrl,
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(coverUrl)
+                .crossfade(true)
+                .build(), placeholder = painterResource(id = R.drawable.album_not_loaded),
             modifier = Modifier
                 .fillMaxSize(),
             contentDescription = null

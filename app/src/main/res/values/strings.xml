@@ -37,4 +37,6 @@
     <string name="mobile_phone_login">手机号登录</string>
     <string name="add_to_my_likes">添加到我喜欢</string>
     <string name="remove_from_my_likes">从我喜欢中移除</string>
+
+    <string name="setting">设置</string>
 </resources>

@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.screen
+package studio.mandysa.music.ui.screen.play
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.screen
+package studio.mandysa.music.ui.screen.play
 
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -16,6 +16,7 @@ fun LyricScreen() {
         it.id
     }.observeAsState()
     var lyric by remember { mutableStateOf(if (musicId != null) "正在获取歌词" else "") }
+    val liveTime by PlayManager.playingMusicProgressLiveData().observeAsState(0)
     LaunchedEffect(musicId) {
         withContext(Dispatchers.IO) {
             musicId?.let {
@@ -23,7 +24,6 @@ fun LyricScreen() {
             }
         }
     }
-    val liveTime by PlayManager.playingMusicProgressLiveData().observeAsState(0)
     Lyric(lyric = lyric, liveTime = liveTime) {
         PlayManager.seekTo(it)
     }

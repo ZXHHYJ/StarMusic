@@ -2,6 +2,8 @@ package studio.mandysa.music.ui.screen.me
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -11,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -73,6 +76,24 @@ private fun Main(navController: NavHostController, me: MeViewModel = viewModel()
         item {
             ItemSubTitle("More")
         }
+        item {
+            LazyVerticalGrid(columns = GridCells.Fixed(2), content = {
+                item { }
+                item { }
+                item { }
+            })
+        }
+        item {
+            ItemSubTitle(stringResource(R.string.setting))
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun BlockItem(title: String, imageVector: ImageVector) {
+    Card() {
+
     }
 }
 

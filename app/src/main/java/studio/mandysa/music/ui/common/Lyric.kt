@@ -44,69 +44,25 @@ fun Lyric(modifier: Modifier = Modifier, lyric: String, liveTime: Int, onClick: 
     }
 }
 
-
-class LyricView : RecyclerView {
-    constructor(context: Context) : super(context) {
-        init()
-    }
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        init()
-    }
-
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+private class LyricView(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+    RecyclerView(
         context,
         attrs,
         defStyleAttr
     ) {
-        init()
-    }
 
     private val layoutManager
         get() = getLayoutManager() as LinearLayoutManager?
 
-    @Suppress("UNCHECKED_CAST")
-    private fun init() {
-        linear().setup {
-            addCompose<LrcProcess.LrcContent> {
-                val position by mPosition.observeAsState(0)
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            mChildTime.value = model.time
-                        }
-                ) {
-                    Text(
-                        modifier = Modifier.padding(
-                            vertical = 20.dp,
-                            horizontal = horizontalMargin
-                        ),
-                        text = model.lrc,
-                        color = if (position == bindingAdapterPosition) Color.White else translucentWhite,
-                        fontSize = 34.sp, fontWeight = FontWeight.Bold
-                    )
-                }
-            }
-        }
-        mChildLcr.observeForever {
-            val models: List<LrcProcess.LrcContent>? =
-                recyclerAdapter.models as List<LrcProcess.LrcContent>?
-            if (models != null) {
-                if (mLastTouchTime + 2000 < System.currentTimeMillis()) {
-                    var pos = models.indexOf(it)
-                    if (pos > 1) pos -= 1
-                    scrollItemToTop(pos)
-                }
-            }
-        }
-    }
-
     private fun scrollItemToTop(position: Int) {
+        if (mPosition.value == null) {
+            layoutManager?.scrollToPositionWithOffset(position, 0)
+        } else {
+            val smoothScroller: LinearSmoothScroller = LinearTopSmoothScroller(context)
+            smoothScroller.targetPosition = position
+            layoutManager?.startSmoothScroll(smoothScroller)
+        }
         mPosition.value = position + 1
-        val smoothScroller: LinearSmoothScroller = LinearTopSmoothScroller(context)
-        smoothScroller.targetPosition = position
-        layoutManager?.startSmoothScroll(smoothScroller)
     }
 
     internal class LinearTopSmoothScroller(context: Context?) :
@@ -205,6 +161,43 @@ class LyricView : RecyclerView {
                     } catch (e: Exception) {
 
                     }
+                }
+            }
+        }
+    }
+
+    init {
+        linear().setup {
+            addCompose<LrcProcess.LrcContent> {
+                val position by mPosition.observeAsState(0)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            mChildTime.value = model.time
+                        }
+                ) {
+                    Text(
+                        modifier = Modifier.padding(
+                            vertical = 20.dp,
+                            horizontal = horizontalMargin
+                        ),
+                        text = model.lrc,
+                        color = if (position == bindingAdapterPosition) Color.White else translucentWhite,
+                        fontSize = 34.sp, fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }
+        @Suppress("UNCHECKED_CAST")
+        mChildLcr.observeForever {
+            val models: List<LrcProcess.LrcContent>? =
+                recyclerAdapter.models as List<LrcProcess.LrcContent>?
+            if (models != null) {
+                if (mLastTouchTime + 2000 < System.currentTimeMillis()) {
+                    var pos = models.indexOf(it)
+                    if (pos > 1) pos -= 1
+                    scrollItemToTop(pos)
                 }
             }
         }
