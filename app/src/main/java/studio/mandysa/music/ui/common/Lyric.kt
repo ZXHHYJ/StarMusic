@@ -91,7 +91,22 @@ private class LyricView(context: Context, attrs: AttributeSet? = null, defStyleA
         return super.dispatchTouchEvent(ev)
     }
 
-    private val mChildLcr = MutableLiveData<LrcProcess.LrcContent>()
+    private var mChildLcr: LrcProcess.LrcContent? = null
+        @Suppress("UNCHECKED_CAST")
+        set(value) {
+            if (field != value) {
+                val models: List<LrcProcess.LrcContent>? =
+                    recyclerAdapter.models as List<LrcProcess.LrcContent>?
+                if (models != null) {
+                    if (mLastTouchTime + 2000 < System.currentTimeMillis()) {
+                        var pos = models.indexOf(value)
+                        if (pos > 1) pos -= 1
+                        scrollItemToTop(pos)
+                    }
+                }
+            }
+            field = value
+        }
 
     private val mChildTime = MutableLiveData<Int>()
 
@@ -109,7 +124,7 @@ private class LyricView(context: Context, attrs: AttributeSet? = null, defStyleA
             if (models != null)
                 for (model in models) {
                     if (value >= model.time) {
-                        mChildLcr.value = model
+                        mChildLcr = model
                     }
                 }
             field = value
@@ -193,18 +208,6 @@ private class LyricView(context: Context, attrs: AttributeSet? = null, defStyleA
                         color = if (position == bindingAdapterPosition) Color.White else translucentWhite,
                         fontSize = 34.sp, fontWeight = FontWeight.Bold
                     )
-                }
-            }
-        }
-        @Suppress("UNCHECKED_CAST")
-        mChildLcr.observeForever {
-            val models: List<LrcProcess.LrcContent>? =
-                recyclerAdapter.models as List<LrcProcess.LrcContent>?
-            if (models != null) {
-                if (mLastTouchTime + 2000 < System.currentTimeMillis()) {
-                    var pos = models.indexOf(it)
-                    if (pos > 1) pos -= 1
-                    scrollItemToTop(pos)
                 }
             }
         }
