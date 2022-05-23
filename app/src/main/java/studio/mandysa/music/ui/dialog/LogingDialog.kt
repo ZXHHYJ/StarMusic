@@ -16,7 +16,7 @@ import androidx.compose.ui.window.Dialog
 @Composable
 @Preview
 fun LoginDialog() {
-    Dialog(onDismissRequest = { /*TODO*/ }) {
+    Dialog(onDismissRequest = {}) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()

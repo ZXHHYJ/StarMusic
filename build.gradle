@@ -2,9 +2,9 @@ buildscript {
     ext {
         kotlin_version = '1.6.21'
         compose_version = '1.2.0-beta02'
-        nav_version = "2.4.2"
+        nav_version = "2.5.0-rc01"
         lifecycle_version = "2.5.0-rc01"
-        accompanist_version = "0.24.7-alpha"
+        accompanist_version = "0.24.9-beta"
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
