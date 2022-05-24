@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.screen
+package studio.mandysa.music.ui.screen.browse
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
@@ -11,8 +11,8 @@ import androidx.compose.material.Text
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,7 +38,6 @@ import studio.mandysa.music.ui.item.PlaylistItem
 import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.screen.playlist.PlaylistScreen
 import studio.mandysa.music.ui.theme.horizontalMargin
-import studio.mandysa.music.ui.viewmodel.BrowseViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -84,11 +83,10 @@ private fun Main(
     navController: NavHostController,
     viewModel: BrowseViewModel = viewModel()
 ) {
-    val bannerItems by viewModel.getBanners().observeAsState(listOf())
-    val recommendSongs by viewModel.getRecommendSongs().observeAsState(listOf())
-    val recommendPlaylist by viewModel.getRecommendPlaylist().observeAsState(listOf())
-    val playlistSquare by viewModel.getPlaylistSquare().observeAsState(listOf())
-    viewModel.refresh()
+    val bannerItems by viewModel.banners.collectAsState(listOf())
+    val recommendSongs by viewModel.recommendSongs.collectAsState(listOf())
+    val recommendPlaylist by viewModel.recommendPlaylist.collectAsState(listOf())
+    val playlistSquare by viewModel.playlistSquare.collectAsState(listOf())
     LazyColumn {
         item {
             ItemTitle(stringResource(R.string.browse))

@@ -16,9 +16,9 @@ import studio.mandysa.music.ui.theme.round
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RoundAsyncImage(size: Dp, url: String, onClick: () -> Unit = {}) {
+fun RoundAsyncImage(size: Dp, roundSize: Dp = round, url: String, onClick: () -> Unit = {}) {
     Card(
-        shape = RoundedCornerShape(round), modifier = Modifier
+        shape = RoundedCornerShape(roundSize), modifier = Modifier
             .size(size)
     ) {
         AsyncImage(

@@ -3,7 +3,8 @@ package studio.mandysa.music.logic.model
 import mandysax.anna2.annotation.*
 import mandysax.anna2.model.ResponseBody
 import mandysax.anna2.observable.Observable
-import studio.mandysa.music.logic.cookie.cookie
+import studio.mandysa.music.logic.user.cookie
+import studio.mandysa.music.logic.user.userId
 
 /**
  * @author Huang hao
@@ -68,7 +69,8 @@ interface NeteaseCloudMusicApi {
     ): Observable<LoginModel>
 
     @Get("user/playlist")
-    fun getUserPlaylist(@Query("uid") uid: String): Observable<UserPlaylistModel>
+    @Path("playlist")
+    fun getUserPlaylist(@Query("uid") uid: String = userId()): List<UserPlaylist>
 
     //获取账号信息
     @Post("user/account")

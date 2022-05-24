@@ -1,6 +1,7 @@
 package studio.mandysa.music.ui.screen.me
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -34,12 +35,13 @@ import coil.compose.AsyncImage
 import studio.mandysa.music.R
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.ItemTitle
+import studio.mandysa.music.ui.screen.me.meplaylist.MePlaylistScreen
 import studio.mandysa.music.ui.screen.playlist.PlaylistScreen
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.round
 import studio.mandysa.music.ui.theme.verticalMargin
 
-data class BlockItem(@StringRes val id: Int, val imageVector: ImageVector)
+data class BlockItem(@StringRes val id: Int, val imageVector: ImageVector, val onClick: () -> Unit)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,9 +49,11 @@ private fun Main(navController: NavHostController, me: MeViewModel = viewModel()
     me.refresh()
     val userInfo by me.getUserInfo().observeAsState()
     val mores = listOf(
-        BlockItem(R.string.i_like, Icons.Rounded.Favorite),
-        BlockItem(R.string.recently_played, Icons.Rounded.AccessTime),
-        BlockItem(R.string.me_playlist, Icons.Rounded.PlaylistPlay)
+        BlockItem(R.string.i_like, Icons.Rounded.Favorite, {}),
+        BlockItem(R.string.recently_played, Icons.Rounded.AccessTime, {}),
+        BlockItem(R.string.me_playlist, Icons.Rounded.PlaylistPlay) {
+            navController.navigate("me_playlist")
+        }
     )
     val cols = 2
     LazyVerticalGrid(
@@ -110,7 +114,10 @@ private fun Main(navController: NavHostController, me: MeViewModel = viewModel()
                     )
                 }
             }) {
-                Card(shape = RoundedCornerShape(round)) {
+                Card(
+                    modifier = Modifier.clickable(onClick = model.onClick),
+                    shape = RoundedCornerShape(round)
+                ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -142,6 +149,9 @@ fun MeScreen() {
             .statusBarsPadding()
     ) {
         composable("main") { Main(navController) }
+        composable("me_playlist") {
+            MePlaylistScreen(navController)
+        }
         composable("playlist/{id}") { backStackEntry ->
             PlaylistScreen(
                 navController = navController,
