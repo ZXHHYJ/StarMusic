@@ -24,7 +24,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.map
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -79,99 +78,91 @@ fun MainScreen() {
     BackHandler(enabled = panelState == PanelState.EXPANDED) {
         panelState = PanelState.COLLAPSED
     }
-    BoxWithConstraints(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
-        if (maxWidth >= 600.dp) {
-            Row {
-
-            }
-        } else {
-            Box {
-                val navigationBarHeight = WindowInsets.navigationBars
-                SlidingPanel(modifier = Modifier,
-                    gravity = Gravity.BOTTOM,
-                    panelHeight = {
-                        navigationBarHeight.getBottom(this) + navHeight.roundToPx() * if (showPanel) 2 else 1
-                    },
-                    enabledScrollable = true,
-                    panelState = panelState,
-                    panelStateChange = { state, slideOffset ->
-                        when (state) {
-                            PanelState.DRAGGING -> {
-                                alpha = slideOffset * 40
-                            }
-                            else -> {
-                                panelState = state
-                            }
-                        }
-                    },
-                    content = {
-                        NavHost(
-                            navController,
-                            startDestination = MainNavScreen.Browse.route,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .statusBarsPadding()
-                        ) {
-                            composable(MainNavScreen.Browse.route) { BrowseScreen() }
-                            composable(MainNavScreen.Me.route) { MeScreen() }
-                        }
-                    },
-                    panel = {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.TopStart
-                        ) {
-                            Box(modifier = Modifier.alpha(alpha)) {
-                                PlayScreen()
-                            }
-                            Box(
-                                modifier = Modifier
-                                    .alpha(1 - alpha)
-                                    .clickable { panelState = PanelState.EXPANDED }) {
-                                ControllerScreen()
-                            }
-                        }
-                    })
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .offset(y = navHeight * alpha / 10)
-                        .align(Alignment.BottomCenter)
-                        .height(LocalDensity.current.run {
-                            navHeight + navigationBarHeight
-                                .getBottom(
-                                    this
-                                )
-                                .toDp()
-                        })
-                ) {
-                    NavigationBar(
-                        modifier = Modifier
-                            .fillMaxSize()
-                    ) {
-                        val navBackStackEntry by navController.currentBackStackEntryAsState()
-                        val currentDestination = navBackStackEntry?.destination
-                        items.forEach { screen ->
-                            NavigationBarItem(
-                                icon = {
-                                    Icon(
-                                        screen.vector,
-                                        contentDescription = null
-                                    )
-                                },
-                                selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
-                                onClick = {
-                                    navController.navigate(screen.route) {
-                                        popUpTo(navController.graph.findStartDestination().id) {
-                                            saveState = true
-                                        }
-                                        launchSingleTop = true
-                                        restoreState = true
-                                    }
-                                }
-                            )
-                        }
+    Box {
+        val navigationBarHeight = WindowInsets.navigationBars
+        SlidingPanel(modifier = Modifier.background(MaterialTheme.colorScheme.background),
+            gravity = Gravity.BOTTOM,
+            panelHeight = {
+                navigationBarHeight.getBottom(this) + navHeight.roundToPx() * if (showPanel) 2 else 1
+            },
+            enabledScrollable = true,
+            panelState = panelState,
+            panelStateChange = { state, slideOffset ->
+                when (state) {
+                    PanelState.DRAGGING -> {
+                        alpha = slideOffset * 40
                     }
+                    else -> {
+                        panelState = state
+                    }
+                }
+            },
+            content = {
+                NavHost(
+                    navController,
+                    startDestination = MainNavScreen.Browse.route,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .statusBarsPadding()
+                ) {
+                    composable(MainNavScreen.Browse.route) { BrowseScreen() }
+                    composable(MainNavScreen.Me.route) { MeScreen() }
+                }
+            },
+            panel = {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.TopStart
+                ) {
+                    Box(modifier = Modifier.alpha(alpha)) {
+                        PlayScreen()
+                    }
+                    Box(
+                        modifier = Modifier
+                            .alpha(1 - alpha)
+                            .clickable { panelState = PanelState.EXPANDED }) {
+                        ControllerScreen()
+                    }
+                }
+            })
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .offset(y = navHeight * alpha / 10)
+                .align(Alignment.BottomCenter)
+                .height(LocalDensity.current.run {
+                    navHeight + navigationBarHeight
+                        .getBottom(
+                            this
+                        )
+                        .toDp()
+                })
+        ) {
+            NavigationBar(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentDestination = navBackStackEntry?.destination
+                items.forEach { screen ->
+                    NavigationBarItem(
+                        icon = {
+                            Icon(
+                                screen.vector,
+                                contentDescription = null
+                            )
+                        },
+                        selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                        onClick = {
+                            navController.navigate(screen.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        }
+                    )
                 }
             }
         }

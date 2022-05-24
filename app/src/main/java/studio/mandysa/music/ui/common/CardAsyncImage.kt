@@ -16,10 +16,15 @@ import studio.mandysa.music.ui.theme.round
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RoundAsyncImage(size: Dp, roundSize: Dp = round, url: String, onClick: () -> Unit = {}) {
+fun CardAsyncImage(size: Dp, roundSize: Dp = round, url: String, onClick: (() -> Unit)? = null) {
     Card(
-        shape = RoundedCornerShape(roundSize), modifier = Modifier
-            .size(size)
+        shape = RoundedCornerShape(roundSize),
+        modifier = Modifier
+            .size(size).run {
+                if (onClick != null)
+                    clickable(onClick = onClick)
+                else this
+            }
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
@@ -29,7 +34,6 @@ fun RoundAsyncImage(size: Dp, roundSize: Dp = round, url: String, onClick: () ->
             contentDescription = null,
             modifier = Modifier
                 .fillMaxSize()
-                .clickable(onClick = onClick)
         )
     }
 }

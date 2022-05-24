@@ -2,6 +2,7 @@ package studio.mandysa.music.ui.item
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,7 +18,7 @@ import studio.mandysa.music.ui.theme.verticalMargin
 fun ItemSubTitle(title: String = "默认标题") {
     Text(
         text = title,
-        color = Color.Black,
+        color = MaterialTheme.colorScheme.onBackground,
         fontSize = 19.sp,
         fontWeight = FontWeight.Bold,
         modifier = Modifier

@@ -11,7 +11,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -19,7 +18,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.ui.common.RoundAsyncImage
+import studio.mandysa.music.ui.common.CardAsyncImage
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.navHeight
 
@@ -34,7 +33,7 @@ fun ControllerScreen() {
     ) {
         val coverUrl by PlayManager.changeMusicLiveData().map { return@map it.coverUrl }
             .observeAsState("")
-        RoundAsyncImage(size = 48.dp, url = coverUrl)
+        CardAsyncImage(size = 48.dp, url = coverUrl)
         val title by PlayManager.changeMusicLiveData().map { return@map it.title }
             .observeAsState("")
         Text(
@@ -44,13 +43,14 @@ fun ControllerScreen() {
             text = title,
             fontSize = 16.sp, maxLines = 1,
             fontWeight = FontWeight.Bold,
-            color = Color.Black
+            color = MaterialTheme.colorScheme.onBackground
         )
         val playPauseState by PlayManager.pauseLiveData().map {
             if (it) R.drawable.ic_play else R.drawable.ic_pause
         }.observeAsState(R.drawable.ic_play)
         Icon(
             painter = painterResource(playPauseState),
+            tint = MaterialTheme.colorScheme.onBackground,
             contentDescription = null,
             modifier = Modifier
                 .width(55.dp)
@@ -64,6 +64,7 @@ fun ControllerScreen() {
         )
         Icon(
             painter = painterResource(R.drawable.ic_skip_next),
+            tint = MaterialTheme.colorScheme.onBackground,
             contentDescription = null,
             modifier = Modifier
                 .width(55.dp)

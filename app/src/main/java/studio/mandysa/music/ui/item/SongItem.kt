@@ -6,10 +6,10 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,7 +46,7 @@ fun SongItem(position: Int, title: String, singer: String, onClick: () -> Unit) 
         ) {
             Text(
                 text = title,
-                color = Color.Black,
+                color = MaterialTheme.colorScheme.onBackground,
                 fontSize = 15.sp, maxLines = 1,
                 textAlign = TextAlign.Center
             )
@@ -59,7 +59,7 @@ fun SongItem(position: Int, title: String, singer: String, onClick: () -> Unit) 
             )
         }
         Icon(
-            imageVector = Icons.Rounded.MoreVert,
+            imageVector = Icons.Rounded.MoreVert, tint = MaterialTheme.colorScheme.onBackground,
             contentDescription = null, modifier = Modifier.padding(end = horizontalMargin)
         )
     }
