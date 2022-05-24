@@ -42,7 +42,6 @@ private sealed class PlayNavScreen(
 
 @Composable
 fun PlayScreen() {
-    val items = listOf(PlayNavScreen.Lyric, PlayNavScreen.PlayQueue)
     val navController = rememberNavController()
     Box {
         val coverUrl by PlayManager.changeMusicLiveData().map {
@@ -101,7 +100,7 @@ fun PlayScreen() {
             ) {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
-                items.forEach { screen ->
+                listOf(PlayNavScreen.Lyric, PlayNavScreen.PlayQueue).forEach { screen ->
                     val selected =
                         currentDestination?.hierarchy?.any { it.route == screen.route } == true
                     BottomNavigationItem(

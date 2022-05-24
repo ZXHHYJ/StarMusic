@@ -39,4 +39,6 @@
     <string name="i_like">我喜欢</string>
     <string name="recently_played">最近播放</string>
     <string name="please_fill_in_your_phone_number_and_password">请填写手机号和密码</string>
+
+    <string name="about">关于</string>
 </resources>

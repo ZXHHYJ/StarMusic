@@ -1,21 +1,15 @@
 package studio.mandysa.music.ui.screen.me
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccessTime
 import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.PlaylistPlay
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -41,22 +35,56 @@ import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.round
 import studio.mandysa.music.ui.theme.verticalMargin
 
-data class BlockItem(@StringRes val id: Int, val imageVector: ImageVector, val onClick: () -> Unit)
+const val main = "main"
+const val iLike = "i_like"
+const val playlist = "playlist"
+const val setting = "setting"
+const val about = "about"
+const val mePlaylist = "me_playlist"
+const val recentlyPlayed = "recently_played"
+
+data class MenuItem(@StringRes val id: Int, val imageVector: ImageVector, val route: String)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun Main(navController: NavHostController, me: MeViewModel = viewModel()) {
+    fun LazyGridScope.menus(list: List<MenuItem>) {
+        itemsIndexed(list) { pos, model ->
+            Box(modifier = Modifier.padding(top = if (pos > 1) verticalMargin else 0.dp).run {
+                if (pos % 2 == 0) {
+                    padding(
+                        start = horizontalMargin,
+                        end = horizontalMargin / 2
+                    )
+                } else {
+                    padding(
+                        start = horizontalMargin / 2,
+                        end = horizontalMargin
+                    )
+                }
+            }) {
+                FilledTonalButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(55.dp), onClick = {
+                        navController.navigate(model.route)
+                    }
+                ) {
+                    Text(
+                        modifier = Modifier.weight(1.0f),
+                        text = stringResource(model.id), fontSize = 17.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Icon(imageVector = model.imageVector, contentDescription = null)
+                }
+            }
+        }
+    }
     me.refresh()
     val userInfo by me.getUserInfo().observeAsState()
-    val mores = listOf(
-        BlockItem(R.string.i_like, Icons.Rounded.Favorite, {}),
-        BlockItem(R.string.recently_played, Icons.Rounded.AccessTime, {}),
-        BlockItem(R.string.me_playlist, Icons.Rounded.PlaylistPlay) {
-            navController.navigate("me_playlist")
-        }
-    )
     val cols = 2
     LazyVerticalGrid(
+        modifier = Modifier.fillMaxSize(),
         columns = GridCells.Fixed(cols)
     ) {
         item(span = { GridItemSpan(cols) }) {
@@ -100,41 +128,22 @@ private fun Main(navController: NavHostController, me: MeViewModel = viewModel()
         item(span = { GridItemSpan(cols) }) {
             ItemSubTitle("More")
         }
-        itemsIndexed(mores) { pos, model ->
-            Box(modifier = Modifier.padding(top = if (pos > 1) verticalMargin else 0.dp).run {
-                if (pos % 2 == 0) {
-                    padding(
-                        start = horizontalMargin,
-                        end = horizontalMargin / 2
-                    )
-                } else {
-                    padding(
-                        start = horizontalMargin / 2,
-                        end = horizontalMargin
-                    )
-                }
-            }) {
-                Card(
-                    modifier = Modifier.clickable(onClick = model.onClick),
-                    shape = RoundedCornerShape(round)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(55.dp)
-                            .padding(horizontal = 10.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            modifier = Modifier.weight(1.0f),
-                            text = stringResource(model.id), fontSize = 17.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Icon(imageVector = model.imageVector, contentDescription = null)
-                    }
-                }
-            }
+        menus(
+            listOf(
+                MenuItem(R.string.i_like, Icons.Rounded.Favorite, iLike),
+                MenuItem(R.string.recently_played, Icons.Rounded.AccessTime, recentlyPlayed),
+                MenuItem(R.string.me_playlist, Icons.Rounded.PlaylistPlay, mePlaylist)
+            )
+        )
+        item(span = { GridItemSpan(cols) }) {
+            ItemSubTitle(stringResource(R.string.setting))
         }
+        menus(
+            listOf(
+                MenuItem(R.string.setting, Icons.Rounded.Favorite, setting),
+                MenuItem(R.string.about, Icons.Rounded.Info, about),
+            )
+        )
     }
 }
 
@@ -143,20 +152,32 @@ fun MeScreen() {
     val navController = rememberNavController()
     NavHost(
         navController,
-        startDestination = "main",
+        startDestination = main,
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
     ) {
-        composable("main") { Main(navController) }
-        composable("me_playlist") {
+        composable(main) { Main(navController) }
+        composable(iLike) {
+            ILikeScreen()
+        }
+        composable(recentlyPlayed) {
+            RecentlyPlayedScreen()
+        }
+        composable(mePlaylist) {
             MePlaylistScreen(navController)
         }
-        composable("playlist/{id}") { backStackEntry ->
+        composable("$playlist/{id}") { backStackEntry ->
             PlaylistScreen(
                 navController = navController,
                 id = backStackEntry.arguments!!.getString("id", "")
             )
+        }
+        composable(setting) {
+            SettingScreen()
+        }
+        composable(about) {
+            AboutScreen()
         }
     }
 }
