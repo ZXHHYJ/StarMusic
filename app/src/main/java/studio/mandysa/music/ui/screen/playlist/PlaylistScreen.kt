@@ -1,6 +1,7 @@
 package studio.mandysa.music.ui.screen.playlist
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,7 +13,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -31,6 +32,13 @@ import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.theme.round
+
+@Composable
+private fun DescriptionDialog() {
+    Dialog(onDismissRequest = {}) {
+
+    }
+}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -90,11 +98,14 @@ fun PlaylistScreen(
                         )
                         Spacer(modifier = Modifier.height(5.dp))
                         Text(
+                            modifier = Modifier.clickable {
+
+                            },
                             text = it.description,
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center,
-                            color = Color.Gray
+                            color = Color.Gray, maxLines = 5
                         )
                         Spacer(modifier = Modifier.height(5.dp))
                     }

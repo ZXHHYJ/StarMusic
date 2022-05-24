@@ -88,7 +88,8 @@ interface NeteaseCloudMusicApi {
 
     //获取所有榜单
     @Get("toplist")
-    fun getToplist(): ListModel
+    @Path("list")
+    fun getToplist(): List<ListModel>
 
     @Get("like")
     fun likeMusic(

@@ -3,8 +3,6 @@ package studio.mandysa.music.ui.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -19,12 +17,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
-import coil.compose.AsyncImage
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
+import studio.mandysa.music.ui.common.RoundAsyncImage
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.navHeight
-import studio.mandysa.music.ui.theme.round
 
 @Composable
 fun ControllerScreen() {
@@ -35,21 +32,9 @@ fun ControllerScreen() {
             .background(MaterialTheme.colorScheme.secondaryContainer)
             .padding(start = horizontalMargin), verticalAlignment = Alignment.CenterVertically
     ) {
-        Card(
-            shape = RoundedCornerShape(round),
-            elevation = 0.dp,
-            modifier = Modifier
-                .size(48.dp)
-        ) {
-            val coverUrl by PlayManager.changeMusicLiveData().map { return@map it.coverUrl }
-                .observeAsState()
-            AsyncImage(
-                model = coverUrl,
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentDescription = null
-            )
-        }
+        val coverUrl by PlayManager.changeMusicLiveData().map { return@map it.coverUrl }
+            .observeAsState("")
+        RoundAsyncImage(size = 48.dp, url = coverUrl)
         val title by PlayManager.changeMusicLiveData().map { return@map it.title }
             .observeAsState("")
         Text(

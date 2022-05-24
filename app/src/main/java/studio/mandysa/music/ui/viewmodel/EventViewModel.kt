@@ -57,6 +57,4 @@ class EventViewModel : ViewModel() {
 
     fun getCookieLiveData(): LiveData<String> = mCookieLiveData
 
-    fun getUserIdLiveData(): LiveData<String> = mUserIdLiveData
-
 }

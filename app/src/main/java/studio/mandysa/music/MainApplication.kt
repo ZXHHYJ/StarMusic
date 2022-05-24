@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Intent
 import simon.tuke.Tuke
 import studio.mandysa.music.logic.ktx.playManager
+import studio.mandysa.music.logic.toast.ToastContext
 import studio.mandysa.music.service.MediaPlayService
 import studio.mandysa.music.service.playmanager.PlayManager
 
@@ -13,12 +14,14 @@ import studio.mandysa.music.service.playmanager.PlayManager
 class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        //初始化Tuke
+        ToastContext = this
+        //初始化Toast
         Tuke.init(this)
-        //初始化播放管理器
+        //初始化Tuke
         PlayManager.init(this)
-        //确保播放音乐时播放启动服务
+        //初始化播放管理器
         playManager {
+            //确保播放音乐时播放启动服务
             pauseLiveData()
                 .observeForever {
                     if (it == false)

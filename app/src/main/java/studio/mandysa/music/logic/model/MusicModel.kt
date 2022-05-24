@@ -2,12 +2,12 @@ package studio.mandysa.music.logic.model
 
 import mandysax.anna2.annotation.Value
 import studio.mandysa.music.logic.network.Url
+import studio.mandysa.music.service.playmanager.model.MateMusic
 
 /**
  * @author Huang hao
  */
-class MusicModel :
-    studio.mandysa.music.service.playmanager.model.MusicModel<SingerModel, AlbumModel> {
+class MusicModel : MateMusic<SingerModel, AlbumModel> {
     @Value("id")
     private val id = ""
 
