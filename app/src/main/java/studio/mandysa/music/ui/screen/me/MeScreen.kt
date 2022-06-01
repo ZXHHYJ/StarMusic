@@ -23,8 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import dev.olshevski.navigation.reimagined.NavHost
-import dev.olshevski.navigation.reimagined.rememberNavController
+import dev.olshevski.navigation.reimagined.*
 import kotlinx.parcelize.Parcelize
 import studio.mandysa.music.R
 import studio.mandysa.music.ui.item.ItemSubTitle
@@ -67,7 +66,7 @@ private data class MenuItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun Main(me: MeViewModel = viewModel()) {
+private fun Main(navController: NavController<MeScreenDestination>, me: MeViewModel = viewModel()) {
     fun LazyGridScope.menus(list: List<MenuItem>) {
         itemsIndexed(list) { pos, model ->
             Box(modifier = Modifier.padding(top = if (pos > 1) verticalMargin else 0.dp).run {
@@ -87,7 +86,7 @@ private fun Main(me: MeViewModel = viewModel()) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(55.dp), onClick = {
-                        /*navController.navigate(model.route)*/
+                        navController.navigate(model.route)
                     }
                 ) {
                     Text(
@@ -179,9 +178,10 @@ private fun Main(me: MeViewModel = viewModel()) {
 fun MeScreen() {
     val navController =
         rememberNavController<MeScreenDestination>(startDestination = MeScreenDestination.Main)
+    NavBackHandler(navController)
     NavHost(navController) { screen ->
         when (screen) {
-            MeScreenDestination.Main -> Main()
+            MeScreenDestination.Main -> Main(navController)
             MeScreenDestination.ILike -> ILikeScreen(navController)
             MeScreenDestination.RecentlyPlayed -> RecentlyPlayedScreen()
             MeScreenDestination.MePlaylist -> MePlaylistScreen(navController)
