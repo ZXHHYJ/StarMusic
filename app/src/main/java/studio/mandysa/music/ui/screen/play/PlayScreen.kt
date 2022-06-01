@@ -19,12 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.map
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.KenBurns
 import studio.mandysa.music.ui.theme.horizontalMargin
@@ -42,7 +36,7 @@ private sealed class PlayNavScreen(
 
 @Composable
 fun PlayScreen() {
-    val navController = rememberNavController()
+
     Box {
         val coverUrl by PlayManager.changeMusicLiveData().map {
             it.coverUrl
@@ -73,24 +67,8 @@ fun PlayScreen() {
                         .background(shape = RoundedCornerShape(5.dp), color = translucentWhite)
                 )
             }
-            NavHost(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1.0f),
-                navController = navController,
-                startDestination = PlayNavScreen.CurrentPlay.route
-            ) {
-                composable(PlayNavScreen.CurrentPlay.route) {
-                    CurrentPlayScreen()
-                }
-                composable(PlayNavScreen.Lyric.route) {
-                    LyricScreen()
-                }
-                composable(PlayNavScreen.PlayQueue.route) {
-                    PlayQueueScreen()
-                }
-            }
-            BottomNavigation(
+
+           /* BottomNavigation(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(navHeight)
@@ -115,20 +93,14 @@ fun PlayScreen() {
                         selected = selected,
                         onClick = {
                             if (selected) {
-                                navController.popBackStack()
+
                                 return@BottomNavigationItem
                             }
-                            navController.navigate(screen.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
+
                         }
                     )
                 }
-            }
+            }*/
         }
     }
 }

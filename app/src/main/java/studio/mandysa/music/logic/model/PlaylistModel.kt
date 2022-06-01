@@ -4,13 +4,13 @@ import mandysax.anna2.annotation.Value
 
 class PlaylistModel {
     @Value("id")
-    val id = ""
+    lateinit var id: String
 
     @Value("name")
-    val name = ""
+    lateinit var name: String
 
     /*@Value("copywriter")
     public String info;*/
     @Value("picUrl")
-    val picUrl = ""
+    lateinit var picUrl: String
 }

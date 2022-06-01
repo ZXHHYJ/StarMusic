@@ -7,19 +7,18 @@ import studio.mandysa.music.service.playmanager.model.MateMusic
 /**
  * @author Huang hao
  */
-class RecommendSong :
-    MateMusic<SingerModel, AlbumModel> {
+class RecommendSong : MateMusic<SingerModel, AlbumModel> {
     @Value("name")
-    private val name = ""
+    private lateinit var name: String
 
     @Value("id")
-    private val id = ""
+    private lateinit var id: String
 
     @Value("ar")
-    private val artistsList: List<SingerModel>? = null
+    private lateinit var artistsList: List<SingerModel>
 
     @Value("al")
-    private val album: AlbumModel? = null
+    private lateinit var album: AlbumModel
 
     /*@Value("reason")
     val reason = ""*/
@@ -33,11 +32,11 @@ class RecommendSong :
     }
 
     override fun getCoverUrl(): String {
-        return album!!.coverUrl
+        return album.coverUrl
     }
 
     override fun getArtist(): List<SingerModel> {
-        return artistsList!!
+        return artistsList
     }
 
     override fun getId(): String {
@@ -45,6 +44,6 @@ class RecommendSong :
     }
 
     override fun getAlbum(): AlbumModel {
-        return album!!
+        return album
     }
 }

@@ -16,13 +16,13 @@ import studio.mandysa.music.service.playmanager.model.AlbumModel as Album
 class AlbumModel : Album {
 
     @Value("id")
-    private val id = ""
+    private lateinit var id: String
 
     @Value("name")
-    private val name = ""
+    private lateinit var name: String
 
     @Value("picUrl")
-    private val picUrl = ""
+    private lateinit var picUrl: String
 
     override fun getId(): String {
         return id

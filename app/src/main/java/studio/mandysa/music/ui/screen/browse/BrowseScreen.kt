@@ -1,6 +1,7 @@
 package studio.mandysa.music.ui.screen.browse
 
 import android.annotation.SuppressLint
+import android.os.Parcelable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -20,13 +21,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
+import dev.olshevski.navigation.reimagined.*
+import kotlinx.parcelize.Parcelize
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.allArtist
@@ -38,12 +37,17 @@ import studio.mandysa.music.ui.screen.playlist.PlaylistScreen
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.round
 
-const val main = "main"
-const val playlist = "playlist"
+sealed class BrowseScreenDestination : Parcelable {
+    @Parcelize
+    object Main : BrowseScreenDestination()
+
+    @Parcelize
+    data class Playlist(val id: String) : BrowseScreenDestination()
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun BannerItem(typeTitle: String, bannerUrl: String, onClick: () -> Unit) {
+private fun BannerItem(typeTitle: String, bannerUrl: String) {
     Column {
         Card(
             shape = RoundedCornerShape(round),
@@ -73,7 +77,7 @@ private fun BannerItem(typeTitle: String, bannerUrl: String, onClick: () -> Unit
 @SuppressLint("SetTextI18n")
 @Composable
 private fun Main(
-    navController: NavHostController,
+    navController: NavController<BrowseScreenDestination>,
     viewModel: BrowseViewModel = viewModel()
 ) {
     val bannerItems by viewModel.banners.observeAsState(listOf())
@@ -87,22 +91,7 @@ private fun Main(
         item {
             HorizontalPager(count = bannerItems.size) {
                 val model = bannerItems[it]
-                BannerItem(typeTitle = model.typeTitle, bannerUrl = model.pic) {
-                    when (model.targetType) {
-                        3000 -> {
-
-                        }
-                        1000 -> {
-
-                        }
-                        1 -> {
-
-                        }
-                        else -> {
-
-                        }
-                    }
-                }
+                BannerItem(typeTitle = model.typeTitle, bannerUrl = model.pic)
             }
         }
         item {
@@ -116,7 +105,7 @@ private fun Main(
             ) {
                 items(recommendPlaylist) { model ->
                     PlaylistItem(title = model.name, coverUrl = model.picUrl) {
-                        navController.navigate("playlist/${model.id}")
+                        navController.navigate(BrowseScreenDestination.Playlist(model.id))
                     }
                 }
             }
@@ -132,7 +121,7 @@ private fun Main(
             ) {
                 items(playlistSquare) { model ->
                     PlaylistItem(title = model.name, coverUrl = model.picUrl) {
-                        navController.navigate("playlist/${model.id}")
+                        navController.navigate(BrowseScreenDestination.Playlist(model.id))
                     }
                 }
             }
@@ -157,17 +146,17 @@ private fun Main(
 
 @Composable
 fun BrowseScreen() {
-    val navController = rememberNavController()
-    NavHost(
-        navController,
-        startDestination = main
-    ) {
-        composable(main) { Main(navController) }
-        composable("$playlist/{id}") { backStackEntry ->
-            PlaylistScreen(
-                navController = navController,
-                id = backStackEntry.arguments!!.getString("id", "")
-            )
+    val navController =
+        rememberNavController<BrowseScreenDestination>(startDestination = BrowseScreenDestination.Main)
+    NavBackHandler(navController)
+    NavHost(navController) { screen ->
+        when (screen) {
+            BrowseScreenDestination.Main -> {
+                Main(navController)
+            }
+            is BrowseScreenDestination.Playlist -> {
+                PlaylistScreen(navController, id = screen.id)
+            }
         }
     }
 }

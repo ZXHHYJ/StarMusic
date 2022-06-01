@@ -5,33 +5,33 @@ import mandysax.anna2.annotation.Value
 
 class AlbumContentModel {
     @Value("songs")
-    val songList: List<MusicModel>? = null
+    lateinit var songList: List<MusicModel>
 
     @Value("picUrl")
     @Path("album")
-    val picUrl = ""
+    lateinit var picUrl: String
 
     @Path("album/artist")
     @Value("name")
-    val artistName = ""
+    lateinit var artistName: String
 
     @Value("company")
     @Path("album")
-    val company = ""
+    lateinit var company: String
 
     @Value("description")
     @Path("album")
-    val description = ""
+    lateinit var description: String
 
     @Value("name")
     @Path("album")
-    val name = ""
+    lateinit var name: String
 
     @Value("id")
     @Path("album")
-    val id = ""
+    lateinit var id: String
 
     @Value("publishTime")
     @Path("album")
-    val publishTime = ""
+    lateinit var publishTime: String
 }

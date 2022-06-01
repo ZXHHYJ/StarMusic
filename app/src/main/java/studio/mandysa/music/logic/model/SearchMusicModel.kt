@@ -10,19 +10,19 @@ import studio.mandysa.music.service.playmanager.model.MateMusic
 class SearchMusicModel :
     MateMusic<SingerModel, AlbumModel> {
     @Value("name")
-    private val name = ""
+    private lateinit var name: String
 
     @Value("id")
-    private val id = ""
+    private lateinit var id: String
 
     @Value("album")
-    private val album: AlbumModel? = null
+    private lateinit var album: AlbumModel
 
     @Value("artists")
-    private val artistsList: List<SingerModel>? = null
+    private lateinit var artistsList: List<SingerModel>
 
     override fun getArtist(): List<SingerModel> {
-        return artistsList!!
+        return artistsList
     }
 
     override fun getCoverUrl(): String {
@@ -46,7 +46,7 @@ class SearchMusicModel :
     }
 
     override fun getAlbum(): AlbumModel {
-        return album!!
+        return album
     }
 
 }

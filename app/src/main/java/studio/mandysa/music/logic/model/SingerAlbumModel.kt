@@ -5,11 +5,11 @@ import mandysax.anna2.annotation.Value
 class SingerAlbumModel {
 
     @Value("id")
-    val id = ""
+    lateinit var id: String
 
     @Value("name")
-    val name = ""
+    lateinit var name: String
 
     @Value("artist")
-    val album: AlbumModel? = null
+    lateinit var album: AlbumModel
 }

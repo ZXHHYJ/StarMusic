@@ -1,5 +1,6 @@
 package studio.mandysa.music.ui.screen.me
 
+import android.os.Parcelable
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
@@ -21,11 +22,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
+import dev.olshevski.navigation.reimagined.NavHost
+import dev.olshevski.navigation.reimagined.rememberNavController
+import kotlinx.parcelize.Parcelize
 import studio.mandysa.music.R
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.ItemTitle
@@ -36,19 +36,38 @@ import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.round
 import studio.mandysa.music.ui.theme.verticalMargin
 
-const val main = "main"
-const val iLike = "i_like"
-const val playlist = "playlist"
-const val setting = "setting"
-const val about = "about"
-const val mePlaylist = "me_playlist"
-const val recentlyPlayed = "recently_played"
+sealed class MeScreenDestination : Parcelable {
+    @Parcelize
+    object Main : MeScreenDestination()
 
-data class MenuItem(@StringRes val id: Int, val imageVector: ImageVector, val route: String)
+    @Parcelize
+    object ILike : MeScreenDestination()
+
+    @Parcelize
+    object Setting : MeScreenDestination()
+
+    @Parcelize
+    object MePlaylist : MeScreenDestination()
+
+    @Parcelize
+    object RecentlyPlayed : MeScreenDestination()
+
+    @Parcelize
+    object About : MeScreenDestination()
+
+    @Parcelize
+    data class Playlist(val id: String) : MeScreenDestination()
+}
+
+private data class MenuItem(
+    @StringRes val id: Int,
+    val imageVector: ImageVector,
+    val route: MeScreenDestination
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun Main(navController: NavHostController, me: MeViewModel = viewModel()) {
+private fun Main(me: MeViewModel = viewModel()) {
     fun LazyGridScope.menus(list: List<MenuItem>) {
         itemsIndexed(list) { pos, model ->
             Box(modifier = Modifier.padding(top = if (pos > 1) verticalMargin else 0.dp).run {
@@ -68,7 +87,7 @@ private fun Main(navController: NavHostController, me: MeViewModel = viewModel()
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(55.dp), onClick = {
-                        navController.navigate(model.route)
+                        /*navController.navigate(model.route)*/
                     }
                 ) {
                     Text(
@@ -131,9 +150,17 @@ private fun Main(navController: NavHostController, me: MeViewModel = viewModel()
         }
         menus(
             listOf(
-                MenuItem(R.string.i_like, Icons.Rounded.Favorite, iLike),
-                MenuItem(R.string.recently_played, Icons.Rounded.AccessTime, recentlyPlayed),
-                MenuItem(R.string.me_playlist, Icons.Rounded.PlaylistPlay, mePlaylist)
+                MenuItem(R.string.i_like, Icons.Rounded.Favorite, MeScreenDestination.ILike),
+                MenuItem(
+                    R.string.recently_played,
+                    Icons.Rounded.AccessTime,
+                    MeScreenDestination.RecentlyPlayed
+                ),
+                MenuItem(
+                    R.string.me_playlist,
+                    Icons.Rounded.PlaylistPlay,
+                    MeScreenDestination.MePlaylist
+                )
             )
         )
         item(span = { GridItemSpan(cols) }) {
@@ -141,8 +168,8 @@ private fun Main(navController: NavHostController, me: MeViewModel = viewModel()
         }
         menus(
             listOf(
-                MenuItem(R.string.setting, Icons.Rounded.Favorite, setting),
-                MenuItem(R.string.about, Icons.Rounded.Info, about),
+                MenuItem(R.string.setting, Icons.Rounded.Favorite, MeScreenDestination.Setting),
+                MenuItem(R.string.about, Icons.Rounded.Info, MeScreenDestination.About),
             )
         )
     }
@@ -150,35 +177,20 @@ private fun Main(navController: NavHostController, me: MeViewModel = viewModel()
 
 @Composable
 fun MeScreen() {
-    val navController = rememberNavController()
-    NavHost(
-        navController,
-        startDestination = main,
-        modifier = Modifier
-            .fillMaxSize()
-            .statusBarsPadding()
-    ) {
-        composable(main) { Main(navController) }
-        composable(iLike) {
-            ILikeScreen(navController)
-        }
-        composable(recentlyPlayed) {
-            RecentlyPlayedScreen()
-        }
-        composable(mePlaylist) {
-            MePlaylistScreen(navController)
-        }
-        composable("$playlist/{id}") { backStackEntry ->
-            PlaylistScreen(
+    val navController =
+        rememberNavController<MeScreenDestination>(startDestination = MeScreenDestination.Main)
+    NavHost(navController) { screen ->
+        when (screen) {
+            MeScreenDestination.Main -> Main()
+            MeScreenDestination.ILike -> ILikeScreen(navController)
+            MeScreenDestination.RecentlyPlayed -> RecentlyPlayedScreen()
+            MeScreenDestination.MePlaylist -> MePlaylistScreen(navController)
+            MeScreenDestination.Setting -> SettingScreen()
+            MeScreenDestination.About -> AboutScreen()
+            is MeScreenDestination.Playlist -> PlaylistScreen(
                 navController = navController,
-                id = backStackEntry.arguments!!.getString("id", "")
+                id = screen.id
             )
-        }
-        composable(setting) {
-            SettingScreen()
-        }
-        composable(about) {
-            AboutScreen()
         }
     }
 }

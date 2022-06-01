@@ -9,7 +9,7 @@ import mandysax.anna2.annotation.Value
 class LoginModel {
     @Value("id")
     @Path("account")
-    val id = ""
+    lateinit var id: String
 
     @Value("cookie")
     val cookie = ""
@@ -18,5 +18,5 @@ class LoginModel {
     val code = 0
 
     @Value("msg")
-    val msg = ""
+    lateinit var msg: String
 }

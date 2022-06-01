@@ -5,17 +5,17 @@ import mandysax.anna2.annotation.Value
 class ListModel {
 
     @Value("coverImgUrl")
-    val coverImgUrl = ""
+    lateinit var coverImgUrl: String
 
     @Value("updateFrequency")
-    val updateFrequency = ""
+    lateinit var updateFrequency: String
 
     @Value("description")
-    val description = ""
+    lateinit var description: String
 
     @Value("name")
-    val name = ""
+    lateinit var name: String
 
     @Value("id")
-    val id = ""
+    lateinit var id: String
 }

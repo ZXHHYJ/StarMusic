@@ -6,11 +6,11 @@ import mandysax.anna2.annotation.Value
 class SingerDetailedModel {
     @Value("cover")
     @Path("artist")
-    val cover = ""
+    lateinit var cover: String
 
     @Value("name")
     @Path("artist")
-    val name = ""
+    lateinit var name: String
 
     /*@Value("identities")
     @Path("artist")
@@ -18,7 +18,7 @@ class SingerDetailedModel {
 
     @Value("briefDesc")
     @Path("artist")
-    val briefDesc = ""
+    lateinit var briefDesc: String
 
     /*@Value("identifyTag")
     @Path("artist")

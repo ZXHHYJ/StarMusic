@@ -7,16 +7,16 @@ import studio.mandysa.music.service.playmanager.model.MateMusic
 
 class PersonalFmModel : MateMusic<ArtistModel, AlbumModel> {
     @Value("name")
-    private val name = ""
+    private lateinit var name: String
 
     @Value("id")
-    private val id = ""
+    private lateinit var id: String
 
     @Value("artists")
-    private val artistsList: List<SingerModel>? = null
+    private lateinit var artistsList: List<SingerModel>
 
     override fun getArtist(): List<ArtistModel> {
-        return artistsList!!
+        return artistsList
     }
 
     override fun getCoverUrl(): String {

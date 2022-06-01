@@ -5,22 +5,22 @@ import mandysax.anna2.annotation.Value
 
 class BannerModel {
     @Value("pic")
-    var pic = ""
+    lateinit var pic: String
 
     @Path("song/al")
     @Value("id")
-    val albumId = 0
+    lateinit var albumId: String
 
     @Value("encodeId")
-    val encodeId = ""
+    lateinit var encodeId: String
 
     @Value("targetType")
     val targetType = 0
 
     @Value("typeTitle")
-    var typeTitle = ""
+    lateinit var typeTitle: String
 
     @Value("url")
-    val url = ""
+    lateinit var url: String
 
 }

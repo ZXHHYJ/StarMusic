@@ -24,14 +24,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
+import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.navigate
+import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.ui.common.CardAsyncImage
+import studio.mandysa.music.ui.screen.me.MeScreenDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.round
 
 @Composable
 fun MePlaylistScreen(
-    navController: NavController,
+    navController: NavController<MeScreenDestination>,
     mePlaylist: MePlaylistViewModel = viewModel()
 ) {
     Column {
@@ -41,7 +44,7 @@ fun MePlaylistScreen(
             contentColor = MaterialTheme.colorScheme.primary,
             elevation = 0.dp
         ) {
-            IconButton(onClick = { navController.popBackStack() }) {
+            IconButton(onClick = { navController.pop() }) {
                 Icon(Icons.Rounded.ArrowBack, null)
             }
         }
@@ -54,7 +57,7 @@ fun MePlaylistScreen(
                     title = it.name,
                     nickname = it.nickname,
                 ) {
-                    navController.navigate("playlist/${it.id}")
+                    navController.navigate(MeScreenDestination.Playlist(it.id))
                 }
             }
         }

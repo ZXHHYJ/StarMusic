@@ -9,22 +9,22 @@ import studio.mandysa.music.service.playmanager.model.MateMusic
  */
 class MusicModel : MateMusic<SingerModel, AlbumModel> {
     @Value("id")
-    private val id = ""
+    private lateinit var id: String
 
     @Value("name")
-    private val name = ""
+    private lateinit var name: String
 
     @Value("al")
-    private val album: AlbumModel? = null
+    private lateinit var album: AlbumModel
 
     @Value("al")
-    private val albumList: AlbumModel? = null
+    private lateinit var albumList: AlbumModel
 
     @Value("ar")
-    private val artistsList: List<SingerModel>? = null
+    private lateinit var artistsList: List<SingerModel>
 
     override fun getArtist(): List<SingerModel> {
-        return artistsList!!
+        return artistsList
     }
 
     override fun getId(): String {
@@ -32,7 +32,7 @@ class MusicModel : MateMusic<SingerModel, AlbumModel> {
     }
 
     override fun getCoverUrl(): String {
-        return album!!.coverUrl
+        return album.coverUrl
     }
 
     override fun getTitle(): String {
@@ -44,6 +44,6 @@ class MusicModel : MateMusic<SingerModel, AlbumModel> {
     }
 
     override fun getAlbum(): AlbumModel {
-        return album!!
+        return album
     }
 }

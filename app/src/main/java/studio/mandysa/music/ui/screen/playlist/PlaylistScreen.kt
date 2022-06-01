@@ -23,10 +23,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
 import coil.compose.AsyncImage
+import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.ui.item.SongItem
@@ -35,7 +36,7 @@ import studio.mandysa.music.ui.theme.round
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PlaylistScreen(
-    navController: NavHostController,
+    navController: NavController<*>,
     id: String,
     playlist: PlaylistModel = viewModel(factory = object : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -52,7 +53,7 @@ fun PlaylistScreen(
             contentColor = MaterialTheme.colorScheme.primary,
             elevation = 0.dp
         ) {
-            IconButton(onClick = { navController.popBackStack() }) {
+            IconButton(onClick = { navController.pop() }) {
                 Icon(Icons.Rounded.ArrowBack, null)
             }
             Spacer(modifier = Modifier.weight(1.0f))
