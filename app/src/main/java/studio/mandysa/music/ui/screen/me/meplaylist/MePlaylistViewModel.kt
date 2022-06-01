@@ -1,19 +1,21 @@
 package studio.mandysa.music.ui.screen.me.meplaylist
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import studio.mandysa.music.logic.model.NeteaseCloudMusicApi
-import studio.mandysa.music.logic.model.UserPlaylist
-import studio.mandysa.music.logic.network.ServiceCreator
+import kotlinx.coroutines.flow.shareIn
+import studio.mandysa.music.logic.network.api
 
 class MePlaylistViewModel : ViewModel() {
-    val playlist: Flow<List<UserPlaylist>> = flow {
-        emit(ServiceCreator.create(NeteaseCloudMusicApi::class.java).getUserPlaylist().apply {
-            val list = this as ArrayList<UserPlaylist>
-            list.removeAt(0)
-        })
-    }.flowOn(Dispatchers.IO)
+
+    //获取用户的所以歌单，*网易云把我喜欢也算在里面
+    val meAllPlaylist = flow {
+        emit(api.getUserPlaylist())
+    }.flowOn(Dispatchers.IO).shareIn(viewModelScope, SharingStarted.WhileSubscribed(500), 0)
+        .asLiveData()
+
 }

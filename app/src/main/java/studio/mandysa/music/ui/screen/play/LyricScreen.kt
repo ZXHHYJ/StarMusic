@@ -6,8 +6,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.map
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import studio.mandysa.music.logic.model.NeteaseCloudMusicApi
-import studio.mandysa.music.logic.network.ServiceCreator
+import studio.mandysa.music.logic.network.api
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.Lyric
 
@@ -21,7 +20,7 @@ fun LyricScreen() {
     LaunchedEffect(musicId) {
         withContext(Dispatchers.IO) {
             musicId?.let {
-                lyric = ServiceCreator.create(NeteaseCloudMusicApi::class.java).getLyric(it)
+                lyric = api.getLyric(it)
             }
         }
     }

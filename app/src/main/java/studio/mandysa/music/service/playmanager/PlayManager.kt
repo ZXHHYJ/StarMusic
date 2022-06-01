@@ -38,7 +38,7 @@ object PlayManager {
     /**
      * 播放列表
      */
-    private val mPlayList = MutableLiveData<List<MateMusic<ArtistModel, AlbumModel>>?>()
+    private val mPlayList = MutableLiveData<List<MateMusic<ArtistModel, AlbumModel>>>()
 
     /**
      * 播放状态
@@ -82,7 +82,7 @@ object PlayManager {
 
     private var mTimer: Timer? = null
 
-    fun changePlayListLiveData(): LiveData<List<MateMusic<ArtistModel, AlbumModel>>?> {
+    fun changePlayListLiveData(): LiveData<List<MateMusic<ArtistModel, AlbumModel>>> {
         return mPlayList
     }
 

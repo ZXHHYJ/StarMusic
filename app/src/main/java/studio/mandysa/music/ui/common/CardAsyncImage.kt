@@ -20,20 +20,20 @@ fun CardAsyncImage(size: Dp, roundSize: Dp = round, url: String, onClick: (() ->
     Card(
         shape = RoundedCornerShape(roundSize),
         modifier = Modifier
-            .size(size).run {
-                if (onClick != null)
-                    clickable(onClick = onClick)
-                else this
-            }
+            .size(size)
     ) {
         AsyncImage(
+            modifier = Modifier
+                .fillMaxSize().run {
+                    if (onClick != null)
+                        clickable(onClick = onClick)
+                    else this
+                },
             model = ImageRequest.Builder(LocalContext.current)
                 .data(url)
                 .crossfade(true)
                 .build(),
             contentDescription = null,
-            modifier = Modifier
-                .fillMaxSize()
         )
     }
 }

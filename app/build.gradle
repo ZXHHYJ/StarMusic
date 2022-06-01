@@ -60,8 +60,6 @@ dependencies {
     implementation 'com.flaviofaria:kenburnsview:1.0.7'
     // 网络请求库 https://gitee.com/liuxiaoliu66/anna
     implementation 'com.gitee.liuxiaoliu66:anna:2.3.1'
-    // 底部上滑展示控件 https://gitee.com/liuxiaoliu66/AndroidSlidingUpPanel
-    implementation 'com.gitee.liuxiaoliu66:AndroidSlidingUpPanel:5.0.3'
     // RecyclerViewUtils https://gitee.com/liuxiaoliu66/jiuwo
     implementation 'com.gitee.liuxiaoliu66:jiuwo:1.6.4'
 
@@ -70,6 +68,7 @@ dependencies {
     implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
     implementation "com.google.accompanist:accompanist-navigation-material:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
@@ -83,8 +82,8 @@ dependencies {
 
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
-    implementation("androidx.compose.material3:material3:1.0.0-alpha11")
-    implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha11")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha12")
+    implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha12")
 
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"

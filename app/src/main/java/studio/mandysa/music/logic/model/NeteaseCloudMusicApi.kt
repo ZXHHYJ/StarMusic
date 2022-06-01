@@ -30,7 +30,10 @@ interface NeteaseCloudMusicApi {
     //获取音乐详细信息
     @Get("song/detail")
     @Path("songs")
-    fun getMusicInfo(@Query("ids") ids: List<Any>): List<MusicModel>
+    fun getMusicInfo(
+        @Query("cookie") cookie: String = cookie(),
+        @Query("ids") ids: List<Any>
+    ): List<MusicModel>
 
     //获取推荐歌曲
     @Get("recommend/songs")
@@ -117,8 +120,8 @@ interface NeteaseCloudMusicApi {
     @Get("likelist")
     @Path("ids")
     fun getLikeList(
-        @Query("cookie") cookie: String,
-        @Query("uid") uid: String
+        @Query("cookie") cookie: String = cookie(),
+        @Query("uid") uid: String = userId()
     ): List<String>
 
     @Get("artist/top/song")

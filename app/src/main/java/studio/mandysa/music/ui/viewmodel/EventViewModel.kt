@@ -8,8 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import mandysax.anna2.exception.AnnaException
 import simon.tuke.Tuke
-import studio.mandysa.music.logic.model.NeteaseCloudMusicApi
-import studio.mandysa.music.logic.network.ServiceCreator
+import studio.mandysa.music.logic.network.api
 
 
 class EventViewModel : ViewModel() {
@@ -38,7 +37,7 @@ class EventViewModel : ViewModel() {
         mLoginStatus.value = Status.LoggingIn("")
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val model = ServiceCreator.create(NeteaseCloudMusicApi::class.java)
+                val model = api
                     .login(mobilePhone, password, System.currentTimeMillis()).execute()
                 if (model.cookie.isNotEmpty()) {
                     Tuke.tukeWrite(mCookieKey, model.cookie)

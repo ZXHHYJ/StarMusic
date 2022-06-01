@@ -6,9 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import studio.mandysa.music.logic.model.NeteaseCloudMusicApi
 import studio.mandysa.music.logic.model.UserModel
-import studio.mandysa.music.logic.network.ServiceCreator
+import studio.mandysa.music.logic.network.api
 
 class MeViewModel : ViewModel() {
     private val mUserInfo = MutableLiveData<UserModel>()
@@ -17,9 +16,7 @@ class MeViewModel : ViewModel() {
 
     fun refresh() {
         viewModelScope.launch(Dispatchers.IO) {
-            ServiceCreator.create(NeteaseCloudMusicApi::class.java).let {
-                mUserInfo.postValue(it.getUserInfo(timestamp = System.currentTimeMillis()))
-            }
+            mUserInfo.postValue(api.getUserInfo(timestamp = System.currentTimeMillis()))
         }
     }
 }

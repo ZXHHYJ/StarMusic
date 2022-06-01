@@ -2,6 +2,8 @@ package studio.mandysa.music.ui.screen.play
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
@@ -15,10 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import studio.mandysa.jiuwo.adapter.RecyclerAdapter
-import studio.mandysa.jiuwo.ktx.Linear
-import studio.mandysa.music.logic.model.MusicModel
-import studio.mandysa.music.logic.model.RecommendSong
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.ui.theme.horizontalMargin
@@ -28,36 +26,31 @@ import studio.mandysa.music.ui.theme.verticalMargin
 @Composable
 fun PlayQueueScreen() {
     val playlist by PlayManager.changePlayListLiveData().observeAsState(listOf())
-    Linear(models = playlist!!) {
-        addCompose<MusicModel> {
+    LazyColumn {
+        itemsIndexed(playlist) { index, model ->
             SongItem(
+                index,
                 title = model.title,
                 singer = model.artist.allArtist()
-            )
-        }
-        addCompose<RecommendSong> {
-            SongItem(
-                title = model.title,
-                singer = model.artist.allArtist()
-            )
+            ) {
+                PlayManager.loadPlaylist(playlist, index)
+                PlayManager.play()
+            }
         }
     }
 }
 
 @Composable
-private fun RecyclerAdapter.BindingViewHolder<*>.SongItem(
-    position: Int = bindingAdapterPosition + 1,
+private fun SongItem(
+    position: Int,
     title: String,
-    singer: String
+    singer: String, onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(70.dp)
-            .clickable(onClick = {
-                PlayManager.loadPlaylist(models, bindingAdapterPosition)
-                PlayManager.play()
-            }),
+            .clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(

@@ -11,8 +11,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -37,6 +37,9 @@ import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.screen.playlist.PlaylistScreen
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.round
+
+const val main = "main"
+const val playlist = "playlist"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,10 +76,10 @@ private fun Main(
     navController: NavHostController,
     viewModel: BrowseViewModel = viewModel()
 ) {
-    val bannerItems by viewModel.banners.collectAsState(listOf())
-    val recommendSongs by viewModel.recommendSongs.collectAsState(listOf())
-    val recommendPlaylist by viewModel.recommendPlaylist.collectAsState(listOf())
-    val playlistSquare by viewModel.playlistSquare.collectAsState(listOf())
+    val bannerItems by viewModel.banners.observeAsState(listOf())
+    val recommendSongs by viewModel.recommendSongs.observeAsState(listOf())
+    val recommendPlaylist by viewModel.recommendPlaylist.observeAsState(listOf())
+    val playlistSquare by viewModel.playlistSquare.observeAsState(listOf())
     LazyColumn {
         item {
             ItemTitle(stringResource(R.string.browse))
@@ -157,13 +160,10 @@ fun BrowseScreen() {
     val navController = rememberNavController()
     NavHost(
         navController,
-        startDestination = "main",
-        modifier = Modifier
-            .fillMaxSize()
-            .statusBarsPadding()
+        startDestination = main
     ) {
-        composable("main") { Main(navController) }
-        composable("playlist/{id}") { backStackEntry ->
+        composable(main) { Main(navController) }
+        composable("$playlist/{id}") { backStackEntry ->
             PlaylistScreen(
                 navController = navController,
                 id = backStackEntry.arguments!!.getString("id", "")

@@ -1,7 +1,7 @@
 package studio.mandysa.music.logic.model
 
 import mandysax.anna2.annotation.Value
-import studio.mandysa.music.logic.network.Url
+import studio.mandysa.music.logic.network.MUSIC_URL
 import studio.mandysa.music.service.playmanager.model.ArtistModel
 import studio.mandysa.music.service.playmanager.model.MateMusic
 
@@ -32,7 +32,7 @@ class PersonalFmModel : MateMusic<ArtistModel, AlbumModel> {
     }
 
     override fun getUrl(): String {
-        return Url.MUSIC_URL + id
+        return MUSIC_URL + id
     }
 
     override fun toString(): String {

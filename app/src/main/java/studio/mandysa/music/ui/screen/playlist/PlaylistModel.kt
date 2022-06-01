@@ -1,17 +1,17 @@
 package studio.mandysa.music.ui.screen.playlist
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import studio.mandysa.music.logic.model.NeteaseCloudMusicApi
-import studio.mandysa.music.logic.model.PlaylistInfoModel
-import studio.mandysa.music.logic.network.ServiceCreator
+import kotlinx.coroutines.flow.shareIn
+import studio.mandysa.music.logic.network.api
 
 class PlaylistModel(private val id: String) : ViewModel() {
 
@@ -19,8 +19,8 @@ class PlaylistModel(private val id: String) : ViewModel() {
         PlaylistPagingSource(id)
     }.flow.cachedIn(viewModelScope)
 
-    val playlistInfoModel: Flow<PlaylistInfoModel> = flow {
-        emit(ServiceCreator.create(NeteaseCloudMusicApi::class.java).getSongListInfo(id = id))
-    }.flowOn(Dispatchers.IO)
-
+    val playlistInfoModel = flow {
+        emit(api.getSongListInfo(id = id))
+    }.flowOn(Dispatchers.IO).shareIn(viewModelScope, SharingStarted.WhileSubscribed(500), 0)
+        .asLiveData()
 }

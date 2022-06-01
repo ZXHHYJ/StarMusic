@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.screen.playlist
+package studio.mandysa.music.ui.screen.me.ilike
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
@@ -8,12 +8,12 @@ import studio.mandysa.music.logic.ktx.getPagInfo
 import studio.mandysa.music.logic.model.MusicModel
 import studio.mandysa.music.logic.network.api
 
-class PlaylistPagingSource(private val id: String) : PagingSource<Int, MusicModel>() {
-
+class ILikePagingSource : PagingSource<Int, MusicModel>() {
     override fun getRefreshKey(state: PagingState<Int, MusicModel>): Int? = null
 
     private val mMateSongList by lazy {
-        api.getSongListInfo(id = id).songList
+        val userPlaylist = api.getUserPlaylist()
+        api.getSongListInfo(id = userPlaylist[0].id).songList
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MusicModel> {

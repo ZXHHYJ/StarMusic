@@ -29,6 +29,7 @@ import coil.compose.AsyncImage
 import studio.mandysa.music.R
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.ItemTitle
+import studio.mandysa.music.ui.screen.me.ilike.ILikeScreen
 import studio.mandysa.music.ui.screen.me.meplaylist.MePlaylistScreen
 import studio.mandysa.music.ui.screen.playlist.PlaylistScreen
 import studio.mandysa.music.ui.theme.horizontalMargin
@@ -159,7 +160,7 @@ fun MeScreen() {
     ) {
         composable(main) { Main(navController) }
         composable(iLike) {
-            ILikeScreen()
+            ILikeScreen(navController)
         }
         composable(recentlyPlayed) {
             RecentlyPlayedScreen()

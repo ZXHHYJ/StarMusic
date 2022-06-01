@@ -7,16 +7,16 @@ import mandysax.anna2.annotation.Value
  */
 class PlaylistInfoModel {
     @Value("name")
-    val name = ""
+    lateinit var name: String
 
     @Value("description")
-    val description = ""
+    lateinit var description: String
 
     @Value("coverImgUrl")
-    val coverImgUrl = ""
+    lateinit var coverImgUrl: String
 
     @Value("trackIds")
-    val songList: List<SongList>? = null
+    lateinit var songList: List<SongList>
 
     class SongList {
         @Value("id")

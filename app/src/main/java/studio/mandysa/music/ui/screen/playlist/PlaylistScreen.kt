@@ -11,8 +11,8 @@ import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,9 +32,7 @@ import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.theme.round
 
-@OptIn(
-    ExperimentalFoundationApi::class,
-)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PlaylistScreen(
     navController: NavHostController,
@@ -45,7 +43,7 @@ fun PlaylistScreen(
         }
     })
 ) {
-    val playlistInfo by playlist.playlistInfoModel.collectAsState(null)
+    val playlistInfo by playlist.playlistInfoModel.observeAsState()
     val songs = playlist.songs.collectAsLazyPagingItems()
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
