@@ -1,11 +1,27 @@
 package studio.mandysa.music.logic.user
 
-import simon.tuke.Tuke
+import com.drake.serialize.serialize.serialLiveData
+import studio.mandysa.music.ui.screen.login.LoginScreen
 
-fun cookie(): String {
-    return Tuke.tukeGet("cookie_key", "")
-}
+object UserManager {
 
-fun userId(): String {
-    return Tuke.tukeGet("userid_key", "")
+    private val mUserIdLiveData by serialLiveData<String?>()
+
+    private val mCookieLiveData by serialLiveData<String?>()
+
+    /**
+     * 提供给[LoginScreen]使用
+     */
+    fun getCookieLiveData() = mCookieLiveData
+
+    fun getUserIdLiveData() = mUserIdLiveData
+
+    fun cookie(): String {
+        return mCookieLiveData.value!!
+    }
+
+    fun userId(): String {
+        return mUserIdLiveData.value!!
+    }
+
 }

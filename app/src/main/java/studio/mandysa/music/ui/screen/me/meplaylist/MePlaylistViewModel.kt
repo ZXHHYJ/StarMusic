@@ -1,7 +1,6 @@
 package studio.mandysa.music.ui.screen.me.meplaylist
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
@@ -16,6 +15,5 @@ class MePlaylistViewModel : ViewModel() {
     val meAllPlaylist = flow {
         emit(api.getUserPlaylist())
     }.flowOn(Dispatchers.IO).shareIn(viewModelScope, SharingStarted.WhileSubscribed(500), 0)
-        .asLiveData()
 
 }

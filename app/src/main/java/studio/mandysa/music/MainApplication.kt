@@ -2,7 +2,6 @@ package studio.mandysa.music
 
 import android.app.Application
 import android.content.Intent
-import simon.tuke.Tuke
 import studio.mandysa.music.logic.ktx.playManager
 import studio.mandysa.music.logic.toast.ToastContext
 import studio.mandysa.music.service.MediaPlayService
@@ -15,9 +14,6 @@ class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         ToastContext = this
-        //初始化Toast
-        Tuke.init(this)
-        //初始化Tuke
         PlayManager.init(this)
         //初始化播放管理器
         playManager {

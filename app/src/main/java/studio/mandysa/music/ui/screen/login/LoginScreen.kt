@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.screen
+package studio.mandysa.music.ui.screen.login
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -39,7 +39,6 @@ import studio.mandysa.music.ui.common.KenBurns
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.translucentWhite
 import studio.mandysa.music.ui.theme.verticalMargin
-import studio.mandysa.music.ui.viewmodel.EventViewModel
 
 
 @Composable
@@ -63,7 +62,7 @@ private fun LoginDialog() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(event: EventViewModel = viewModel()) {
+fun LoginScreen(event: LoginViewModel = viewModel()) {
     val textFileColors = textFieldColors(
         textColor = Color.Black,
         containerColor = translucentWhite,
@@ -72,21 +71,9 @@ fun LoginScreen(event: EventViewModel = viewModel()) {
         unfocusedIndicatorColor = Color.Transparent,
         disabledIndicatorColor = Color.Transparent
     )
-    val loginStatus by event.loginStatus.observeAsState()
-    when (loginStatus) {
-        is EventViewModel.Status.LoggingIn -> {
-            LoginDialog()
-        }
-        is EventViewModel.Status.Fail -> {
-
-        }
-        is EventViewModel.Status.Ok -> {
-
-        }
-        is EventViewModel.Status.Error -> {
-
-        }
-        else -> {}
+    val status by event.getLoginState().observeAsState(false)
+    if (status) {
+        LoginDialog()
     }
     rememberSystemUiController().apply {
         setSystemBarsColor(
@@ -119,7 +106,7 @@ fun LoginScreen(event: EventViewModel = viewModel()) {
             var phone by rememberSaveable { mutableStateOf("") }
             var password by rememberSaveable { mutableStateOf("") }
             OutlinedTextField(
-                value = phone,
+                value = phone, maxLines = 1,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                 placeholder = { Text(stringResource(R.string.phone)) },
                 modifier = Modifier
@@ -131,7 +118,7 @@ fun LoginScreen(event: EventViewModel = viewModel()) {
                 colors = textFileColors
             )
             OutlinedTextField(
-                value = password,
+                value = password, maxLines = 1,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 placeholder = { Text(stringResource(R.string.password)) },
                 modifier = Modifier.fillMaxWidth(),

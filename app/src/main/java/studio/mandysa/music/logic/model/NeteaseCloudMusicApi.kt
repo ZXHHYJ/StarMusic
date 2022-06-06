@@ -3,8 +3,8 @@ package studio.mandysa.music.logic.model
 import mandysax.anna2.annotation.*
 import mandysax.anna2.model.ResponseBody
 import mandysax.anna2.observable.Observable
-import studio.mandysa.music.logic.user.cookie
-import studio.mandysa.music.logic.user.userId
+import studio.mandysa.music.logic.user.UserManager.cookie
+import studio.mandysa.music.logic.user.UserManager.userId
 
 /**
  * @author Huang hao
@@ -68,8 +68,8 @@ interface NeteaseCloudMusicApi {
     fun login(
         @FormData("phone") phone: String?,
         @FormData("password") password: String?,
-        @Query("timestamp") timestamp: Long
-    ): Observable<LoginModel>
+        @Query("timestamp") timestamp: Long = System.currentTimeMillis()
+    ): LoginModel
 
     @Get("user/playlist")
     @Path("playlist")

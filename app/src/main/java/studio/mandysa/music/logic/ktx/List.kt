@@ -1,6 +1,5 @@
 package studio.mandysa.music.logic.ktx
 
-import studio.mandysa.music.logic.PagInfo
 import kotlin.math.abs
 
 fun <T : Any> List<T>.getPagInfo(currentPage: Int, pageSize: Int): PagInfo<T> {
