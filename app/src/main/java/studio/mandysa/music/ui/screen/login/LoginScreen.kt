@@ -60,7 +60,8 @@ private fun LoginDialog() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+
+@ExperimentalMaterial3Api
 @Composable
 fun LoginScreen(event: LoginViewModel = viewModel()) {
     val textFileColors = textFieldColors(

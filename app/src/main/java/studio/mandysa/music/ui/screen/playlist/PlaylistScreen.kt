@@ -23,20 +23,18 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
 import coil.compose.AsyncImage
-import dev.olshevski.navigation.reimagined.NavController
-import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.theme.round
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PlaylistScreen(
-    navController: NavController<*>,
+    navController: NavController,
     id: String,
     playlist: PlaylistModel = viewModel(factory = object : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -53,7 +51,7 @@ fun PlaylistScreen(
             contentColor = MaterialTheme.colorScheme.primary,
             elevation = 0.dp
         ) {
-            IconButton(onClick = { navController.pop() }) {
+            IconButton(onClick = { navController.popBackStack() }) {
                 Icon(Icons.Rounded.ArrowBack, null)
             }
             Spacer(modifier = Modifier.weight(1.0f))
@@ -104,12 +102,8 @@ fun PlaylistScreen(
             stickyHeader {
                 Divider(thickness = 1.dp)
             }
-            itemsIndexed(songs) { pos, model ->
-                SongItem(
-                    position = pos + 1,
-                    title = model!!.title,
-                    singer = model.artist.allArtist()
-                ) {
+            itemsIndexed(songs) { pos, _ ->
+                SongItem(songs[pos]!!) {
                     PlayManager.loadPlaylist(songs.itemSnapshotList.items, pos)
                     PlayManager.play()
                 }

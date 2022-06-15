@@ -4,13 +4,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults.cardColors
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -19,60 +22,102 @@ import androidx.lifecycle.map
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.CardAsyncImage
+import studio.mandysa.music.ui.common.KenBurns
 import studio.mandysa.music.ui.theme.horizontalMargin
-import studio.mandysa.music.ui.theme.navHeight
+import studio.mandysa.music.ui.theme.neutralColor
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ControllerScreen() {
-    Row(
+fun ControllerScreen(onClick: () -> Unit) {
+    val controlBarHeight = 50.dp
+    val coverSize = 55.dp
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(navHeight)
-            .background(MaterialTheme.colorScheme.secondaryContainer)
-            .padding(start = horizontalMargin), verticalAlignment = Alignment.CenterVertically
     ) {
-        val coverUrl by PlayManager.changeMusicLiveData().map { return@map it.coverUrl }
-            .observeAsState("")
-        CardAsyncImage(size = 48.dp, url = coverUrl)
-        val title by PlayManager.changeMusicLiveData().map { return@map it.title }
-            .observeAsState("")
-        Text(
+        Box(
             modifier = Modifier
-                .padding(start = 16.dp)
-                .weight(1.0f),
-            text = title,
-            fontSize = 16.sp, maxLines = 1,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onBackground
-        )
-        val playPauseState by PlayManager.pauseLiveData().map {
-            if (it) R.drawable.ic_play else R.drawable.ic_pause
-        }.observeAsState(R.drawable.ic_play)
-        Icon(
-            painter = painterResource(playPauseState),
-            tint = MaterialTheme.colorScheme.onBackground,
-            contentDescription = null,
-            modifier = Modifier
-                .width(55.dp)
-                .padding(10.dp)
-                .fillMaxHeight()
-                .clickable {
-                    if (PlayManager.pauseLiveData().value == true)
-                        PlayManager.play()
-                    else PlayManager.pause()
+                .height(20.dp)
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .background(neutralColor)
+        ) {
+        }
+        Box(modifier = Modifier.padding(horizontal = horizontalMargin)) {
+            Box {
+                val coverUrl by PlayManager.changeMusicLiveData().map {
+                    it.coverUrl
+                }.observeAsState("")
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(controlBarHeight)
+                        .align(Alignment.BottomCenter), colors = cardColors(
+                        contentColor = Color.Transparent,
+                        containerColor = Color.Transparent
+                    )
+                ) {
+                    Box {
+                        KenBurns(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .align(Alignment.BottomCenter)
+                                .height(controlBarHeight)
+                                .clickable(onClick = onClick)
+                                .background(Color.Gray),
+                            imageUrl = coverUrl,
+                            paused = false
+                        )
+                        Row(
+                            modifier = Modifier
+                                .padding(start = coverSize)
+                                .fillMaxSize(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            val title by PlayManager.changeMusicLiveData()
+                                .map { return@map it.title }
+                                .observeAsState("")
+                            Text(
+                                modifier = Modifier
+                                    .padding(start = 16.dp)
+                                    .weight(1.0f),
+                                text = title,
+                                fontSize = 16.sp, maxLines = 1,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
+                            )
+                            val playPauseState by PlayManager.pauseLiveData().map {
+                                if (it) R.drawable.ic_play else R.drawable.ic_pause
+                            }.observeAsState(R.drawable.ic_play)
+                            Icon(
+                                painter = painterResource(playPauseState),
+                                tint = Color.White,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(controlBarHeight)
+                                    .padding(8.dp)
+                                    .clickable {
+                                        if (PlayManager.pauseLiveData().value == true)
+                                            PlayManager.play()
+                                        else PlayManager.pause()
+                                    }
+                            )
+                            Icon(
+                                painter = painterResource(R.drawable.ic_skip_next),
+                                tint = Color.White,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(controlBarHeight)
+                                    .padding(8.dp)
+                                    .clickable {
+                                        PlayManager.skipToNext()
+                                    }
+                            )
+                        }
+                    }
                 }
-        )
-        Icon(
-            painter = painterResource(R.drawable.ic_skip_next),
-            tint = MaterialTheme.colorScheme.onBackground,
-            contentDescription = null,
-            modifier = Modifier
-                .width(55.dp)
-                .padding(10.dp)
-                .fillMaxHeight()
-                .clickable {
-                    PlayManager.skipToNext()
-                }
-        )
+                CardAsyncImage(size = coverSize, url = coverUrl)
+            }
+        }
     }
 }

@@ -2,7 +2,6 @@ package studio.mandysa.music.logic.model
 
 import mandysax.anna2.annotation.*
 import mandysax.anna2.model.ResponseBody
-import mandysax.anna2.observable.Observable
 import studio.mandysa.music.logic.user.UserManager.cookie
 import studio.mandysa.music.logic.user.UserManager.userId
 
@@ -16,7 +15,7 @@ interface NeteaseCloudMusicApi {
     fun searchMusic(
         @Query("keywords") name: String,
         @Query("offset") index: Int
-    ): Observable<List<SearchMusicModel>>
+    ): List<SearchMusicModel>
 
     //搜索歌手
     @Get("search")
@@ -25,7 +24,7 @@ interface NeteaseCloudMusicApi {
         @Query("keywords") name: String,
         @Query("offset") index: Int,
         @Query("type") type: Int
-    ): Observable<List<SearchSingerModel>>
+    ): List<SearchSingerModel>
 
     //获取音乐详细信息
     @Get("song/detail")
@@ -43,6 +42,7 @@ interface NeteaseCloudMusicApi {
     //获取推荐歌单
     @Get("recommend/resource")
     @Path("recommend")
+    @FormUrlEncoded
     fun getRecommendPlaylist(@Query("cookie") cookie: String = cookie()): List<PlaylistModel>
 
     //歌单广场
@@ -65,9 +65,10 @@ interface NeteaseCloudMusicApi {
 
     //登录
     @Post("login/cellphone")
+    @FormUrlEncoded
     fun login(
-        @FormData("phone") phone: String?,
-        @FormData("password") password: String?,
+        @Field("phone") phone: String?,
+        @Field("password") password: String?,
         @Query("timestamp") timestamp: Long = System.currentTimeMillis()
     ): LoginModel
 
@@ -78,15 +79,16 @@ interface NeteaseCloudMusicApi {
     //获取账号信息
     @Post("user/account")
     @Path("profile")
+    @FormUrlEncoded
     fun getUserInfo(
-        @FormData("cookie") cookie: String = cookie(),
+        @Field("cookie") cookie: String = cookie(),
         @Query("timestamp") timestamp: Long
     ): UserModel
 
     //获取用户详情
     @Post("user/detail")
     fun getUserDetail(
-        @Query("uid") uid: String
+        @Query("uid") uid: String = userId()
     ): UserDetailModel
 
     //获取所有榜单

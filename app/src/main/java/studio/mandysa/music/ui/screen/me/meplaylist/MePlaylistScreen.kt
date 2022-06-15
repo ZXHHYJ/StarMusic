@@ -16,25 +16,22 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import dev.olshevski.navigation.reimagined.NavController
-import dev.olshevski.navigation.reimagined.navigate
-import dev.olshevski.navigation.reimagined.pop
+import androidx.navigation.NavController
 import studio.mandysa.music.ui.common.CardAsyncImage
-import studio.mandysa.music.ui.screen.me.MeScreenDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.round
 
 @Composable
 fun MePlaylistScreen(
-    navController: NavController<MeScreenDestination>,
+    navController: NavController,
     mePlaylist: MePlaylistViewModel = viewModel()
 ) {
     Column {
@@ -44,12 +41,12 @@ fun MePlaylistScreen(
             contentColor = MaterialTheme.colorScheme.primary,
             elevation = 0.dp
         ) {
-            IconButton(onClick = { navController.pop() }) {
+            IconButton(onClick = { navController.popBackStack() }) {
                 Icon(Icons.Rounded.ArrowBack, null)
             }
         }
         Divider(thickness = 1.dp)
-        val items by mePlaylist.meAllPlaylist.collectAsState(listOf())
+        val items by mePlaylist.meAllPlaylist.observeAsState(listOf())
         LazyColumn {
             items(items) {
                 PlaylistItem(
@@ -57,7 +54,7 @@ fun MePlaylistScreen(
                     title = it.name,
                     nickname = it.nickname,
                 ) {
-                    navController.navigate(MeScreenDestination.Playlist(it.id))
+                    // navController.navigate(MeScreenDestination.Playlist(it.id))
                 }
             }
         }

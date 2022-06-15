@@ -1,41 +1,11 @@
 package studio.mandysa.music.ui.screen.me
 
-import android.os.Parcelable
-import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AccessTime
-import androidx.compose.material.icons.rounded.Favorite
-import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material.icons.rounded.PlaylistPlay
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.AsyncImage
-import dev.olshevski.navigation.reimagined.*
-import kotlinx.parcelize.Parcelize
-import studio.mandysa.music.R
-import studio.mandysa.music.ui.item.ItemSubTitle
-import studio.mandysa.music.ui.item.ItemTitle
-import studio.mandysa.music.ui.screen.me.ilike.ILikeScreen
-import studio.mandysa.music.ui.screen.me.meplaylist.MePlaylistScreen
-import studio.mandysa.music.ui.screen.playlist.PlaylistScreen
-import studio.mandysa.music.ui.theme.horizontalMargin
-import studio.mandysa.music.ui.theme.round
-import studio.mandysa.music.ui.theme.verticalMargin
+import androidx.navigation.NavController
 
-sealed class MeScreenDestination : Parcelable {
+/*sealed class MeScreenDestination : Parcelable {
     @Parcelize
     object Main : MeScreenDestination()
 
@@ -56,18 +26,18 @@ sealed class MeScreenDestination : Parcelable {
 
     @Parcelize
     data class Playlist(val id: String) : MeScreenDestination()
-}
+}*/
 
-private data class MenuItem(
+/*private data class MenuItem(
     @StringRes val id: Int,
     val imageVector: ImageVector,
     val route: MeScreenDestination
-)
+)*/
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun Main(navController: NavController<MeScreenDestination>, me: MeViewModel = viewModel()) {
-    fun LazyGridScope.menus(list: List<MenuItem>) {
+private fun Main(navController: NavController, me: MeViewModel = viewModel()) {
+  /*  fun LazyGridScope.menus(list: List<MenuItem>) {
         itemsIndexed(list) { pos, model ->
             Box(modifier = Modifier.padding(top = if (pos > 1) verticalMargin else 0.dp).run {
                 if (pos % 2 == 0) {
@@ -171,11 +141,11 @@ private fun Main(navController: NavController<MeScreenDestination>, me: MeViewMo
                 MenuItem(R.string.about, Icons.Rounded.Info, MeScreenDestination.About),
             )
         )
-    }
+    }*/
 }
 
 @Composable
-fun MeScreen() {
+fun MeScreen() {/*
     val navController =
         rememberNavController<MeScreenDestination>(startDestination = MeScreenDestination.Main)
     NavBackHandler(navController)
@@ -192,5 +162,5 @@ fun MeScreen() {
                 id = screen.id
             )
         }
-    }
+    }*/
 }

@@ -15,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -60,7 +59,7 @@ private fun AlbumCover() {
             model = ImageRequest.Builder(LocalContext.current)
                 .data(coverUrl)
                 .crossfade(true)
-                .build(), placeholder = painterResource(id = R.drawable.album_not_loaded),
+                .build(),
             modifier = Modifier
                 .fillMaxSize(),
             contentDescription = null

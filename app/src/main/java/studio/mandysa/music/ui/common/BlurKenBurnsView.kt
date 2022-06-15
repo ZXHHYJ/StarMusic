@@ -47,7 +47,7 @@ private class BlurKenBurnsView : KenBurnsView {
         defStyle
     )
 
-    var imageUrl: String = ""
+    var imageUrl: String? = null
         set(value) {
             if (value != field) {
                 load(value) {}

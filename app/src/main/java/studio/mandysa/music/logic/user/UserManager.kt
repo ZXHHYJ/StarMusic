@@ -5,9 +5,9 @@ import studio.mandysa.music.ui.screen.login.LoginScreen
 
 object UserManager {
 
-    private val mUserIdLiveData by serialLiveData<String?>()
+    private val mUserIdLiveData by serialLiveData<String>()
 
-    private val mCookieLiveData by serialLiveData<String?>()
+    private val mCookieLiveData by serialLiveData<String>()
 
     /**
      * 提供给[LoginScreen]使用

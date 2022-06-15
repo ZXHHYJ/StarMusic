@@ -180,8 +180,8 @@ object PlayManager {
             mDuration.value = mMediaPlayer.duration
             play()
         }
-        mMediaPlayer.setOnErrorListener { _, var1, _ ->
-            var1 == -38
+        mMediaPlayer.setOnErrorListener { _, _, _ ->
+            false
         }
         mMediaPlayer.setOnCompletionListener {
             skipToNext()

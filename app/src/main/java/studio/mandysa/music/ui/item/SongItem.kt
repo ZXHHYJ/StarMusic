@@ -13,12 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import studio.mandysa.music.service.playmanager.ktx.allArtist
+import studio.mandysa.music.service.playmanager.model.MateMusic
+import studio.mandysa.music.ui.common.CardAsyncImage
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.textColorLight
 import studio.mandysa.music.ui.theme.verticalMargin
 
 @Composable
-fun SongItem(position: Int, title: String, singer: String, onClick: () -> Unit) {
+fun SongItem(song: MateMusic<*, *>, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -28,15 +31,10 @@ fun SongItem(position: Int, title: String, singer: String, onClick: () -> Unit) 
     ) {
         Box(
             modifier = Modifier
-                .padding(verticalMargin)
+                .padding(horizontal = horizontalMargin, vertical = verticalMargin)
                 .size(50.dp), contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = "$position",
-                fontSize = 16.sp,
-                color = textColorLight,
-                textAlign = TextAlign.Center,
-            )
+            CardAsyncImage(size = 50.dp, url = song.coverUrl)
         }
         Column(
             modifier = Modifier
@@ -45,14 +43,14 @@ fun SongItem(position: Int, title: String, singer: String, onClick: () -> Unit) 
                 .padding(vertical = verticalMargin),
         ) {
             Text(
-                text = title,
+                text = song.title,
                 color = MaterialTheme.colorScheme.onBackground,
                 fontSize = 15.sp, maxLines = 1,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.weight(1.0f))
             Text(
-                text = singer,
+                text = song.artist.allArtist(),
                 color = textColorLight,
                 fontSize = 13.sp, maxLines = 1,
                 textAlign = TextAlign.Center
