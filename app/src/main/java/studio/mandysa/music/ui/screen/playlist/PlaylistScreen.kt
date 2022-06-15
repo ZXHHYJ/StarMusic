@@ -20,9 +20,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
@@ -36,10 +35,8 @@ import studio.mandysa.music.ui.theme.round
 fun PlaylistScreen(
     navController: NavController,
     id: String,
-    playlist: PlaylistModel = viewModel(factory = object : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return PlaylistModel(id) as T
-        }
+    playlist: PlaylistModel = viewModel(factory = viewModelFactory {
+        addInitializer(PlaylistModel::class) { return@addInitializer PlaylistModel(id) }
     })
 ) {
     val playlistInfo by playlist.playlistInfoModel.observeAsState()

@@ -21,6 +21,5 @@ class PlaylistModel(private val id: String) : ViewModel() {
 
     val playlistInfoModel = flow {
         emit(api.getSongListInfo(id = id))
-    }.flowOn(Dispatchers.IO).shareIn(viewModelScope, SharingStarted.WhileSubscribed(500), 0)
-        .asLiveData()
+    }.flowOn(Dispatchers.IO).asLiveData(context = viewModelScope.coroutineContext)
 }

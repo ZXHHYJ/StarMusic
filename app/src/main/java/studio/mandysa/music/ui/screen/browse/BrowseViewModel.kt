@@ -14,18 +14,18 @@ class BrowseViewModel : ViewModel() {
 
     val banners = flow {
         emit(api.getBannerList())
-    }.flowOn(Dispatchers.IO).shareIn(viewModelScope, WhileSubscribed(500), 0).asLiveData()
+    }.flowOn(Dispatchers.IO).asLiveData(context = viewModelScope.coroutineContext)
 
     val recommendSongs = flow {
         emit(api.getRecommendedSong())
-    }.flowOn(Dispatchers.IO).shareIn(viewModelScope, WhileSubscribed(500), 0).asLiveData()
+    }.flowOn(Dispatchers.IO).asLiveData(context = viewModelScope.coroutineContext)
 
     val recommendPlaylist = flow {
         emit(api.getRecommendPlaylist())
-    }.flowOn(Dispatchers.IO).shareIn(viewModelScope, WhileSubscribed(500), 0).asLiveData()
+    }.flowOn(Dispatchers.IO).asLiveData(context = viewModelScope.coroutineContext)
 
 
     val playlistSquare = flow {
         emit(api.getPlaylistSquare())
-    }.flowOn(Dispatchers.IO).shareIn(viewModelScope, WhileSubscribed(500), 0).asLiveData()
+    }.flowOn(Dispatchers.IO).asLiveData(context = viewModelScope.coroutineContext)
 }

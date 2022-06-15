@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.screen.me.ilike
+package studio.mandysa.music.ui.screen.me.like
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,17 +13,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
+import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.item.SongItem
 
 @Composable
-fun ILikeScreen(
+fun LikeScreen(
     navController: NavController,
-    viewModel: ILikeViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    id: String,
+    likeViewModel: LikeViewModel = viewModel(factory = viewModelFactory {
+        addInitializer(LikeViewModel::class) { return@addInitializer LikeViewModel(id) }
+    })
 ) {
-    val songs = viewModel.songs.collectAsLazyPagingItems()
+    val songs = likeViewModel.songs.collectAsLazyPagingItems()
     Column {
         TopAppBar(
             modifier = Modifier.fillMaxWidth(),
@@ -38,7 +44,10 @@ fun ILikeScreen(
         LazyColumn {
             itemsIndexed(songs) { pos, _ ->
                 SongItem(songs[pos]!!) {
-
+                    PlayManager.apply {
+                        loadPlaylist(songs.itemSnapshotList, pos)
+                        play()
+                    }
                 }
             }
         }

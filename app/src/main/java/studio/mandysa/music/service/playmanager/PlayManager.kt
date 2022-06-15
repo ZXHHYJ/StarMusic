@@ -1,34 +1,68 @@
 package studio.mandysa.music.service.playmanager
 
-import android.content.Context
-import android.media.MediaPlayer
+import android.app.Application
+import android.os.Handler
+import android.os.Looper
+import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.danikula.videocache.HttpProxyCacheServer
+import com.google.android.exoplayer2.*
 import studio.mandysa.music.service.playmanager.model.AlbumModel
 import studio.mandysa.music.service.playmanager.model.ArtistModel
 import studio.mandysa.music.service.playmanager.model.MateMusic
-import java.util.*
+
 
 /**
  * @author Huang hao
  */
 object PlayManager {
 
-    private lateinit var mProxy: HttpProxyCacheServer
+    private val mPlayer by lazy {
+        ExoPlayer.Builder(mContext, object : DefaultRenderersFactory(mContext) {}).build().apply {
+            addListener(object : Player.Listener {
+                override fun onPlayerError(error: PlaybackException) {
+                    super.onPlayerError(error)
+                    skipToNext()
+                }
 
-    @JvmStatic
-    fun init(context: Context) {
-        if (!::mProxy.isInitialized)
-            mProxy = HttpProxyCacheServer(context)
+                override fun onPlaybackStateChanged(playbackState: Int) {
+                    super.onPlaybackStateChanged(playbackState)
+                    when (playbackState) {
+                        Player.STATE_READY -> {
+                            mDuration.value = this@apply.duration.toInt()
+                            this@PlayManager.play()
+                        }
+                        Player.STATE_BUFFERING -> {
+
+                        }
+                        Player.STATE_ENDED -> {
+                            skipToNext()
+                        }
+                        Player.STATE_IDLE -> {
+
+                        }
+                        else -> {}
+                    }
+                }
+            })
+        }
     }
 
-    private var mLoaded = false
+    private val mRunnable = object : Runnable {
+        override fun run() {
+            mProgress.value = mPlayer.currentPosition.toInt()
+            mHandler.postDelayed(this, 200)
+        }
+    }
 
-    /**
-     * 播放器
-     */
-    private val mMediaPlayer = MediaPlayer()
+    private val mHandler = Handler(Looper.myLooper()!!)
+
+    private lateinit var mContext: Application
+
+    @JvmStatic
+    fun init(application: Application) {
+        mContext = application
+    }
 
     /**
      * 当前播放的歌曲
@@ -80,8 +114,6 @@ object PlayManager {
      */
     private val mDuration = MutableLiveData<Int>()
 
-    private var mTimer: Timer? = null
-
     fun changePlayListLiveData(): LiveData<List<MateMusic<ArtistModel, AlbumModel>>> {
         return mPlayList
     }
@@ -119,7 +151,7 @@ object PlayManager {
 
     fun seekTo(position: Int) {
         mProgress.value = position
-        mMediaPlayer.seekTo(position)
+        mPlayer.seekTo(position.toLong())
     }
 
     private fun updateIndex(index: Int) {
@@ -139,57 +171,31 @@ object PlayManager {
     }
 
     fun play() {
-        if (mPlayState.value != STATE.PLAY && mLoaded) {
-            if (mTimer == null) {
-                mTimer = Timer().also {
-                    it.schedule(object : TimerTask() {
-                        override fun run() {
-                            mProgress.postValue(mMediaPlayer.currentPosition)
-                        }
-                    }, 0, 200)
-                }
-            }
-            mMediaPlayer.start()
+        if (mPlayState.value != STATE.PLAY) {
+            mHandler.post(mRunnable)
+            mPlayer.play()
             mPlayState.value = STATE.PLAY
         }
     }
 
     fun pause() {
         if (mPlayState.value == STATE.PLAY) {
-            mTimer?.cancel()
-            mTimer = null
-            mMediaPlayer.pause()
+            mHandler.removeCallbacks(mRunnable);
+            mPlayer.pause()
             mPlayState.value = STATE.PAUSE
         }
     }
 
     private fun playMusic(musicModel: MateMusic<ArtistModel, AlbumModel>) {
         if (musicModel.url == mChangeMusic.value?.url) {
-            if (mLoaded) {
-                mMediaPlayer.seekTo(0)
-            }
+            mPlayer.seekTo(0)
             return
         }
-        mLoaded = false
         mPlayState.value = STATE.LOADING
-        mMediaPlayer.reset()
         mDuration.value = 0
         mChangeMusic.value = musicModel
-        mMediaPlayer.setOnPreparedListener {
-            mLoaded = true
-            mDuration.value = mMediaPlayer.duration
-            play()
-        }
-        mMediaPlayer.setOnErrorListener { _, _, _ ->
-            false
-        }
-        mMediaPlayer.setOnCompletionListener {
-            skipToNext()
-        }
-        mMediaPlayer.setDataSource(
-            mProxy.getProxyUrl(musicModel.url)
-        )
-        mMediaPlayer.prepareAsync()
+        mPlayer.setMediaItem(MediaItem.fromUri(musicModel.url.toUri()))
+        mPlayer.prepare()
     }
 
     init {
@@ -202,10 +208,8 @@ object PlayManager {
     }
 
     fun stop() {
-        mMediaPlayer.stop()
-        mMediaPlayer.release()
-        mTimer?.cancel()
-        mTimer = null
+        mPlayer.stop()
+        mPlayer.release()
     }
 
     enum class STATE {

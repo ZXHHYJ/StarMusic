@@ -1,22 +1,22 @@
 package studio.mandysa.music.ui.screen.me
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import studio.mandysa.music.logic.model.UserModel
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import studio.mandysa.music.logic.network.api
 
 class MeViewModel : ViewModel() {
-    private val mUserInfo = MutableLiveData<UserModel>()
 
-    fun getUserInfo(): LiveData<UserModel> = mUserInfo
+    val userInfo = flow {
+        emit(api.getUserInfo())
+    }.flowOn(Dispatchers.IO).asLiveData(context = viewModelScope.coroutineContext)
 
-    fun refresh() {
-        viewModelScope.launch(Dispatchers.IO) {
-            mUserInfo.postValue(api.getUserInfo(timestamp = System.currentTimeMillis()))
-        }
-    }
+    //获取用户的所以歌单，*网易云把我喜欢也算在里面
+    val allPlaylist = flow {
+        emit(api.getUserPlaylist())
+    }.flowOn(Dispatchers.IO).asLiveData(context = viewModelScope.coroutineContext)
+
 }

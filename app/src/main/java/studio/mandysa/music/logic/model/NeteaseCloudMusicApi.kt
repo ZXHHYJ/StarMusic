@@ -82,7 +82,7 @@ interface NeteaseCloudMusicApi {
     @FormUrlEncoded
     fun getUserInfo(
         @Field("cookie") cookie: String = cookie(),
-        @Query("timestamp") timestamp: Long
+        @Query("timestamp") timestamp: Long = System.currentTimeMillis()
     ): UserModel
 
     //获取用户详情

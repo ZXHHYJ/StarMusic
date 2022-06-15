@@ -50,8 +50,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.?ar'], dir: 'libs')
-    // 媒体缓存库 https://github.com/danikula/AndroidVideoCache
-    implementation 'com.danikula:videocache:2.7.1'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.17.1'
     // 图片加载库 https://github.com/coil-kt/coil/blob/main/README-zh.md
     implementation "io.coil-kt:coil-compose:2.1.0"
     // 随机放大图片 https://github.com/flavioarfaria/KenBurnsView

@@ -32,7 +32,7 @@ import studio.mandysa.music.ui.theme.round
 @Composable
 fun MePlaylistScreen(
     navController: NavController,
-    mePlaylist: MePlaylistViewModel = viewModel()
+    mePlaylistViewModel: MePlaylistViewModel = viewModel()
 ) {
     Column {
         TopAppBar(
@@ -46,7 +46,7 @@ fun MePlaylistScreen(
             }
         }
         Divider(thickness = 1.dp)
-        val items by mePlaylist.meAllPlaylist.observeAsState(listOf())
+        val items by mePlaylistViewModel.meAllPlaylist.observeAsState(listOf())
         LazyColumn {
             items(items) {
                 PlaylistItem(

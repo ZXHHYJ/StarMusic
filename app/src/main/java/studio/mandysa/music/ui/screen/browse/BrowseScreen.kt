@@ -1,6 +1,5 @@
 package studio.mandysa.music.ui.screen.browse
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -20,7 +19,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -71,80 +69,70 @@ private fun BannerItem(typeTitle: String, bannerUrl: String) {
 }
 
 @OptIn(ExperimentalPagerApi::class)
-@SuppressLint("SetTextI18n")
 @Composable
-private fun Main(
-    navController: NavController,
-    viewModel: BrowseViewModel = viewModel()
-) {
-    val bannerItems by viewModel.banners.observeAsState(listOf())
-    val recommendSongs by viewModel.recommendSongs.observeAsState(listOf())
-    val recommendPlaylist by viewModel.recommendPlaylist.observeAsState(listOf())
-    val playlistSquare by viewModel.playlistSquare.observeAsState(listOf())
-    LazyColumn {
-        item {
-            ItemTitle(stringResource(R.string.browse))
-        }
-        item {
-            HorizontalPager(count = bannerItems.size) {
-                val model = bannerItems[it]
-                BannerItem(typeTitle = model.typeTitle, bannerUrl = model.pic)
-            }
-        }
-        item {
-            ItemSubTitle(stringResource(R.string.recommend_playlist))
-        }
-        item {
-            LazyRow(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(horizontal = horizontalMargin),
-                horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2),
-            ) {
-                items(recommendPlaylist) { model ->
-                    PlaylistItem(title = model.name, coverUrl = model.picUrl) {
-                        navController.navigate(BrowseScreenDestination.Playlist.route + "/$model.id")
-                    }
-                }
-            }
-        }
-        item {
-            ItemSubTitle(stringResource(R.string.playlist_square))
-        }
-        item {
-            LazyRow(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(horizontal = horizontalMargin),
-                horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2),
-            ) {
-                items(playlistSquare) { model ->
-                    PlaylistItem(title = model.name, coverUrl = model.picUrl) {
-                        navController.navigate(BrowseScreenDestination.Playlist.route + "/$model.id")
-                    }
-                }
-            }
-        }
-        item {
-            ItemSubTitle(stringResource(R.string.recommend_song))
-        }
-        items(recommendSongs.size) {
-            val model = recommendSongs[it]
-            SongItem(
-                recommendSongs[it]
-            ) {
-                PlayManager.loadPlaylist(recommendSongs, it)
-                PlayManager.play()
-            }
-        }
-    }
-}
-
-
-@Composable
-fun BrowseScreen() {
+fun BrowseScreen(viewModel: BrowseViewModel = viewModel(),paddingValues: PaddingValues) {
     val navController = rememberNavController()
     NavHost(navController, startDestination = BrowseScreenDestination.Main.route) {
         composable(BrowseScreenDestination.Main.route) {
-            Main(navController)
+            val bannerItems by viewModel.banners.observeAsState(listOf())
+            val recommendSongs by viewModel.recommendSongs.observeAsState(listOf())
+            val recommendPlaylist by viewModel.recommendPlaylist.observeAsState(listOf())
+            val playlistSquare by viewModel.playlistSquare.observeAsState(listOf())
+            LazyColumn {
+                item {
+                    ItemTitle(stringResource(R.string.browse))
+                }
+                item {
+                    HorizontalPager(count = bannerItems.size) {
+                        val model = bannerItems[it]
+                        BannerItem(typeTitle = model.typeTitle, bannerUrl = model.pic)
+                    }
+                }
+                item {
+                    ItemSubTitle(stringResource(R.string.recommend_playlist))
+                }
+                item {
+                    LazyRow(
+                        contentPadding = PaddingValues(horizontal = horizontalMargin),
+                        horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2),
+                    ) {
+                        items(recommendPlaylist) { model ->
+                            PlaylistItem(title = model.name, coverUrl = model.picUrl) {
+                                navController.navigate(BrowseScreenDestination.Playlist.route + "/${model.id}")
+                            }
+                        }
+                    }
+                }
+                item {
+                    ItemSubTitle(stringResource(R.string.playlist_square))
+                }
+                item {
+                    LazyRow(
+                        contentPadding = PaddingValues(horizontal = horizontalMargin),
+                        horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2),
+                    ) {
+                        items(playlistSquare) { model ->
+                            PlaylistItem(title = model.name, coverUrl = model.picUrl) {
+                                navController.navigate(BrowseScreenDestination.Playlist.route + "/${model.id}")
+                            }
+                        }
+                    }
+                }
+                item {
+                    ItemSubTitle(stringResource(R.string.recommend_song))
+                }
+                items(recommendSongs.size) {
+                    SongItem(
+                        recommendSongs[it]
+                    ) {
+                        PlayManager.loadPlaylist(recommendSongs, it)
+                        PlayManager.play()
+                    }
+                }
+                item {
+                    Spacer(modifier = Modifier.padding(paddingValues))
+                }
+            }
         }
         composable(BrowseScreenDestination.Playlist.route + "/{id}") {
             PlaylistScreen(navController, id = it.arguments?.getString("id")!!)

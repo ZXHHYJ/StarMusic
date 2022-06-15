@@ -16,6 +16,11 @@ object UserManager {
 
     fun getUserIdLiveData() = mUserIdLiveData
 
+    init {
+        mUserIdLiveData.value
+        //fix bug
+    }
+
     fun cookie(): String {
         return mCookieLiveData.value!!
     }
