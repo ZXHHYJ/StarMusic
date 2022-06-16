@@ -23,15 +23,9 @@
 
 ## Screen
 
-<p align="center">
-
-<img src="https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/screen1.jpg" width="20%"/>
-
-<img src="https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/screen2.jpg" width="20%"/>
-
-<img src="https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/screen3.jpg" width="20%"/>
-
-<p>
+|![](https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/screen1.jpg)主页面|![](https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/screen2.jpg)个人页|
+|--|--|
+|![](https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/screen3.jpg)歌单页|
 
 
 ## License
