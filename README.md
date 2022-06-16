@@ -21,13 +21,12 @@
 <p align="center"><strong>欢迎贡献代码/问题</strong></p>
 <br>
 
-## Screen
+<img src="https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/screen1.jpg" width="20%"/>
 
-<p align="center"><img src="https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/screen1.jpg"/></p>
+<img src="https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/screen2.jpg" width="20%"/>
 
-<p align="center"><img src="https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/screen2.jpg"/></p>
+<img src="https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/screen3.jpg" width="20%"/>
 
-<p align="center"><img src="https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/screen3.jpg"/></p>
 
 ## License
 
