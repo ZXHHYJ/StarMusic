@@ -1,4 +1,4 @@
-<p align="center"><img src="https://images.gitee.com/uploads/images/2021/0928/190530_2f2d830a_8555846.png" height="25%" width="25%"/></p>
+<p align="center"><img src="https://gitee.com/ZXHHYJ/mandysa_music/raw/master/app/src/main/ic_launcher-playstore.png"/></p>
 
 <p align="center">
     <strong>Hello MandySa Music!</strong>
