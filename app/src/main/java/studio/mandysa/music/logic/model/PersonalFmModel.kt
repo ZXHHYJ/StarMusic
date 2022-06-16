@@ -3,9 +3,10 @@ package studio.mandysa.music.logic.model
 import mandysax.anna2.annotation.Value
 import studio.mandysa.music.logic.network.MUSIC_URL
 import studio.mandysa.music.service.playmanager.model.ArtistModel
-import studio.mandysa.music.service.playmanager.model.MateMusic
+import studio.mandysa.music.service.playmanager.model.MusicModel
 
-class PersonalFmModel : MateMusic<ArtistModel, AlbumModel> {
+class PersonalFmModel :
+    MusicModel<ArtistModel, AlbumModel> {
     @Value("name")
     private lateinit var name: String
 

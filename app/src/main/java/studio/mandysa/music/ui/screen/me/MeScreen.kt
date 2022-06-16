@@ -8,17 +8,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import studio.mandysa.music.R
 import studio.mandysa.music.logic.model.UserModel
+import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.ItemTitle
 import studio.mandysa.music.ui.item.PlaylistItem
@@ -33,26 +33,6 @@ import studio.mandysa.music.ui.screen.me.like.LikeScreen
 import studio.mandysa.music.ui.screen.playlist.PlaylistScreen
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.round
-import studio.mandysa.music.ui.theme.verticalMargin
-
-@Composable
-fun MenuItem(title: String, imageVector: ImageVector, onClick: () -> Unit) {
-    FilledTonalButton(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(55.dp)
-            .padding(horizontal = horizontalMargin),
-        onClick = onClick
-    ) {
-        Text(
-            modifier = Modifier.weight(1.0f),
-            text = title, fontSize = 17.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Icon(imageVector = imageVector, contentDescription = null)
-    }
-    Spacer(modifier = Modifier.height(verticalMargin))
-}
 
 @Composable
 fun MeScreen(meViewModel: MeViewModel = viewModel(), paddingValues: PaddingValues) {

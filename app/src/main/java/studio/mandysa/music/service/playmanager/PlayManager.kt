@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.android.exoplayer2.*
 import studio.mandysa.music.service.playmanager.model.AlbumModel
 import studio.mandysa.music.service.playmanager.model.ArtistModel
-import studio.mandysa.music.service.playmanager.model.MateMusic
+import studio.mandysa.music.service.playmanager.model.MusicModel
 
 
 /**
@@ -67,12 +67,12 @@ object PlayManager {
     /**
      * 当前播放的歌曲
      */
-    private val mChangeMusic = MutableLiveData<MateMusic<ArtistModel, AlbumModel>>()
+    private val mChangeMusic = MutableLiveData<MusicModel<ArtistModel, AlbumModel>>()
 
     /**
      * 播放列表
      */
-    private val mPlayList = MutableLiveData<List<MateMusic<ArtistModel, AlbumModel>>>()
+    private val mPlayList = MutableLiveData<List<MusicModel<ArtistModel, AlbumModel>>>()
 
     /**
      * 播放状态
@@ -114,7 +114,7 @@ object PlayManager {
      */
     private val mDuration = MutableLiveData<Int>()
 
-    fun changePlayListLiveData(): LiveData<List<MateMusic<ArtistModel, AlbumModel>>> {
+    fun changePlayListLiveData(): LiveData<List<MusicModel<ArtistModel, AlbumModel>>> {
         return mPlayList
     }
 
@@ -126,7 +126,7 @@ object PlayManager {
         return mDuration
     }
 
-    fun changeMusicLiveData(): LiveData<MateMusic<ArtistModel, AlbumModel>> {
+    fun changeMusicLiveData(): LiveData<MusicModel<ArtistModel, AlbumModel>> {
         return mChangeMusic
     }
 
@@ -140,11 +140,11 @@ object PlayManager {
 
     @Suppress("UNCHECKED_CAST")
     fun loadPlaylist(list: Any?, index: Int) {
-        mPlayList.value = list as List<MateMusic<ArtistModel, AlbumModel>>
+        mPlayList.value = list as List<MusicModel<ArtistModel, AlbumModel>>
         updateIndex(index)
     }
 
-    fun loadPlaylist(list: List<MateMusic<ArtistModel, AlbumModel>>, index: Int) {
+    fun loadPlaylist(list: List<MusicModel<ArtistModel, AlbumModel>>, index: Int) {
         mPlayList.value = list
         updateIndex(index)
     }
@@ -186,7 +186,7 @@ object PlayManager {
         }
     }
 
-    private fun playMusic(musicModel: MateMusic<ArtistModel, AlbumModel>) {
+    private fun playMusic(musicModel: MusicModel<ArtistModel, AlbumModel>) {
         if (musicModel.url == mChangeMusic.value?.url) {
             mPlayer.seekTo(0)
             return
@@ -201,7 +201,7 @@ object PlayManager {
     init {
         mIndex.observeForever { p1: Int ->
             if (mPlayList.value != null) {
-                val musicModel: MateMusic<ArtistModel, AlbumModel> = mPlayList.value!![p1]
+                val musicModel: MusicModel<ArtistModel, AlbumModel> = mPlayList.value!![p1]
                 playMusic(musicModel)
             }
         }

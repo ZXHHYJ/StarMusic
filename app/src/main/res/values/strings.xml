@@ -42,4 +42,9 @@
 
     <string name="about">关于</string>
     <string name="more">更多</string>
+    <string name="album">专辑</string>
+
+    <string name="next_play">下一首播放</string>
+    <string name="add_like">添加到我喜欢</string>
+    <string name="remove_like">从我喜欢中移除</string>
 </resources>

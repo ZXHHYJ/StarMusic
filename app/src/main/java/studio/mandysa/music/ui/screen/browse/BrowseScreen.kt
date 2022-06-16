@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -70,14 +71,18 @@ private fun BannerItem(typeTitle: String, bannerUrl: String) {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun BrowseScreen(viewModel: BrowseViewModel = viewModel(),paddingValues: PaddingValues) {
+fun BrowseScreen(
+    mainNavController: NavController,
+    paddingValues: PaddingValues,
+    browseViewModel: BrowseViewModel = viewModel()
+) {
     val navController = rememberNavController()
     NavHost(navController, startDestination = BrowseScreenDestination.Main.route) {
         composable(BrowseScreenDestination.Main.route) {
-            val bannerItems by viewModel.banners.observeAsState(listOf())
-            val recommendSongs by viewModel.recommendSongs.observeAsState(listOf())
-            val recommendPlaylist by viewModel.recommendPlaylist.observeAsState(listOf())
-            val playlistSquare by viewModel.playlistSquare.observeAsState(listOf())
+            val bannerItems by browseViewModel.banners.observeAsState(listOf())
+            val recommendSongs by browseViewModel.recommendSongs.observeAsState(listOf())
+            val recommendPlaylist by browseViewModel.recommendPlaylist.observeAsState(listOf())
+            val playlistSquare by browseViewModel.playlistSquare.observeAsState(listOf())
             LazyColumn {
                 item {
                     ItemTitle(stringResource(R.string.browse))
@@ -98,7 +103,7 @@ fun BrowseScreen(viewModel: BrowseViewModel = viewModel(),paddingValues: Padding
                     ) {
                         items(recommendPlaylist) { model ->
                             PlaylistItem(title = model.name, coverUrl = model.picUrl) {
-                                navController.navigate(BrowseScreenDestination.Playlist.route + "/${model.id}")
+                                navController.navigate("${BrowseScreenDestination.Playlist.route}/${model.id}")
                             }
                         }
                     }
@@ -113,7 +118,7 @@ fun BrowseScreen(viewModel: BrowseViewModel = viewModel(),paddingValues: Padding
                     ) {
                         items(playlistSquare) { model ->
                             PlaylistItem(title = model.name, coverUrl = model.picUrl) {
-                                navController.navigate(BrowseScreenDestination.Playlist.route + "/${model.id}")
+                                navController.navigate("${BrowseScreenDestination.Playlist.route}/${model.id}")
                             }
                         }
                     }
@@ -122,9 +127,7 @@ fun BrowseScreen(viewModel: BrowseViewModel = viewModel(),paddingValues: Padding
                     ItemSubTitle(stringResource(R.string.recommend_song))
                 }
                 items(recommendSongs.size) {
-                    SongItem(
-                        recommendSongs[it]
-                    ) {
+                    SongItem(recommendSongs[it], mainNavController) {
                         PlayManager.loadPlaylist(recommendSongs, it)
                         PlayManager.play()
                     }
@@ -134,7 +137,7 @@ fun BrowseScreen(viewModel: BrowseViewModel = viewModel(),paddingValues: Padding
                 }
             }
         }
-        composable(BrowseScreenDestination.Playlist.route + "/{id}") {
+        composable("${BrowseScreenDestination.Playlist.route}/{id}") {
             PlaylistScreen(navController, id = it.arguments?.getString("id")!!)
         }
     }

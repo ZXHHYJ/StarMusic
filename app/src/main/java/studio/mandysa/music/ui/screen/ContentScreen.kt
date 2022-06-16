@@ -43,9 +43,11 @@ private sealed class ContentScreenDestination(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContentScreen(mainNavController: NavController) {
-    rememberSystemUiController().apply {
-        setSystemBarsColor(Color.Transparent, true, isNavigationBarContrastEnforced = false)
-    }
+    rememberSystemUiController().setSystemBarsColor(
+        Color.Transparent,
+        true,
+        isNavigationBarContrastEnforced = false
+    )
     val navController = rememberNavController()
     Scaffold(
         modifier = Modifier.statusBarsPadding(),
@@ -54,7 +56,12 @@ fun ContentScreen(mainNavController: NavController) {
                 navController,
                 startDestination = ContentScreenDestination.Browse.route
             ) {
-                composable(ContentScreenDestination.Browse.route) { BrowseScreen(paddingValues = padding) }
+                composable(ContentScreenDestination.Browse.route) {
+                    BrowseScreen(
+                        mainNavController,
+                        paddingValues = padding
+                    )
+                }
                 composable(ContentScreenDestination.Search.route) { SearchScreen(paddingValues = padding) }
                 composable(ContentScreenDestination.Me.route) { MeScreen(paddingValues = padding) }
             }
@@ -64,13 +71,8 @@ fun ContentScreen(mainNavController: NavController) {
                 val isVisible by PlayManager.changeMusicLiveData().map {
                     return@map true
                 }.observeAsState(false)
-                if (isVisible) {
-                    Box(
-                        modifier = Modifier
-                    ) {
-                        ControllerScreen { mainNavController.navigate(MainScreenDestination.Play.route) }
-                    }
-                }
+                if (isVisible)
+                    ControllerScreen { mainNavController.navigate(MainScreenDestination.Play.route) }
                 NavigationBar(
                     modifier = Modifier
                         .fillMaxWidth()

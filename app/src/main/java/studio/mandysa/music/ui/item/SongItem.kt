@@ -6,22 +6,24 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import studio.mandysa.music.service.playmanager.ktx.allArtist
-import studio.mandysa.music.service.playmanager.model.MateMusic
+import studio.mandysa.music.service.playmanager.model.MusicModel
 import studio.mandysa.music.ui.common.CardAsyncImage
+import studio.mandysa.music.ui.screen.MainScreenDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.textColor
 import studio.mandysa.music.ui.theme.textColorLight
 import studio.mandysa.music.ui.theme.verticalMargin
 
 @Composable
-fun SongItem(song: MateMusic<*, *>, onClick: () -> Unit) {
+fun SongItem(song: MusicModel<*, *>, mainNavController: NavController? = null, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -44,7 +46,7 @@ fun SongItem(song: MateMusic<*, *>, onClick: () -> Unit) {
         ) {
             Text(
                 text = song.title,
-                color = MaterialTheme.colorScheme.onBackground,
+                color = textColor,
                 fontSize = 15.sp, maxLines = 1,
                 textAlign = TextAlign.Center
             )
@@ -57,8 +59,14 @@ fun SongItem(song: MateMusic<*, *>, onClick: () -> Unit) {
             )
         }
         Icon(
-            imageVector = Icons.Rounded.MoreVert, tint = MaterialTheme.colorScheme.onBackground,
-            contentDescription = null, modifier = Modifier.padding(end = horizontalMargin)
+            imageVector = Icons.Rounded.MoreVert,
+            tint = textColor,
+            contentDescription = null,
+            modifier = Modifier
+                .padding(end = horizontalMargin)
+                .clickable {
+                    mainNavController?.navigate("${MainScreenDestination.SongMenu.route}/${song.id}")
+                }
         )
     }
 }

@@ -4,5 +4,5 @@ import mandysax.anna2.annotation.Value
 
 class SingerHotSongModel {
     @Value("songs")
-    val list: List<MusicModel>? = null
+    val list: List<SongModel>? = null
 }

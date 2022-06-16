@@ -15,7 +15,7 @@ interface NeteaseCloudMusicApi {
     fun searchMusic(
         @Query("keywords") name: String,
         @Query("offset") index: Int
-    ): List<SearchMusicModel>
+    ): List<SearchMusicModelModel>
 
     //搜索歌手
     @Get("search")
@@ -29,10 +29,10 @@ interface NeteaseCloudMusicApi {
     //获取音乐详细信息
     @Get("song/detail")
     @Path("songs")
-    fun getMusicInfo(
+    fun getSongInfo(
         @Query("cookie") cookie: String = cookie(),
         @Query("ids") ids: List<Any>
-    ): List<MusicModel>
+    ): List<SongModel>
 
     //获取推荐歌曲
     @Get("recommend/songs")
