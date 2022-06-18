@@ -19,10 +19,16 @@ object PlayManager {
 
     private val mPlayer by lazy {
         ExoPlayer.Builder(mContext, object : DefaultRenderersFactory(mContext) {}).build().apply {
+            playWhenReady = true
             addListener(object : Player.Listener {
                 override fun onPlayerError(error: PlaybackException) {
                     super.onPlayerError(error)
                     skipToNext()
+                }
+
+                override fun onIsPlayingChanged(isPlaying: Boolean) {
+                    super.onIsPlayingChanged(isPlaying)
+                    mPause.value = !isPlaying
                 }
 
                 override fun onPlaybackStateChanged(playbackState: Int) {
@@ -30,7 +36,6 @@ object PlayManager {
                     when (playbackState) {
                         Player.STATE_READY -> {
                             mDuration.value = this@apply.duration.toInt()
-                            this@PlayManager.play()
                         }
                         Player.STATE_BUFFERING -> {
 
@@ -77,27 +82,7 @@ object PlayManager {
     /**
      * 播放状态
      */
-    private val mPlayState = MutableLiveData(STATE.PAUSE)
-
-    /**
-     * 一般播放状态
-     */
-    private val mPause = MutableLiveData(true).also { pause ->
-        mPlayState.observeForever {
-            when (it) {
-                STATE.PLAY -> {
-                    if (pause.value != false)
-                        pause.value = false
-                }
-                STATE.LOADING, STATE.PAUSE -> {
-                    if (pause.value != true)
-                        pause.value = true
-                }
-                else -> {
-                }
-            }
-        }
-    }
+    private val mPause = MutableLiveData(true)
 
     /**
      * 当前播放歌曲的下标
@@ -128,10 +113,6 @@ object PlayManager {
 
     fun changeMusicLiveData(): LiveData<MusicModel<ArtistModel, AlbumModel>> {
         return mChangeMusic
-    }
-
-    fun playStateLivedata(): LiveData<STATE> {
-        return mPlayState
     }
 
     fun pauseLiveData(): LiveData<Boolean> {
@@ -171,28 +152,24 @@ object PlayManager {
     }
 
     fun play() {
-        if (mPlayState.value != STATE.PLAY) {
-            mHandler.post(mRunnable)
-            mPlayer.play()
-            mPlayState.value = STATE.PLAY
-        }
+        if (mPlayer.isLoading)
+            return
+        if (mPlayer.isPlaying)
+            return
+        mHandler.post(mRunnable)
+        mPlayer.play()
     }
 
     fun pause() {
-        if (mPlayState.value == STATE.PLAY) {
-            mHandler.removeCallbacks(mRunnable);
-            mPlayer.pause()
-            mPlayState.value = STATE.PAUSE
-        }
+        if (mPlayer.isLoading)
+            return
+        if (!mPlayer.isPlaying)
+            return
+        mHandler.removeCallbacks(mRunnable)
+        mPlayer.pause()
     }
 
     private fun playMusic(musicModel: MusicModel<ArtistModel, AlbumModel>) {
-        if (musicModel.url == mChangeMusic.value?.url) {
-            mPlayer.seekTo(0)
-            return
-        }
-        mPlayState.value = STATE.LOADING
-        mDuration.value = 0
         mChangeMusic.value = musicModel
         mPlayer.setMediaItem(MediaItem.fromUri(musicModel.url.toUri()))
         mPlayer.prepare()
