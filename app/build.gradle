@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -58,8 +59,6 @@ dependencies {
     implementation 'com.flaviofaria:kenburnsview:1.0.7'
     // 网络请求库 https://gitee.com/liuxiaoliu66/anna
     implementation 'com.gitee.liuxiaoliu66:anna:2.4.0-beta01'
-    // RecyclerViewUtils https://gitee.com/liuxiaoliu66/jiuwo
-    implementation 'com.gitee.liuxiaoliu66:jiuwo:1.6.4'
 
     implementation "com.github.kyant0:color:2022.2-dev01"
 
@@ -67,7 +66,8 @@ dependencies {
 
     implementation "androidx.paging:paging-compose:1.0.0-alpha15"
 
-    implementation "com.google.accompanist:accompanist-navigation-material:$accompanist_version"
+    implementation "dev.olshevski.navigation:reimagined:1.1.0"
+    implementation "com.google.accompanist:accompanist-placeholder-material:$accompanist_version"
     implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
 
@@ -77,7 +77,6 @@ dependencies {
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
-    implementation "androidx.navigation:navigation-compose:2.4.2"
     implementation "androidx.activity:activity-compose:1.4.0"
 
     implementation "androidx.compose.material:material:$compose_version"

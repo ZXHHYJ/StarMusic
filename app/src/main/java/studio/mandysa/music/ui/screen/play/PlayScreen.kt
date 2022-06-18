@@ -1,5 +1,6 @@
 package studio.mandysa.music.ui.screen.play
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -7,7 +8,6 @@ import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Abc
 import androidx.compose.material.icons.rounded.FontDownload
 import androidx.compose.material.icons.rounded.FormatListBulleted
 import androidx.compose.runtime.Composable
@@ -16,15 +16,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.map
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.KenBurns
 import studio.mandysa.music.ui.theme.horizontalMargin
@@ -32,17 +26,23 @@ import studio.mandysa.music.ui.theme.navHeight
 import studio.mandysa.music.ui.theme.translucentWhite
 import studio.mandysa.music.ui.theme.verticalMargin
 
-private sealed class PlayNavScreen(
-    val route: String, val vector: ImageVector
-) {
-    object CurrentPlay : PlayNavScreen("current_play", Icons.Rounded.Abc)
-    object Lyric : PlayNavScreen("lyric", Icons.Rounded.FontDownload)
-    object PlayQueue : PlayNavScreen("play_queue", Icons.Rounded.FormatListBulleted)
+enum class PlayScreenDestination {
+    Main,
+    Lyric,
+    PlayQueue,
 }
 
+val PlayScreenDestination.tabIcon
+    get() = when (this) {
+        PlayScreenDestination.Main -> throw RuntimeException()
+        PlayScreenDestination.Lyric -> Icons.Rounded.FontDownload
+        PlayScreenDestination.PlayQueue -> Icons.Rounded.FormatListBulleted
+    }
+
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun PlayScreen() {
-    val navController = rememberNavController()
+    val navController = rememberNavController(startDestination = PlayScreenDestination.Main)
     Box {
         val coverUrl by PlayManager.changeMusicLiveData().map {
             it.coverUrl
@@ -72,21 +72,24 @@ fun PlayScreen() {
                         .background(shape = RoundedCornerShape(5.dp), color = translucentWhite)
                 )
             }
-            NavHost(
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1.0f),
-                navController = navController,
-                startDestination = PlayNavScreen.CurrentPlay.route
+                    .weight(1.0f)
             ) {
-                composable(PlayNavScreen.CurrentPlay.route) {
-                    CurrentPlayScreen()
-                }
-                composable(PlayNavScreen.Lyric.route) {
-                    LyricScreen()
-                }
-                composable(PlayNavScreen.PlayQueue.route) {
-                    PlayQueueScreen()
+                NavBackHandler(navController)
+                AnimatedNavHost(navController) {
+                    when (it) {
+                        PlayScreenDestination.Main -> {
+                            CurrentPlayScreen()
+                        }
+                        PlayScreenDestination.Lyric -> {
+                            LyricScreen()
+                        }
+                        PlayScreenDestination.PlayQueue -> {
+                            PlayQueueScreen()
+                        }
+                    }
                 }
             }
             BottomNavigation(
@@ -97,15 +100,16 @@ fun PlayScreen() {
                 elevation = 0.dp,
                 backgroundColor = Color.Transparent
             ) {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentDestination = navBackStackEntry?.destination
-                listOf(PlayNavScreen.Lyric, PlayNavScreen.PlayQueue).forEach { screen ->
-                    val selected =
-                        currentDestination?.hierarchy?.any { it.route == screen.route } == true
+                val lastDestination = navController.backstack.entries.last().destination
+                listOf(
+                    PlayScreenDestination.Lyric,
+                    PlayScreenDestination.PlayQueue
+                ).forEach { screen ->
+                    val selected = screen == lastDestination
                     BottomNavigationItem(
                         icon = {
                             Icon(
-                                screen.vector,
+                                screen.tabIcon,
                                 contentDescription = null
                             )
                         },
@@ -114,15 +118,14 @@ fun PlayScreen() {
                         selected = selected,
                         onClick = {
                             if (selected) {
-                                navController.popBackStack()
+                                navController.popUpTo {
+                                    it == PlayScreenDestination.Main
+                                }
                                 return@BottomNavigationItem
                             }
-                            navController.navigate(screen.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
+                            if (!navController.moveToTop { it == screen }) {
+                                // if there is no existing instance, add it
+                                navController.navigate(screen)
                             }
                         }
                     )

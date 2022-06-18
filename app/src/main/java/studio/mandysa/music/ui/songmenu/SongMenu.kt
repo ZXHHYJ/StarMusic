@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.google.accompanist.placeholder.material.placeholder
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.ui.common.CardAsyncImage
@@ -36,29 +37,34 @@ fun SongMenu(
 ) {
     val songInfo by songMenuViewModel.songInfo.observeAsState()
     LazyColumn(modifier = Modifier.navigationBarsPadding()) {
-        songInfo?.let {
-            item {
-                Box(
-                    modifier = Modifier.padding(
-                        horizontal = horizontalMargin,
-                        vertical = verticalMargin
-                    )
+        item {
+            Box(
+                modifier = Modifier.padding(
+                    horizontal = horizontalMargin,
+                    vertical = verticalMargin
+                )
+            ) {
+                Row(
+                    modifier = Modifier
+                        .height(80.dp)
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .height(80.dp)
-                    ) {
-                        CardAsyncImage(size = 80.dp, url = it.coverUrl)
-                        Column(modifier = Modifier.padding(verticalMargin)) {
-                            Text(text = it.title, color = textColor, fontSize = 15.sp, maxLines = 1)
-                            Spacer(modifier = Modifier.weight(1.0f))
-                            Text(
-                                text = it.artist.allArtist(),
-                                color = textColorLight,
-                                fontSize = 13.sp,
-                                maxLines = 1,
-                            )
-                        }
+                    CardAsyncImage(size = 80.dp, url = songInfo?.coverUrl ?: "")
+                    Column(modifier = Modifier.padding(verticalMargin)) {
+                        Text(
+                            modifier = Modifier.placeholder(songInfo == null),
+                            text = songInfo?.title ?: "",
+                            color = textColor,
+                            fontSize = 15.sp,
+                            maxLines = 1
+                        )
+                        Spacer(modifier = Modifier.weight(1.0f))
+                        Text(
+                            modifier = Modifier.placeholder(songInfo == null),
+                            text = songInfo?.artist?.allArtist() ?: "",
+                            color = textColorLight,
+                            fontSize = 13.sp,
+                            maxLines = 1,
+                        )
                     }
                 }
             }

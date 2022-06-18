@@ -14,7 +14,6 @@ import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.coroutineScope
 import coil.imageLoader
 import coil.request.ImageRequest
-import com.google.android.exoplayer2.SimpleExoPlayer
 import kotlinx.coroutines.launch
 import studio.mandysa.music.logic.ktx.playManager
 import studio.mandysa.music.service.playmanager.PlayManager

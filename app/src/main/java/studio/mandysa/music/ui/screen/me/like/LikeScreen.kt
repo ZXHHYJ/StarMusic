@@ -15,15 +15,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.viewModelFactory
-import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
+import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.item.SongItem
 
 @Composable
 fun LikeScreen(
-    navController: NavController,
+    navController: NavController<*>,
     id: String,
     likeViewModel: LikeViewModel = viewModel(factory = viewModelFactory {
         addInitializer(LikeViewModel::class) { return@addInitializer LikeViewModel(id) }
@@ -37,7 +38,7 @@ fun LikeScreen(
             contentColor = MaterialTheme.colorScheme.primary,
             elevation = 0.dp
         ) {
-            IconButton(onClick = { navController.popBackStack() }) {
+            IconButton(onClick = { navController.pop() }) {
                 Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = null)
             }
         }

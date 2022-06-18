@@ -8,7 +8,7 @@ import studio.mandysa.music.R
 import studio.mandysa.music.ui.item.ItemTitle
 
 @Composable
-fun SearchScreen(paddingValues: PaddingValues) {
+fun SearchScreen() {
     LazyColumn {
         item {
             ItemTitle(stringResource(R.string.search))

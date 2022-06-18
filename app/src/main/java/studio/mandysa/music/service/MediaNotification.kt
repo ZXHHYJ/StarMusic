@@ -27,22 +27,22 @@ class MediaNotification(mService: MediaPlayService) : Notification.Builder(
         manager.createNotificationChannel(notificationChannel)
     }
 
-    private val mPlayAction: Notification.Action = PlayButtonReceiver.buildMediaButtonAction(
+    private val mPlayAction = PlayButtonReceiver.buildMediaButtonAction(
         mService,
         R.drawable.ic_play,
         PlaybackState.STATE_PLAYING
     )
-    private val mPauseAction: Notification.Action = PlayButtonReceiver.buildMediaButtonAction(
+    private val mPauseAction = PlayButtonReceiver.buildMediaButtonAction(
         mService,
         R.drawable.ic_pause,
         PlaybackState.STATE_PAUSED
     )
-    private val mNextAction: Notification.Action = PlayButtonReceiver.buildMediaButtonAction(
+    private val mNextAction = PlayButtonReceiver.buildMediaButtonAction(
         mService,
         R.drawable.ic_skip_next,
         PlaybackState.STATE_SKIPPING_TO_NEXT
     )
-    private val mPrevAction: Notification.Action = PlayButtonReceiver.buildMediaButtonAction(
+    private val mPrevAction = PlayButtonReceiver.buildMediaButtonAction(
         mService,
         R.drawable.ic_skip_previous,
         PlaybackState.STATE_SKIPPING_TO_PREVIOUS
