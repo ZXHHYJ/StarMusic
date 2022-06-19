@@ -4,11 +4,13 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import dev.olshevski.navigation.reimagined.NavController
 import studio.mandysa.music.R
 import studio.mandysa.music.ui.item.ItemTitle
+import studio.mandysa.music.ui.screen.ScreenDestination
 
 @Composable
-fun SearchScreen() {
+fun SearchScreen(mainNavController: NavController<ScreenDestination>) {
     LazyColumn {
         item {
             ItemTitle(stringResource(R.string.search))

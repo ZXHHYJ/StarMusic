@@ -7,8 +7,7 @@ import studio.mandysa.music.service.playmanager.model.MusicModel
 /**
  * @author Huang hao
  */
-class SearchMusicModelModel :
-    MusicModel<SingerModel, AlbumModel> {
+class SearchMusicModelModel : MusicModel<SingerModel, AlbumModel> {
     @Value("name")
     private lateinit var name: String
 

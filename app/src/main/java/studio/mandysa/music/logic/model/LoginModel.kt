@@ -11,12 +11,9 @@ class LoginModel {
     @Path("account")
     lateinit var id: String
 
-    @Value("cookie")
-    val cookie = ""
-
-    @Value("code")
-    val code = 0
-
     @Value("msg")
     lateinit var msg: String
+
+    @Value("cookie")
+    val cookie = ""
 }

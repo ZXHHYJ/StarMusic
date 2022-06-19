@@ -1,6 +1,5 @@
 package studio.mandysa.music.ui.screen.browse
 
-import android.os.Parcelable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -23,28 +22,17 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
-import dev.olshevski.navigation.reimagined.NavBackHandler
-import dev.olshevski.navigation.reimagined.NavHost
+import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
-import dev.olshevski.navigation.reimagined.rememberNavController
-import kotlinx.parcelize.Parcelize
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.ItemTitle
 import studio.mandysa.music.ui.item.PlaylistItem
 import studio.mandysa.music.ui.item.SongItem
-import studio.mandysa.music.ui.screen.playlist.PlaylistScreen
+import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.round
-
-sealed class BrowseScreenDestination : Parcelable {
-    @Parcelize
-    object Main : BrowseScreenDestination()
-
-    @Parcelize
-    data class Playlist(val id: String) : BrowseScreenDestination()
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -76,70 +64,61 @@ private fun BannerItem(typeTitle: String, bannerUrl: String) {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun BrowseScreen(browseViewModel: BrowseViewModel = viewModel()) {
-    val navController =
-        rememberNavController<BrowseScreenDestination>(startDestination = BrowseScreenDestination.Main)
-    NavBackHandler(navController)
-    NavHost(navController) { it ->
-        when (it) {
-            BrowseScreenDestination.Main -> {
-                val bannerItems by browseViewModel.banners.observeAsState(listOf())
-                val recommendSongs by browseViewModel.recommendSongs.observeAsState(listOf())
-                val recommendPlaylist by browseViewModel.recommendPlaylist.observeAsState(listOf())
-                val playlistSquare by browseViewModel.playlistSquare.observeAsState(listOf())
-                LazyColumn {
-                    item {
-                        ItemTitle(stringResource(R.string.browse))
-                    }
-                    item {
-                        HorizontalPager(count = bannerItems.size) {
-                            val model = bannerItems[it]
-                            BannerItem(typeTitle = model.typeTitle, bannerUrl = model.pic)
-                        }
-                    }
-                    item {
-                        ItemSubTitle(stringResource(R.string.recommend_playlist))
-                    }
-                    item {
-                        LazyRow(
-                            contentPadding = PaddingValues(horizontal = horizontalMargin),
-                            horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2),
-                        ) {
-                            items(recommendPlaylist) { model ->
-                                PlaylistItem(title = model.name, coverUrl = model.picUrl) {
-                                    navController.navigate(BrowseScreenDestination.Playlist(model.id))
-                                }
-                            }
-                        }
-                    }
-                    item {
-                        ItemSubTitle(stringResource(R.string.playlist_square))
-                    }
-                    item {
-                        LazyRow(
-                            contentPadding = PaddingValues(horizontal = horizontalMargin),
-                            horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2),
-                        ) {
-                            items(playlistSquare) { model ->
-                                PlaylistItem(title = model.name, coverUrl = model.picUrl) {
-                                    navController.navigate(BrowseScreenDestination.Playlist(model.id))
-                                }
-                            }
-                        }
-                    }
-                    item {
-                        ItemSubTitle(stringResource(R.string.recommend_song))
-                    }
-                    items(recommendSongs.size) {
-                        SongItem(recommendSongs[it]) {
-                            PlayManager.loadPlaylist(recommendSongs, it)
-                            PlayManager.play()
-                        }
+fun BrowseScreen(
+    mainNavController: NavController<ScreenDestination>,
+    browseViewModel: BrowseViewModel = viewModel()
+) {
+    val bannerItems by browseViewModel.banners.observeAsState(listOf())
+    val recommendSongs by browseViewModel.recommendSongs.observeAsState(listOf())
+    val recommendPlaylist by browseViewModel.recommendPlaylist.observeAsState(listOf())
+    val playlistSquare by browseViewModel.playlistSquare.observeAsState(listOf())
+    LazyColumn {
+        item {
+            ItemTitle(stringResource(R.string.browse))
+        }
+        item {
+            HorizontalPager(count = bannerItems.size) {
+                val model = bannerItems[it]
+                BannerItem(typeTitle = model.typeTitle, bannerUrl = model.pic)
+            }
+        }
+        item {
+            ItemSubTitle(stringResource(R.string.recommend_playlist))
+        }
+        item {
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = horizontalMargin),
+                horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2),
+            ) {
+                items(recommendPlaylist) { model ->
+                    PlaylistItem(title = model.name, coverUrl = model.picUrl) {
+                        mainNavController.navigate(ScreenDestination.Playlist(model.id))
                     }
                 }
             }
-            is BrowseScreenDestination.Playlist -> {
-                PlaylistScreen(navController, it.id)
+        }
+        item {
+            ItemSubTitle(stringResource(R.string.playlist_square))
+        }
+        item {
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = horizontalMargin),
+                horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2),
+            ) {
+                items(playlistSquare) { model ->
+                    PlaylistItem(title = model.name, coverUrl = model.picUrl) {
+                        mainNavController.navigate(ScreenDestination.Playlist(model.id))
+                    }
+                }
+            }
+        }
+        item {
+            ItemSubTitle(stringResource(R.string.recommend_song))
+        }
+        items(recommendSongs.size) {
+            SongItem(recommendSongs[it]) {
+                PlayManager.loadPlaylist(recommendSongs, it)
+                PlayManager.play()
             }
         }
     }

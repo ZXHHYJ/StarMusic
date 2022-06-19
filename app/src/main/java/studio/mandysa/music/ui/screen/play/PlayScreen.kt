@@ -1,5 +1,6 @@
 package studio.mandysa.music.ui.screen.play
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -21,6 +22,7 @@ import androidx.lifecycle.map
 import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.KenBurns
+import studio.mandysa.music.ui.common.PanelState
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.navHeight
 import studio.mandysa.music.ui.theme.translucentWhite
@@ -41,7 +43,7 @@ val PlayScreenDestination.tabIcon
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun PlayScreen() {
+fun PlayScreen(panelState: PanelState, function: (PanelState) -> Unit) {
     val navController = rememberNavController(startDestination = PlayScreenDestination.Main)
     Box {
         val coverUrl by PlayManager.changeMusicLiveData().map {
@@ -77,6 +79,9 @@ fun PlayScreen() {
                     .fillMaxWidth()
                     .weight(1.0f)
             ) {
+                BackHandler(panelState == PanelState.EXPANDED) {
+                    function.invoke(PanelState.COLLAPSED)
+                }
                 NavBackHandler(navController)
                 AnimatedNavHost(navController) {
                     when (it) {

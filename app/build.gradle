@@ -57,8 +57,8 @@ dependencies {
     implementation "io.coil-kt:coil-compose:2.1.0"
     // 随机放大图片 https://github.com/flavioarfaria/KenBurnsView
     implementation 'com.flaviofaria:kenburnsview:1.0.7'
-    // 网络请求库 https://gitee.com/liuxiaoliu66/anna
-    implementation 'com.gitee.liuxiaoliu66:anna:2.4.0-beta01'
+    // 网络请求库 https://gitee.com/ZXHHYJ/anna
+    implementation 'com.gitee.ZXHHYJ:anna:2.4.0-beta02'
 
     implementation "com.github.kyant0:color:2022.2-dev01"
 

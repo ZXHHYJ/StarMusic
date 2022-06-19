@@ -1,0 +1,22 @@
+package studio.mandysa.music.ui.screen
+
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+sealed class ScreenDestination : Parcelable {
+
+    @Parcelize
+    object Main : ScreenDestination()
+
+    @Parcelize
+    data class Playlist(val id: String) : ScreenDestination()
+
+    @Parcelize
+    data class Like(val id: String) : ScreenDestination()
+
+    @Parcelize
+    object Setting : ScreenDestination()
+
+    @Parcelize
+    object About : ScreenDestination()
+}

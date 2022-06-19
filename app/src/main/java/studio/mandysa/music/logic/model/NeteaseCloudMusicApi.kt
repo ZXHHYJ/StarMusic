@@ -63,15 +63,6 @@ interface NeteaseCloudMusicApi {
         @Query("id") id: String
     ): PlaylistInfoModel
 
-    //登录
-    @Post("login/cellphone")
-    @FormUrlEncoded
-    fun login(
-        @Field("phone") phone: String?,
-        @Field("password") password: String?,
-        @Query("timestamp") timestamp: Long = System.currentTimeMillis()
-    ): LoginModel
-
     @Get("user/playlist")
     @Path("playlist")
     fun getUserPlaylist(@Query("uid") uid: String = userId()): List<UserPlaylist>
@@ -133,4 +124,21 @@ interface NeteaseCloudMusicApi {
     fun getAlbumContent(
         @Query("id") id: String
     ): AlbumContentModel
+
+    //二维码key生成接口
+    // https://neteasecloudmusicapi.vercel.app/#/?id=_1-%e4%ba%8c%e7%bb%b4%e7%a0%81-key-%e7%94%9f%e6%88%90%e6%8e%a5%e5%8f%a3
+    @Get("login/qr/key")
+    @Path("data/unikey")
+    fun getQRKey(@Query("timestamp") timestamp: Long = System.currentTimeMillis()): String
+
+    //二维码生成接口
+    // https://neteasecloudmusicapi.vercel.app/#/?id=_2-%e4%ba%8c%e7%bb%b4%e7%a0%81%e7%94%9f%e6%88%90%e6%8e%a5%e5%8f%a3
+    @Get("login/qr/create")
+    @Path("data/qrimg")
+    fun getQRImg(@Query("key") key: String, @Query("qrimg") qrimg: Boolean = true): String
+
+    // 二维码检测扫码状态接口
+    // https://neteasecloudmusicapi.vercel.app/#/?id=_3-%e4%ba%8c%e7%bb%b4%e7%a0%81%e6%a3%80%e6%b5%8b%e6%89%ab%e7%a0%81%e7%8a%b6%e6%80%81%e6%8e%a5%e5%8f%a3
+    @Get("login/qr/check")
+    fun check(@Query("key") key: String,@Query("timestamp") timestamp: Long = System.currentTimeMillis()): CheckModel
 }

@@ -8,5 +8,8 @@ import studio.mandysa.music.logic.model.NeteaseCloudMusicApi
  *
  */
 val api by lazy {
-    Anna2.build().baseUrl("http://cloud-music.pl-fe.cn/").create(NeteaseCloudMusicApi::class.java)
+    Anna2
+        .build()
+        .baseUrl(BASE_URL)
+        .create(NeteaseCloudMusicApi::class.java)
 }
