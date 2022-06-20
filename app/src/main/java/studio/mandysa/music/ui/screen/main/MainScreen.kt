@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Contactless
 import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -54,14 +53,12 @@ import studio.mandysa.music.ui.theme.neutralColor
  */
 enum class BottomNavigationDestination {
     Browse,
-    Search,
     Me,
 }
 
 val BottomNavigationDestination.tabIcon
     get() = when (this) {
         BottomNavigationDestination.Browse -> Icons.Rounded.Contactless
-        BottomNavigationDestination.Search -> Icons.Rounded.Search
         BottomNavigationDestination.Me -> Icons.Rounded.Person
     }
 
@@ -154,6 +151,7 @@ fun MainScreen() {
     )
 
     SlidingPanel(
+        modifier = Modifier.background(MaterialTheme.colorScheme.background),
         panelHeight = 0.dp,
         panelStateChange = {
             panelState = it
@@ -233,13 +231,6 @@ fun MainScreen() {
                                             paddingValues = padding
                                         )
                                     }
-                                    BottomNavigationDestination.Search -> {
-                                        SearchScreen(
-                                            navController,
-                                            dialogNavController,
-                                            paddingValues = padding
-                                        )
-                                    }
                                     BottomNavigationDestination.Me -> {
                                         MeScreen(
                                             navController,
@@ -249,6 +240,13 @@ fun MainScreen() {
                                     }
                                 }
                             }
+                        }
+                        ScreenDestination.Search -> {
+                            SearchScreen(
+                                navController,
+                                dialogNavController,
+                                paddingValues = padding
+                            )
                         }
                         is ScreenDestination.Like -> {
                             LikeScreen(

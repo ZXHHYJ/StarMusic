@@ -7,6 +7,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
@@ -16,9 +17,14 @@ import studio.mandysa.music.ui.theme.cornerShape
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CardAsyncImage(size: Dp, url: String, onClick: (() -> Unit)? = null) {
+fun CardAsyncImage(
+    shape: Shape = cornerShape,
+    size: Dp,
+    url: String,
+    onClick: (() -> Unit)? = null
+) {
     Card(
-        shape = cornerShape,
+        shape = shape,
         modifier = Modifier
             .size(size)
     ) {

@@ -23,6 +23,6 @@ fun ItemSubTitle(title: String = "默认标题") {
         fontWeight = FontWeight.Bold,
         modifier = Modifier
             .padding(horizontal = horizontalMargin)
-            .padding(top = 30.dp, bottom = verticalMargin)
+            .padding(top = 25.dp, bottom = verticalMargin)
     )
 }

@@ -19,19 +19,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.AsyncImage
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
 import studio.mandysa.music.logic.model.UserModel
+import studio.mandysa.music.ui.common.CardAsyncImage
 import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.ItemTitle
 import studio.mandysa.music.ui.item.PlaylistItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
+import studio.mandysa.music.ui.theme.cornerShape
 import studio.mandysa.music.ui.theme.horizontalMargin
-import studio.mandysa.music.ui.theme.round
 
 @Composable
 fun MeScreen(
@@ -103,7 +103,7 @@ fun MeScreen(
 private fun UserModel.InfoCard() {
     Card(
         modifier = Modifier.padding(horizontal = horizontalMargin),
-        shape = RoundedCornerShape(round)
+        shape = cornerShape
     ) {
         Row(
             modifier = Modifier
@@ -112,18 +112,7 @@ private fun UserModel.InfoCard() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(modifier = Modifier.padding(horizontal = 10.dp)) {
-                Card(
-                    modifier = Modifier
-                        .size(70.dp),
-                    shape = RoundedCornerShape(35.dp)
-                ) {
-                    AsyncImage(
-                        model = avatarUrl,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxSize()
-                    )
-                }
+                CardAsyncImage(shape = RoundedCornerShape(35.dp), size = 70.dp, url = avatarUrl)
             }
             Column {
                 Text(text = nickname)

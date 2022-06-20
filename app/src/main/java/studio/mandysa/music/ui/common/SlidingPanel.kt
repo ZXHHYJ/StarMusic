@@ -32,7 +32,10 @@ fun SlidingPanel(
     panel: @Composable ((PanelState) -> Unit) -> Unit
 ) {
     //0开1关
-    BoxWithConstraints(modifier = modifier, contentAlignment = Alignment.BottomCenter) {
+    BoxWithConstraints(
+        modifier = modifier,
+        contentAlignment = Alignment.BottomCenter
+    ) {
         val swipeableState = rememberSwipeableState(PanelState.COLLAPSED)
         val sizePx = with(LocalDensity.current) { (maxHeight - panelHeight).toPx() }
         val anchors = mapOf(0f to PanelState.EXPANDED, sizePx to PanelState.COLLAPSED)

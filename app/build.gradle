@@ -68,7 +68,7 @@ dependencies {
 
     implementation "dev.olshevski.navigation:reimagined:1.1.0"
 
-    implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
     implementation "com.google.accompanist:accompanist-placeholder-material:$accompanist_version"
 

@@ -9,6 +9,9 @@ sealed class ScreenDestination : Parcelable {
     object Main : ScreenDestination()
 
     @Parcelize
+    object Search : ScreenDestination()
+
+    @Parcelize
     data class Playlist(val id: String) : ScreenDestination()
 
     @Parcelize

@@ -31,7 +31,11 @@ val translucentWhite = Color(0x80FFFFFF)
 
 //dialog背景色
 val dialogBackground: Color
-    @Composable get() = 96.accent2 withNight 10.accent2
+    @Composable get() = 94.accent2 withNight 10.accent2
+
+//内容颜色
+val contentColor: Color
+    @Composable get() = 90.accent2 withNight 20.accent2
 
 //bottomBarItem背景颜色
 val neutralColor: Color
