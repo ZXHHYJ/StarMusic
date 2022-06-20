@@ -76,6 +76,7 @@ fun MeScreen(
         }
         item {
             MenuItem(
+                modifier = Modifier.padding(horizontal = horizontalMargin),
                 title = stringResource(id = R.string.setting),
                 imageVector = Icons.Rounded.Favorite
             ) {
@@ -84,6 +85,7 @@ fun MeScreen(
         }
         item {
             MenuItem(
+                modifier = Modifier.padding(horizontal = horizontalMargin),
                 title = stringResource(id = R.string.about),
                 imageVector = Icons.Rounded.Info
             ) {

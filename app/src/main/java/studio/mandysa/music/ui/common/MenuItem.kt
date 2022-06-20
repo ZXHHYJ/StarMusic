@@ -1,9 +1,7 @@
 package studio.mandysa.music.ui.common
 
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -13,21 +11,19 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.verticalMargin
 
 @Composable
 fun MenuItem(
+    modifier: Modifier = Modifier,
     title: String,
     imageVector: ImageVector,
     enabled: Boolean = true,
     onClick: () -> Unit
 ) {
     FilledTonalButton(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(55.dp)
-            .padding(horizontal = horizontalMargin), enabled = enabled,
+        modifier = modifier
+            .height(50.dp), enabled = enabled,
         onClick = onClick
     ) {
         Text(

@@ -40,7 +40,7 @@ fun LikeScreen(
         TopAppBar(
             modifier = Modifier.fillMaxWidth(),
             backgroundColor = Color.Transparent,
-            contentColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onBackground,
             elevation = 0.dp
         ) {
             IconButton(onClick = { mainNavController.pop() }) {

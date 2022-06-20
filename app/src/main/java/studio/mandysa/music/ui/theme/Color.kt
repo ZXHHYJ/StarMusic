@@ -19,29 +19,27 @@ val Blue40 = Color(0xFF1E40FF)
 val Blue80 = Color(0xFFBBC3FF)
 val Blue90 = Color(0xFFDDE0FF)
 
-/**
- * background的反色
- */
+//字体颜色
 val textColor: Color
     @Composable get() = MaterialTheme.colorScheme.onBackground
 
+//灰色
 val textColorLight = Color(0xFF7A7A7A)
 
+//半透明白色
 val translucentWhite = Color(0x80FFFFFF)
 
-val LocalTonalPalettes = staticCompositionLocalOf {
-    Color.Blue.toHct().generateTonalPalettes()
-}
-
+//dialog背景色
 val dialogBackground: Color
     @Composable get() = 96.accent2 withNight 10.accent2
 
+//bottomBarItem背景颜色
 val neutralColor: Color
     @Composable get() = 82.accent1 withNight 15.accent2
 
+//bottomBarItem指示颜色
 val indicatorColor: Color
     @Composable get() = 90.accent2 withNight 20.accent2
-
 
 fun Hct.toColor(): Color {
     val srgb = toSrgb().clamp()
@@ -50,6 +48,10 @@ fun Hct.toColor(): Color {
 
 fun Color.toHct(): Hct {
     return Srgb(red.toDouble(), green.toDouble(), blue.toDouble()).toHct(type = HctType.Cam16)
+}
+
+val LocalTonalPalettes = staticCompositionLocalOf {
+    Color.Blue.toHct().generateTonalPalettes()
 }
 
 inline val Number.accent1

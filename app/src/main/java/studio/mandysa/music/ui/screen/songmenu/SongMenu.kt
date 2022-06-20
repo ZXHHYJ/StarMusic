@@ -87,6 +87,7 @@ fun SongMenu(
             }
             item {
                 MenuItem(
+                    modifier = Modifier.padding(horizontal = horizontalMargin),
                     title = stringResource(id = if (isLike == true) R.string.remove_like else R.string.add_like),
                     imageVector = if (isLike == true) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
                     enabled = isLike != null
@@ -96,6 +97,7 @@ fun SongMenu(
             }
             item {
                 MenuItem(
+                    modifier = Modifier.padding(horizontal = horizontalMargin),
                     title = "${stringResource(id = R.string.album)}:${model.album.name}",
                     imageVector = Icons.Rounded.Album
                 ) {
@@ -104,6 +106,7 @@ fun SongMenu(
             }
             item {
                 MenuItem(
+                    modifier = Modifier.padding(horizontal = horizontalMargin),
                     title = stringResource(id = R.string.next_play),
                     imageVector = Icons.Rounded.Add
                 ) {
@@ -112,6 +115,7 @@ fun SongMenu(
             }
             items(model.artist) {
                 MenuItem(
+                    modifier = Modifier.padding(horizontal = horizontalMargin),
                     title = "${stringResource(id = R.string.singer)}:${it.name}",
                     imageVector = Icons.Rounded.Person
                 ) {
