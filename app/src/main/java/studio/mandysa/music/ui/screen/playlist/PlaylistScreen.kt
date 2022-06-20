@@ -1,6 +1,7 @@
 package studio.mandysa.music.ui.screen.playlist
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
@@ -29,6 +30,7 @@ import androidx.paging.compose.itemsIndexed
 import coil.compose.AsyncImage
 import com.google.accompanist.placeholder.material.placeholder
 import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.R
 import studio.mandysa.music.logic.ktx.playManager
@@ -47,12 +49,12 @@ fun PlaylistScreen(
     dialogNavController: NavController<DialogDestination>,
     paddingValues: PaddingValues,
     id: String,
-    playlist: PlaylistModel = viewModel(factory = viewModelFactory {
+    playlistModel: PlaylistModel = viewModel(factory = viewModelFactory {
         addInitializer(PlaylistModel::class) { return@addInitializer PlaylistModel(id) }
     })
 ) {
-    val playlistInfo by playlist.playlistInfoModel.observeAsState()
-    val songs = playlist.songs.collectAsLazyPagingItems()
+    val playlistInfo by playlistModel.playlistInfoModel.observeAsState()
+    val songs = playlistModel.songs.collectAsLazyPagingItems()
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
             modifier = Modifier.fillMaxWidth(),
@@ -100,6 +102,11 @@ fun PlaylistScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = horizontalMargin)
+                            .clickable {
+                                playlistInfo?.description?.let {
+                                    dialogNavController.navigate(DialogDestination.Message(it))
+                                }
+                            }
                             .placeholder(playlistInfo == null),
                         text = playlistInfo?.description ?: "",
                         fontSize = 15.sp,
@@ -135,7 +142,7 @@ fun PlaylistScreen(
                         title = stringResource(id = R.string.more),
                         imageVector = Icons.Rounded.MoreVert
                     ) {
-
+                        dialogNavController.navigate(DialogDestination.PlaylistMenu(id))
                     }
                 }
             }

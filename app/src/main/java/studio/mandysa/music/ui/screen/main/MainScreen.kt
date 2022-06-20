@@ -38,8 +38,10 @@ import studio.mandysa.music.ui.screen.me.AboutScreen
 import studio.mandysa.music.ui.screen.me.MeScreen
 import studio.mandysa.music.ui.screen.me.SettingScreen
 import studio.mandysa.music.ui.screen.me.like.LikeScreen
+import studio.mandysa.music.ui.screen.message.Message
 import studio.mandysa.music.ui.screen.play.PlayScreen
 import studio.mandysa.music.ui.screen.playlist.PlaylistScreen
+import studio.mandysa.music.ui.screen.playlistmenu.PlaylistMenu
 import studio.mandysa.music.ui.screen.search.SearchScreen
 import studio.mandysa.music.ui.screen.singer.SingerScreen
 import studio.mandysa.music.ui.screen.songmenu.SongMenu
@@ -134,7 +136,10 @@ fun MainScreen() {
                     SongMenu(navController, dialogNavController, model = destination.model)
                 }
                 is DialogDestination.PlaylistMenu -> {
-
+                    PlaylistMenu(navController, dialogNavController, id = destination.id)
+                }
+                is DialogDestination.Message -> {
+                    Message(dialogNavController, message = destination.message)
                 }
             }
         }

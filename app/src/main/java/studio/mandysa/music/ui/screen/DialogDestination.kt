@@ -11,4 +11,7 @@ sealed class DialogDestination : Parcelable {
 
     @Parcelize
     data class PlaylistMenu(val id: String) : DialogDestination()
+
+    @Parcelize
+    data class Message(val message: String) : DialogDestination()
 }

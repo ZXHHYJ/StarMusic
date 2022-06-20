@@ -68,10 +68,10 @@ fun SongItem(
             tint = textColor,
             contentDescription = null,
             modifier = Modifier
-                .padding(end = horizontalMargin)
                 .clickable {
                     dialogNavController.navigate(DialogDestination.SongMenu(song))
                 }
         )
+        Spacer(modifier = Modifier.padding(end = horizontalMargin))
     }
 }

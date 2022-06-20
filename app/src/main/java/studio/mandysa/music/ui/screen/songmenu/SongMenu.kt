@@ -50,11 +50,7 @@ fun SongMenu(
         shape = cornerShape,
         colors = CardDefaults.cardColors(containerColor = dialogBackground)
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .navigationBarsPadding()
-                .background(dialogBackground)
-        ) {
+        LazyColumn {
             item {
                 Box(
                     modifier = Modifier.padding(
