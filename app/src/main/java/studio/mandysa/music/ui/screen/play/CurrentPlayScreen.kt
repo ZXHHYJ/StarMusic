@@ -14,16 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
+import studio.mandysa.music.ui.common.CardAsyncImage
 import studio.mandysa.music.ui.common.SeekBar
 import studio.mandysa.music.ui.theme.round
 import studio.mandysa.music.ui.theme.translucentWhite
@@ -48,22 +46,19 @@ fun CurrentPlayScreen() {
 
 @Composable
 private fun AlbumCover() {
+    val configuration = LocalConfiguration.current
+    val screenWidth =
+        if (configuration.screenWidthDp.dp <= configuration.screenHeightDp.dp) configuration.screenWidthDp.dp else configuration.screenHeightDp.dp
     Card(
-        modifier = Modifier.size(LocalConfiguration.current.screenWidthDp.dp * 0.8f),
+        modifier = Modifier.size(screenWidth * 0.8f),
         elevation = 5.dp,
         shape = RoundedCornerShape(round)
     ) {
         val coverUrl by PlayManager.changeMusicLiveData().map { return@map it.coverUrl }
             .observeAsState()
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(coverUrl)
-                .crossfade(true)
-                .build(),
-            modifier = Modifier
-                .fillMaxSize(),
-            contentDescription = null
-        )
+        coverUrl?.let {
+            CardAsyncImage(size = screenWidth * 0.8f, url = it)
+        }
     }
 }
 

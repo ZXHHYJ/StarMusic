@@ -7,6 +7,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import coil.compose.AsyncImage
@@ -23,7 +24,8 @@ fun CardAsyncImage(size: Dp, url: String, onClick: (() -> Unit)? = null) {
     ) {
         AsyncImage(
             modifier = Modifier
-                .fillMaxSize().run {
+                .fillMaxSize()
+                .run {
                     if (onClick != null)
                         clickable(onClick = onClick)
                     else this
@@ -32,6 +34,7 @@ fun CardAsyncImage(size: Dp, url: String, onClick: (() -> Unit)? = null) {
                 .data(url)
                 .crossfade(true)
                 .build(),
+            contentScale = ContentScale.Crop,
             contentDescription = null,
         )
     }
