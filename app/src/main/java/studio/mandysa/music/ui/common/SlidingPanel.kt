@@ -8,6 +8,7 @@ import androidx.compose.material.FractionalThreshold
 import androidx.compose.material.rememberSwipeableState
 import androidx.compose.material.swipeable
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,10 +43,13 @@ fun SlidingPanel(
         val scope = rememberCoroutineScope()
         val animateTo: (PanelState) -> Unit = {
             scope.launch {
+                panelStateChange.invoke(it)
                 swipeableState.animateTo(it)
             }
         }
-        panelStateChange.invoke(swipeableState.currentValue)
+        LaunchedEffect(swipeableState.currentValue) {
+            panelStateChange.invoke(swipeableState.currentValue)
+        }
         Box(
             modifier = Modifier
                 .fillMaxSize(), contentAlignment = Alignment.BottomCenter

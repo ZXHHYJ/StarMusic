@@ -27,7 +27,7 @@ import studio.mandysa.music.ui.theme.translucentWhite
 import studio.mandysa.music.ui.theme.verticalMargin
 
 @Composable
-fun CurrentPlayScreen() {
+fun NowPlayScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()

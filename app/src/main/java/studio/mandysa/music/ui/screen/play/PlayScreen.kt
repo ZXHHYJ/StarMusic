@@ -43,7 +43,7 @@ val PlayScreenDestination.tabIcon
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun PlayScreen(panelState: PanelState, function: (PanelState) -> Unit) {
+fun PlayScreen(panelState: PanelState?, function: (PanelState) -> Unit) {
     val navController = rememberNavController(startDestination = PlayScreenDestination.Main)
     Box {
         val coverUrl by PlayManager.changeMusicLiveData().map {
@@ -54,8 +54,9 @@ fun PlayScreen(panelState: PanelState, function: (PanelState) -> Unit) {
                 .fillMaxSize()
                 .background(Color.Gray),
             imageUrl = coverUrl,
-            paused = false
+            paused = panelState == PanelState.COLLAPSED
         )
+        println(panelState == PanelState.COLLAPSED)
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -87,7 +88,7 @@ fun PlayScreen(panelState: PanelState, function: (PanelState) -> Unit) {
                 AnimatedNavHost(navController) {
                     when (it) {
                         PlayScreenDestination.Main -> {
-                            CurrentPlayScreen()
+                            NowPlayScreen()
                         }
                         PlayScreenDestination.Lyric -> {
                             LyricScreen()
@@ -130,7 +131,6 @@ fun PlayScreen(panelState: PanelState, function: (PanelState) -> Unit) {
                                 return@BottomNavigationItem
                             }
                             if (!navController.moveToTop { it == screen }) {
-                                // if there is no existing instance, add it
                                 navController.navigate(screen)
                             }
                         }

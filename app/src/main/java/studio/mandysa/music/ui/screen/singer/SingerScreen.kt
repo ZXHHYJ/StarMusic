@@ -1,6 +1,5 @@
 package studio.mandysa.music.ui.screen.singer
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,8 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import dev.olshevski.navigation.reimagined.NavController
-import dev.olshevski.navigation.reimagined.pop
+import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.R
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
@@ -54,10 +52,12 @@ fun SingerScreen(
                 Icon(Icons.Rounded.ArrowBack, null)
             }
         }
-        var selectedIndex by remember {
-            mutableStateOf(0)
-        }
         Column {
+            var selectedIndex by remember {
+                mutableStateOf(0)
+            }
+            val navController =
+                rememberNavController(startDestination = SingerScreenTabDestination.PopularSong)
             TabRow(
                 selectedTabIndex = selectedIndex,
                 containerColor = Color.Transparent,
@@ -75,10 +75,24 @@ fun SingerScreen(
                         text = {
                             Text(text = destination.tabName)
                         },
-                        onClick = { selectedIndex = index })
+                        onClick = {
+                            selectedIndex = index
+                            if (!navController.moveToTop { it == destination }) {
+                                navController.navigate(destination)
+                            }
+                        })
                 }
             }
-            Text("current index : $selectedIndex")
+            NavHost(navController) {
+                when (it) {
+                    SingerScreenTabDestination.PopularSong -> {
+
+                    }
+                    SingerScreenTabDestination.AllSongs -> {
+
+                    }
+                }
+            }
         }
     }
 }

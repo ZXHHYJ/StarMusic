@@ -121,7 +121,7 @@ fun MainScreen() {
     )
 
     var panelState by rememberSaveable {
-        mutableStateOf(PanelState.COLLAPSED)
+        mutableStateOf<PanelState?>(null)
     }
 
     DialogNavHost(dialogNavController) { destination ->
@@ -173,7 +173,7 @@ fun MainScreen() {
                         enter = expandVertically(),
                         exit = shrinkVertically()
                     ) {
-                        ControllerScreen {
+                        ControllerScreen(panelState) {
                             it.invoke(PanelState.EXPANDED)
                         }
                     }

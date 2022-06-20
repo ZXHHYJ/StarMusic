@@ -23,12 +23,13 @@ import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.CardAsyncImage
 import studio.mandysa.music.ui.common.KenBurns
+import studio.mandysa.music.ui.common.PanelState
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.neutralColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ControllerScreen(onClick: () -> Unit) {
+fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
     val controlBarHeight = 50.dp
     val coverSize = 55.dp
     Box(
@@ -66,7 +67,7 @@ fun ControllerScreen(onClick: () -> Unit) {
                                 .clickable(onClick = onClick)
                                 .background(Color.Gray),
                             imageUrl = coverUrl,
-                            paused = false
+                            paused = panelState != PanelState.COLLAPSED
                         )
                         Row(
                             modifier = Modifier
