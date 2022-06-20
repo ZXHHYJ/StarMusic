@@ -48,12 +48,12 @@ fun SongMenu(
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = cornerShape,
-        colors = CardDefaults.cardColors(containerColor = background)
+        colors = CardDefaults.cardColors(containerColor = dialogBackground)
     ) {
         LazyColumn(
             modifier = Modifier
                 .navigationBarsPadding()
-                .background(background)
+                .background(dialogBackground)
         ) {
             item {
                 Box(
@@ -96,7 +96,7 @@ fun SongMenu(
             }
             item {
                 MenuItem(
-                    title = stringResource(id = R.string.album),
+                    title = "${stringResource(id = R.string.album)}:${model.album.name}",
                     imageVector = Icons.Rounded.Album
                 ) {
 
@@ -112,7 +112,7 @@ fun SongMenu(
             }
             items(model.artist) {
                 MenuItem(
-                    title = "${stringResource(id = R.string.singer)}：${it.name}",
+                    title = "${stringResource(id = R.string.singer)}:${it.name}",
                     imageVector = Icons.Rounded.Person
                 ) {
                     dialogNavController.popAll()

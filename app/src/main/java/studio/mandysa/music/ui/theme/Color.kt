@@ -1,5 +1,6 @@
 package studio.mandysa.music.ui.theme
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -32,14 +33,15 @@ val LocalTonalPalettes = staticCompositionLocalOf {
     Color.Blue.toHct().generateTonalPalettes()
 }
 
-val background: Color
-    @Composable get() = 97.accent2
+val dialogBackground: Color
+    @Composable get() = 96.accent2 withNight 10.accent2
 
 val neutralColor: Color
-    @Composable get() = 86.accent1
+    @Composable get() = 82.accent1 withNight 15.accent2
 
 val indicatorColor: Color
-    @Composable get() = 90.accent2
+    @Composable get() = 90.accent2 withNight 20.accent2
+
 
 fun Hct.toColor(): Color {
     val srgb = toSrgb().clamp()
@@ -60,3 +62,7 @@ inline val Number.accent2
         keyColor.transform(toDouble(), style.accent2Spec).toColor()
     }
 
+@Composable
+infix fun Color.withNight(nightColor: Color): Color {
+    return if (isSystemInDarkTheme()) nightColor else this
+}

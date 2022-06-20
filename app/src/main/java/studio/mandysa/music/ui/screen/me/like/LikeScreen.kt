@@ -1,6 +1,7 @@
 package studio.mandysa.music.ui.screen.me.like
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.IconButton
@@ -28,6 +29,7 @@ import studio.mandysa.music.ui.screen.ScreenDestination
 fun LikeScreen(
     mainNavController: NavController<ScreenDestination>,
     dialogNavController: NavController<DialogDestination>,
+    paddingValues: PaddingValues,
     id: String,
     likeViewModel: LikeViewModel = viewModel(factory = viewModelFactory {
         addInitializer(LikeViewModel::class) { return@addInitializer LikeViewModel(id) }

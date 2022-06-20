@@ -83,6 +83,7 @@ fun PlayScreen(panelState: PanelState, function: (PanelState) -> Unit) {
                     function.invoke(PanelState.COLLAPSED)
                 }
                 NavBackHandler(navController)
+                //处理返回逻辑
                 AnimatedNavHost(navController) {
                     when (it) {
                         PlayScreenDestination.Main -> {

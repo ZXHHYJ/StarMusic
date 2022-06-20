@@ -38,6 +38,7 @@ import studio.mandysa.music.ui.theme.round
 fun PlaylistScreen(
     mainNavController: NavController<ScreenDestination>,
     dialogNavController: NavController<DialogDestination>,
+    paddingValues: PaddingValues,
     id: String,
     playlist: PlaylistModel = viewModel(factory = viewModelFactory {
         addInitializer(PlaylistModel::class) { return@addInitializer PlaylistModel(id) }
@@ -108,6 +109,9 @@ fun PlaylistScreen(
                     PlayManager.loadPlaylist(songs.itemSnapshotList.items, pos)
                     PlayManager.play()
                 }
+            }
+            item {
+                Spacer(modifier = Modifier.padding(paddingValues))
             }
         }
     }

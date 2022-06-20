@@ -5,6 +5,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Contactless
@@ -30,6 +31,7 @@ import studio.mandysa.music.ui.common.PanelState
 import studio.mandysa.music.ui.common.SlidingPanel
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
+import studio.mandysa.music.ui.screen.album.AlbumScreen
 import studio.mandysa.music.ui.screen.browse.BrowseScreen
 import studio.mandysa.music.ui.screen.controller.ControllerScreen
 import studio.mandysa.music.ui.screen.me.AboutScreen
@@ -39,6 +41,7 @@ import studio.mandysa.music.ui.screen.me.like.LikeScreen
 import studio.mandysa.music.ui.screen.play.PlayScreen
 import studio.mandysa.music.ui.screen.playlist.PlaylistScreen
 import studio.mandysa.music.ui.screen.search.SearchScreen
+import studio.mandysa.music.ui.screen.singer.SingerScreen
 import studio.mandysa.music.ui.screen.songmenu.SongMenu
 import studio.mandysa.music.ui.theme.indicatorColor
 import studio.mandysa.music.ui.theme.navHeight
@@ -63,41 +66,43 @@ val BottomNavigationDestination.tabIcon
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppNavigationDrawer(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     drawerContent: @Composable () -> Unit,
     controllerBar: @Composable () -> Unit,
     bottomBar: @Composable () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
-    BoxWithConstraints {
+    BoxWithConstraints(modifier = modifier) {
         val bigScreen = maxWidth >= 600.dp
-        Row(modifier = modifier) {
-            Box(modifier.fillMaxHeight()) {
-                if (bigScreen)
-                    drawerContent.invoke()
-            }
-            Scaffold(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .weight(1.0f),
-                content = content,
-                bottomBar = {
-                    Column {
-                        controllerBar.invoke()
-                        if (!bigScreen)
-                            bottomBar.invoke()
-                        Box(
-                            modifier = Modifier
-                                .height(LocalDensity.current.run {
-                                    WindowInsets.navigationBars
-                                        .getBottom(this)
-                                        .toDp()
-                                })
-                                .fillMaxWidth()
-                                .background(neutralColor)
-                        )
-                    }
+        Column(modifier = Modifier.fillMaxSize()) {
+            Row(modifier = Modifier.weight(1.0f)) {
+                Box(modifier.fillMaxHeight()) {
+                    if (bigScreen)
+                        drawerContent.invoke()
                 }
+                Scaffold(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .weight(1.0f),
+                    content = content,
+                    bottomBar = {
+                        Column {
+                            controllerBar.invoke()
+                            if (!bigScreen)
+                                bottomBar.invoke()
+                        }
+                    }
+                )
+            }
+            Box(
+                modifier = Modifier
+                    .height(LocalDensity.current.run {
+                        WindowInsets.navigationBars
+                            .getBottom(this)
+                            .toDp()
+                    })
+                    .fillMaxWidth()
+                    .background(neutralColor)
             )
         }
     }
@@ -132,9 +137,11 @@ fun MainScreen() {
         }
     }
 
-    rememberSystemUiController().setSystemBarsColor(
+    val systemUiController = rememberSystemUiController()
+
+    systemUiController.setSystemBarsColor(
         Color.Transparent,
-        panelState != PanelState.EXPANDED,
+        if (panelState == PanelState.EXPANDED) false else !isSystemInDarkTheme(),
         isNavigationBarContrastEnforced = false
     )
 
@@ -202,9 +209,10 @@ fun MainScreen() {
                     }
                 }
             ) { padding ->
-                if (panelState != PanelState.EXPANDED)
+                if (panelState != PanelState.EXPANDED) {
                     NavBackHandler(navController)
-                //面板展开时不再处理这里的导航
+                    //面板展开时不再处理这里的导航
+                }
                 NavHost(navController) { screenDestination ->
                     when (screenDestination) {
                         ScreenDestination.Main -> {
@@ -234,13 +242,11 @@ fun MainScreen() {
                                 }
                             }
                         }
-                        ScreenDestination.About -> {
-                            AboutScreen()
-                        }
                         is ScreenDestination.Like -> {
                             LikeScreen(
                                 navController,
                                 dialogNavController,
+                                paddingValues = padding,
                                 id = screenDestination.id
                             )
                         }
@@ -248,8 +254,28 @@ fun MainScreen() {
                             PlaylistScreen(
                                 navController,
                                 dialogNavController,
+                                paddingValues = padding,
                                 id = screenDestination.id
                             )
+                        }
+                        is ScreenDestination.Singer -> {
+                            SingerScreen(
+                                navController,
+                                dialogNavController,
+                                paddingValues = padding,
+                                id = screenDestination.id
+                            )
+                        }
+                        is ScreenDestination.Album -> {
+                            AlbumScreen(
+                                navController,
+                                dialogNavController,
+                                paddingValues = padding,
+                                id = screenDestination.id
+                            )
+                        }
+                        ScreenDestination.About -> {
+                            AboutScreen()
                         }
                         ScreenDestination.Setting -> {
                             SettingScreen()

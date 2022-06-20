@@ -20,7 +20,7 @@ class PlaylistInfoModel {
 
     class SongList {
         @Value("id")
-        private val id = ""
+        lateinit var id: String
 
         override fun toString(): String {
             return id

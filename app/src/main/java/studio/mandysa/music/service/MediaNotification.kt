@@ -11,18 +11,18 @@ import studio.mandysa.music.MainActivity
 import studio.mandysa.music.R
 
 class MediaNotification(mService: MediaPlayService) : Notification.Builder(
-    mService, mService.getString(R.string.CHANNEL_ID)
+    mService, mService.getString(R.string.channel_id)
 ) {
 
     init {
         val manager =
             mService.getSystemService(NotificationManager::class.java)
         val notificationChannel = NotificationChannel(
-            mService.getString(R.string.CHANNEL_ID),
-            mService.getString(R.string.CHANNEL_NAME),
+            mService.getString(R.string.channel_id),
+            mService.getString(R.string.channel_name),
             NotificationManager.IMPORTANCE_LOW
         )
-        notificationChannel.description = mService.getString(R.string.CHANNEL_DESCRIPTION)
+        notificationChannel.description = mService.getString(R.string.channel_description)
         notificationChannel.enableVibration(false)
         manager.createNotificationChannel(notificationChannel)
     }

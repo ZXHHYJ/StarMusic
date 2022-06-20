@@ -18,6 +18,9 @@ sealed class ScreenDestination : Parcelable {
     data class Singer(val id: String) : ScreenDestination()
 
     @Parcelize
+    data class Album(val id: String) : ScreenDestination()
+
+    @Parcelize
     object Setting : ScreenDestination()
 
     @Parcelize

@@ -36,13 +36,12 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel()) {
     if (qrBitmap == null)
         loginViewModel.refresh()
 
-    rememberSystemUiController().apply {
-        setSystemBarsColor(
-            Color.Transparent,
-            false,
-            isNavigationBarContrastEnforced = false
-        )
-    }
+    rememberSystemUiController().setSystemBarsColor(
+        Color.Transparent,
+        false,
+        isNavigationBarContrastEnforced = false
+    )
+
     Box(
         modifier = Modifier
             .fillMaxSize(),

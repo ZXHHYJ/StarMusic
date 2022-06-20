@@ -119,7 +119,7 @@ fun BrowseScreen(
             ItemSubTitle(stringResource(R.string.recommend_song))
         }
         items(recommendSongs.size) {
-            SongItem(dialogNavController,recommendSongs[it]) {
+            SongItem(dialogNavController, recommendSongs[it]) {
                 PlayManager.loadPlaylist(recommendSongs, it)
                 PlayManager.play()
             }
