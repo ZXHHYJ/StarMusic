@@ -1,10 +1,8 @@
 package studio.mandysa.music.ui.screen.play
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,6 +20,7 @@ import androidx.lifecycle.map
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.CardAsyncImage
+import studio.mandysa.music.ui.common.RoundIcon
 import studio.mandysa.music.ui.common.SeekBar
 import studio.mandysa.music.ui.theme.round
 import studio.mandysa.music.ui.theme.translucentWhite
@@ -134,39 +133,29 @@ private fun MusicControlBar() {
         val playPauseState by PlayManager.pauseLiveData().map {
             if (it) R.drawable.ic_play else R.drawable.ic_pause
         }.observeAsState(R.drawable.ic_play)
-        Icon(
-            modifier = Modifier
-                .size(60.dp)
-                .clickable {
-                    PlayManager.skipToPrevious()
-                },
+        RoundIcon(
+            size = 60.dp,
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_previous),
             tint = Color.White,
             contentDescription = null
-        )
+        ) { PlayManager.skipToPrevious() }
         Box(modifier = Modifier.padding(horizontal = 35.dp)) {
-            Icon(
-                modifier = Modifier
-                    .size(85.dp)
-                    .clickable {
-                        if (PlayManager.pauseLiveData().value == true)
-                            PlayManager.play()
-                        else PlayManager.pause()
-                    },
+            RoundIcon(
+                size = 85.dp,
                 imageVector = ImageVector.vectorResource(id = playPauseState),
                 tint = Color.White,
                 contentDescription = null
-            )
+            ) {
+                if (PlayManager.pauseLiveData().value == true)
+                    PlayManager.play()
+                else PlayManager.pause()
+            }
         }
-        Icon(
-            modifier = Modifier
-                .size(60.dp)
-                .clickable {
-                    PlayManager.skipToNext()
-                },
+        RoundIcon(
+            size = 60.dp,
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_next),
             tint = Color.White,
             contentDescription = null
-        )
+        ) { PlayManager.skipToNext() }
     }
 }

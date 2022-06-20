@@ -8,4 +8,7 @@ import studio.mandysa.music.service.playmanager.model.MusicModel
 sealed class DialogDestination : Parcelable {
     @Parcelize
     data class SongMenu(val model: @RawValue MusicModel<*, *>) : DialogDestination()
+
+    @Parcelize
+    data class PlaylistMenu(val id: String) : DialogDestination()
 }

@@ -133,6 +133,9 @@ fun MainScreen() {
                 is DialogDestination.SongMenu -> {
                     SongMenu(navController, dialogNavController, model = destination.model)
                 }
+                is DialogDestination.PlaylistMenu -> {
+
+                }
             }
         }
     }
