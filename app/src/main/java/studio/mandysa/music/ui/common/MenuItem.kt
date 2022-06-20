@@ -17,12 +17,17 @@ import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.verticalMargin
 
 @Composable
-fun MenuItem(title: String, imageVector: ImageVector, onClick: () -> Unit) {
+fun MenuItem(
+    title: String,
+    imageVector: ImageVector,
+    enabled: Boolean = true,
+    onClick: () -> Unit
+) {
     FilledTonalButton(
         modifier = Modifier
             .fillMaxWidth()
             .height(55.dp)
-            .padding(horizontal = horizontalMargin),
+            .padding(horizontal = horizontalMargin), enabled = enabled,
         onClick = onClick
     ) {
         Text(

@@ -2,7 +2,6 @@ package studio.mandysa.music.ui.screen.play
 
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.map
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -24,7 +23,7 @@ fun LyricScreen() {
             }
         }
     }
-    Lyric(lyric = lyric, liveTime = liveTime, fadingEdgeLength = 20.dp) {
+    Lyric(lyric = lyric, liveTime = liveTime) {
         PlayManager.seekTo(it)
     }
 }

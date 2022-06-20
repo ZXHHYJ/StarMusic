@@ -21,10 +21,13 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.item.SongItem
+import studio.mandysa.music.ui.screen.DialogDestination
+import studio.mandysa.music.ui.screen.ScreenDestination
 
 @Composable
 fun LikeScreen(
-    navController: NavController<*>,
+    mainNavController: NavController<ScreenDestination>,
+    dialogNavController: NavController<DialogDestination>,
     id: String,
     likeViewModel: LikeViewModel = viewModel(factory = viewModelFactory {
         addInitializer(LikeViewModel::class) { return@addInitializer LikeViewModel(id) }
@@ -38,13 +41,13 @@ fun LikeScreen(
             contentColor = MaterialTheme.colorScheme.primary,
             elevation = 0.dp
         ) {
-            IconButton(onClick = { navController.pop() }) {
+            IconButton(onClick = { mainNavController.pop() }) {
                 Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = null)
             }
         }
         LazyColumn {
             itemsIndexed(songs) { pos, _ ->
-                SongItem(songs[pos]!!) {
+                SongItem(dialogNavController, songs[pos]!!) {
                     PlayManager.apply {
                         loadPlaylist(songs.itemSnapshotList, pos)
                         play()

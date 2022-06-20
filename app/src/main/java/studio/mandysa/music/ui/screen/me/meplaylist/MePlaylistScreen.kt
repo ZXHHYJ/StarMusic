@@ -78,7 +78,7 @@ private fun PlaylistItem(coverUrl: String, title: String, nickname: String, onCl
                 .clickable(onClick = onClick), shape = RoundedCornerShape(round)
         ) {
             Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
-                CardAsyncImage(size = 100.dp, roundSize = 0.dp, url = coverUrl)
+                CardAsyncImage(size = 100.dp, url = coverUrl)
                 Spacer(modifier = Modifier.width(5.dp))
                 Column {
                     Text(text = title, fontSize = 16.sp, color = MaterialTheme.colorScheme.primary)

@@ -41,6 +41,7 @@ class MediaPlayService : LifecycleService() {
                     PlaybackState.STATE_SKIPPING_TO_PREVIOUS -> skipToPrevious()
                     PlaybackState.STATE_STOPPED -> {
                         stopSelf()
+                        stop()
                     }
                 }
             }

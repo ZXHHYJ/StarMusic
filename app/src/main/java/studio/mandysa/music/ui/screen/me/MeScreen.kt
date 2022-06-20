@@ -28,6 +28,7 @@ import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.ItemTitle
 import studio.mandysa.music.ui.item.PlaylistItem
+import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.round
@@ -35,6 +36,8 @@ import studio.mandysa.music.ui.theme.round
 @Composable
 fun MeScreen(
     mainNavController: NavController<ScreenDestination>,
+    dialogNavController: NavController<DialogDestination>,
+    paddingValues: PaddingValues,
     meViewModel: MeViewModel = viewModel()
 ) {
     val userInfo by meViewModel.userInfo.observeAsState()
@@ -86,6 +89,9 @@ fun MeScreen(
             ) {
 
             }
+        }
+        item {
+            Spacer(modifier = Modifier.padding(paddingValues))
         }
     }
 }

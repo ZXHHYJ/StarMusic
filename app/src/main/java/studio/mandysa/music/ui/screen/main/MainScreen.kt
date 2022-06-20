@@ -1,6 +1,7 @@
 package studio.mandysa.music.ui.screen.main
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
@@ -20,12 +21,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.map
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.PanelState
 import studio.mandysa.music.ui.common.SlidingPanel
+import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.screen.browse.BrowseScreen
 import studio.mandysa.music.ui.screen.controller.ControllerScreen
@@ -36,6 +39,7 @@ import studio.mandysa.music.ui.screen.me.like.LikeScreen
 import studio.mandysa.music.ui.screen.play.PlayScreen
 import studio.mandysa.music.ui.screen.playlist.PlaylistScreen
 import studio.mandysa.music.ui.screen.search.SearchScreen
+import studio.mandysa.music.ui.screen.songmenu.SongMenu
 import studio.mandysa.music.ui.theme.indicatorColor
 import studio.mandysa.music.ui.theme.navHeight
 import studio.mandysa.music.ui.theme.neutralColor
@@ -99,20 +103,41 @@ fun AppNavigationDrawer(
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainScreen() {
     val navController =
         rememberNavController<ScreenDestination>(startDestination = ScreenDestination.Main)
+
     val bottomNavController =
         rememberNavController(startDestination = BottomNavigationDestination.Browse)
+
+    val dialogNavController = rememberNavController<DialogDestination>(
+        initialBackstack = emptyList()
+    )
+
     var panelState by rememberSaveable {
         mutableStateOf(PanelState.COLLAPSED)
     }
+
+    DialogNavHost(dialogNavController) { destination ->
+        Dialog(
+            onDismissRequest = { dialogNavController.pop() },
+        ) {
+            when (destination) {
+                is DialogDestination.SongMenu -> {
+                    SongMenu(navController, dialogNavController, model = destination.model)
+                }
+            }
+        }
+    }
+
     rememberSystemUiController().setSystemBarsColor(
         Color.Transparent,
         panelState != PanelState.EXPANDED,
         isNavigationBarContrastEnforced = false
     )
+
     SlidingPanel(
         panelHeight = 0.dp,
         panelStateChange = {
@@ -186,13 +211,25 @@ fun MainScreen() {
                             NavHost(bottomNavController) {
                                 when (it) {
                                     BottomNavigationDestination.Browse -> {
-                                        BrowseScreen(navController)
+                                        BrowseScreen(
+                                            navController,
+                                            dialogNavController,
+                                            paddingValues = padding
+                                        )
                                     }
                                     BottomNavigationDestination.Search -> {
-                                        SearchScreen(navController)
+                                        SearchScreen(
+                                            navController,
+                                            dialogNavController,
+                                            paddingValues = padding
+                                        )
                                     }
                                     BottomNavigationDestination.Me -> {
-                                        MeScreen(navController)
+                                        MeScreen(
+                                            navController,
+                                            dialogNavController,
+                                            paddingValues = padding
+                                        )
                                     }
                                 }
                             }
@@ -201,10 +238,18 @@ fun MainScreen() {
                             AboutScreen()
                         }
                         is ScreenDestination.Like -> {
-                            LikeScreen(navController = navController, id = screenDestination.id)
+                            LikeScreen(
+                                navController,
+                                dialogNavController,
+                                id = screenDestination.id
+                            )
                         }
                         is ScreenDestination.Playlist -> {
-                            PlaylistScreen(navController = navController, id = screenDestination.id)
+                            PlaylistScreen(
+                                navController,
+                                dialogNavController,
+                                id = screenDestination.id
+                            )
                         }
                         ScreenDestination.Setting -> {
                             SettingScreen()

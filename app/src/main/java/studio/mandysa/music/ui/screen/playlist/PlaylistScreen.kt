@@ -29,12 +29,15 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.item.SongItem
+import studio.mandysa.music.ui.screen.DialogDestination
+import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.round
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PlaylistScreen(
-    navController: NavController<*>,
+    mainNavController: NavController<ScreenDestination>,
+    dialogNavController: NavController<DialogDestination>,
     id: String,
     playlist: PlaylistModel = viewModel(factory = viewModelFactory {
         addInitializer(PlaylistModel::class) { return@addInitializer PlaylistModel(id) }
@@ -49,7 +52,7 @@ fun PlaylistScreen(
             contentColor = MaterialTheme.colorScheme.primary,
             elevation = 0.dp
         ) {
-            IconButton(onClick = { navController.pop() }) {
+            IconButton(onClick = { mainNavController.pop() }) {
                 Icon(Icons.Rounded.ArrowBack, null)
             }
             Spacer(modifier = Modifier.weight(1.0f))
@@ -101,12 +104,11 @@ fun PlaylistScreen(
                 Divider(thickness = 1.dp)
             }
             itemsIndexed(songs) { pos, _ ->
-                SongItem(songs[pos]!!) {
+                SongItem(dialogNavController, songs[pos]!!) {
                     PlayManager.loadPlaylist(songs.itemSnapshotList.items, pos)
                     PlayManager.play()
                 }
             }
         }
     }
-
 }

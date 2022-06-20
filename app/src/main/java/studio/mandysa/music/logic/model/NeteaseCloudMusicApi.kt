@@ -2,6 +2,7 @@ package studio.mandysa.music.logic.model
 
 import mandysax.anna2.annotation.*
 import mandysax.anna2.model.ResponseBody
+import studio.mandysa.music.logic.user.UserManager
 import studio.mandysa.music.logic.user.UserManager.cookie
 import studio.mandysa.music.logic.user.UserManager.userId
 
@@ -89,7 +90,7 @@ interface NeteaseCloudMusicApi {
 
     @Get("like")
     fun likeMusic(
-        @Query("cookie") cookie: String,
+        @Query("cookie") cookie: String = cookie(),
         @Query("id") id: String,
         @Query("like") like: Boolean
     ): ResponseBody
@@ -140,5 +141,8 @@ interface NeteaseCloudMusicApi {
     // 二维码检测扫码状态接口
     // https://neteasecloudmusicapi.vercel.app/#/?id=_3-%e4%ba%8c%e7%bb%b4%e7%a0%81%e6%a3%80%e6%b5%8b%e6%89%ab%e7%a0%81%e7%8a%b6%e6%80%81%e6%8e%a5%e5%8f%a3
     @Get("login/qr/check")
-    fun check(@Query("key") key: String,@Query("timestamp") timestamp: Long = System.currentTimeMillis()): CheckModel
+    fun check(
+        @Query("key") key: String,
+        @Query("timestamp") timestamp: Long = System.currentTimeMillis()
+    ): CheckModel
 }

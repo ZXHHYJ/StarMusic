@@ -189,10 +189,4 @@ object PlayManager {
         mPlayer.release()
     }
 
-    enum class STATE {
-        PLAY,
-        LOADING,
-        PAUSE
-    }
-
 }

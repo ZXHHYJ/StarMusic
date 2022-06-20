@@ -30,6 +30,7 @@ import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.ItemTitle
 import studio.mandysa.music.ui.item.PlaylistItem
 import studio.mandysa.music.ui.item.SongItem
+import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.round
@@ -66,6 +67,8 @@ private fun BannerItem(typeTitle: String, bannerUrl: String) {
 @Composable
 fun BrowseScreen(
     mainNavController: NavController<ScreenDestination>,
+    dialogNavController: NavController<DialogDestination>,
+    paddingValues: PaddingValues,
     browseViewModel: BrowseViewModel = viewModel()
 ) {
     val bannerItems by browseViewModel.banners.observeAsState(listOf())
@@ -116,10 +119,13 @@ fun BrowseScreen(
             ItemSubTitle(stringResource(R.string.recommend_song))
         }
         items(recommendSongs.size) {
-            SongItem(recommendSongs[it]) {
+            SongItem(dialogNavController,recommendSongs[it]) {
                 PlayManager.loadPlaylist(recommendSongs, it)
                 PlayManager.play()
             }
+        }
+        item {
+            Spacer(modifier = Modifier.padding(paddingValues))
         }
     }
 }

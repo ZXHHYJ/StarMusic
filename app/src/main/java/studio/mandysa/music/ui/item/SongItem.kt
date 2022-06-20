@@ -12,16 +12,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.service.playmanager.model.MusicModel
 import studio.mandysa.music.ui.common.CardAsyncImage
+import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.textColor
 import studio.mandysa.music.ui.theme.textColorLight
 import studio.mandysa.music.ui.theme.verticalMargin
 
 @Composable
-fun SongItem(song: MusicModel<*, *>, onClick: () -> Unit) {
+fun SongItem(
+    dialogNavController: NavController<DialogDestination>,
+    song: MusicModel<*, *>,
+    onClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -63,7 +70,7 @@ fun SongItem(song: MusicModel<*, *>, onClick: () -> Unit) {
             modifier = Modifier
                 .padding(end = horizontalMargin)
                 .clickable {
-                    // TODO:  
+                    dialogNavController.navigate(DialogDestination.SongMenu(song))
                 }
         )
     }
