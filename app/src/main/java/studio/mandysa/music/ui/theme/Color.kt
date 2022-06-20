@@ -29,6 +29,9 @@ val textColorLight = Color(0xFF7A7A7A)
 //半透明白色
 val translucentWhite = Color(0x80FFFFFF)
 
+val onBackground: Color
+    @Composable get() = MaterialTheme.colorScheme.onBackground
+
 //dialog背景色
 val dialogBackground: Color
     @Composable get() = 94.accent2 withNight 10.accent2

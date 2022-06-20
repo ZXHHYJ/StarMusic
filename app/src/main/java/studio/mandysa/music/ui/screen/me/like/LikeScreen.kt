@@ -9,7 +9,6 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,6 +23,7 @@ import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
+import studio.mandysa.music.ui.theme.onBackground
 
 @Composable
 fun LikeScreen(
@@ -40,7 +40,7 @@ fun LikeScreen(
         TopAppBar(
             modifier = Modifier.fillMaxWidth(),
             backgroundColor = Color.Transparent,
-            contentColor = MaterialTheme.colorScheme.onBackground,
+            contentColor = onBackground,
             elevation = 0.dp
         ) {
             IconButton(onClick = { mainNavController.pop() }) {

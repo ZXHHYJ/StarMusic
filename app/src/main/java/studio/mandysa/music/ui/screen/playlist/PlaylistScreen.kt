@@ -9,7 +9,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,6 +39,7 @@ import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.cornerShape
 import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.onBackground
 import studio.mandysa.music.ui.theme.textColor
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -59,7 +59,7 @@ fun PlaylistScreen(
         TopAppBar(
             modifier = Modifier.fillMaxWidth(),
             backgroundColor = Color.Transparent,
-            contentColor = MaterialTheme.colorScheme.onBackground,
+            contentColor = onBackground,
             elevation = 0.dp
         ) {
             IconButton(onClick = { mainNavController.pop() }) {

@@ -5,8 +5,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuDefaults.textFieldColors
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,6 +26,7 @@ import studio.mandysa.music.ui.item.ItemTitle
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.textColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,7 +60,7 @@ fun SearchScreen(
                     search = it
                 },
                 colors = textFieldColors(
-                    textColor = MaterialTheme.colorScheme.onBackground,
+                    textColor = textColor,
                     containerColor = Color.Transparent,
                     cursorColor = Color.Black,
                     focusedIndicatorColor = Color.Transparent,

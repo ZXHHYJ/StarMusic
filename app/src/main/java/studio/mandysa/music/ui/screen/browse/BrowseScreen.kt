@@ -9,7 +9,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -37,10 +40,7 @@ import studio.mandysa.music.ui.item.PlaylistItem
 import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
-import studio.mandysa.music.ui.theme.contentColor
-import studio.mandysa.music.ui.theme.cornerShape
-import studio.mandysa.music.ui.theme.horizontalMargin
-import studio.mandysa.music.ui.theme.verticalMargin
+import studio.mandysa.music.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,7 +63,7 @@ private fun BannerItem(typeTitle: String, bannerUrl: String) {
             text = typeTitle,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = textColor,
             modifier = Modifier
                 .fillMaxWidth()
         )
@@ -118,7 +118,7 @@ fun BrowseScreen(
                 Spacer(modifier = Modifier.height(5.dp))
                 HorizontalPagerIndicator(
                     pagerState = pagerState,
-                    activeColor = MaterialTheme.colorScheme.onBackground,
+                    activeColor = onBackground,
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
                         .padding(horizontal = horizontalMargin),
