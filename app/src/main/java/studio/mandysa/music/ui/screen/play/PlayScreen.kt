@@ -56,7 +56,6 @@ fun PlayScreen(panelState: PanelState?, function: (PanelState) -> Unit) {
             imageUrl = coverUrl,
             paused = panelState == PanelState.COLLAPSED
         )
-        println(panelState == PanelState.COLLAPSED)
         Column(
             modifier = Modifier
                 .fillMaxSize()

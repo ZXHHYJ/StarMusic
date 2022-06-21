@@ -1,34 +1,32 @@
-package studio.mandysa.music.ui.screen.singer.popularsong
+package studio.mandysa.music.ui.screen.singer.singeralbum
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import dev.olshevski.navigation.reimagined.NavController
 import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.screen.DialogDestination
-import studio.mandysa.music.ui.screen.ScreenDestination
 
 @Composable
-fun PopularSongScreen(
+fun SingerAlbumScreen(
     dialogNavController: NavController<DialogDestination>,
     paddingValues: PaddingValues,
     id: String,
-    popularSongViewModel: PopularSongViewModel = viewModel(factory = viewModelFactory {
-        addInitializer(PopularSongViewModel::class) { PopularSongViewModel(id) }
+    singerAlbumViewModel: SingerAlbumViewModel = viewModel(factory = viewModelFactory {
+        addInitializer(SingerAlbumViewModel::class) { SingerAlbumViewModel(id) }
     })
 ) {
-    val songs by popularSongViewModel.songs.observeAsState(listOf())
-    LazyColumn() {
+    val songs = singerAlbumViewModel.albums.collectAsLazyPagingItems()
+    LazyColumn {
         items(songs) {
-            SongItem(dialogNavController = dialogNavController, song = it) {
+            SongItem(dialogNavController = dialogNavController, song = it!!) {
 
             }
         }

@@ -1,12 +1,16 @@
 package studio.mandysa.music.service.playmanager
 
 import android.app.Application
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.PlaybackException
+import com.google.android.exoplayer2.Player
 import studio.mandysa.music.service.playmanager.model.AlbumModel
 import studio.mandysa.music.service.playmanager.model.ArtistModel
 import studio.mandysa.music.service.playmanager.model.MusicModel
@@ -17,45 +21,46 @@ import studio.mandysa.music.service.playmanager.model.MusicModel
  */
 object PlayManager {
 
-    private val mPlayer by lazy {
-        ExoPlayer.Builder(mContext, object : DefaultRenderersFactory(mContext) {}).build().apply {
-            playWhenReady = true
-            addListener(object : Player.Listener {
-                override fun onPlayerError(error: PlaybackException) {
-                    super.onPlayerError(error)
-                    skipToNext()
-                }
+    private fun createExoPlayer(context: Context) = ExoPlayer.Builder(context).build().apply {
+        playWhenReady = true
+        addListener(object : Player.Listener {
+            override fun onPlayerError(error: PlaybackException) {
+                super.onPlayerError(error)
+                skipToNext()
+            }
 
-                override fun onIsPlayingChanged(isPlaying: Boolean) {
-                    super.onIsPlayingChanged(isPlaying)
-                    mPause.value = !isPlaying
-                }
+            override fun onIsPlayingChanged(isPlaying: Boolean) {
+                super.onIsPlayingChanged(isPlaying)
+                mPause.value = !isPlaying
+            }
 
-                override fun onPlaybackStateChanged(playbackState: Int) {
-                    super.onPlaybackStateChanged(playbackState)
-                    when (playbackState) {
-                        Player.STATE_READY -> {
-                            mDuration.value = this@apply.duration.toInt()
-                        }
-                        Player.STATE_BUFFERING -> {
-
-                        }
-                        Player.STATE_ENDED -> {
-                            skipToNext()
-                        }
-                        Player.STATE_IDLE -> {
-
-                        }
-                        else -> {}
+            override fun onPlaybackStateChanged(playbackState: Int) {
+                super.onPlaybackStateChanged(playbackState)
+                when (playbackState) {
+                    Player.STATE_READY -> {
+                        mDuration.value = this@apply.duration.toInt()
                     }
+                    Player.STATE_BUFFERING -> {
+
+                    }
+                    Player.STATE_ENDED -> {
+                        skipToNext()
+                    }
+                    Player.STATE_IDLE -> {
+
+                    }
+                    else -> {}
                 }
-            })
-        }
+            }
+        })
     }
+
 
     private val mRunnable = object : Runnable {
         override fun run() {
-            mProgress.value = mPlayer.currentPosition.toInt()
+            mMediaPlayer?.run {
+                mProgress.value = currentPosition.toInt()
+            }
             mHandler.postDelayed(this, 200)
         }
     }
@@ -63,6 +68,16 @@ object PlayManager {
     private val mHandler = Handler(Looper.myLooper()!!)
 
     private lateinit var mContext: Application
+
+    @Volatile
+    @JvmStatic
+    private var mMediaPlayer: ExoPlayer? = null
+        get() {
+            if (field == null) {
+                field = createExoPlayer(mContext)
+            }
+            return field
+        }
 
     @JvmStatic
     fun init(application: Application) {
@@ -120,7 +135,7 @@ object PlayManager {
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun loadPlaylist(list: Any?, index: Int) {
+    fun loadPlaylist(list: Any, index: Int) {
         mPlayList.value = list as List<MusicModel<ArtistModel, AlbumModel>>
         updateIndex(index)
     }
@@ -132,7 +147,7 @@ object PlayManager {
 
     fun seekTo(position: Int) {
         mProgress.value = position
-        mPlayer.seekTo(position.toLong())
+        mMediaPlayer!!.seekTo(position.toLong())
     }
 
     private fun updateIndex(index: Int) {
@@ -152,27 +167,29 @@ object PlayManager {
     }
 
     fun play() {
-        if (mPlayer.isLoading)
+        if (mMediaPlayer!!.isLoading)
             return
-        if (mPlayer.isPlaying)
+        if (mMediaPlayer!!.isPlaying)
             return
         mHandler.post(mRunnable)
-        mPlayer.play()
+        mMediaPlayer!!.play()
     }
 
     fun pause() {
-        if (mPlayer.isLoading)
+        if (mMediaPlayer!!.isLoading)
             return
-        if (!mPlayer.isPlaying)
+        if (!mMediaPlayer!!.isPlaying)
             return
         mHandler.removeCallbacks(mRunnable)
-        mPlayer.pause()
+        mMediaPlayer!!.pause()
     }
 
     private fun playMusic(musicModel: MusicModel<ArtistModel, AlbumModel>) {
         mChangeMusic.value = musicModel
-        mPlayer.setMediaItem(MediaItem.fromUri(musicModel.url.toUri()))
-        mPlayer.prepare()
+        mMediaPlayer?.run {
+            setMediaItem(MediaItem.fromUri(musicModel.url.toUri()))
+            prepare()
+        }
     }
 
     init {
@@ -185,8 +202,11 @@ object PlayManager {
     }
 
     fun stop() {
-        mPlayer.stop()
-        mPlayer.release()
+        mMediaPlayer?.run {
+            stop()
+            release()
+        }
+        mMediaPlayer = null
     }
 
 }

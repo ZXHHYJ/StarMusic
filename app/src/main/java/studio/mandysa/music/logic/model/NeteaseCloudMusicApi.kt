@@ -15,7 +15,7 @@ interface NeteaseCloudMusicApi {
     fun searchMusic(
         @Query("keywords") name: String,
         @Query("offset") index: Int
-    ): List<SearchMusicModelModel>
+    ): List<SearchMusicModel>
 
     //搜索歌手
     @Get("search")
@@ -106,10 +106,6 @@ interface NeteaseCloudMusicApi {
 //    @Path("data")
 //    fun getPersonalFm(@Query("cookie") cookie: String): Observable<List<PersonalFmModel>>
 
-    @Get("artist/detail")
-    @Path("data")
-    fun getSingerDetails(@Query("id") id: String): SingerDetailedModel
-
     @Get("likelist")
     @Path("ids")
     fun getLikeList(
@@ -117,12 +113,27 @@ interface NeteaseCloudMusicApi {
         @Query("uid") uid: String = userId()
     ): List<String>
 
+    @Get("artist/detail")
+    @Path("data")
+    fun getSingerDetails(@Query("id") id: String): SingerDetailedModel
+
+    //歌手热门 50 首歌曲
+    // https://neteasecloudmusicapi.vercel.app/#/?id=%e6%ad%8c%e6%89%8b%e7%83%ad%e9%97%a8-50-%e9%a6%96%e6%ad%8c%e6%9b%b2
     @Get("artist/top/song")
     @Path("songs")
     fun getSingerHotSong(@Query("id") id: String): List<SongModel>
 
+    @Get("artist/songs")
+    @Path("songs")
+    fun getSingerAllSong(
+        @Query("cookie") cookie: String = cookie(),
+        @Query("id") id: String,
+        @Query("order") order: String = "time"
+    ): List<SongModel>
+
     @Get("album")
     fun getAlbumContent(
+        @Query("cookie") cookie: String = cookie(),
         @Query("id") id: String
     ): AlbumContentModel
 

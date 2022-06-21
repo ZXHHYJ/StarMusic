@@ -49,8 +49,9 @@ class MediaPlayService : LifecycleService() {
     }
 
     private fun refreshMediaNotifications() {
-        val pause = PlayManager.pauseLiveData().value
-        startForeground(1, mMediaNotification.setAction(!pause!!).build())
+        val pause = PlayManager.pauseLiveData().value!!
+        startForeground(1, mMediaNotification.setAction(!pause).build())
+        // TODO: 后台切歌闪退问题
         if (pause)
             stopForeground(false)
     }
@@ -74,7 +75,8 @@ class MediaPlayService : LifecycleService() {
         }
     }
 
-    private fun init() {
+    //监听播放器的状态更新
+    private fun initPlayManagerChanged() {
         playManager {
             changeMusicLiveData().observe(this@MediaPlayService) {
                 mMediaNotification
@@ -132,8 +134,6 @@ class MediaPlayService : LifecycleService() {
 
     private lateinit var mSession: MediaSession
 
-    fun getSessionToken(): MediaSession.Token = mSession.sessionToken
-
     private fun registerBroadcast() {
         mReceiver = OnPlayStateReceiver()
         registerReceiver(mReceiver, IntentFilter(Intent.ACTION_MEDIA_BUTTON))
@@ -153,8 +153,8 @@ class MediaPlayService : LifecycleService() {
             })
         }
         registerBroadcast()
-        mMediaNotification = MediaNotification(this)
-        init()
+        mMediaNotification = MediaNotification(this, mSession)
+        initPlayManagerChanged()
     }
 
     override fun onDestroy() {

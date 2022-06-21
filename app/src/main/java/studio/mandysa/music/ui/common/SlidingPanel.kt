@@ -79,7 +79,7 @@ fun SlidingPanel(
                             state = swipeableState,
                             anchors = anchors,
                             thresholds = { _, _ ->
-                                FractionalThreshold(0.1f)
+                                FractionalThreshold(0.2f)
                             }, resistance = null,
                             orientation = Orientation.Vertical
                         )

@@ -7,7 +7,7 @@ import studio.mandysa.music.service.playmanager.model.MusicModel
 /**
  * @author Huang hao
  */
-class SearchMusicModelModel : MusicModel<SingerModel, AlbumModel> {
+class SearchMusicModel : MusicModel<SingerModel, AlbumModel> {
     @Value("name")
     private lateinit var name: String
 
@@ -25,7 +25,7 @@ class SearchMusicModelModel : MusicModel<SingerModel, AlbumModel> {
     }
 
     override fun getCoverUrl(): String {
-        return ""
+        return album.coverUrl
     }
 
     override fun getId(): String {

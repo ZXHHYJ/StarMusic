@@ -22,17 +22,18 @@ import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.R
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
+import studio.mandysa.music.ui.screen.singer.singeralbum.SingerAlbumScreen
 import studio.mandysa.music.ui.screen.singer.popularsong.PopularSongScreen
 import studio.mandysa.music.ui.theme.onBackground
 
 enum class SingerScreenTabDestination {
-    PopularSong, AllSongs
+    PopularSong, SingerAlbum
 }
 
 val SingerScreenTabDestination.tabName: String
     @Composable get() = when (this) {
         SingerScreenTabDestination.PopularSong -> stringResource(id = R.string.popular_song)
-        SingerScreenTabDestination.AllSongs -> stringResource(id = R.string.all_songs)
+        SingerScreenTabDestination.SingerAlbum -> stringResource(id = R.string.singer_album)
     }
 
 @Composable
@@ -88,14 +89,17 @@ fun SingerScreen(
                 when (it) {
                     SingerScreenTabDestination.PopularSong -> {
                         PopularSongScreen(
-                            mainNavController = mainNavController,
                             dialogNavController = dialogNavController,
                             paddingValues = paddingValues,
                             id = id
                         )
                     }
-                    SingerScreenTabDestination.AllSongs -> {
-
+                    SingerScreenTabDestination.SingerAlbum -> {
+                        SingerAlbumScreen(
+                            dialogNavController = dialogNavController,
+                            paddingValues = paddingValues,
+                            id = id
+                        )
                     }
                 }
             }

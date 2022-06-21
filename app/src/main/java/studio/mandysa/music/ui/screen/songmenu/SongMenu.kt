@@ -96,7 +96,8 @@ fun SongMenu(
                     title = "${stringResource(id = R.string.album)}:${model.album.name}",
                     imageVector = Icons.Rounded.Album
                 ) {
-
+                    dialogNavController.popAll()
+                    mainNavController.navigate(ScreenDestination.Album(model.album.id))
                 }
             }
             item {

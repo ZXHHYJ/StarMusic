@@ -1,6 +1,5 @@
 <resources>
 
-    <string name="channel_id">media channel</string>
     <string name="channel_name">媒体控制器</string>
     <string name="channel_description">播放控制</string>
 
@@ -54,7 +53,7 @@
     </string-array>
 
     <string name="popular_song">热门歌曲</string>
-    <string name="all_songs">全部歌曲</string>
+    <string name="singer_album">歌手专辑</string>
 
     <string name="copy">复制</string>
 </resources>

@@ -59,6 +59,7 @@ fun MeScreen(
             ) {
                 items(playlist) {
                     PlaylistItem(title = it.name, coverUrl = it.coverImgUrl) {
+                        //判断是不是第一个歌单
                         if (playlist[0] == it) {
                             mainNavController.navigate(ScreenDestination.Like(it.id))
                         } else {
@@ -80,7 +81,7 @@ fun MeScreen(
                 title = stringResource(id = R.string.setting),
                 imageVector = Icons.Rounded.Favorite
             ) {
-
+                mainNavController.navigate(ScreenDestination.Setting)
             }
         }
         item {
@@ -89,7 +90,7 @@ fun MeScreen(
                 title = stringResource(id = R.string.about),
                 imageVector = Icons.Rounded.Info
             ) {
-
+                mainNavController.navigate(ScreenDestination.About)
             }
         }
         item {
