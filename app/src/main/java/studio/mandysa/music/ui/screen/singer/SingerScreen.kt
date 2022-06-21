@@ -22,6 +22,7 @@ import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.R
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
+import studio.mandysa.music.ui.screen.singer.popularsong.PopularSongScreen
 import studio.mandysa.music.ui.theme.onBackground
 
 enum class SingerScreenTabDestination {
@@ -86,7 +87,12 @@ fun SingerScreen(
             NavHost(navController) {
                 when (it) {
                     SingerScreenTabDestination.PopularSong -> {
-
+                        PopularSongScreen(
+                            mainNavController = mainNavController,
+                            dialogNavController = dialogNavController,
+                            paddingValues = paddingValues,
+                            id = id
+                        )
                     }
                     SingerScreenTabDestination.AllSongs -> {
 

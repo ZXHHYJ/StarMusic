@@ -2,7 +2,6 @@ package studio.mandysa.music.logic.model
 
 import mandysax.anna2.annotation.*
 import mandysax.anna2.model.ResponseBody
-import studio.mandysa.music.logic.user.UserManager
 import studio.mandysa.music.logic.user.UserManager.cookie
 import studio.mandysa.music.logic.user.UserManager.userId
 
@@ -119,7 +118,8 @@ interface NeteaseCloudMusicApi {
     ): List<String>
 
     @Get("artist/top/song")
-    fun getSingerHotSong(@Query("id") id: String): SingerHotSongModel
+    @Path("songs")
+    fun getSingerHotSong(@Query("id") id: String): List<SongModel>
 
     @Get("album")
     fun getAlbumContent(
