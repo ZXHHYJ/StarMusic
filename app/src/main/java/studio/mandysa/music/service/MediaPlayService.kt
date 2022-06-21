@@ -22,6 +22,9 @@ import studio.mandysa.music.service.playmanager.ktx.allArtist
 class MediaPlayService : LifecycleService() {
 
     companion object {
+
+        const val ID = 1
+
         @Volatile
         @JvmStatic
         var instance: MediaPlayService? = null
@@ -50,28 +53,23 @@ class MediaPlayService : LifecycleService() {
 
     private fun refreshMediaNotifications() {
         val pause = PlayManager.pauseLiveData().value!!
-        startForeground(1, mMediaNotification.setAction(!pause).build())
+        startForeground(ID, mMediaNotification.setAction(!pause).build())
         // TODO: 后台切歌闪退问题
         if (pause)
             stopForeground(false)
     }
 
     private fun refreshMediaSession() {
-        if (!::mSession.isInitialized) {
-            return
-        }
         playManager {
-            playingMusicProgressLiveData().value?.let {
-                mSession.setPlaybackState(
-                    PlaybackState.Builder()
-                        .setActions(PlaybackState.ACTION_SEEK_TO)
-                        .setState(
-                            if (pauseLiveData().value!!) PlaybackState.STATE_PAUSED else PlaybackState.STATE_PLAYING,
-                            it.toLong(),
-                            1.0F
-                        ).build()
-                )
-            }
+            mSession.setPlaybackState(
+                PlaybackState.Builder()
+                    .setActions(PlaybackState.ACTION_SEEK_TO)
+                    .setState(
+                        if (pauseLiveData().value!!) PlaybackState.STATE_PAUSED else PlaybackState.STATE_PLAYING,
+                        playingMusicProgressLiveData().value?.toLong() ?: 0,
+                        1.0F
+                    ).build()
+            )
         }
     }
 
@@ -109,9 +107,6 @@ class MediaPlayService : LifecycleService() {
             }
             pauseLiveData().observe(this@MediaPlayService) {
                 refreshMediaNotifications()
-                refreshMediaSession()
-            }
-            playingMusicProgressLiveData().observe(this@MediaPlayService) {
                 refreshMediaSession()
             }
             playingMusicDurationLiveData().observe(this@MediaPlayService) {

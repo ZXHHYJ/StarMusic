@@ -26,7 +26,6 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.R
-import studio.mandysa.music.logic.ktx.playManager
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.item.ItemCoverHeader
@@ -98,10 +97,7 @@ fun PlaylistScreen(
             }
             itemsIndexed(songs) { pos, _ ->
                 SongItem(dialogNavController, songs[pos]!!) {
-                    playManager {
-                        loadPlaylist(songs.itemSnapshotList.items, pos)
-                        play()
-                    }
+                    PlayManager.loadPlaylist(songs.itemSnapshotList.items, pos)
                 }
             }
             item {

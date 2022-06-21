@@ -34,7 +34,6 @@ fun PlayQueueScreen() {
                 singer = model.artist.allArtist()
             ) {
                 PlayManager.loadPlaylist(playlist, index)
-                PlayManager.play()
             }
         }
     }

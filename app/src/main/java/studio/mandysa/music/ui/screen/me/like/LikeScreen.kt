@@ -1,8 +1,6 @@
 package studio.mandysa.music.ui.screen.me.like
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.IconButton
 import androidx.compose.material.TopAppBar
@@ -50,11 +48,11 @@ fun LikeScreen(
         LazyColumn {
             itemsIndexed(songs) { pos, _ ->
                 SongItem(dialogNavController, songs[pos]!!) {
-                    PlayManager.apply {
-                        loadPlaylist(songs.itemSnapshotList, pos)
-                        play()
-                    }
+                    PlayManager.loadPlaylist(songs.itemSnapshotList, pos)
                 }
+            }
+            item {
+                Spacer(modifier = Modifier.padding(paddingValues))
             }
         }
     }
