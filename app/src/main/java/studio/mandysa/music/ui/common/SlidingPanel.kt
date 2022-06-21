@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.FractionalThreshold
 import androidx.compose.material.rememberSwipeableState
 import androidx.compose.material.swipeable
 import androidx.compose.runtime.Composable
@@ -78,9 +77,7 @@ fun SlidingPanel(
                         .swipeable(
                             state = swipeableState,
                             anchors = anchors,
-                            thresholds = { _, _ ->
-                                FractionalThreshold(0.2f)
-                            }, resistance = null,
+                            resistance = null,
                             orientation = Orientation.Vertical
                         )
                 ) {

@@ -22,7 +22,6 @@ import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.CardAsyncImage
 import studio.mandysa.music.ui.common.RoundIcon
 import studio.mandysa.music.ui.common.SeekBar
-import studio.mandysa.music.ui.theme.round
 import studio.mandysa.music.ui.theme.translucentWhite
 import studio.mandysa.music.ui.theme.verticalMargin
 
@@ -35,6 +34,7 @@ fun NowPlayScreen() {
         verticalArrangement = Arrangement.Bottom, horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AlbumCover()
+        Spacer(modifier = Modifier.height(10.dp))
         TitleAndArtist()
         Spacer(modifier = Modifier.height(15.dp))
         MusicProgressBar()
@@ -48,15 +48,11 @@ private fun AlbumCover() {
     val configuration = LocalConfiguration.current
     val screenWidth =
         if (configuration.screenWidthDp.dp <= configuration.screenHeightDp.dp) configuration.screenWidthDp.dp else configuration.screenHeightDp.dp
-    Card(
-        modifier = Modifier.size(screenWidth * 0.8f),
-        elevation = 5.dp,
-        shape = RoundedCornerShape(round)
-    ) {
+    Card(elevation = 5.dp, shape = RoundedCornerShape(12.dp)) {
         val coverUrl by PlayManager.changeMusicLiveData().map { return@map it.coverUrl }
             .observeAsState()
         coverUrl?.let {
-            CardAsyncImage(size = screenWidth * 0.8f, url = it)
+            CardAsyncImage(size = screenWidth * 0.84f, url = it)
         }
     }
 }
