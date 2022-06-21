@@ -43,8 +43,8 @@ class MediaPlayService : LifecycleService() {
                     PlaybackState.STATE_SKIPPING_TO_NEXT -> skipToNext()
                     PlaybackState.STATE_SKIPPING_TO_PREVIOUS -> skipToPrevious()
                     PlaybackState.STATE_STOPPED -> {
-                        stopSelf()
                         stop()
+                        stopSelf()
                     }
                 }
             }
@@ -104,6 +104,9 @@ class MediaPlayService : LifecycleService() {
                     } catch (e: Exception) {
                     }
                 }
+            }
+            playingMusicProgressLiveData().observe(this@MediaPlayService) {
+                refreshMediaSession()
             }
             pauseLiveData().observe(this@MediaPlayService) {
                 refreshMediaNotifications()

@@ -185,6 +185,7 @@ object PlayManager {
     }
 
     private fun playMusic(musicModel: MusicModel<ArtistModel, AlbumModel>) {
+        mProgress.value = 0
         mChangeMusic.value = musicModel
         mMediaPlayer?.run {
             setMediaItem(MediaItem.fromUri(musicModel.url.toUri()))
