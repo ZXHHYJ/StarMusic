@@ -36,7 +36,7 @@ class MediaNotification(context: Context, session: MediaSession, channelId: Stri
     )
     private val mStopAction = PlayButtonReceiver.buildMediaButtonAction(
         context,
-        R.drawable.ic_icons8_close,
+        R.drawable.ic_round_clear_24,
         PlaybackState.STATE_STOPPED
     )
 

@@ -20,10 +20,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.R
+import studio.mandysa.music.ui.common.AppDivider
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
-import studio.mandysa.music.ui.screen.singer.singeralbum.SingerAlbumScreen
 import studio.mandysa.music.ui.screen.singer.popularsong.PopularSongScreen
+import studio.mandysa.music.ui.screen.singer.singeralbum.SingerAlbumScreen
 import studio.mandysa.music.ui.theme.onBackground
 
 enum class SingerScreenTabDestination {
@@ -55,6 +56,7 @@ fun SingerScreen(
             }
         }
         Column {
+            AppDivider()
             var selectedIndex by remember {
                 mutableStateOf(0)
             }

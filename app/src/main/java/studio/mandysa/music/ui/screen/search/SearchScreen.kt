@@ -35,6 +35,7 @@ fun SearchScreen(
     dialogNavController: NavController<DialogDestination>,
     paddingValues: PaddingValues,
 ) {
+    // TODO: 搜索模块
     Column {
         ItemTitle(stringResource(R.string.search))
         var search by rememberSaveable() {

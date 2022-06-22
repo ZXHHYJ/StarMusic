@@ -43,7 +43,7 @@ fun SongMenu(
         addInitializer(SongMenuViewModel::class) { SongMenuViewModel(model.id) }
     })
 ) {
-    val isLike by songMenuViewModel.isLike.observeAsState()
+    val isLike by songMenuViewModel.liked.observeAsState()
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = cornerShape,

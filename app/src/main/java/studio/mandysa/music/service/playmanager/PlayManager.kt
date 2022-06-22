@@ -22,7 +22,6 @@ import studio.mandysa.music.service.playmanager.model.MusicModel
 object PlayManager {
 
     private fun createExoPlayer(context: Context) = ExoPlayer.Builder(context).build().apply {
-        playWhenReady = true
         addListener(object : Player.Listener {
             override fun onPlayerError(error: PlaybackException) {
                 super.onPlayerError(error)
@@ -39,6 +38,7 @@ object PlayManager {
                 when (playbackState) {
                     Player.STATE_READY -> {
                         mDuration.value = this@apply.duration.toInt()
+                        this@PlayManager.play()
                     }
                     Player.STATE_BUFFERING -> {
 
@@ -61,7 +61,7 @@ object PlayManager {
             mMediaPlayer?.run {
                 mProgress.value = currentPosition.toInt()
             }
-            mHandler.postDelayed(this, 200)
+            mHandler.postDelayed(this, 1000)
         }
     }
 
@@ -167,8 +167,6 @@ object PlayManager {
     }
 
     fun play() {
-        if (mMediaPlayer!!.isLoading)
-            return
         if (mMediaPlayer!!.isPlaying)
             return
         mHandler.post(mRunnable)
@@ -176,8 +174,6 @@ object PlayManager {
     }
 
     fun pause() {
-        if (mMediaPlayer!!.isLoading)
-            return
         if (!mMediaPlayer!!.isPlaying)
             return
         mHandler.removeCallbacks(mRunnable)

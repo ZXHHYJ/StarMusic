@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.TopAppBar
@@ -26,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.pop
+import studio.mandysa.music.ui.common.AppDivider
 import studio.mandysa.music.ui.common.CardAsyncImage
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.round
@@ -46,7 +46,7 @@ fun MePlaylistScreen(
                 Icon(Icons.Rounded.ArrowBack, null)
             }
         }
-        Divider(thickness = 1.dp)
+        AppDivider()
         val items by mePlaylistViewModel.meAllPlaylist.observeAsState(listOf())
         LazyColumn {
             items(items) {
