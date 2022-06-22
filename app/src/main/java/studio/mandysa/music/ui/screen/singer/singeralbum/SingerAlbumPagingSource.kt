@@ -2,22 +2,14 @@ package studio.mandysa.music.ui.screen.singer.singeralbum
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import studio.mandysa.music.logic.ktx.getPagInfo
-import studio.mandysa.music.logic.model.SongModel
-import studio.mandysa.music.logic.network.api
+import studio.mandysa.music.logic.model.MusicModel
 
-class SingerAlbumPagingSource(private val id: String) : PagingSource<Int, SongModel>() {
+class SingerAlbumPagingSource(private val id: String) : PagingSource<Int, MusicModel>() {
 
-    override fun getRefreshKey(state: PagingState<Int, SongModel>): Int? = null
+    override fun getRefreshKey(state: PagingState<Int, MusicModel>): Int? = null
 
-    private val mSongsList by lazy {
-        api.getSingerAllSong(id = id)
-    }
-
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, SongModel> {
-        return try {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MusicModel> {
+        /*return try {
             withContext(Dispatchers.IO) {
                 val pagInfo = mSongsList.getPagInfo(params.key ?: 0, 50)
                 LoadResult.Page(
@@ -28,6 +20,7 @@ class SingerAlbumPagingSource(private val id: String) : PagingSource<Int, SongMo
             }
         } catch (e: Exception) {
             LoadResult.Error(e)
-        }
+        }*/
+        return TODO()
     }
 }

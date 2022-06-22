@@ -5,18 +5,18 @@ import androidx.paging.PagingState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import studio.mandysa.music.logic.ktx.getPagInfo
-import studio.mandysa.music.logic.model.SongModel
+import studio.mandysa.music.logic.model.MusicModel
 import studio.mandysa.music.logic.network.api
 
-class PlaylistPagingSource(private val id: String) : PagingSource<Int, SongModel>() {
+class PlaylistPagingSource(private val id: String) : PagingSource<Int, MusicModel>() {
 
-    override fun getRefreshKey(state: PagingState<Int, SongModel>): Int? = null
+    override fun getRefreshKey(state: PagingState<Int, MusicModel>): Int? = null
 
     private val mMateSongList by lazy {
         api.getSongListInfo(id = id).songList
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, SongModel> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MusicModel> {
         return try {
             withContext(Dispatchers.IO) {
                 val pagInfo = mMateSongList.getPagInfo(params.key ?: 0, 15)

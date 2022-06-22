@@ -1,7 +1,7 @@
 package studio.mandysa.music.logic.model
 
 import mandysax.anna2.annotation.Value
-import studio.mandysa.music.service.playmanager.model.AlbumModel as Album
+import studio.mandysa.music.service.playmanager.model.MetaAlbum
 
 /*
    "al": {
@@ -13,7 +13,7 @@ import studio.mandysa.music.service.playmanager.model.AlbumModel as Album
            "alia": ["Games We Play"]
        }
     */
-class AlbumModel : Album {
+class AlbumModel : MetaAlbum {
 
     @Value("id")
     private lateinit var id: String

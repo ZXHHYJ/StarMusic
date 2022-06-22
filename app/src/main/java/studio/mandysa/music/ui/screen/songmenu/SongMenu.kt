@@ -25,7 +25,7 @@ import dev.olshevski.navigation.reimagined.popAll
 import kotlinx.parcelize.RawValue
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.ktx.allArtist
-import studio.mandysa.music.service.playmanager.model.MusicModel
+import studio.mandysa.music.service.playmanager.model.MetaMusic
 import studio.mandysa.music.ui.common.CardAsyncImage
 import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.screen.DialogDestination
@@ -38,7 +38,7 @@ import studio.mandysa.music.ui.theme.*
 fun SongMenu(
     mainNavController: NavController<ScreenDestination>,
     dialogNavController: NavController<DialogDestination>,
-    model: @RawValue MusicModel<*, *>,
+    model: @RawValue MetaMusic<*, *>,
     songMenuViewModel: SongMenuViewModel = viewModel(factory = viewModelFactory {
         addInitializer(SongMenuViewModel::class) { SongMenuViewModel(model.id) }
     })

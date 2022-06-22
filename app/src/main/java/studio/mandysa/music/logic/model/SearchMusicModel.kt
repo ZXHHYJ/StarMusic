@@ -2,12 +2,13 @@ package studio.mandysa.music.logic.model
 
 import mandysax.anna2.annotation.Value
 import studio.mandysa.music.logic.network.MUSIC_URL
-import studio.mandysa.music.service.playmanager.model.MusicModel
+import studio.mandysa.music.service.playmanager.model.MetaMusic
 
 /**
  * @author Huang hao
  */
-class SearchMusicModel : MusicModel<SingerModel, AlbumModel> {
+class SearchMusicModel :
+    MetaMusic<SingerModel, AlbumModel> {
     @Value("name")
     private lateinit var name: String
 

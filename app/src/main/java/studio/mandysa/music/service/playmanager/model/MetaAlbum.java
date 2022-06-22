@@ -1,6 +1,6 @@
 package studio.mandysa.music.service.playmanager.model;
 
-public interface AlbumModel {
+public interface MetaAlbum {
     String getId();
 
     String getCoverUrl();

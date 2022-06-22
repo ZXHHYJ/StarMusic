@@ -5,7 +5,7 @@ import mandysax.anna2.annotation.Value
 
 class AlbumContentModel {
     @Value("songs")
-    lateinit var songList: List<SongModel>
+    lateinit var songList: List<MusicModel>
 
     @Value("picUrl")
     @Path("album")

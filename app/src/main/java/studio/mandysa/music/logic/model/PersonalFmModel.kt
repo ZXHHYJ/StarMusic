@@ -2,11 +2,11 @@ package studio.mandysa.music.logic.model
 
 import mandysax.anna2.annotation.Value
 import studio.mandysa.music.logic.network.MUSIC_URL
-import studio.mandysa.music.service.playmanager.model.ArtistModel
-import studio.mandysa.music.service.playmanager.model.MusicModel
+import studio.mandysa.music.service.playmanager.model.MetaArtist
+import studio.mandysa.music.service.playmanager.model.MetaMusic
 
 class PersonalFmModel :
-    MusicModel<ArtistModel, AlbumModel> {
+    MetaMusic<MetaArtist, AlbumModel> {
     @Value("name")
     private lateinit var name: String
 
@@ -16,7 +16,7 @@ class PersonalFmModel :
     @Value("artists")
     private lateinit var artistsList: List<SingerModel>
 
-    override fun getArtist(): List<ArtistModel> {
+    override fun getArtist(): List<MetaArtist> {
         return artistsList
     }
 

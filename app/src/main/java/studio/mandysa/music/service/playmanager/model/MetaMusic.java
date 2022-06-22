@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * @author Huang hao
  */
-public interface MusicModel<T extends ArtistModel, E extends AlbumModel> {
+public interface MetaMusic<T extends MetaArtist, E extends MetaAlbum> {
     String getTitle();
 
     String getId();

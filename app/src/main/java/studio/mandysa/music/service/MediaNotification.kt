@@ -34,11 +34,13 @@ class MediaNotification(context: Context, session: MediaSession, channelId: Stri
         R.drawable.ic_skip_previous,
         PlaybackState.STATE_SKIPPING_TO_PREVIOUS
     )
-    private val mStopAction = PlayButtonReceiver.buildMediaButtonAction(
-        context,
-        R.drawable.ic_round_clear_24,
-        PlaybackState.STATE_STOPPED
-    )
+    private val mStopAction by lazy {
+        PlayButtonReceiver.buildMediaButtonAction(
+            context,
+            R.drawable.ic_round_clear_24,
+            PlaybackState.STATE_STOPPED
+        )
+    }
 
     fun setAction(playing: Boolean): MediaNotification {
         if (mAndroid12) {

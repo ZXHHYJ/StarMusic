@@ -23,13 +23,13 @@ fun SingerAlbumScreen(
         addInitializer(SingerAlbumViewModel::class) { SingerAlbumViewModel(id) }
     })
 ) {
-    val songs = singerAlbumViewModel.albums.collectAsLazyPagingItems()
+    //val songs = singerAlbumViewModel.albums.collectAsLazyPagingItems()
     LazyColumn {
-        items(songs) {
+      /*  items(songs) {
             SongItem(dialogNavController = dialogNavController, song = it!!) {
 
             }
-        }
+        }*/
         item {
             Spacer(modifier = Modifier.padding(paddingValues))
         }

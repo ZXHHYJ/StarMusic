@@ -11,9 +11,9 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
-import studio.mandysa.music.service.playmanager.model.AlbumModel
-import studio.mandysa.music.service.playmanager.model.ArtistModel
-import studio.mandysa.music.service.playmanager.model.MusicModel
+import studio.mandysa.music.service.playmanager.model.MetaAlbum
+import studio.mandysa.music.service.playmanager.model.MetaArtist
+import studio.mandysa.music.service.playmanager.model.MetaMusic
 
 
 /**
@@ -87,12 +87,12 @@ object PlayManager {
     /**
      * 当前播放的歌曲
      */
-    private val mChangeMusic = MutableLiveData<MusicModel<ArtistModel, AlbumModel>>()
+    private val mChangeMusic = MutableLiveData<MetaMusic<MetaArtist, MetaAlbum>>()
 
     /**
      * 播放列表
      */
-    private val mPlayList = MutableLiveData<List<MusicModel<ArtistModel, AlbumModel>>>()
+    private val mPlayList = MutableLiveData<List<MetaMusic<MetaArtist, MetaAlbum>>>()
 
     /**
      * 播放状态
@@ -114,7 +114,7 @@ object PlayManager {
      */
     private val mDuration = MutableLiveData<Int>()
 
-    fun changePlayListLiveData(): LiveData<List<MusicModel<ArtistModel, AlbumModel>>> {
+    fun changePlayListLiveData(): LiveData<List<MetaMusic<MetaArtist, MetaAlbum>>> {
         return mPlayList
     }
 
@@ -126,7 +126,7 @@ object PlayManager {
         return mDuration
     }
 
-    fun changeMusicLiveData(): LiveData<MusicModel<ArtistModel, AlbumModel>> {
+    fun changeMusicLiveData(): LiveData<MetaMusic<MetaArtist, MetaAlbum>> {
         return mChangeMusic
     }
 
@@ -136,11 +136,11 @@ object PlayManager {
 
     @Suppress("UNCHECKED_CAST")
     fun loadPlaylist(list: Any, index: Int) {
-        mPlayList.value = list as List<MusicModel<ArtistModel, AlbumModel>>
+        mPlayList.value = list as List<MetaMusic<MetaArtist, MetaAlbum>>
         updateIndex(index)
     }
 
-    fun loadPlaylist(list: List<MusicModel<ArtistModel, AlbumModel>>, index: Int) {
+    fun loadPlaylist(list: List<MetaMusic<MetaArtist, MetaAlbum>>, index: Int) {
         mPlayList.value = list
         updateIndex(index)
     }
@@ -180,11 +180,11 @@ object PlayManager {
         mMediaPlayer!!.pause()
     }
 
-    private fun playMusic(musicModel: MusicModel<ArtistModel, AlbumModel>) {
+    private fun playMusic(metaMusic: MetaMusic<MetaArtist, MetaAlbum>) {
         mProgress.value = 0
-        mChangeMusic.value = musicModel
+        mChangeMusic.value = metaMusic
         mMediaPlayer?.run {
-            setMediaItem(MediaItem.fromUri(musicModel.url.toUri()))
+            setMediaItem(MediaItem.fromUri(metaMusic.url.toUri()))
             prepare()
         }
     }
@@ -192,8 +192,8 @@ object PlayManager {
     init {
         mIndex.observeForever { p1: Int ->
             if (mPlayList.value != null) {
-                val musicModel: MusicModel<ArtistModel, AlbumModel> = mPlayList.value!![p1]
-                playMusic(musicModel)
+                val metaMusic: MetaMusic<MetaArtist, MetaAlbum> = mPlayList.value!![p1]
+                playMusic(metaMusic)
             }
         }
     }

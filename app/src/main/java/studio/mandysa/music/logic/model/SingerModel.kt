@@ -1,13 +1,13 @@
 package studio.mandysa.music.logic.model
 
 import mandysax.anna2.annotation.Value
-import studio.mandysa.music.service.playmanager.model.ArtistModel
+import studio.mandysa.music.service.playmanager.model.MetaArtist
 
 /**
  *
  * @author Huang hao
  */
-class SingerModel : ArtistModel {
+class SingerModel : MetaArtist {
 
     /*
     "ar": [{
