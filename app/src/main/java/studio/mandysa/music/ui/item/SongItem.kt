@@ -18,10 +18,7 @@ import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.service.playmanager.model.MetaMusic
 import studio.mandysa.music.ui.common.CardAsyncImage
 import studio.mandysa.music.ui.screen.DialogDestination
-import studio.mandysa.music.ui.theme.horizontalMargin
-import studio.mandysa.music.ui.theme.textColor
-import studio.mandysa.music.ui.theme.textColorLight
-import studio.mandysa.music.ui.theme.verticalMargin
+import studio.mandysa.music.ui.theme.*
 
 @Composable
 fun SongItem(
@@ -65,7 +62,7 @@ fun SongItem(
         }
         Icon(
             imageVector = Icons.Rounded.MoreVert,
-            tint = textColor,
+            tint = onBackground,
             contentDescription = null,
             modifier = Modifier
                 .clickable {

@@ -14,13 +14,17 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.viewModelFactory
 import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.R
 import studio.mandysa.music.ui.common.AppDivider
+import studio.mandysa.music.ui.item.ItemCoverHeader
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.screen.singer.popularsong.PopularSongScreen
@@ -43,7 +47,11 @@ fun SingerScreen(
     dialogNavController: NavController<DialogDestination>,
     paddingValues: PaddingValues,
     id: String,
+    singerViewModel: SingerViewModel = viewModel(factory = viewModelFactory {
+        addInitializer(SingerViewModel::class) { SingerViewModel(id) }
+    })
 ) {
+    val singerInfo by singerViewModel.singerInfo.observeAsState()
     Column {
         TopAppBar(
             modifier = Modifier.fillMaxWidth(),
@@ -56,6 +64,12 @@ fun SingerScreen(
             }
         }
         Column {
+            ItemCoverHeader(
+                dialogNavController = dialogNavController,
+                coverUrl = singerInfo?.cover ?: "",
+                title = singerInfo?.name ?: "",
+                message = singerInfo?.briefDesc ?: ""
+            )
             AppDivider()
             var selectedIndex by remember {
                 mutableStateOf(0)
@@ -98,7 +112,7 @@ fun SingerScreen(
                     }
                     SingerScreenTabDestination.SingerAlbum -> {
                         SingerAlbumScreen(
-                            dialogNavController = dialogNavController,
+                            mainNavController = mainNavController,
                             paddingValues = paddingValues,
                             id = id
                         )

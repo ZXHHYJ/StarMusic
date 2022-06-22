@@ -115,7 +115,10 @@ interface NeteaseCloudMusicApi {
 
     @Get("artist/detail")
     @Path("data")
-    fun getSingerDetails(@Query("id") id: String): SingerDetailedModel
+    fun getSingerDetails(
+        @Query("cookie") cookie: String = cookie(),
+        @Query("id") id: String
+    ): SingerDetailedModel
 
     @Get("artist/album")
     @Path("hotAlbums")

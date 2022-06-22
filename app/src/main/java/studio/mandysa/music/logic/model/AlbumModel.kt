@@ -35,4 +35,8 @@ class AlbumModel : MetaAlbum {
     override fun getName(): String {
         return name
     }
+
+    override fun getPublishTime(): String? {
+        return null
+    }
 }

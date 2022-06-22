@@ -11,25 +11,26 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import dev.olshevski.navigation.reimagined.NavController
-import studio.mandysa.music.ui.item.SongItem
-import studio.mandysa.music.ui.screen.DialogDestination
+import dev.olshevski.navigation.reimagined.navigate
+import studio.mandysa.music.ui.item.AlbumItem
+import studio.mandysa.music.ui.screen.ScreenDestination
 
 @Composable
 fun SingerAlbumScreen(
-    dialogNavController: NavController<DialogDestination>,
+    mainNavController: NavController<ScreenDestination>,
     paddingValues: PaddingValues,
     id: String,
     singerAlbumViewModel: SingerAlbumViewModel = viewModel(factory = viewModelFactory {
         addInitializer(SingerAlbumViewModel::class) { SingerAlbumViewModel(id) }
     })
 ) {
-    //val songs = singerAlbumViewModel.albums.collectAsLazyPagingItems()
+    val albums = singerAlbumViewModel.albums.collectAsLazyPagingItems()
     LazyColumn {
-      /*  items(songs) {
-            SongItem(dialogNavController = dialogNavController, song = it!!) {
-
+        items(albums) {
+            AlbumItem(mateAlbum = it!!) {
+                mainNavController.navigate(ScreenDestination.Album(it.id))
             }
-        }*/
+        }
         item {
             Spacer(modifier = Modifier.padding(paddingValues))
         }

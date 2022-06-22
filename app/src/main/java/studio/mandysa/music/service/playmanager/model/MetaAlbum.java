@@ -6,4 +6,6 @@ public interface MetaAlbum {
     String getCoverUrl();
 
     String getName();
+
+    String getPublishTime();
 }

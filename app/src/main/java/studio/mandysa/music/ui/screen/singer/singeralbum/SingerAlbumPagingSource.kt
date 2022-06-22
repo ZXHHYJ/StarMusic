@@ -2,25 +2,36 @@ package studio.mandysa.music.ui.screen.singer.singeralbum
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import studio.mandysa.music.logic.model.MusicModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import studio.mandysa.music.logic.model.SingerAlbumModel
+import studio.mandysa.music.logic.network.api
 
-class SingerAlbumPagingSource(private val id: String) : PagingSource<Int, MusicModel>() {
+class SingerAlbumPagingSource(private val id: String) : PagingSource<Int, SingerAlbumModel>() {
 
-    override fun getRefreshKey(state: PagingState<Int, MusicModel>): Int? = null
+    override fun getRefreshKey(state: PagingState<Int, SingerAlbumModel>): Int? = null
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MusicModel> {
-        /*return try {
+    private val mPageDataMap = HashMap<Int, List<SingerAlbumModel>>()
+
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, SingerAlbumModel> {
+        return try {
             withContext(Dispatchers.IO) {
-                val pagInfo = mSongsList.getPagInfo(params.key ?: 0, 50)
+                val index = params.key ?: 0
+                if (mPageDataMap[index] == null) {
+                    mPageDataMap[index] =
+                        api.getSingerAlbum(id = id, limit = params.loadSize, offset = index)
+                }
+                val nextPageData =
+                    api.getSingerAlbum(id = id, limit = params.loadSize, offset = index + 1)
+                mPageDataMap[index + 1] = nextPageData
                 LoadResult.Page(
-                    data = pagInfo.data,
-                    prevKey = pagInfo.prevKey,
-                    nextKey = pagInfo.nextKey
+                    data = mPageDataMap[index]!!,
+                    prevKey = if (index == 0) null else index - 1,
+                    nextKey = if (nextPageData.isEmpty()) null else index + 1
                 )
             }
         } catch (e: Exception) {
             LoadResult.Error(e)
-        }*/
-        return TODO()
+        }
     }
 }

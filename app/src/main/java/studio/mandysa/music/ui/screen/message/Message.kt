@@ -40,7 +40,6 @@ fun Message(dialogNavController: NavController<DialogDestination>, message: Stri
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1.0f)
                     .verticalScroll(
                         state = rememberScrollState()
                     ),
