@@ -2,20 +2,18 @@ package studio.mandysa.music.service
 
 import android.app.Notification
 import android.app.Notification.MediaStyle
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
+import android.os.Build
 import studio.mandysa.music.MainActivity
 import studio.mandysa.music.R
 
-const val CHANNEL_ID = "notification_channel_id"
+class MediaNotification(context: Context, session: MediaSession, channelId: String) :
+    Notification.Builder(context, channelId) {
 
-class MediaNotification(context: Context, session: MediaSession) :
-    Notification.Builder(context, CHANNEL_ID) {
     private val mPlayAction = PlayButtonReceiver.buildMediaButtonAction(
         context,
         R.drawable.ic_play,
@@ -36,25 +34,27 @@ class MediaNotification(context: Context, session: MediaSession) :
         R.drawable.ic_skip_previous,
         PlaybackState.STATE_SKIPPING_TO_PREVIOUS
     )
-    private var mIsPlaying = false
+    private val mStopAction = PlayButtonReceiver.buildMediaButtonAction(
+        context,
+        R.drawable.ic_icons8_close,
+        PlaybackState.STATE_STOPPED
+    )
 
-    fun setAction(isPlaying: Boolean): MediaNotification {
-        mIsPlaying = isPlaying
-        setActions(mPrevAction, if (!isPlaying) mPlayAction else mPauseAction, mNextAction)
+    fun setAction(playing: Boolean): MediaNotification {
+        if (mAndroid12) {
+            setActions(
+                mPrevAction,
+                if (!playing) mPlayAction else mPauseAction,
+                mNextAction,
+                mStopAction
+            )
+        } else setActions(mPrevAction, if (!playing) mPlayAction else mPauseAction, mNextAction)
         return this
     }
 
+    private val mAndroid12 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+
     init {
-        val manager = context.getSystemService(NotificationManager::class.java)
-        val notificationChannel = NotificationChannel(
-            CHANNEL_ID,
-            context.getString(R.string.channel_name),
-            NotificationManager.IMPORTANCE_LOW
-        )
-        notificationChannel.description = context.getString(R.string.channel_description)
-        notificationChannel.enableVibration(false)
-        manager.createNotificationChannel(notificationChannel)
-        //通知渠道设置
         setShowWhen(false)
         setAction(false)
         setContentIntent(
@@ -66,10 +66,14 @@ class MediaNotification(context: Context, session: MediaSession) :
             )
         )
         setDeleteIntent(PlayButtonReceiver.buildDeleteIntent(context))
-        style =
-            MediaStyle().setShowActionsInCompactView(0, 1, 2)
-                .setMediaSession(session.sessionToken)
         setCategory(Notification.CATEGORY_SERVICE)
         setSmallIcon(R.drawable.ic_launcher_foreground)
+        style = if (mAndroid12) {
+            MediaStyle().setShowActionsInCompactView(0, 1, 2, 3)
+                .setMediaSession(session.sessionToken)
+        } else {
+            MediaStyle().setShowActionsInCompactView(0, 1, 2)
+                .setMediaSession(session.sessionToken)
+        }
     }
 }
