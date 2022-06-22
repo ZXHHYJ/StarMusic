@@ -1,18 +1,14 @@
 package studio.mandysa.music.ui.screen.singer
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.*
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -24,11 +20,13 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.R
 import studio.mandysa.music.ui.common.AppDivider
+import studio.mandysa.music.ui.common.AppTabRow
 import studio.mandysa.music.ui.item.ItemCoverHeader
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.screen.singer.popularsong.PopularSongScreen
 import studio.mandysa.music.ui.screen.singer.singeralbum.SingerAlbumScreen
+import studio.mandysa.music.ui.theme.neutralColor
 import studio.mandysa.music.ui.theme.onBackground
 
 enum class SingerScreenTabDestination {
@@ -41,6 +39,7 @@ val SingerScreenTabDestination.tabName: String
         SingerScreenTabDestination.SingerAlbum -> stringResource(id = R.string.singer_album)
     }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SingerScreen(
     mainNavController: NavController<ScreenDestination>,
@@ -76,16 +75,8 @@ fun SingerScreen(
             }
             val navController =
                 rememberNavController(startDestination = SingerScreenTabDestination.PopularSong)
-            TabRow(
+            AppTabRow(
                 selectedTabIndex = selectedIndex,
-                containerColor = Color.Transparent,
-                contentColor = onBackground,
-                indicator = {
-                    TabRowDefaults.Indicator(
-                        Modifier.tabIndicatorOffset(it[selectedIndex]),
-                        color = onBackground
-                    )
-                }
             ) {
                 SingerScreenTabDestination.values().forEachIndexed { index, destination ->
                     Tab(

@@ -59,12 +59,7 @@ fun MeScreen(
             ) {
                 items(playlist) {
                     PlaylistItem(title = it.name, coverUrl = it.coverImgUrl) {
-                        //判断是不是第一个歌单
-                        if (playlist[0] == it) {
-                            mainNavController.navigate(ScreenDestination.Like(it.id))
-                        } else {
-                            mainNavController.navigate(ScreenDestination.Playlist(it.id))
-                        }
+                        mainNavController.navigate(ScreenDestination.Playlist(it.id))
                     }
                 }
             }

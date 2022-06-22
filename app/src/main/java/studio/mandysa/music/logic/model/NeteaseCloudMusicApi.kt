@@ -120,6 +120,16 @@ interface NeteaseCloudMusicApi {
         @Query("id") id: String
     ): SingerDetailedModel
 
+    //获取歌单所有歌曲
+    //https://neteasecloudmusicapi.vercel.app/#/?id=%e8%8e%b7%e5%8f%96%e6%ad%8c%e5%8d%95%e6%89%80%e6%9c%89%e6%ad%8c%e6%9b%b2
+    @Get("playlist/track/all")
+    @Deprecated("无法使用")
+    fun getPlaylistSongs(
+        @Query("id") id: String,
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int
+    ): String
+
     @Get("artist/album")
     @Path("hotAlbums")
     fun getSingerAlbum(
@@ -130,7 +140,7 @@ interface NeteaseCloudMusicApi {
     ): List<SingerAlbumModel>
 
     //歌手热门 50 首歌曲
-    // https://neteasecloudmusicapi.vercel.app/#/?id=%e6%ad%8c%e6%89%8b%e7%83%ad%e9%97%a8-50-%e9%a6%96%e6%ad%8c%e6%9b%b2
+    //https://neteasecloudmusicapi.vercel.app/#/?id=%e6%ad%8c%e6%89%8b%e7%83%ad%e9%97%a8-50-%e9%a6%96%e6%ad%8c%e6%9b%b2
     @Get("artist/top/song")
     @Path("songs")
     fun getSingerHotSong(@Query("id") id: String): List<MusicModel>
@@ -142,19 +152,19 @@ interface NeteaseCloudMusicApi {
     ): AlbumContentModel
 
     //二维码key生成接口
-    // https://neteasecloudmusicapi.vercel.app/#/?id=_1-%e4%ba%8c%e7%bb%b4%e7%a0%81-key-%e7%94%9f%e6%88%90%e6%8e%a5%e5%8f%a3
+    //https://neteasecloudmusicapi.vercel.app/#/?id=_1-%e4%ba%8c%e7%bb%b4%e7%a0%81-key-%e7%94%9f%e6%88%90%e6%8e%a5%e5%8f%a3
     @Get("login/qr/key")
     @Path("data/unikey")
     fun getQRKey(@Query("timestamp") timestamp: Long = System.currentTimeMillis()): String
 
     //二维码生成接口
-    // https://neteasecloudmusicapi.vercel.app/#/?id=_2-%e4%ba%8c%e7%bb%b4%e7%a0%81%e7%94%9f%e6%88%90%e6%8e%a5%e5%8f%a3
+    //https://neteasecloudmusicapi.vercel.app/#/?id=_2-%e4%ba%8c%e7%bb%b4%e7%a0%81%e7%94%9f%e6%88%90%e6%8e%a5%e5%8f%a3
     @Get("login/qr/create")
     @Path("data/qrimg")
     fun getQRImg(@Query("key") key: String, @Query("qrimg") qrimg: Boolean = true): String
 
     // 二维码检测扫码状态接口
-    // https://neteasecloudmusicapi.vercel.app/#/?id=_3-%e4%ba%8c%e7%bb%b4%e7%a0%81%e6%a3%80%e6%b5%8b%e6%89%ab%e7%a0%81%e7%8a%b6%e6%80%81%e6%8e%a5%e5%8f%a3
+    //https://neteasecloudmusicapi.vercel.app/#/?id=_3-%e4%ba%8c%e7%bb%b4%e7%a0%81%e6%a3%80%e6%b5%8b%e6%89%ab%e7%a0%81%e7%8a%b6%e6%80%81%e6%8e%a5%e5%8f%a3
     @Get("login/qr/check")
     fun check(
         @Query("key") key: String,

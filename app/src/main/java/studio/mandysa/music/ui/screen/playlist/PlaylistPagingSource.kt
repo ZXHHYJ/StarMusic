@@ -19,7 +19,7 @@ class PlaylistPagingSource(private val id: String) : PagingSource<Int, MusicMode
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MusicModel> {
         return try {
             withContext(Dispatchers.IO) {
-                val pagInfo = mMateSongList.getPagInfo(params.key ?: 0, 15)
+                val pagInfo = mMateSongList.getPagInfo(params.key ?: 0, params.loadSize)
                 val response = api.getSongInfo(ids = pagInfo.data)
                 LoadResult.Page(
                     data = response,
@@ -31,4 +31,5 @@ class PlaylistPagingSource(private val id: String) : PagingSource<Int, MusicMode
             LoadResult.Error(e)
         }
     }
+
 }

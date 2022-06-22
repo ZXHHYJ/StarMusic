@@ -34,19 +34,19 @@ val onBackground: Color
 
 //dialog背景色
 val dialogBackground: Color
-    @Composable get() = 94.accent2 withNight 10.accent2
+    @Composable get() = 94.accent2 withNight 18.accent2
 
-//内容颜色
+//容器颜色
 val contentColor: Color
     @Composable get() = 90.accent2 withNight 20.accent2
 
 //bottomBarItem背景颜色
 val neutralColor: Color
-    @Composable get() = 82.accent1 withNight 15.accent2
+    @Composable get() = 82.accent1 withNight 20.accent2
 
 //bottomBarItem指示颜色
 val indicatorColor: Color
-    @Composable get() = 90.accent2 withNight 20.accent2
+    @Composable get() = 90.accent2 withNight 25.accent2
 
 fun Hct.toColor(): Color {
     val srgb = toSrgb().clamp()

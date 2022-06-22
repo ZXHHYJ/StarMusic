@@ -36,7 +36,6 @@ import studio.mandysa.music.ui.screen.controller.ControllerScreen
 import studio.mandysa.music.ui.screen.me.AboutScreen
 import studio.mandysa.music.ui.screen.me.MeScreen
 import studio.mandysa.music.ui.screen.me.SettingScreen
-import studio.mandysa.music.ui.screen.me.like.LikeScreen
 import studio.mandysa.music.ui.screen.message.Message
 import studio.mandysa.music.ui.screen.play.PlayScreen
 import studio.mandysa.music.ui.screen.playlist.PlaylistScreen
@@ -246,14 +245,6 @@ fun MainScreen() {
                                 navController,
                                 dialogNavController,
                                 paddingValues = padding
-                            )
-                        }
-                        is ScreenDestination.Like -> {
-                            LikeScreen(
-                                navController,
-                                dialogNavController,
-                                paddingValues = padding,
-                                id = screenDestination.id
                             )
                         }
                         is ScreenDestination.Playlist -> {

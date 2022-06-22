@@ -7,19 +7,24 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.shareIn
 import studio.mandysa.music.logic.network.api
 
 class PlaylistModel(private val id: String) : ViewModel() {
 
-    val songs = Pager(PagingConfig(pageSize = 15)) {
+    val songs = Pager(PagingConfig(pageSize = 30)) {
         PlaylistPagingSource(id)
     }.flow.cachedIn(viewModelScope)
 
     val playlistInfoModel = flow {
         emit(api.getSongListInfo(id = id))
-    }.flowOn(Dispatchers.IO).asLiveData(context = viewModelScope.coroutineContext)
+    }.flowOn(Dispatchers.IO).asLiveData()
+
+    /* init {
+         viewModelScope.launch(Dispatchers.IO) {
+             println(api.getPlaylistSongs(id = id, limit = 30, offset = 0))
+         }
+     }*/
+
 }
