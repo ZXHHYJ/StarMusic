@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.screen.singer.singeralbum
+package studio.mandysa.music.ui.screen.search
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -9,26 +9,28 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
+import androidx.paging.compose.itemsIndexed
 import dev.olshevski.navigation.reimagined.NavController
-import dev.olshevski.navigation.reimagined.navigate
-import studio.mandysa.music.ui.item.AlbumItem
+import studio.mandysa.music.service.playmanager.PlayManager
+import studio.mandysa.music.ui.item.SongItem
+import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 
 @Composable
-fun SingerAlbumScreen(
+fun SearchSongScreen(
     mainNavController: NavController<ScreenDestination>,
+    dialogNavController: NavController<DialogDestination>,
     paddingValues: PaddingValues,
-    id: String,
-    singerAlbumViewModel: SingerAlbumViewModel = viewModel(factory = viewModelFactory {
-        addInitializer(SingerAlbumViewModel::class) { SingerAlbumViewModel(id) }
+    keywords: String,
+    searchSongViewModel: SearchSongViewModel = viewModel(factory = viewModelFactory {
+        addInitializer(SearchSongViewModel::class) { SearchSongViewModel(keywords) }
     })
 ) {
-    val albums = singerAlbumViewModel.albumSource.collectAsLazyPagingItems()
+    val songs = searchSongViewModel.songSource.collectAsLazyPagingItems()
     LazyColumn {
-        items(albums) {
-            AlbumItem(mateAlbum = it!!) {
-                mainNavController.navigate(ScreenDestination.Album(it.id))
+        itemsIndexed(songs) { index, item ->
+            SongItem(dialogNavController = dialogNavController, song = item!!) {
+                PlayManager.loadPlaylist(songs.itemSnapshotList, index)
             }
         }
         item {

@@ -1,14 +1,15 @@
 package studio.mandysa.music.ui.screen.singer
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material3.*
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.material3.Tab
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -26,7 +27,6 @@ import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.screen.singer.popularsong.PopularSongScreen
 import studio.mandysa.music.ui.screen.singer.singeralbum.SingerAlbumScreen
-import studio.mandysa.music.ui.theme.neutralColor
 import studio.mandysa.music.ui.theme.onBackground
 
 enum class SingerScreenTabDestination {
@@ -39,7 +39,6 @@ val SingerScreenTabDestination.tabName: String
         SingerScreenTabDestination.SingerAlbum -> stringResource(id = R.string.singer_album)
     }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SingerScreen(
     mainNavController: NavController<ScreenDestination>,

@@ -9,19 +9,23 @@ import studio.mandysa.music.logic.user.UserManager.userId
  * @author Huang hao
  */
 interface NeteaseCloudMusicApi {
+
     //搜索音乐
-    @Get("search")
+    @Get("cloudsearch")
     @Path("result/songs")
     fun searchMusic(
-        @Query("keywords") name: String,
+        @Query("cookie") cookie: String = cookie(),
+        @Query("keywords") keywords: String,
+        @Query("limit") limit: Int,
         @Query("offset") offset: Int
-    ): List<SearchMusicModel>
+    ): List<SearchSongModel>
 
     //搜索歌手
     @Get("search")
     @Path("result/artists")
     fun searchSinger(
-        @Query("keywords") name: String,
+        @Query("keywords") keywords: String,
+        @Query("limit") limit: Int,
         @Query("offset") offset: Int,
         @Query("type") type: Int
     ): List<SearchSingerModel>

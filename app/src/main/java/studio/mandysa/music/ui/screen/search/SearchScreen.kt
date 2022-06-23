@@ -1,5 +1,7 @@
 package studio.mandysa.music.ui.screen.search
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,7 +19,9 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -39,9 +43,17 @@ fun SearchScreen(
     paddingValues: PaddingValues,
 ) {
     // TODO: 搜索模块
-    val keyboard = LocalSoftwareKeyboardController.current
-    val focusRequester = remember {
-        FocusRequester()
+    //键盘控制器
+    val keyboardController = LocalSoftwareKeyboardController.current
+    //焦点管理器
+    val focusManager = LocalFocusManager.current
+    //焦点请求
+    val focusRequester = FocusRequester()
+    var isSearch by rememberSaveable {
+        mutableStateOf(false)
+    }
+    var keywords by rememberSaveable {
+        mutableStateOf("")
     }
     Column {
         TopAppBar(
@@ -54,17 +66,19 @@ fun SearchScreen(
                 Icon(Icons.Rounded.ArrowBack, null)
             }
         }
-        var search by rememberSaveable {
-            mutableStateOf("")
-        }
         SearchBar {
             BasicTextField(
                 modifier = Modifier
                     .weight(1f)
-                    .focusRequester(focusRequester),
-                value = search,
+                    .focusRequester(focusRequester)
+                    .onFocusChanged {
+                        if (it.isFocused) {
+                            isSearch = false
+                        }
+                    },
+                value = keywords,
                 onValueChange = {
-                    search = it
+                    keywords = it
                 },
                 singleLine = true,
                 textStyle = TextStyle(
@@ -72,15 +86,32 @@ fun SearchScreen(
                     fontSize = 16.sp,
                 ),
                 keyboardActions = KeyboardActions(onSearch = {
-                    keyboard?.hide()
+                    isSearch = true
+                    focusManager.clearFocus()
+                    keyboardController?.hide()
                 }),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search)
             )
         }
         DisposableEffect(key1 = this, effect = {
             focusRequester.requestFocus()
-            keyboard?.show()
-            onDispose {  }
+            keyboardController?.show()
+            onDispose { }
         })
+        BackHandler(enabled = isSearch) {
+            isSearch = false
+        }
+        Box(modifier = Modifier.weight(1.0f)) {
+            if (!isSearch) {
+                // TODO: 搜索历史
+            } else {
+                SearchListScreen(
+                    mainNavController = mainNavController,
+                    dialogNavController = dialogNavController,
+                    paddingValues = paddingValues,
+                    keywords = keywords
+                )
+            }
+        }
     }
 }

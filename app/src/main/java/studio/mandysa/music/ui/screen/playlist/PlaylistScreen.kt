@@ -47,7 +47,7 @@ fun PlaylistScreen(
     })
 ) {
     val playlistInfo by playlistModel.playlistInfoModel.observeAsState()
-    val songs = playlistModel.songs.collectAsLazyPagingItems()
+    val songs = playlistModel.songSource.collectAsLazyPagingItems()
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
             modifier = Modifier.fillMaxWidth(),

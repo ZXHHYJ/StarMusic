@@ -18,10 +18,10 @@ class SingerModel : MetaArtist {
      */
 
     @Value("id")
-    private val id = ""
+    private lateinit var id: String
 
     @Value("name")
-    private val name = ""
+    private lateinit var name: String
 
     override fun getId(): String {
         return id

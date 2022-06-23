@@ -7,22 +7,21 @@ import studio.mandysa.music.service.playmanager.model.MetaMusic
 /**
  * @author Huang hao
  */
-class SearchMusicModel :
-    MetaMusic<SingerModel, AlbumModel> {
+class SearchSongModel : MetaMusic<SingerModel, AlbumModel> {
     @Value("name")
     private lateinit var name: String
 
     @Value("id")
     private lateinit var id: String
 
-    @Value("album")
+    @Value("al")
     private lateinit var album: AlbumModel
 
-    @Value("artists")
-    private lateinit var artistsList: List<SingerModel>
+    @Value("ar")
+    private lateinit var artists: List<SingerModel>
 
     override fun getArtist(): List<SingerModel> {
-        return artistsList
+        return artists
     }
 
     override fun getCoverUrl(): String {

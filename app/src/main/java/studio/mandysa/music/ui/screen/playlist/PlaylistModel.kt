@@ -13,7 +13,7 @@ import studio.mandysa.music.logic.network.api
 
 class PlaylistModel(private val id: String) : ViewModel() {
 
-    val songs = Pager(PagingConfig(pageSize = 30)) {
+    val songSource = Pager(PagingConfig(pageSize = 30)) {
         PlaylistPagingSource(id)
     }.flow.cachedIn(viewModelScope)
 
