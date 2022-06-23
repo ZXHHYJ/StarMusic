@@ -14,4 +14,7 @@ sealed class DialogDestination : Parcelable {
 
     @Parcelize
     data class Message(val message: String) : DialogDestination()
+
+    @Parcelize
+    object UserManager : DialogDestination()
 }

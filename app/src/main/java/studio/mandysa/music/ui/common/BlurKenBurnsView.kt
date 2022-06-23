@@ -37,6 +37,9 @@ fun KenBurns(modifier: Modifier, imageUrl: String, paused: Boolean) {
     }
 }
 
+/**
+ * bitmap模糊算法来自于AppleMusic
+ */
 private class BlurKenBurnsView : KenBurnsView {
 
     constructor(context: Context?) : super(context)

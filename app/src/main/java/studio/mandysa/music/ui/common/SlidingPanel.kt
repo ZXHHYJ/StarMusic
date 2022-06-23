@@ -31,7 +31,6 @@ fun SlidingPanel(
     content: @Composable ((PanelState) -> Unit) -> Unit,
     panel: @Composable ((PanelState) -> Unit) -> Unit
 ) {
-    //0开1关
     BoxWithConstraints(
         modifier = modifier,
         contentAlignment = Alignment.BottomCenter

@@ -36,6 +36,7 @@ import studio.mandysa.music.ui.screen.controller.ControllerScreen
 import studio.mandysa.music.ui.screen.me.AboutScreen
 import studio.mandysa.music.ui.screen.me.MeScreen
 import studio.mandysa.music.ui.screen.me.SettingScreen
+import studio.mandysa.music.ui.screen.me.usermanager.UserManager
 import studio.mandysa.music.ui.screen.message.Message
 import studio.mandysa.music.ui.screen.play.PlayScreen
 import studio.mandysa.music.ui.screen.playlist.PlaylistScreen
@@ -136,6 +137,9 @@ fun MainScreen() {
                 }
                 is DialogDestination.Message -> {
                     Message(dialogNavController, message = destination.message)
+                }
+                is DialogDestination.UserManager -> {
+                    UserManager()
                 }
             }
         }

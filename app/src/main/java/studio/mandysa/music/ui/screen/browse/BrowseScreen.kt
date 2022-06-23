@@ -1,24 +1,18 @@
 package studio.mandysa.music.ui.screen.browse
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -34,13 +28,17 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
+import studio.mandysa.music.ui.common.SearchBar
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.ItemTitle
 import studio.mandysa.music.ui.item.PlaylistItem
 import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
-import studio.mandysa.music.ui.theme.*
+import studio.mandysa.music.ui.theme.cornerShape
+import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.onBackground
+import studio.mandysa.music.ui.theme.textColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -87,24 +85,7 @@ fun BrowseScreen(
             ItemTitle(stringResource(R.string.browse))
         }
         item {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = horizontalMargin, vertical = verticalMargin)
-                    .height(48.dp)
-                    .clip(CircleShape)
-                    .background(contentColor)
-                    .clickable {
-                        mainNavController.navigate(ScreenDestination.Search)
-                    }
-                    .padding(horizontal = horizontalMargin),
-                horizontalArrangement = Arrangement.spacedBy(horizontalMargin),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Search,
-                    contentDescription = null
-                )
+            SearchBar(modifier = Modifier.clickable { mainNavController.navigate(ScreenDestination.Search) }) {
                 Text(text = stringResource(id = R.string.search_hint))
             }
         }

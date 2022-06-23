@@ -1,34 +1,37 @@
 package studio.mandysa.music.ui.screen.search
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuDefaults.textFieldColors
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import dev.olshevski.navigation.reimagined.NavController
-import studio.mandysa.music.R
-import studio.mandysa.music.ui.item.ItemTitle
+import dev.olshevski.navigation.reimagined.pop
+import studio.mandysa.music.ui.common.SearchBar
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
-import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.onBackground
 import studio.mandysa.music.ui.theme.textColor
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchScreen(
     mainNavController: NavController<ScreenDestination>,
@@ -36,47 +39,48 @@ fun SearchScreen(
     paddingValues: PaddingValues,
 ) {
     // TODO: 搜索模块
+    val keyboard = LocalSoftwareKeyboardController.current
+    val focusRequester = remember {
+        FocusRequester()
+    }
     Column {
-        ItemTitle(stringResource(R.string.search))
-        var search by rememberSaveable() {
+        TopAppBar(
+            modifier = Modifier.fillMaxWidth(),
+            backgroundColor = Color.Transparent,
+            contentColor = onBackground,
+            elevation = 0.dp
+        ) {
+            IconButton(onClick = { mainNavController.pop() }) {
+                Icon(Icons.Rounded.ArrowBack, null)
+            }
+        }
+        var search by rememberSaveable {
             mutableStateOf("")
         }
-        Card(
-            modifier = Modifier
-                .padding(horizontal = horizontalMargin)
-                .height(60.dp),
-            shape = RoundedCornerShape(30.dp)
-        ) {
-            TextField(
-                enabled = false,
-                value = search,
-                maxLines = 1,
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                placeholder = { Text(stringResource(R.string.search_hint)) },
+        SearchBar {
+            BasicTextField(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .clickable { },
+                    .weight(1f)
+                    .focusRequester(focusRequester),
+                value = search,
                 onValueChange = {
                     search = it
                 },
-                colors = textFieldColors(
-                    textColor = textColor,
-                    containerColor = Color.Transparent,
-                    cursorColor = Color.Black,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent
-                )
+                singleLine = true,
+                textStyle = TextStyle(
+                    color = textColor,
+                    fontSize = 16.sp,
+                ),
+                keyboardActions = KeyboardActions(onSearch = {
+                    keyboard?.hide()
+                }),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search)
             )
         }
-        LazyColumn {
-            item {
-
-            }
-            item {
-
-            }
-        }
+        DisposableEffect(key1 = this, effect = {
+            focusRequester.requestFocus()
+            keyboard?.show()
+            onDispose {  }
+        })
     }
 }
