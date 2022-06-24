@@ -1,5 +1,6 @@
 package studio.mandysa.music.ui.screen.me
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -21,7 +22,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
-import studio.mandysa.music.logic.model.UserModel
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.item.ItemSubTitle
@@ -32,6 +32,7 @@ import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.cornerShape
 import studio.mandysa.music.ui.theme.horizontalMargin
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MeScreen(
     mainNavController: NavController<ScreenDestination>,
@@ -46,7 +47,31 @@ fun MeScreen(
             ItemTitle(stringResource(R.string.me))
         }
         item {
-            userInfo?.InfoCard()
+            userInfo?.let {
+                Card(
+                    modifier = Modifier.padding(horizontal = horizontalMargin),
+                    shape = cornerShape
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(100.dp)
+                            .clickable {
+                                dialogNavController.navigate(DialogDestination.MeMenu)
+                            },
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(modifier = Modifier.padding(horizontal = 10.dp)) {
+                            AppAsyncImage(size = 70.dp, 35.dp, url = it.avatarUrl)
+                        }
+                        Column {
+                            Text(text = it.nickname)
+                            Spacer(modifier = Modifier.height(5.dp))
+                            Text(text = it.signature)
+                        }
+                    }
+                }
+            }
         }
         item {
             ItemSubTitle(stringResource(R.string.me_playlist))
@@ -89,31 +114,6 @@ fun MeScreen(
         }
         item {
             Spacer(modifier = Modifier.padding(paddingValues))
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun UserModel.InfoCard() {
-    Card(
-        modifier = Modifier.padding(horizontal = horizontalMargin),
-        shape = cornerShape
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(modifier = Modifier.padding(horizontal = 10.dp)) {
-                AppAsyncImage(size = 70.dp, 35.dp, url = avatarUrl)
-            }
-            Column {
-                Text(text = nickname)
-                Spacer(modifier = Modifier.height(5.dp))
-                Text(text = signature)
-            }
         }
     }
 }
