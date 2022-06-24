@@ -19,11 +19,6 @@
         <string name="you_are_offline">你已离线</string>
         <string name="check_the_network">请检查网络后点击重试</string>-->
 
-    <string name="phone">手机号</string>
-    <string name="password">密码</string>
-
-    <string name="login">登录</string>
-
     <string name="playlist_square">歌单广场</string>
 
     <string name="browse">浏览</string>
@@ -31,8 +26,6 @@
     <string name="singer">歌手</string>
     <string name="clear">清除</string>
     <string name="play_queue">播放队列</string>
-    <string name="search">搜索</string>
-    <string name="exit">退出</string>
 
     <string name="setting">设置</string>
     <string name="i_like">我喜欢</string>
@@ -47,10 +40,6 @@
     <string name="remove_like">从我喜欢中移除</string>
     <string name="play_all">播放全部</string>
     <string name="remove_playlist">删除歌单</string>
-    <string-array name="favorite_playlist">
-        <item>收藏歌单</item>
-        <item>取消收藏歌单</item>
-    </string-array>
 
     <string name="popular_song">热门歌曲</string>
     <string name="singer_album">歌手专辑</string>
@@ -59,5 +48,4 @@
     <string name="issued">发行</string>
     <string name="single">单曲</string>
 
-    <string name="enable_android_auto_ui">启用 Android Auto UI</string>
 </resources>
