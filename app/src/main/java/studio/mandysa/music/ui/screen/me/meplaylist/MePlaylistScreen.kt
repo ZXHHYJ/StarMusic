@@ -26,7 +26,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.ui.common.AppDivider
-import studio.mandysa.music.ui.common.CardAsyncImage
+import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.round
 
@@ -78,7 +78,7 @@ private fun PlaylistItem(coverUrl: String, title: String, nickname: String, onCl
                 .clickable(onClick = onClick), shape = RoundedCornerShape(round)
         ) {
             Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
-                CardAsyncImage(size = 100.dp, url = coverUrl)
+                AppAsyncImage(size = 100.dp, url = coverUrl)
                 Spacer(modifier = Modifier.width(5.dp))
                 Column {
                     Text(text = title, fontSize = 16.sp, color = MaterialTheme.colorScheme.primary)

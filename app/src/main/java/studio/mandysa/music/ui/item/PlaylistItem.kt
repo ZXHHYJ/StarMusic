@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import studio.mandysa.music.ui.common.CardAsyncImage
+import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.textColor
 
@@ -22,7 +22,7 @@ fun PlaylistItem(title: String, coverUrl: String, onClick: () -> Unit) {
         modifier = Modifier
             .width(width)
     ) {
-        CardAsyncImage(size = width, url = coverUrl, onClick = onClick)
+        AppAsyncImage(size = width, url = coverUrl, onClick = onClick)
         Text(
             text = title,
             color = textColor,

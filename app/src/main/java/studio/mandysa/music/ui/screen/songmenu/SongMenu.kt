@@ -26,7 +26,7 @@ import kotlinx.parcelize.RawValue
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.service.playmanager.model.MetaMusic
-import studio.mandysa.music.ui.common.CardAsyncImage
+import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
@@ -61,7 +61,7 @@ fun SongMenu(
                         modifier = Modifier
                             .height(80.dp)
                     ) {
-                        CardAsyncImage(size = 80.dp, url = model.coverUrl)
+                        AppAsyncImage(size = 80.dp, url = model.coverUrl)
                         Column(modifier = Modifier.padding(verticalMargin)) {
                             Text(
                                 text = model.title,

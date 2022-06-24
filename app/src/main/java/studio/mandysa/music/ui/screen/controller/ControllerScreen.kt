@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.ui.common.CardAsyncImage
+import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.KenBurns
 import studio.mandysa.music.ui.common.PanelState
 import studio.mandysa.music.ui.theme.horizontalMargin
@@ -117,7 +117,7 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
                         }
                     }
                 }
-                CardAsyncImage(size = coverSize, url = coverUrl)
+                AppAsyncImage(size = coverSize, url = coverUrl)
             }
         }
     }

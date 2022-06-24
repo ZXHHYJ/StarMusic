@@ -93,8 +93,10 @@ fun SearchScreen(
             )
         }
         DisposableEffect(key1 = this, effect = {
-            focusRequester.requestFocus()
-            keyboardController?.show()
+            if (keywords.isEmpty()) {
+                focusRequester.requestFocus()
+                keyboardController?.show()
+            }
             onDispose { }
         })
         Box(modifier = Modifier.weight(1.0f)) {

@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.ui.common.CardAsyncImage
+import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.RoundIcon
 import studio.mandysa.music.ui.common.SeekBar
 import studio.mandysa.music.ui.theme.translucentWhite
@@ -52,7 +52,7 @@ private fun AlbumCover() {
         val coverUrl by PlayManager.changeMusicLiveData().map { return@map it.coverUrl }
             .observeAsState()
         coverUrl?.let {
-            CardAsyncImage(size = screenWidth * 0.84f, url = it)
+            AppAsyncImage(size = screenWidth * 0.84f, url = it)
         }
     }
 }

@@ -4,7 +4,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.R
@@ -12,6 +16,7 @@ import studio.mandysa.music.ui.common.AppDivider
 import studio.mandysa.music.ui.common.AppTabRow
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
+import studio.mandysa.music.ui.screen.search.singer.SearchSingerScreen
 import studio.mandysa.music.ui.screen.search.single.SearchSingleScreen
 
 enum class SearchListScreenDestination {
@@ -33,7 +38,7 @@ fun SearchListScreen(
 ) {
     Column {
         AppDivider()
-        var selectedIndex by remember {
+        var selectedIndex by rememberSaveable {
             mutableStateOf(0)
         }
         val navController =
@@ -65,7 +70,11 @@ fun SearchListScreen(
                     )
                 }
                 SearchListScreenDestination.Singer -> {
-
+                    SearchSingerScreen(
+                        mainNavController = mainNavController,
+                        paddingValues = paddingValues,
+                        keywords = keywords
+                    )
                 }
             }
         }

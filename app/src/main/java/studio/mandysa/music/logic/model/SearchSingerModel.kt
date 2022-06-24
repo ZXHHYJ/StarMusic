@@ -1,17 +1,23 @@
-package studio.mandysa.music.logic.model;
+package studio.mandysa.music.logic.model
 
-import mandysax.anna2.annotation.Value;
+import mandysax.anna2.annotation.Value
 
 /**
  * @author Huang hao
  */
-public class SearchSingerModel {
+class SearchSingerModel {
     @Value("id")
-    public String id;
+    lateinit var id: String
 
     @Value("name")
-    public String name;
+    lateinit var name: String
 
-    @Value("img1v1Url")//头像
-    public String picUrl;
+    @Value("picUrl")
+    lateinit var picUrl: String
+
+    @Value("followed")
+    var followed = false
+
+    @Value("albumSize")
+    var albumSize = 0
 }

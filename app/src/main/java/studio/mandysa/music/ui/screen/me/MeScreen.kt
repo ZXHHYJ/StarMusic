@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Info
@@ -23,7 +22,7 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
 import studio.mandysa.music.logic.model.UserModel
-import studio.mandysa.music.ui.common.CardAsyncImage
+import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.ItemTitle
@@ -108,7 +107,7 @@ private fun UserModel.InfoCard() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(modifier = Modifier.padding(horizontal = 10.dp)) {
-                CardAsyncImage(shape = RoundedCornerShape(35.dp), size = 70.dp, url = avatarUrl)
+                AppAsyncImage(size = 70.dp, 35.dp, url = avatarUrl)
             }
             Column {
                 Text(text = nickname)

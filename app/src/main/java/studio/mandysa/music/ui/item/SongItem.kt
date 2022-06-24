@@ -16,7 +16,7 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.service.playmanager.model.MetaMusic
-import studio.mandysa.music.ui.common.CardAsyncImage
+import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.theme.*
 
@@ -38,7 +38,7 @@ fun SongItem(
                 .padding(horizontal = horizontalMargin, vertical = verticalMargin)
                 .size(50.dp), contentAlignment = Alignment.Center
         ) {
-            CardAsyncImage(size = 50.dp, url = song.coverUrl)
+            AppAsyncImage(size = 50.dp, url = song.coverUrl)
         }
         Column(
             modifier = Modifier

@@ -21,13 +21,14 @@ interface NeteaseCloudMusicApi {
     ): List<SearchSongModel>
 
     //搜索歌手
-    @Get("search")
+    @Get("cloudsearch")
     @Path("result/artists")
     fun searchSinger(
+        @Query("cookie") cookie: String = cookie(),
         @Query("keywords") keywords: String,
         @Query("limit") limit: Int,
         @Query("offset") offset: Int,
-        @Query("type") type: Int
+        @Query("type") type: Int = 100
     ): List<SearchSingerModel>
 
     //获取音乐详细信息
