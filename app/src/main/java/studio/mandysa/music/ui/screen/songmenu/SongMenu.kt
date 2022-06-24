@@ -6,9 +6,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,13 +24,16 @@ import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.service.playmanager.model.MetaMusic
 import studio.mandysa.music.ui.common.AppAsyncImage
+import studio.mandysa.music.ui.common.DialogCard
 import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
-import studio.mandysa.music.ui.theme.*
+import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.textColor
+import studio.mandysa.music.ui.theme.textColorLight
+import studio.mandysa.music.ui.theme.verticalMargin
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SongMenu(
     mainNavController: NavController<ScreenDestination>,
@@ -44,11 +44,7 @@ fun SongMenu(
     })
 ) {
     val isLike by songMenuViewModel.liked.observeAsState()
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = cornerShape,
-        colors = CardDefaults.cardColors(containerColor = dialogBackground)
-    ) {
+    DialogCard {
         LazyColumn {
             item {
                 Box(

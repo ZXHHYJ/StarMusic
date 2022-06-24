@@ -58,4 +58,6 @@
     <string name="copy">复制</string>
     <string name="issued">发行</string>
     <string name="single">单曲</string>
+
+    <string name="enable_android_auto_ui">启用 Android Auto UI</string>
 </resources>
