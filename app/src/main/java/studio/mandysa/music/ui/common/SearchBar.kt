@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import studio.mandysa.music.ui.theme.contentColor
 import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.onBackground
 import studio.mandysa.music.ui.theme.verticalMargin
 
 @Composable
@@ -32,7 +33,8 @@ fun SearchBar(onClick: () -> Unit = {}, rowScope: @Composable RowScope.() -> Uni
     ) {
         Icon(
             imageVector = Icons.Rounded.Search,
-            contentDescription = null
+            contentDescription = null,
+            tint = onBackground
         )
         rowScope.invoke(this)
     }
