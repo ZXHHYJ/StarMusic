@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.screen.search
+package studio.mandysa.music.ui.screen.search.single
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -14,19 +14,17 @@ import dev.olshevski.navigation.reimagined.NavController
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.screen.DialogDestination
-import studio.mandysa.music.ui.screen.ScreenDestination
 
 @Composable
-fun SearchSongScreen(
-    mainNavController: NavController<ScreenDestination>,
+fun SearchSingleScreen(
     dialogNavController: NavController<DialogDestination>,
     paddingValues: PaddingValues,
     keywords: String,
-    searchSongViewModel: SearchSongViewModel = viewModel(factory = viewModelFactory {
-        addInitializer(SearchSongViewModel::class) { SearchSongViewModel(keywords) }
+    searchSingleViewModel: SearchSingleViewModel = viewModel(factory = viewModelFactory {
+        addInitializer(SearchSingleViewModel::class) { SearchSingleViewModel(keywords) }
     })
 ) {
-    val songs = searchSongViewModel.songSource.collectAsLazyPagingItems()
+    val songs = searchSingleViewModel.songSource.collectAsLazyPagingItems()
     LazyColumn {
         itemsIndexed(songs) { index, item ->
             SongItem(dialogNavController = dialogNavController, song = item!!) {

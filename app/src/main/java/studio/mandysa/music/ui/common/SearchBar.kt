@@ -1,6 +1,7 @@
 package studio.mandysa.music.ui.common
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
@@ -16,14 +17,15 @@ import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.verticalMargin
 
 @Composable
-fun SearchBar(modifier: Modifier = Modifier, rowScope: @Composable RowScope.() -> Unit) {
+fun SearchBar(onClick: () -> Unit = {}, rowScope: @Composable RowScope.() -> Unit) {
     Row(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = horizontalMargin, vertical = verticalMargin)
             .height(48.dp)
             .clip(CircleShape)
             .background(contentColor)
+            .clickable(onClick = onClick)
             .padding(horizontal = horizontalMargin),
         horizontalArrangement = Arrangement.spacedBy(horizontalMargin),
         verticalAlignment = Alignment.CenterVertically

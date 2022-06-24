@@ -1,6 +1,5 @@
 package studio.mandysa.music.ui.screen.search
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -98,9 +97,6 @@ fun SearchScreen(
             keyboardController?.show()
             onDispose { }
         })
-        BackHandler(enabled = isSearch) {
-            isSearch = false
-        }
         Box(modifier = Modifier.weight(1.0f)) {
             if (!isSearch) {
                 // TODO: 搜索历史

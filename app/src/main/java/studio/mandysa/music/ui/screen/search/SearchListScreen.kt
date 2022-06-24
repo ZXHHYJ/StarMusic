@@ -12,6 +12,7 @@ import studio.mandysa.music.ui.common.AppDivider
 import studio.mandysa.music.ui.common.AppTabRow
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
+import studio.mandysa.music.ui.screen.search.single.SearchSingleScreen
 
 enum class SearchListScreenDestination {
     Single, Singer
@@ -57,7 +58,11 @@ fun SearchListScreen(
         NavHost(navController) {
             when (it) {
                 SearchListScreenDestination.Single -> {
-
+                    SearchSingleScreen(
+                        dialogNavController = dialogNavController,
+                        paddingValues = paddingValues,
+                        keywords = keywords
+                    )
                 }
                 SearchListScreenDestination.Singer -> {
 

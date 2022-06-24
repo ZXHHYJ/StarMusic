@@ -1,6 +1,5 @@
 package studio.mandysa.music.ui.screen.browse
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -85,7 +84,7 @@ fun BrowseScreen(
             ItemTitle(stringResource(R.string.browse))
         }
         item {
-            SearchBar(modifier = Modifier.clickable { mainNavController.navigate(ScreenDestination.Search) }) {
+            SearchBar(onClick = { mainNavController.navigate(ScreenDestination.Search) }) {
                 Text(text = stringResource(id = R.string.search_hint))
             }
         }
