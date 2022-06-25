@@ -17,21 +17,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.allArtist
+import studio.mandysa.music.service.playmanager.model.MetaMusic
+import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.translucentWhite
 import studio.mandysa.music.ui.theme.verticalMargin
 
 @Composable
-fun PlayQueueScreen() {
+fun PlayQueueScreen(dialogNavController: NavController<DialogDestination>) {
     val playlist by PlayManager.changePlayListLiveData().observeAsState(listOf())
     LazyColumn {
         itemsIndexed(playlist) { index, model ->
             SongItem(
+                dialogNavController,
                 index,
-                title = model.title,
-                singer = model.artist.allArtist()
+                model
             ) {
                 PlayManager.loadPlaylist(playlist, index)
             }
@@ -41,9 +45,10 @@ fun PlayQueueScreen() {
 
 @Composable
 private fun SongItem(
+    dialogNavController: NavController<DialogDestination>,
     position: Int,
-    title: String,
-    singer: String, onClick: () -> Unit
+    model: MetaMusic<*, *>,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -58,7 +63,7 @@ private fun SongItem(
                 .size(50.dp), contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "$position",
+                text = "${position + 1}",
                 fontSize = 16.sp,
                 color = translucentWhite,
                 textAlign = TextAlign.Center,
@@ -71,14 +76,14 @@ private fun SongItem(
                 .padding(vertical = verticalMargin),
         ) {
             Text(
-                text = title,
+                text = model.title,
                 color = Color.White,
                 fontSize = 15.sp, maxLines = 1,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.weight(1.0f))
             Text(
-                text = singer,
+                text = model.artist.allArtist(),
                 color = translucentWhite,
                 fontSize = 13.sp, maxLines = 1,
                 textAlign = TextAlign.Center
@@ -87,8 +92,12 @@ private fun SongItem(
         Icon(
             imageVector = Icons.Rounded.MoreVert,
             contentDescription = null,
-            modifier = Modifier.padding(end = horizontalMargin),
+            modifier = Modifier
+                .clickable {
+                    dialogNavController.navigate(DialogDestination.SongMenu(model))
+                },
             tint = translucentWhite
         )
+        Spacer(modifier = Modifier.padding(end = horizontalMargin))
     }
 }

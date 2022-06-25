@@ -10,7 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.viewModelFactory
 import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.R
 import studio.mandysa.music.ui.common.DialogCard
 import studio.mandysa.music.ui.common.MenuItem
@@ -22,7 +25,10 @@ import studio.mandysa.music.ui.theme.horizontalMargin
 fun PlaylistMenu(
     mainNavController: NavController<ScreenDestination>,
     dialogNavController: NavController<DialogDestination>,
-    id: String
+    id: String,
+    playlistMenuViewModel: PlaylistMenuViewModel = viewModel(factory = viewModelFactory {
+        addInitializer(PlaylistMenuViewModel::class) { PlaylistMenuViewModel(id) }
+    })
 ) {
     DialogCard {
         LazyColumn(modifier = Modifier.padding(horizontal = horizontalMargin)) {
@@ -34,7 +40,7 @@ fun PlaylistMenu(
                     title = stringResource(id = R.string.remove_playlist),
                     imageVector = Icons.Rounded.Delete
                 ) {
-
+                    dialogNavController.pop()
                 }
             }
         }

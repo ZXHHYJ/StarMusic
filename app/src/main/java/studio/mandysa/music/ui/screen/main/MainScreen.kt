@@ -140,7 +140,7 @@ fun MainScreen() {
                     Message(dialogNavController, message = destination.message)
                 }
                 is DialogDestination.MeMenu -> {
-                    MeMenu(navController,dialogNavController)
+                    MeMenu(navController, dialogNavController)
                 }
             }
         }
@@ -283,13 +283,21 @@ fun MainScreen() {
                             SettingScreen()
                         }
                         ScreenDestination.ArtistSub -> {
-                            ArtistSubScreen(mainNavController = navController, paddingValues = padding)
+                            ArtistSubScreen(
+                                mainNavController = navController,
+                                paddingValues = padding
+                            )
                         }
                     }
                 }
             }
         })
     {
-        PlayScreen(panelState, it)
+        PlayScreen(
+            mainNavController = navController,
+            dialogNavController = dialogNavController,
+            panelState = panelState,
+            it
+        )
     }
 }

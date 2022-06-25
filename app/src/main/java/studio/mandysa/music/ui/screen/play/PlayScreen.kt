@@ -23,6 +23,8 @@ import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.KenBurns
 import studio.mandysa.music.ui.common.PanelState
+import studio.mandysa.music.ui.screen.DialogDestination
+import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.navHeight
 import studio.mandysa.music.ui.theme.translucentWhite
@@ -43,7 +45,12 @@ val PlayScreenDestination.tabIcon
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun PlayScreen(panelState: PanelState?, function: (PanelState) -> Unit) {
+fun PlayScreen(
+    mainNavController: NavController<ScreenDestination>,
+    dialogNavController: NavController<DialogDestination>,
+    panelState: PanelState?,
+    function: (PanelState) -> Unit
+) {
     val navController = rememberNavController(startDestination = PlayScreenDestination.Main)
     Box {
         val coverUrl by PlayManager.changeMusicLiveData().map {
@@ -93,7 +100,7 @@ fun PlayScreen(panelState: PanelState?, function: (PanelState) -> Unit) {
                             LyricScreen()
                         }
                         PlayScreenDestination.PlayQueue -> {
-                            PlayQueueScreen()
+                            PlayQueueScreen(dialogNavController)
                         }
                     }
                 }
