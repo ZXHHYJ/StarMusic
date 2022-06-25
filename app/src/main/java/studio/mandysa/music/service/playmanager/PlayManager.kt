@@ -87,12 +87,12 @@ object PlayManager {
     /**
      * 当前播放的歌曲
      */
-    private val mChangeMusic = MutableLiveData<MetaMusic<MetaArtist, MetaAlbum>>()
+    private val mChangeMusic = MutableLiveData<MetaMusic<*, *>>()
 
     /**
      * 播放列表
      */
-    private val mPlayList = MutableLiveData<List<MetaMusic<MetaArtist, MetaAlbum>>>()
+    private val mPlayList = MutableLiveData<List<MetaMusic<*, *>>>()
 
     /**
      * 播放状态
@@ -114,7 +114,7 @@ object PlayManager {
      */
     private val mDuration = MutableLiveData<Int>()
 
-    fun changePlayListLiveData(): LiveData<List<MetaMusic<MetaArtist, MetaAlbum>>> {
+    fun changePlayListLiveData(): LiveData<List<MetaMusic<*, *>>> {
         return mPlayList
     }
 
@@ -126,7 +126,7 @@ object PlayManager {
         return mDuration
     }
 
-    fun changeMusicLiveData(): LiveData<MetaMusic<MetaArtist, MetaAlbum>> {
+    fun changeMusicLiveData(): LiveData<MetaMusic<*, *>> {
         return mChangeMusic
     }
 
@@ -134,14 +134,17 @@ object PlayManager {
         return mPause
     }
 
-    @Suppress("UNCHECKED_CAST")
-    fun loadPlaylist(list: Any, index: Int) {
-        mPlayList.value = list as List<MetaMusic<MetaArtist, MetaAlbum>>
-        updateIndex(index)
+    fun addNextPlay(model: MetaMusic<*, *>) {
+        val list = mPlayList.value?.toMutableList()
+        list?.let {
+            list.add(mIndex.value!! + 1, model)
+            mPlayList.value = it
+        }
     }
 
-    fun loadPlaylist(list: List<MetaMusic<MetaArtist, MetaAlbum>>, index: Int) {
-        mPlayList.value = list
+    @Suppress("UNCHECKED_CAST")
+    fun loadPlaylist(list: List<*>, index: Int) {
+        mPlayList.value = list as List<MetaMusic<MetaArtist, MetaAlbum>>
         updateIndex(index)
     }
 
@@ -180,7 +183,7 @@ object PlayManager {
         mMediaPlayer!!.pause()
     }
 
-    private fun playMusic(metaMusic: MetaMusic<MetaArtist, MetaAlbum>) {
+    private fun playMusic(metaMusic: MetaMusic<*, *>) {
         mProgress.value = 0
         mChangeMusic.value = metaMusic
         mMediaPlayer?.run {
@@ -192,7 +195,7 @@ object PlayManager {
     init {
         mIndex.observeForever { p1: Int ->
             if (mPlayList.value != null) {
-                val metaMusic: MetaMusic<MetaArtist, MetaAlbum> = mPlayList.value!![p1]
+                val metaMusic: MetaMusic<*, *> = mPlayList.value!![p1]
                 playMusic(metaMusic)
             }
         }

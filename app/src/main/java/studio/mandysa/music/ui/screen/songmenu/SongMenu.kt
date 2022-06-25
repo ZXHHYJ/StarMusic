@@ -18,9 +18,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.viewModelFactory
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
+import dev.olshevski.navigation.reimagined.pop
 import dev.olshevski.navigation.reimagined.popAll
 import kotlinx.parcelize.RawValue
 import studio.mandysa.music.R
+import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.service.playmanager.model.MetaMusic
 import studio.mandysa.music.ui.common.AppAsyncImage
@@ -102,7 +104,8 @@ fun SongMenu(
                     title = stringResource(id = R.string.next_play),
                     imageVector = Icons.Rounded.Add
                 ) {
-
+                    dialogNavController.popAll()
+                    PlayManager.addNextPlay(model)
                 }
             }
             items(model.artist) {
