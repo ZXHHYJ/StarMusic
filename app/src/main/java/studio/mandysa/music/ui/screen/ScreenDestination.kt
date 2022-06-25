@@ -25,4 +25,7 @@ sealed class ScreenDestination : Parcelable {
 
     @Parcelize
     object About : ScreenDestination()
+
+    @Parcelize
+    object ArtistSub : ScreenDestination()
 }

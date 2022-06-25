@@ -10,6 +10,10 @@ import studio.mandysa.music.logic.user.UserManager.userId
  */
 interface NeteaseCloudMusicApi {
 
+    @Get("artist/sublist")
+    @Path("data")
+    fun artistSublist(@Query("cookie") cookie: String = cookie()): List<ArtistSubModel>
+
     //搜索音乐
     @Get("cloudsearch")
     @Path("result/songs")

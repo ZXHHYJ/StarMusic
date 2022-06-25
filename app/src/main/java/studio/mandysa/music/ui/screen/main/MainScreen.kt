@@ -36,6 +36,7 @@ import studio.mandysa.music.ui.screen.controller.ControllerScreen
 import studio.mandysa.music.ui.screen.me.AboutScreen
 import studio.mandysa.music.ui.screen.me.MeScreen
 import studio.mandysa.music.ui.screen.me.SettingScreen
+import studio.mandysa.music.ui.screen.me.artistsub.ArtistSubScreen
 import studio.mandysa.music.ui.screen.me.menu.MeMenu
 import studio.mandysa.music.ui.screen.message.Message
 import studio.mandysa.music.ui.screen.play.PlayScreen
@@ -139,7 +140,7 @@ fun MainScreen() {
                     Message(dialogNavController, message = destination.message)
                 }
                 is DialogDestination.MeMenu -> {
-                    MeMenu()
+                    MeMenu(navController,dialogNavController)
                 }
             }
         }
@@ -280,6 +281,9 @@ fun MainScreen() {
                         }
                         ScreenDestination.Setting -> {
                             SettingScreen()
+                        }
+                        ScreenDestination.ArtistSub -> {
+                            ArtistSubScreen(mainNavController = navController, paddingValues = padding)
                         }
                     }
                 }

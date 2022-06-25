@@ -14,12 +14,35 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import studio.mandysa.music.R
+import studio.mandysa.music.logic.model.ArtistSubModel
 import studio.mandysa.music.logic.model.SearchSingerModel
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.theme.*
 
 @Composable
 fun ItemSinger(model: SearchSingerModel, onClick: () -> Unit) {
+    ItemSinger(
+        picUrl = model.picUrl,
+        name = model.name,
+        hint = "${stringResource(id = R.string.album)}:${model.albumSize}"
+    ) {
+        onClick.invoke()
+    }
+}
+
+@Composable
+fun ItemSinger(model: ArtistSubModel, onClick: () -> Unit) {
+    ItemSinger(
+        picUrl = model.picUrl,
+        name = model.nickname,
+        hint = "${stringResource(id = R.string.album)}:${model.albumSize}"
+    ) {
+        onClick.invoke()
+    }
+}
+
+@Composable
+fun ItemSinger(picUrl: String, name: String, hint: String, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -32,7 +55,7 @@ fun ItemSinger(model: SearchSingerModel, onClick: () -> Unit) {
                 .padding(horizontal = horizontalMargin, vertical = verticalMargin)
                 .size(50.dp), contentAlignment = Alignment.Center
         ) {
-            AppAsyncImage(size = 50.dp, cornerSize = 25.dp, url = model.picUrl)
+            AppAsyncImage(size = 50.dp, cornerSize = 25.dp, url = picUrl)
         }
         Column(
             modifier = Modifier
@@ -41,14 +64,14 @@ fun ItemSinger(model: SearchSingerModel, onClick: () -> Unit) {
                 .padding(vertical = verticalMargin),
         ) {
             Text(
-                text = model.name,
+                text = name,
                 color = textColor,
                 fontSize = 15.sp, maxLines = 1,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.weight(1.0f))
             Text(
-                text = "${stringResource(id = R.string.album)}:${model.albumSize}",
+                text = hint,
                 color = textColorLight,
                 fontSize = 13.sp, maxLines = 1,
                 textAlign = TextAlign.Center

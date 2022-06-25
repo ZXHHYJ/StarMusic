@@ -29,4 +29,9 @@ object UserManager {
         return mUserIdLiveData.value!!
     }
 
+    fun signOut() {
+        mCookieLiveData.value = null
+        mUserIdLiveData.value = null
+    }
+
 }
