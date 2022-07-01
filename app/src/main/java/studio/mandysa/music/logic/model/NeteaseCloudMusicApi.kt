@@ -10,6 +10,16 @@ import studio.mandysa.music.logic.user.UserManager.userId
  */
 interface NeteaseCloudMusicApi {
 
+    //发送验证码
+    @Get("captcha/sent")
+    fun sendCaptcha(@Query("phone") phone: String): ResponseBody
+
+    @Get("login/cellphone")
+    fun phoneLogin(
+        @Query("phone") phone: String,
+        @Query("captcha") captcha: String
+    ): PhoneLoginModel
+
     @Get("artist/sublist")
     @Path("data")
     fun artistSublist(@Query("cookie") cookie: String = cookie()): List<ArtistSubModel>
@@ -30,8 +40,8 @@ interface NeteaseCloudMusicApi {
     fun searchSinger(
         @Query("cookie") cookie: String = cookie(),
         @Query("keywords") keywords: String,
-        @Query("limit") limit: Int,
-        @Query("offset") offset: Int,
+        @Query("limit") limit: Int = 30,
+        @Query("offset") offset: Int = 0,
         @Query("type") type: Int = 100
     ): List<SearchSingerModel>
 
@@ -46,7 +56,7 @@ interface NeteaseCloudMusicApi {
     //获取推荐歌曲
     @Get("recommend/songs")
     @Path("data/dailySongs")
-    fun getRecommendedSong(@Query("cookie") cookie: String = cookie()): List<RecommendSong>
+    fun getRecommendSong(@Query("cookie") cookie: String = cookie()): List<RecommendSong>
 
     //获取推荐歌单
     @Get("recommend/resource")

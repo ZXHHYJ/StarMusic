@@ -15,9 +15,6 @@ class SearchSingerModel {
     @Value("picUrl")
     lateinit var picUrl: String
 
-    @Value("followed")
-    var followed = false
-
     @Value("albumSize")
-    var albumSize = 0
+    val albumSize = 0
 }

@@ -2,7 +2,7 @@ package studio.mandysa.music
 
 import android.app.Application
 import android.content.Intent
-import com.tencent.mmkv.MMKV
+import simon.tuke.Tuke
 import studio.mandysa.music.logic.ktx.playManager
 import studio.mandysa.music.service.MediaPlayService
 import studio.mandysa.music.service.playmanager.PlayManager
@@ -13,7 +13,7 @@ import studio.mandysa.music.service.playmanager.PlayManager
 class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        MMKV.initialize(this)
+        Tuke.init(this)
         PlayManager.init(this)
         //初始化播放管理器
         playManager {

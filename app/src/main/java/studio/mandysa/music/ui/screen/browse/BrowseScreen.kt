@@ -27,6 +27,7 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
+import studio.mandysa.music.ui.common.DefaultStateLayout
 import studio.mandysa.music.ui.common.SearchBar
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.ItemTitle
@@ -75,76 +76,83 @@ fun BrowseScreen(
     paddingValues: PaddingValues,
     browseViewModel: BrowseViewModel = viewModel()
 ) {
-    val bannerItems by browseViewModel.banners.observeAsState(listOf())
-    val recommendSongs by browseViewModel.recommendSongs.observeAsState(listOf())
-    val recommendPlaylist by browseViewModel.recommendPlaylist.observeAsState(listOf())
-    val playlistSquare by browseViewModel.playlistSquare.observeAsState(listOf())
-    LazyColumn {
-        item {
-            ItemTitle(stringResource(R.string.browse))
-        }
-        item {
-            SearchBar(onClick = { mainNavController.navigate(ScreenDestination.Search) }) {
-                Text(text = stringResource(id = R.string.search_hint))
+    val bannerItems by browseViewModel.bannersLiveData.observeAsState(listOf())
+    val recommendSongs by browseViewModel.recommendSongLiveData.observeAsState(listOf())
+    val recommendPlaylist by browseViewModel.recommendPlaylistLiveData.observeAsState(listOf())
+    val playlistSquare by browseViewModel.playlistSquareLiveData.observeAsState(listOf())
+    DefaultStateLayout(viewModel = browseViewModel) {
+        LazyColumn {
+            item {
+                ItemTitle(stringResource(R.string.browse))
             }
-        }
-        item {
-            Column {
-                val pagerState = rememberPagerState()
-                HorizontalPager(count = bannerItems.size, state = pagerState) {
-                    val model = bannerItems[it]
-                    BannerItem(typeTitle = model.typeTitle, bannerUrl = model.pic)
+            item {
+                SearchBar(onClick = { mainNavController.navigate(ScreenDestination.Search) }) {
+                    Text(text = stringResource(id = R.string.search_hint))
                 }
-                Spacer(modifier = Modifier.height(5.dp))
-                HorizontalPagerIndicator(
-                    pagerState = pagerState,
-                    activeColor = onBackground,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(horizontal = horizontalMargin),
-                )
             }
-        }
-        item {
-            ItemSubTitle(stringResource(R.string.recommend_playlist))
-        }
-        item {
-            LazyRow(
-                contentPadding = PaddingValues(horizontal = horizontalMargin),
-                horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2),
-            ) {
-                items(recommendPlaylist) { model ->
-                    PlaylistItem(title = model.name, coverUrl = model.picUrl) {
-                        mainNavController.navigate(ScreenDestination.Playlist(model.id))
+            item {
+                Column {
+                    val pagerState = rememberPagerState()
+                    HorizontalPager(count = bannerItems.size, state = pagerState) {
+                        val model = bannerItems[it]
+                        BannerItem(typeTitle = model.typeTitle, bannerUrl = model.pic)
+                    }
+                    Spacer(modifier = Modifier.height(5.dp))
+                    HorizontalPagerIndicator(
+                        pagerState = pagerState,
+                        activeColor = onBackground,
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(horizontal = horizontalMargin),
+                    )
+                }
+            }
+            item {
+                ItemSubTitle(stringResource(R.string.recommend_playlist))
+            }
+            item {
+                LazyRow(
+                    contentPadding = PaddingValues(horizontal = horizontalMargin),
+                    horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2),
+                ) {
+                    items(recommendPlaylist) { model ->
+                        PlaylistItem(title = model.name, coverUrl = model.picUrl) {
+                            mainNavController.navigate(ScreenDestination.Playlist(model.id))
+                        }
                     }
                 }
             }
-        }
-        item {
-            ItemSubTitle(stringResource(R.string.playlist_square))
-        }
-        item {
-            LazyRow(
-                contentPadding = PaddingValues(horizontal = horizontalMargin),
-                horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2),
-            ) {
-                items(playlistSquare) { model ->
-                    PlaylistItem(title = model.name, coverUrl = model.picUrl) {
-                        mainNavController.navigate(ScreenDestination.Playlist(model.id))
+            item {
+                ItemSubTitle(stringResource(R.string.playlist_square))
+            }
+            item {
+                LazyRow(
+                    contentPadding = PaddingValues(horizontal = horizontalMargin),
+                    horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2),
+                ) {
+                    items(playlistSquare) { model ->
+                        PlaylistItem(title = model.name, coverUrl = model.picUrl) {
+                            mainNavController.navigate(ScreenDestination.Playlist(model.id))
+                        }
                     }
                 }
             }
-        }
-        item {
-            ItemSubTitle(stringResource(R.string.recommend_song))
-        }
-        items(recommendSongs.size) {
-            SongItem(dialogNavController, recommendSongs[it]) {
-                PlayManager.loadPlaylist(recommendSongs, it)
+            item {
+                ItemSubTitle(stringResource(R.string.recommend_song))
             }
-        }
-        item {
-            Spacer(modifier = Modifier.padding(paddingValues))
+            items(recommendSongs.size) {
+                SongItem(dialogNavController, recommendSongs[it]) {
+                    PlayManager.loadPlaylist(recommendSongs, it)
+                }
+            }
+            item {
+                Spacer(modifier = Modifier.padding(paddingValues))
+            }
         }
     }
+    /*LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+        item(span = { GridItemSpan(2) }) {
+
+        }
+    }*/
 }

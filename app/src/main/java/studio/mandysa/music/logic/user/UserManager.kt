@@ -1,24 +1,26 @@
 package studio.mandysa.music.logic.user
 
-import com.drake.serialize.serialize.serialLiveData
-import studio.mandysa.music.ui.screen.login.LoginScreen
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import simon.tuke.livedata
 
 object UserManager {
 
-    private val mUserIdLiveData by serialLiveData<String>()
+    private val mUserIdLiveData by livedata("")
 
-    private val mCookieLiveData by serialLiveData<String>()
+    private val mCookieLiveData by livedata("")
 
-    /**
-     * 提供给[LoginScreen]使用
-     */
-    fun getCookieLiveData() = mCookieLiveData
+    var isLoginLiveData: LiveData<Boolean> = mCookieLiveData.map {
+        it.isNotEmpty()
+    }
 
-    fun getUserIdLiveData() = mUserIdLiveData
-
-    init {
-        mUserIdLiveData.value
-        //fix bug
+    suspend fun update(cookie: String, userId: String) {
+        withContext(Dispatchers.Main) {
+            mUserIdLiveData.value = userId
+            mCookieLiveData.value = cookie
+        }
     }
 
     fun cookie(): String {
@@ -30,8 +32,8 @@ object UserManager {
     }
 
     fun signOut() {
-        mCookieLiveData.value = null
-        mUserIdLiveData.value = null
+        mUserIdLiveData.value = ""
+        mCookieLiveData.value = ""
     }
 
 }

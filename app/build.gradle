@@ -17,7 +17,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerExtensionVersion "1.2.0"
     }
 
     buildTypes {
@@ -62,7 +62,7 @@ dependencies {
 
     implementation "com.github.kyant0:color:2022.2-dev01"
 
-    implementation 'com.github.liangjingkanji:Serialize:1.3.1'
+    implementation 'com.gitee.simon9102:Tuke:1.1.2'
 
     implementation "androidx.paging:paging-compose:1.0.0-alpha15"
 
@@ -83,8 +83,7 @@ dependencies {
 
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
-    implementation "androidx.compose.material3:material3:1.0.0-alpha13"
-    implementation "androidx.compose.material3:material3-window-size-class:1.0.0-alpha13"
+    implementation "androidx.compose.material3:material3:1.0.0-alpha14"
 
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"

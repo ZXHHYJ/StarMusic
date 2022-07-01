@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.core.view.WindowCompat
 import studio.mandysa.music.logic.user.UserManager
@@ -19,8 +20,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             WindowCompat.setDecorFitsSystemWindows(window, false)
             MandySaMusicTheme {
-                val cookie = UserManager.getCookieLiveData().observeAsState()
-                if (cookie.value != null) {
+                val isLogin by UserManager.isLoginLiveData.observeAsState(false)
+                if (isLogin) {
                     MainScreen()
                 } else
                     LoginScreen()
