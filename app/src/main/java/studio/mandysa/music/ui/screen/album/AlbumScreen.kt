@@ -28,7 +28,7 @@ import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.AppDivider
 import studio.mandysa.music.ui.common.MenuItem
-import studio.mandysa.music.ui.item.ItemCoverHeader
+import studio.mandysa.music.ui.item.ContentColumnItem
 import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
@@ -61,34 +61,33 @@ fun AlbumScreen(
         }
         LazyColumn {
             item {
-                ItemCoverHeader(
+                ContentColumnItem(
                     dialogNavController = dialogNavController,
                     coverUrl = albumInfo?.picUrl,
                     title = albumInfo?.name,
                     message = albumInfo?.description
-                )
-            }
-            item {
-                Row(
-                    modifier = Modifier
-                        .padding(horizontal = horizontalMargin)
-                        .padding(bottom = 5.dp)
                 ) {
-                    MenuItem(
-                        modifier = Modifier.weight(1.0f),
-                        title = stringResource(id = R.string.play_all),
-                        imageVector = Icons.Rounded.PlayArrow,
-                        enabled = albumInfo?.songList != null
+                    Row(
+                        modifier = Modifier
+                            .padding(horizontal = horizontalMargin)
+                            .padding(bottom = 5.dp)
                     ) {
-                        PlayManager.loadPlaylist(albumInfo!!.songList, 0)
-                    }
-                    Spacer(modifier = Modifier.width(5.dp))
-                    MenuItem(
-                        modifier = Modifier.weight(1.0f),
-                        title = stringResource(id = R.string.more),
-                        imageVector = Icons.Rounded.MoreVert
-                    ) {
-                        // TODO: 专辑菜单
+                        MenuItem(
+                            modifier = Modifier.weight(1.0f),
+                            title = stringResource(id = R.string.play_all),
+                            imageVector = Icons.Rounded.PlayArrow,
+                            enabled = albumInfo?.songList != null
+                        ) {
+                            PlayManager.loadPlaylist(albumInfo!!.songList, 0)
+                        }
+                        Spacer(modifier = Modifier.width(5.dp))
+                        MenuItem(
+                            modifier = Modifier.weight(1.0f),
+                            title = stringResource(id = R.string.more),
+                            imageVector = Icons.Rounded.MoreVert
+                        ) {
+                            // TODO: 专辑菜单
+                        }
                     }
                 }
             }

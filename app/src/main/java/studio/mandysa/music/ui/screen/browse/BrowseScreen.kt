@@ -1,5 +1,6 @@
 package studio.mandysa.music.ui.screen.browse
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -27,6 +28,7 @@ import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.AppLazyVerticalGrid
+import studio.mandysa.music.ui.common.POPWindows
 import studio.mandysa.music.ui.common.SearchBar
 import studio.mandysa.music.ui.common.StateLayout
 import studio.mandysa.music.ui.item.ItemSubTitle
@@ -37,36 +39,6 @@ import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.*
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun BannerItem(typeTitle: String, bannerUrl: String) {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Card(
-            shape = cornerShape,
-            modifier = Modifier
-                .height(140.dp)
-        ) {
-            AsyncImage(
-                model = bannerUrl,
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
-        }
-        Text(
-            text = typeTitle,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            color = textColor,
-            modifier = Modifier
-                .fillMaxWidth()
-        )
-    }
-}
-
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun BrowseScreen(
@@ -75,6 +47,40 @@ fun BrowseScreen(
     paddingValues: PaddingValues,
     browseViewModel: BrowseViewModel = viewModel()
 ) {
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun BannerItem(typeTitle: String, bannerUrl: String) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Card(
+                shape = cornerShape,
+                modifier = Modifier
+                    .height(140.dp)
+                    .clickable {
+                        POPWindows.postValue("尚未支持的功能")
+                    }
+            ) {
+                AsyncImage(
+                    model = bannerUrl,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+            }
+            Text(
+                text = typeTitle,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                color = textColor,
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+        }
+    }
+
     val bannerItems by browseViewModel.bannersLiveData.observeAsState(arrayListOf())
     val recommendSongs by browseViewModel.recommendSongLiveData.observeAsState(arrayListOf())
     val recommendPlaylist by browseViewModel.recommendPlaylistLiveData.observeAsState(arrayListOf())

@@ -26,7 +26,7 @@ import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.AppDivider
 import studio.mandysa.music.ui.common.AppLazyVerticalGrid
 import studio.mandysa.music.ui.item.AlbumItem
-import studio.mandysa.music.ui.item.ItemCoverHeader
+import studio.mandysa.music.ui.item.ContentColumnItem
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.screen.DialogDestination
@@ -60,12 +60,14 @@ fun SingerScreen(
         }
         AppLazyVerticalGrid {
             item {
-                ItemCoverHeader(
+                ContentColumnItem(
                     dialogNavController = dialogNavController,
                     coverUrl = singerInfo?.cover ?: "",
                     title = singerInfo?.name ?: "",
                     message = singerInfo?.briefDesc ?: ""
-                )
+                ) {
+                    //no toolbar
+                }
             }
             item { AppDivider() }
             item {
