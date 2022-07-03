@@ -41,12 +41,12 @@ fun PlaylistScreen(
     dialogNavController: NavController<DialogDestination>,
     paddingValues: PaddingValues,
     id: String,
-    playlistModel: PlaylistModel = viewModel(factory = viewModelFactory {
-        addInitializer(PlaylistModel::class) { return@addInitializer PlaylistModel(id) }
+    playlistViewModel: PlaylistViewModel = viewModel(factory = viewModelFactory {
+        addInitializer(PlaylistViewModel::class) { return@addInitializer PlaylistViewModel(id) }
     })
 ) {
-    val playlistInfo by playlistModel.playlistInfoModel.observeAsState()
-    val songs by playlistModel.songs.observeAsState()
+    val playlistInfo by playlistViewModel.playlistInfoModel.observeAsState()
+    val songs by playlistViewModel.songsLiveData.observeAsState()
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
             modifier = Modifier.fillMaxWidth(),
@@ -77,7 +77,7 @@ fun PlaylistScreen(
                         modifier = Modifier.weight(1.0f),
                         title = stringResource(id = R.string.play_all),
                         imageVector = Icons.Rounded.PlayArrow,
-                        enabled = songs?.isEmpty() ?: false
+                        enabled = songs?.isNotEmpty() ?: false
                     ) {
                         PlayManager.loadPlaylist(songs!!, 0)
                     }

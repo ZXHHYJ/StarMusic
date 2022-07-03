@@ -63,7 +63,7 @@ dependencies {
 
     implementation "com.github.kyant0:color:2022.2-dev01"
 
-    implementation 'com.gitee.simon9102:Tuke:1.2.0-beta03'
+    implementation 'com.gitee.simon9102:Tuke:2.0.0-alpha02'
 
     implementation "androidx.paging:paging-compose:1.0.0-alpha15"
 
