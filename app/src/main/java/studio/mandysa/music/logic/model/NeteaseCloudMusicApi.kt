@@ -78,6 +78,7 @@ interface NeteaseCloudMusicApi {
     @Get("playlist/detail")
     @Path("playlist")
     suspend fun getSongListInfo(
+        @Query("cookie") cookie: String = cookie(),
         @Query("id") id: String
     ): PlaylistInfoModel
 
