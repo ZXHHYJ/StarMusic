@@ -1,4 +1,4 @@
-package studio.mandysa.music.logic.user
+package studio.mandysa.music.logic.manager
 
 import androidx.lifecycle.LiveData
 import simon.tuke.livedata

@@ -2,8 +2,6 @@ package studio.mandysa.music.ui.screen.playlist
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.TopAppBar
@@ -26,6 +24,7 @@ import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.AppDivider
+import studio.mandysa.music.ui.common.AppLazyVerticalGrid
 import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.item.ItemCoverHeader
 import studio.mandysa.music.ui.item.SongItem
@@ -58,8 +57,8 @@ fun PlaylistScreen(
                 Icon(Icons.Rounded.ArrowBack, null)
             }
         }
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            item {
+        AppLazyVerticalGrid(modifier = Modifier.fillMaxSize()) {
+            autoItem {
                 ItemCoverHeader(
                     dialogNavController = dialogNavController,
                     coverUrl = playlistInfo?.coverImgUrl,
@@ -91,11 +90,11 @@ fun PlaylistScreen(
                     }
                 }
             }
-            stickyHeader {
+            item {
                 AppDivider()
             }
             songs?.let {
-                itemsIndexed(it) { pos, _ ->
+                autoItems(it.size) { pos ->
                     SongItem(dialogNavController, it[pos]) {
                         PlayManager.loadPlaylist(it, pos)
                     }

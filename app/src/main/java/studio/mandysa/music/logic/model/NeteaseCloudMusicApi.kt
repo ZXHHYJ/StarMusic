@@ -2,8 +2,8 @@ package studio.mandysa.music.logic.model
 
 import mandysax.anna2.annotation.*
 import mandysax.anna2.model.ResponseBody
-import studio.mandysa.music.logic.user.UserManager.cookie
-import studio.mandysa.music.logic.user.UserManager.userId
+import studio.mandysa.music.logic.manager.UserManager.cookie
+import studio.mandysa.music.logic.manager.UserManager.userId
 
 /**
  * @author 黄浩

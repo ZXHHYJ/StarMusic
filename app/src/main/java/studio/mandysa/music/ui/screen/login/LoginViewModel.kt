@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import studio.mandysa.music.logic.network.api
-import studio.mandysa.music.logic.user.UserManager
+import studio.mandysa.music.logic.manager.UserManager
 import studio.mandysa.music.ui.common.POPWindows
 
 class LoginViewModel : ViewModel() {

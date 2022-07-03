@@ -7,7 +7,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.core.view.WindowCompat
-import studio.mandysa.music.logic.user.UserManager
+import studio.mandysa.music.logic.manager.UserManager
 import studio.mandysa.music.ui.common.POPWindows
 import studio.mandysa.music.ui.screen.login.LoginScreen
 import studio.mandysa.music.ui.screen.main.MainScreen

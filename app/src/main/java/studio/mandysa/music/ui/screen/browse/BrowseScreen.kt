@@ -1,7 +1,6 @@
 package studio.mandysa.music.ui.screen.browse
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -27,6 +26,7 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
+import studio.mandysa.music.ui.common.AppLazyVerticalGrid
 import studio.mandysa.music.ui.common.SearchBar
 import studio.mandysa.music.ui.common.StateLayout
 import studio.mandysa.music.ui.item.ItemSubTitle
@@ -35,20 +35,19 @@ import studio.mandysa.music.ui.item.PlaylistItem
 import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
-import studio.mandysa.music.ui.theme.cornerShape
-import studio.mandysa.music.ui.theme.horizontalMargin
-import studio.mandysa.music.ui.theme.onBackground
-import studio.mandysa.music.ui.theme.textColor
+import studio.mandysa.music.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun BannerItem(typeTitle: String, bannerUrl: String) {
-    Column {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Card(
             shape = cornerShape,
             modifier = Modifier
                 .height(140.dp)
-                .padding(horizontal = horizontalMargin)
         ) {
             AsyncImage(
                 model = bannerUrl,
@@ -81,7 +80,7 @@ fun BrowseScreen(
     val recommendPlaylist by browseViewModel.recommendPlaylistLiveData.observeAsState(arrayListOf())
     val playlistSquare by browseViewModel.playlistSquareLiveData.observeAsState(arrayListOf())
     StateLayout(viewModel = browseViewModel) {
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
+        AppLazyVerticalGrid(modifier = Modifier.fillMaxSize()) {
             item {
                 ItemTitle(stringResource(R.string.browse))
             }
@@ -91,20 +90,37 @@ fun BrowseScreen(
                 }
             }
             item {
-                Column {
-                    val pagerState = rememberPagerState()
-                    HorizontalPager(count = bannerItems.size, state = pagerState) {
-                        val model = bannerItems[it]
-                        BannerItem(typeTitle = model.typeTitle, bannerUrl = model.pic)
+                if (isMedium) {
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentPadding = PaddingValues(horizontal = horizontalMargin),
+                        horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2)
+                    ) {
+                        items(bannerItems) {
+                            BannerItem(typeTitle = it.typeTitle, bannerUrl = it.pic)
+                        }
                     }
-                    Spacer(modifier = Modifier.height(5.dp))
-                    HorizontalPagerIndicator(
-                        pagerState = pagerState,
-                        activeColor = onBackground,
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(horizontal = horizontalMargin),
-                    )
+                } else {
+                    Column {
+                        val pagerState = rememberPagerState()
+                        HorizontalPager(
+                            count = bannerItems.size,
+                            itemSpacing = horizontalMargin,
+                            contentPadding = PaddingValues(horizontal = horizontalMargin),
+                            state = pagerState
+                        ) {
+                            val model = bannerItems[it]
+                            BannerItem(typeTitle = model.typeTitle, bannerUrl = model.pic)
+                        }
+                        Spacer(modifier = Modifier.height(5.dp))
+                        HorizontalPagerIndicator(
+                            pagerState = pagerState,
+                            activeColor = onBackground,
+                            modifier = Modifier
+                                .align(Alignment.CenterHorizontally)
+                                .padding(horizontal = horizontalMargin),
+                        )
+                    }
                 }
             }
             item {
@@ -140,7 +156,7 @@ fun BrowseScreen(
             item {
                 ItemSubTitle(stringResource(R.string.recommend_song))
             }
-            items(recommendSongs.size) {
+            autoItems(recommendSongs.size) {
                 SongItem(dialogNavController, recommendSongs[it]) {
                     PlayManager.loadPlaylist(recommendSongs, it)
                 }
@@ -150,9 +166,4 @@ fun BrowseScreen(
             }
         }
     }
-    /*LazyVerticalGrid(columns = GridCells.Fixed(2)) {
-        item(span = { GridItemSpan(2) }) {
-
-        }
-    }*/
 }

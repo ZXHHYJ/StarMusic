@@ -31,6 +31,7 @@ fun Message(dialogNavController: NavController<DialogDestination>, message: Stri
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(top = 5.dp)
                     .verticalScroll(
                         state = rememberScrollState()
                     ),

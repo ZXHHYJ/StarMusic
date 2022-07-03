@@ -10,7 +10,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Contactless
 import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.*
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -19,12 +21,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.map
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.olshevski.navigation.reimagined.*
+import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.PanelState
 import studio.mandysa.music.ui.common.SlidingPanel
@@ -46,6 +51,7 @@ import studio.mandysa.music.ui.screen.search.SearchScreen
 import studio.mandysa.music.ui.screen.singer.SingerScreen
 import studio.mandysa.music.ui.screen.songmenu.SongMenu
 import studio.mandysa.music.ui.theme.indicatorColor
+import studio.mandysa.music.ui.theme.isMedium
 import studio.mandysa.music.ui.theme.navHeight
 import studio.mandysa.music.ui.theme.neutralColor
 
@@ -63,23 +69,26 @@ val BottomNavigationDestination.tabIcon
         BottomNavigationDestination.Me -> Icons.Rounded.Person
     }
 
+val BottomNavigationDestination.tabName
+    @Composable get() = when (this) {
+        BottomNavigationDestination.Browse -> stringResource(id = R.string.browse)
+        BottomNavigationDestination.Me -> stringResource(id = R.string.me)
+    }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppNavigationDrawer(
     modifier: Modifier = Modifier,
-    drawerContent: @Composable () -> Unit,
+    drawerContent: @Composable RowScope.() -> Unit,
     controllerBar: @Composable () -> Unit,
     bottomBar: @Composable () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
     BoxWithConstraints(modifier = modifier) {
-        val bigScreen = maxWidth >= 600.dp
         Column(modifier = Modifier.fillMaxSize()) {
             Row(modifier = Modifier.weight(1.0f)) {
-                Box(modifier.fillMaxHeight()) {
-                    if (bigScreen)
-                        drawerContent.invoke()
-                }
+                if (isMedium)
+                    drawerContent.invoke(this)
                 Scaffold(
                     modifier = Modifier
                         .fillMaxHeight()
@@ -88,7 +97,7 @@ fun AppNavigationDrawer(
                     bottomBar = {
                         Column {
                             controllerBar.invoke()
-                            if (!bigScreen)
+                            if (!isMedium)
                                 bottomBar.invoke()
                         }
                     }
@@ -111,6 +120,7 @@ fun AppNavigationDrawer(
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainScreen() {
+
     val navController =
         rememberNavController<ScreenDestination>(startDestination = ScreenDestination.Main)
 
@@ -164,8 +174,64 @@ fun MainScreen() {
             AppNavigationDrawer(
                 modifier = Modifier.statusBarsPadding(),
                 drawerContent = {
-                    NavigationRail {
-
+                    NavigationRail(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                    ) {
+                        val navLastDestination =
+                            navController.backstack.entries.last().destination
+                        val bottomLastDestination =
+                            bottomNavController.backstack.entries.last().destination
+                        BottomNavigationDestination.values().forEach { screen ->
+                            NavigationRailItem(
+                                label = {
+                                    Text(text = screen.tabName)
+                                },
+                                icon = {
+                                    Icon(
+                                        screen.tabIcon,
+                                        contentDescription = null
+                                    )
+                                },
+                                alwaysShowLabel = true,
+                                selected = screen == bottomLastDestination,
+                                onClick = {
+                                    navController.popUpTo {
+                                        it == ScreenDestination.Main
+                                    }
+                                    if (!bottomNavController.moveToTop { it == screen }) {
+                                        bottomNavController.navigate(screen)
+                                    }
+                                }
+                            )
+                        }
+                        Spacer(modifier = Modifier.weight(1.0f))
+                        val bottomRailItemFunction: @Composable (String, ImageVector, ScreenDestination) -> Unit =
+                            { text, icon, screen ->
+                                NavigationRailItem(
+                                    label = {
+                                        Text(text = text)
+                                    },
+                                    icon = {
+                                        Icon(
+                                            icon,
+                                            contentDescription = null
+                                        )
+                                    },
+                                    alwaysShowLabel = true,
+                                    selected = navLastDestination == screen,
+                                    onClick = {
+                                        if (!navController.moveToTop { it == screen }) {
+                                            navController.navigate(screen)
+                                        }
+                                    }
+                                )
+                            }
+                        bottomRailItemFunction.invoke(
+                            stringResource(id = R.string.search),
+                            Icons.Rounded.Search,
+                            ScreenDestination.Search
+                        )
                     }
                 },
                 controllerBar = {
