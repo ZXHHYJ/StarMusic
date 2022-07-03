@@ -1,6 +1,5 @@
 package studio.mandysa.music.ui.item
 
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
@@ -13,17 +12,15 @@ import studio.mandysa.music.ui.theme.textColor
 
 @Composable
 fun PlaylistItem(title: String, coverUrl: String, onClick: () -> Unit) {
-    BoxWithConstraints {
-        Column(
-            modifier = Modifier.width(120.dp)
-        ) {
-            AppAsyncImage(size = 120.dp, url = coverUrl, onClick = onClick)
-            Text(
-                text = title,
-                color = textColor,
-                fontSize = 13.sp,
-                maxLines = 2
-            )
-        }
+    Column(
+        modifier = Modifier.width(120.dp)
+    ) {
+        AppAsyncImage(size = 120.dp, url = coverUrl, onClick = onClick)
+        Text(
+            text = title,
+            color = textColor,
+            fontSize = 13.sp,
+            maxLines = 2
+        )
     }
 }

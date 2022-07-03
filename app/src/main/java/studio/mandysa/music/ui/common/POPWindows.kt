@@ -1,6 +1,5 @@
 package studio.mandysa.music.ui.common
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutLinearInEasing
@@ -18,7 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layout
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
@@ -31,23 +30,27 @@ import java.util.concurrent.locks.ReentrantLock
  * 消息提示
  * @author markrenChina
  */
-@SuppressLint("LogNotTimber")
+
+@Composable
+@Preview
+fun PreviewPopWin() {
+    Box {
+        POPWindows.PopWin()
+        POPWindows.postValue("test")
+        POPWindows.postValue("test2")
+    }
+}
+
 object POPWindows {
     private const val TAG = "POPWindows"
 
     private val queue = ConcurrentLinkedQueue<String>()
     private val msgList = MutableList(3) { MutableStateFlow("") }
-    private val position = MutableStateFlow(Position.TOP_LEFT)
     private val lock = ReentrantLock()
-
-    enum class Position {
-        TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT
-    }
 
     /**
      * 禁止使用log工具，会产生死锁
      */
-    //@Synchronized
     fun postValue(value: String) {
         //存入一个队列
         queue.add(value)
@@ -68,95 +71,51 @@ object POPWindows {
         }
     }
 
-
-    fun setPosition(pos: Position) {
-        Log.i(TAG, "setPosition")
-        position.value = pos
-    }
-
-
     @Composable
     fun PopWin() {
-        val pos by position.collectAsState()
-        var modifier: Modifier = Modifier
-        Log.i(TAG, "PopWin: $pos")
-        when (pos) {
-            Position.TOP_RIGHT -> {
-                modifier = Modifier
-                    .layout { measurable, constraints ->
-                        val placeable = measurable.measure(constraints)
-                        Log.i(TAG, "PopWin: ${placeable.width}")
-                        layout(constraints.maxWidth, constraints.maxHeight) {
-                            placeable.placeRelative(constraints.maxWidth - placeable.width, 0)
-                        }
-                    }
-            }
-            Position.BOTTOM_LEFT -> {
-                modifier = Modifier.layout { measurable, constraints ->
-                    val placeable = measurable.measure(constraints)
-                    layout(constraints.maxWidth, constraints.maxHeight) {
-                        placeable.placeRelative(0, constraints.maxHeight - placeable.height)
-                    }
+        Wins(modifier = Modifier
+            .layout { measurable, constraints ->
+                val placeable = measurable.measure(constraints)
+                Log.i(TAG, "PopWin: ${placeable.width}")
+                layout(constraints.maxWidth, constraints.maxHeight) {
+                    placeable.placeRelative(constraints.maxWidth - placeable.width, 0)
                 }
             }
-            Position.BOTTOM_RIGHT -> {
-                modifier = Modifier.layout { measurable, constraints ->
-                    val placeable = measurable.measure(constraints)
-                    layout(constraints.maxWidth, constraints.maxHeight) {
-                        placeable.placeRelative(
-                            constraints.maxWidth - placeable.width,
-                            constraints.maxHeight - placeable.height
-                        )
-                    }
-                }
-            }
-            else -> {
-            }
-        }
-        Wins(modifier = modifier.systemBarsPadding(), pos)
+            .systemBarsPadding()
+        )
     }
 
     @Composable
     private fun Wins(
-        modifier: Modifier,
-        pos: Position
+        modifier: Modifier
     ) {
         Column(modifier = modifier) {
             repeat(msgList.size) {
-                PopItem(index = it, pos)
+                PopItem(index = it)
             }
         }
     }
 
     @Composable
-    private fun PopItem(index: Int, pos: Position) {
-
+    private fun PopItem(index: Int) {
         val msg by msgList[index].collectAsState()
-
         AnimatedVisibility(
-            visible = (msg.trim() != ""),
+            visible = (msg.trim().isNotEmpty()),
             enter = slideInHorizontally(
                 initialOffsetX = { fullWidth ->
-                    when (pos) {
-                        Position.TOP_LEFT, Position.BOTTOM_LEFT -> -fullWidth
-                        else -> fullWidth
-                    }
+                    fullWidth
                 },
                 animationSpec = tween(durationMillis = 150, easing = LinearOutSlowInEasing)
             ),
             exit = slideOutHorizontally(
                 targetOffsetX = { fullWidth ->
-                    when (pos) {
-                        Position.TOP_LEFT, Position.BOTTOM_LEFT -> -fullWidth
-                        else -> fullWidth
-                    }
+                    fullWidth
                 },
                 animationSpec = tween(durationMillis = 250, easing = FastOutLinearInEasing)
             )
         )
-        //if (msg != "")
         {
-            BoxWithConstraints(
+            Box(
                 modifier = Modifier
                     .padding(10.dp)
                     .width(200.dp)
@@ -176,7 +135,7 @@ object POPWindows {
             }
         }
         LaunchedEffect(key1 = msg) {
-            if (msg != "") {
+            if (msg.isNotEmpty()) {
                 delay(3000)
                 //移除时去查询队列，取值
                 val new = queue.poll() ?: ""

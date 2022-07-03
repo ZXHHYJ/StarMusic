@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.screen.singer.singeralbum
+package studio.mandysa.music.ui.screen.singer
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
