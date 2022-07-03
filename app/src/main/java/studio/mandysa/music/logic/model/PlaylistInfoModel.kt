@@ -3,7 +3,7 @@ package studio.mandysa.music.logic.model
 import mandysax.anna2.annotation.Value
 
 /**
- * @author Huang hao
+ * @author 黄浩
  */
 class PlaylistInfoModel {
     @Value("name")

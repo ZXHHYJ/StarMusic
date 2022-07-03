@@ -5,7 +5,7 @@ import studio.mandysa.music.logic.network.MUSIC_URL
 import studio.mandysa.music.service.playmanager.model.MetaMusic
 
 /**
- * @author Huang hao
+ * @author 黄浩
  */
 class SearchSongModel : MetaMusic<SingerModel, AlbumModel> {
     @Value("name")

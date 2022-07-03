@@ -9,7 +9,7 @@ import android.media.session.PlaybackState
 import androidx.annotation.DrawableRes
 
 /**
- * @author Huang hao
+ * @author 黄浩
  */
 object PlayButtonReceiver {
     const val PLAY_BACK_STATE = "pbs"

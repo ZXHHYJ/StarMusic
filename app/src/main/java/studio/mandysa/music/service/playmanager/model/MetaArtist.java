@@ -1,7 +1,7 @@
 package studio.mandysa.music.service.playmanager.model;
 
 /**
- * @author Huang hao
+ * @author 黄浩
  */
 public interface MetaArtist {
     String getId();

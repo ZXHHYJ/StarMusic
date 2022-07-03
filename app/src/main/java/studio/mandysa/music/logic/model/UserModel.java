@@ -3,7 +3,7 @@ package studio.mandysa.music.logic.model;
 import mandysax.anna2.annotation.Value;
 
 /**
- * @author Huang hao
+ * @author 黄浩
  */
 public final class UserModel {
     @Value("userId")

@@ -1,51 +1,63 @@
 package studio.mandysa.music.ui.screen.browse
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import simon.tuke.livedata
 import studio.mandysa.music.logic.model.BannerModel
 import studio.mandysa.music.logic.model.PlaylistModel
 import studio.mandysa.music.logic.model.RecommendSong
 import studio.mandysa.music.logic.network.api
-import studio.mandysa.music.ui.base.BaseViewModel
-import studio.mandysa.music.ui.common.State
+import studio.mandysa.music.ui.common.POPWindows
+import studio.mandysa.music.ui.common.SwipeRefreshViewModel
 
-class BrowseViewModel : BaseViewModel() {
+class BrowseViewModel : SwipeRefreshViewModel() {
 
-    private val mBannersLiveData = MutableLiveData<List<BannerModel>>()
+    private val mBannersLiveData by livedata<ArrayList<BannerModel>>(
+        def = arrayListOf(),
+        key = "banners"
+    )
 
-    val bannersLiveData: LiveData<List<BannerModel>> = mBannersLiveData
+    val bannersLiveData: LiveData<ArrayList<BannerModel>> = mBannersLiveData
 
-    private val mRecommendSongLiveData = MutableLiveData<List<RecommendSong>>()
+    private val mRecommendSongLiveData by livedata<ArrayList<RecommendSong>>(
+        def = arrayListOf(),
+        key = "recommend_song"
+    )
 
-    val recommendSongLiveData: LiveData<List<RecommendSong>> = mRecommendSongLiveData
+    val recommendSongLiveData: LiveData<ArrayList<RecommendSong>> = mRecommendSongLiveData
 
-    private val mRecommendPlaylistLiveData = MutableLiveData<List<PlaylistModel>>()
+    private val mRecommendPlaylistLiveData by livedata<ArrayList<PlaylistModel>>(
+        def = arrayListOf(),
+        "recommend_playlist"
+    )
 
-    val recommendPlaylistLiveData: LiveData<List<PlaylistModel>> = mRecommendPlaylistLiveData
+    val recommendPlaylistLiveData: LiveData<ArrayList<PlaylistModel>> = mRecommendPlaylistLiveData
 
-    private val mPlaylistSquareLiveData = MutableLiveData<List<PlaylistModel>>()
+    private val mPlaylistSquareLiveData by livedata<ArrayList<PlaylistModel>>(
+        def = arrayListOf(),
+        "playlist_square"
+    )
 
-    val playlistSquareLiveData: LiveData<List<PlaylistModel>> = mPlaylistSquareLiveData
+    val playlistSquareLiveData: LiveData<ArrayList<PlaylistModel>> = mPlaylistSquareLiveData
 
-    override fun loading() {
-        viewModelScope.launch(Dispatchers.IO) {
+    override fun init() {
+        viewModelScope.launch {
+            mIsRefreshingLiveData.value = true
             try {
-                mBannersLiveData.postValue(api.getBannerList())
-                mRecommendSongLiveData.postValue(api.getRecommendSong())
-                mRecommendPlaylistLiveData.postValue(api.getRecommendPlaylist())
-                mPlaylistSquareLiveData.postValue(api.getPlaylistSquare())
-                stateLiveData.postValue(State.CONTENT)
+                mBannersLiveData.value = api.getBannerList()
+                mRecommendSongLiveData.value = api.getRecommendSong()
+                mRecommendPlaylistLiveData.value = api.getRecommendPlaylist()
+                mPlaylistSquareLiveData.value = api.getPlaylistSquare()
             } catch (e: Exception) {
-                stateLiveData.postValue(State.ERROR)
+                POPWindows.postValue(e.message.toString())
             }
+            mIsRefreshingLiveData.value = false
         }
     }
 
     override fun refresh() {
-        loading()
+        init()
     }
 
 }

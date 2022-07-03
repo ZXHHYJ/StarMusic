@@ -1,26 +1,20 @@
 package studio.mandysa.music.logic.user
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.map
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import simon.tuke.livedata
+import simon.tuke.value
 
 object UserManager {
 
-    private val mUserIdLiveData by livedata("")
+    private var mUserId by value<String?>(key = "userid")
 
-    private val mCookieLiveData by livedata("")
+    private val mCookieLiveData by livedata<String?>(key = "cookie")
 
-    var isLoginLiveData: LiveData<Boolean> = mCookieLiveData.map {
-        it.isNotEmpty()
-    }
+    var isLoginLiveData: LiveData<String?> = mCookieLiveData
 
-    suspend fun update(cookie: String, userId: String) {
-        withContext(Dispatchers.Main) {
-            mUserIdLiveData.value = userId
-            mCookieLiveData.value = cookie
-        }
+    fun update(cookie: String, userId: String) {
+        mUserId = userId
+        mCookieLiveData.postValue(cookie)
     }
 
     fun cookie(): String {
@@ -28,12 +22,12 @@ object UserManager {
     }
 
     fun userId(): String {
-        return mUserIdLiveData.value!!
+        return mUserId!!
     }
 
     fun signOut() {
-        mUserIdLiveData.value = ""
-        mCookieLiveData.value = ""
+        mUserId = null
+        mCookieLiveData.value = null
     }
 
 }

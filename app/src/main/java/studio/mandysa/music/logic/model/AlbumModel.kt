@@ -2,6 +2,7 @@ package studio.mandysa.music.logic.model
 
 import mandysax.anna2.annotation.Value
 import studio.mandysa.music.service.playmanager.model.MetaAlbum
+import java.io.Serializable
 
 /*
    "al": {
@@ -13,7 +14,7 @@ import studio.mandysa.music.service.playmanager.model.MetaAlbum
            "alia": ["Games We Play"]
        }
     */
-class AlbumModel : MetaAlbum {
+class AlbumModel : MetaAlbum, Serializable {
 
     @Value("id")
     private lateinit var id: String

@@ -4,7 +4,7 @@ import mandysax.anna2.annotation.Path
 import mandysax.anna2.annotation.Value
 
 /**
- * @author Huang hao
+ * @author 黄浩
  */
 class LoginModel {
     @Value("id")

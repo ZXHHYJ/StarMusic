@@ -17,7 +17,7 @@ import studio.mandysa.music.service.playmanager.model.MetaMusic
 
 
 /**
- * @author Huang hao
+ * @author 黄浩
  */
 object PlayManager {
 

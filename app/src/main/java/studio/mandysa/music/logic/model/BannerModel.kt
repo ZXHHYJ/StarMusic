@@ -2,8 +2,9 @@ package studio.mandysa.music.logic.model
 
 import mandysax.anna2.annotation.Path
 import mandysax.anna2.annotation.Value
+import java.io.Serializable
 
-class BannerModel {
+class BannerModel : Serializable {
     @Value("pic")
     lateinit var pic: String
 

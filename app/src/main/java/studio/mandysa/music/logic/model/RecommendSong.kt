@@ -3,12 +3,12 @@ package studio.mandysa.music.logic.model
 import mandysax.anna2.annotation.Value
 import studio.mandysa.music.logic.network.MUSIC_URL
 import studio.mandysa.music.service.playmanager.model.MetaMusic
+import java.io.Serializable
 
 /**
- * @author Huang hao
+ * @author 黄浩
  */
-class RecommendSong :
-    MetaMusic<SingerModel, AlbumModel> {
+class RecommendSong : MetaMusic<SingerModel, AlbumModel>, Serializable {
     @Value("name")
     private lateinit var name: String
 

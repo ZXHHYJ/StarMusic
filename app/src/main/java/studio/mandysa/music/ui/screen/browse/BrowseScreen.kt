@@ -27,8 +27,8 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.ui.common.DefaultStateLayout
 import studio.mandysa.music.ui.common.SearchBar
+import studio.mandysa.music.ui.common.StateLayout
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.ItemTitle
 import studio.mandysa.music.ui.item.PlaylistItem
@@ -76,12 +76,12 @@ fun BrowseScreen(
     paddingValues: PaddingValues,
     browseViewModel: BrowseViewModel = viewModel()
 ) {
-    val bannerItems by browseViewModel.bannersLiveData.observeAsState(listOf())
-    val recommendSongs by browseViewModel.recommendSongLiveData.observeAsState(listOf())
-    val recommendPlaylist by browseViewModel.recommendPlaylistLiveData.observeAsState(listOf())
-    val playlistSquare by browseViewModel.playlistSquareLiveData.observeAsState(listOf())
-    DefaultStateLayout(viewModel = browseViewModel) {
-        LazyColumn {
+    val bannerItems by browseViewModel.bannersLiveData.observeAsState(arrayListOf())
+    val recommendSongs by browseViewModel.recommendSongLiveData.observeAsState(arrayListOf())
+    val recommendPlaylist by browseViewModel.recommendPlaylistLiveData.observeAsState(arrayListOf())
+    val playlistSquare by browseViewModel.playlistSquareLiveData.observeAsState(arrayListOf())
+    StateLayout(viewModel = browseViewModel) {
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
             item {
                 ItemTitle(stringResource(R.string.browse))
             }

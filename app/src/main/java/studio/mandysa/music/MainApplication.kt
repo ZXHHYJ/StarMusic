@@ -8,7 +8,7 @@ import studio.mandysa.music.service.MediaPlayService
 import studio.mandysa.music.service.playmanager.PlayManager
 
 /**
- * @author Huang hao
+ * @author 黄浩
  */
 class MainApplication : Application() {
     override fun onCreate() {
@@ -41,7 +41,6 @@ class MainApplication : Application() {
                     )
                 )
             } catch (e: Exception) {
-
             }
         }
     }

@@ -6,28 +6,28 @@ import studio.mandysa.music.logic.user.UserManager.cookie
 import studio.mandysa.music.logic.user.UserManager.userId
 
 /**
- * @author Huang hao
+ * @author 黄浩
  */
 interface NeteaseCloudMusicApi {
 
     //发送验证码
     @Get("captcha/sent")
-    fun sendCaptcha(@Query("phone") phone: String): ResponseBody
+    suspend fun sendCaptcha(@Query("phone") phone: String): CaptchaModel
 
     @Get("login/cellphone")
-    fun phoneLogin(
+    suspend fun phoneLogin(
         @Query("phone") phone: String,
         @Query("captcha") captcha: String
     ): PhoneLoginModel
 
     @Get("artist/sublist")
     @Path("data")
-    fun artistSublist(@Query("cookie") cookie: String = cookie()): List<ArtistSubModel>
+    suspend fun artistSublist(@Query("cookie") cookie: String = cookie()): List<ArtistSubModel>
 
     //搜索音乐
     @Get("cloudsearch")
     @Path("result/songs")
-    fun searchMusic(
+    suspend fun searchMusic(
         @Query("cookie") cookie: String = cookie(),
         @Query("keywords") keywords: String,
         @Query("limit") limit: Int,
@@ -37,7 +37,7 @@ interface NeteaseCloudMusicApi {
     //搜索歌手
     @Get("cloudsearch")
     @Path("result/artists")
-    fun searchSinger(
+    suspend fun searchSinger(
         @Query("cookie") cookie: String = cookie(),
         @Query("keywords") keywords: String,
         @Query("limit") limit: Int = 30,
@@ -48,7 +48,7 @@ interface NeteaseCloudMusicApi {
     //获取音乐详细信息
     @Get("song/detail")
     @Path("songs")
-    fun getSongInfo(
+    suspend fun getSongInfo(
         @Query("cookie") cookie: String = cookie(),
         @Query("ids") ids: List<Any>
     ): List<MusicModel>
@@ -56,70 +56,70 @@ interface NeteaseCloudMusicApi {
     //获取推荐歌曲
     @Get("recommend/songs")
     @Path("data/dailySongs")
-    fun getRecommendSong(@Query("cookie") cookie: String = cookie()): List<RecommendSong>
+    suspend fun getRecommendSong(@Query("cookie") cookie: String = cookie()): ArrayList<RecommendSong>
 
     //获取推荐歌单
     @Get("recommend/resource")
     @Path("recommend")
     @FormUrlEncoded
-    fun getRecommendPlaylist(@Query("cookie") cookie: String = cookie()): List<PlaylistModel>
+    suspend fun getRecommendPlaylist(@Query("cookie") cookie: String = cookie()): ArrayList<PlaylistModel>
 
     //歌单广场
     @Get("personalized")
     @Path("result")
-    fun getPlaylistSquare(): List<PlaylistModel>
+    suspend fun getPlaylistSquare(): ArrayList<PlaylistModel>
 
     //获取歌词
     @Get("lyric")
     @Path("lrc/lyric")
-    fun getLyric(@Query("id") id: String): String
+    suspend fun getLyric(@Query("id") id: String): String
 
     //获取歌单详情
     @Get("playlist/detail")
     @Path("playlist")
-    fun getSongListInfo(
+    suspend fun getSongListInfo(
         @Query("cookie") cookie: String = cookie(),
         @Query("id") id: String
     ): PlaylistInfoModel
 
     @Get("user/playlist")
     @Path("playlist")
-    fun getUserPlaylist(@Query("uid") uid: String = userId()): List<UserPlaylist>
+    suspend fun getUserPlaylist(@Query("uid") uid: String = userId()): List<UserPlaylist>
 
     //获取账号信息
     @Post("user/account")
     @Path("profile")
     @FormUrlEncoded
-    fun getUserInfo(
+    suspend fun getUserInfo(
         @Field("cookie") cookie: String = cookie(),
         @Query("timestamp") timestamp: Long = System.currentTimeMillis()
     ): UserModel
 
     //获取用户详情
     @Post("user/detail")
-    fun getUserDetail(
+    suspend fun getUserDetail(
         @Query("uid") uid: String = userId()
     ): UserDetailModel
 
     //获取所有榜单
     @Get("toplist")
     @Path("list")
-    fun getToplist(): List<ListModel>
+    suspend fun getToplist(): List<ListModel>
 
     @Get("like")
-    fun likeMusic(
+    suspend fun likeMusic(
         @Query("cookie") cookie: String = cookie(),
         @Query("id") id: String,
         @Query("like") like: Boolean
     ): ResponseBody
 
     @Get("subscribe")
-    fun subscribe(@Query("t") t: Int, @Query("id") playlistId: String): ResponseBody
+    suspend fun subscribe(@Query("t") t: Int, @Query("id") playlistId: String): ResponseBody
 
     //主页轮播图
     @Get("banner?type=1")
     @Path("banners")
-    fun getBannerList(): List<BannerModel>
+    suspend fun getBannerList(): ArrayList<BannerModel>
 
 //    @Get("personal_fm")
 //    @Path("data")
@@ -127,14 +127,14 @@ interface NeteaseCloudMusicApi {
 
     @Get("likelist")
     @Path("ids")
-    fun getLikeList(
+    suspend fun getLikeList(
         @Query("cookie") cookie: String = cookie(),
         @Query("uid") uid: String = userId()
     ): List<String>
 
     @Get("artist/detail")
     @Path("data")
-    fun getSingerDetails(
+    suspend fun getSingerDetails(
         @Query("cookie") cookie: String = cookie(),
         @Query("id") id: String
     ): SingerDetailedModel
@@ -143,7 +143,7 @@ interface NeteaseCloudMusicApi {
     //https://neteasecloudmusicapi.vercel.app/#/?id=%e8%8e%b7%e5%8f%96%e6%ad%8c%e5%8d%95%e6%89%80%e6%9c%89%e6%ad%8c%e6%9b%b2
     @Get("playlist/track/all")
     @Deprecated("无法使用")
-    fun getPlaylistSongs(
+    suspend fun getPlaylistSongs(
         @Query("id") id: String,
         @Query("limit") limit: Int,
         @Query("offset") offset: Int
@@ -151,7 +151,7 @@ interface NeteaseCloudMusicApi {
 
     @Get("artist/album")
     @Path("hotAlbums")
-    fun getSingerAlbum(
+    suspend fun getSingerAlbum(
         @Query("cookie") cookie: String = cookie(),
         @Query("id") id: String,
         @Query("limit") limit: Int,
@@ -162,10 +162,10 @@ interface NeteaseCloudMusicApi {
     //https://neteasecloudmusicapi.vercel.app/#/?id=%e6%ad%8c%e6%89%8b%e7%83%ad%e9%97%a8-50-%e9%a6%96%e6%ad%8c%e6%9b%b2
     @Get("artist/top/song")
     @Path("songs")
-    fun getSingerHotSong(@Query("id") id: String): List<MusicModel>
+    suspend fun getSingerHotSong(@Query("id") id: String): List<MusicModel>
 
     @Get("album")
-    fun getAlbumContent(
+    suspend fun getAlbumContent(
         @Query("cookie") cookie: String = cookie(),
         @Query("id") id: String
     ): AlbumContentModel
@@ -174,18 +174,18 @@ interface NeteaseCloudMusicApi {
     //https://neteasecloudmusicapi.vercel.app/#/?id=_1-%e4%ba%8c%e7%bb%b4%e7%a0%81-key-%e7%94%9f%e6%88%90%e6%8e%a5%e5%8f%a3
     @Get("login/qr/key")
     @Path("data/unikey")
-    fun getQRKey(@Query("timestamp") timestamp: Long = System.currentTimeMillis()): String
+    suspend fun getQRKey(@Query("timestamp") timestamp: Long = System.currentTimeMillis()): String
 
     //二维码生成接口
     //https://neteasecloudmusicapi.vercel.app/#/?id=_2-%e4%ba%8c%e7%bb%b4%e7%a0%81%e7%94%9f%e6%88%90%e6%8e%a5%e5%8f%a3
     @Get("login/qr/create")
     @Path("data/qrimg")
-    fun getQRImg(@Query("key") key: String, @Query("qrimg") qrimg: Boolean = true): String
+    suspend fun getQRImg(@Query("key") key: String, @Query("qrimg") qrimg: Boolean = true): String
 
     // 二维码检测扫码状态接口
     //https://neteasecloudmusicapi.vercel.app/#/?id=_3-%e4%ba%8c%e7%bb%b4%e7%a0%81%e6%a3%80%e6%b5%8b%e6%89%ab%e7%a0%81%e7%8a%b6%e6%80%81%e6%8e%a5%e5%8f%a3
     @Get("login/qr/check")
-    fun check(
+    suspend fun check(
         @Query("key") key: String,
         @Query("timestamp") timestamp: Long = System.currentTimeMillis()
     ): CheckModel

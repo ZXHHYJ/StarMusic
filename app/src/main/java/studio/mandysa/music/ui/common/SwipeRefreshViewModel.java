@@ -1,25 +1,15 @@
-package studio.mandysa.music.ui.base;
+package studio.mandysa.music.ui.common;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import studio.mandysa.music.ui.common.State;
+public abstract class SwipeRefreshViewModel extends ViewModel {
+    protected final MutableLiveData<Boolean> mIsRefreshingLiveData = new MutableLiveData<>(false);
 
-public abstract class BaseViewModel extends ViewModel {
-    protected final MutableLiveData<State> stateLiveData = new MutableLiveData<>(State.LOADING);
+    public final LiveData<Boolean> isRefreshing = mIsRefreshingLiveData;
 
-    @NonNull
-    public final LiveData<State> getState() {
-        return stateLiveData;
-    }
-
-    public BaseViewModel() {
-        loading();
-    }
-
-    abstract public void loading();
+    abstract public void init();
 
     abstract public void refresh();
 

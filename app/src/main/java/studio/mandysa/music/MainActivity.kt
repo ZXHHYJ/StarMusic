@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.core.view.WindowCompat
 import studio.mandysa.music.logic.user.UserManager
+import studio.mandysa.music.ui.common.POPWindows
 import studio.mandysa.music.ui.screen.login.LoginScreen
 import studio.mandysa.music.ui.screen.main.MainScreen
 import studio.mandysa.music.ui.theme.MandySaMusicTheme
@@ -20,11 +21,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             WindowCompat.setDecorFitsSystemWindows(window, false)
             MandySaMusicTheme {
-                val isLogin by UserManager.isLoginLiveData.observeAsState(false)
-                if (isLogin) {
+                val isLogin by UserManager.isLoginLiveData.observeAsState()
+                if (isLogin?.isNotEmpty() == true) {
                     MainScreen()
                 } else
                     LoginScreen()
+                POPWindows.PopWin()
             }
         }
     }
