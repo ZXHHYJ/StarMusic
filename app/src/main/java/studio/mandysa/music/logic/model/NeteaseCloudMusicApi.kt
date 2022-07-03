@@ -78,7 +78,6 @@ interface NeteaseCloudMusicApi {
     @Get("playlist/detail")
     @Path("playlist")
     suspend fun getSongListInfo(
-        @Query("cookie") cookie: String = cookie(),
         @Query("id") id: String
     ): PlaylistInfoModel
 
@@ -142,12 +141,11 @@ interface NeteaseCloudMusicApi {
     //获取歌单所有歌曲
     //https://neteasecloudmusicapi.vercel.app/#/?id=%e8%8e%b7%e5%8f%96%e6%ad%8c%e5%8d%95%e6%89%80%e6%9c%89%e6%ad%8c%e6%9b%b2
     @Get("playlist/track/all")
-    @Deprecated("无法使用")
+    @Path("songs")
     suspend fun getPlaylistSongs(
-        @Query("id") id: String,
-        @Query("limit") limit: Int,
-        @Query("offset") offset: Int
-    ): String
+        @Query("cookie") cookie: String = cookie(),
+        @Query("id") id: String
+    ): ArrayList<PlaylistSong>
 
     @Get("artist/album")
     @Path("hotAlbums")

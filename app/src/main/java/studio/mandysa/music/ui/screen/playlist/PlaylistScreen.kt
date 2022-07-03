@@ -3,6 +3,7 @@ package studio.mandysa.music.ui.screen.playlist
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.TopAppBar
@@ -19,8 +20,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.viewModelFactory
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemsIndexed
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop
@@ -47,7 +46,7 @@ fun PlaylistScreen(
     })
 ) {
     val playlistInfo by playlistModel.playlistInfoModel.observeAsState()
-    val songs = playlistModel.songSource.collectAsLazyPagingItems()
+    val songs by playlistModel.songs.observeAsState()
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
             modifier = Modifier.fillMaxWidth(),
@@ -78,9 +77,9 @@ fun PlaylistScreen(
                         modifier = Modifier.weight(1.0f),
                         title = stringResource(id = R.string.play_all),
                         imageVector = Icons.Rounded.PlayArrow,
-                        enabled = songs.itemSnapshotList.items.isNotEmpty()
+                        enabled = songs?.isEmpty() ?: false
                     ) {
-                        PlayManager.loadPlaylist(songs.itemSnapshotList.items, 0)
+                        PlayManager.loadPlaylist(songs!!, 0)
                     }
                     Spacer(modifier = Modifier.width(5.dp))
                     MenuItem(
@@ -95,9 +94,11 @@ fun PlaylistScreen(
             stickyHeader {
                 AppDivider()
             }
-            itemsIndexed(songs) { pos, _ ->
-                SongItem(dialogNavController, songs[pos]!!) {
-                    PlayManager.loadPlaylist(songs.itemSnapshotList.items, pos)
+            songs?.let {
+                itemsIndexed(it) { pos, _ ->
+                    SongItem(dialogNavController, it[pos]) {
+                        PlayManager.loadPlaylist(it, pos)
+                    }
                 }
             }
             item {

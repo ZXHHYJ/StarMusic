@@ -14,16 +14,4 @@ class PlaylistInfoModel {
 
     @Value("coverImgUrl")
     lateinit var coverImgUrl: String
-
-    @Value("trackIds")
-    lateinit var songList: List<SongList>
-
-    class SongList {
-        @Value("id")
-        lateinit var id: String
-
-        override fun toString(): String {
-            return id
-        }
-    }
 }
