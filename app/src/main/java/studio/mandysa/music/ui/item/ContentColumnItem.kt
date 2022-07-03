@@ -98,7 +98,7 @@ fun ContentColumnItem(
                 }
                 Box(
                     modifier = Modifier
-                        .weight(0.8f)
+                        .weight(1.0f)
                         .align(Alignment.Bottom)
                 ) {
                     toolbarScope.invoke()

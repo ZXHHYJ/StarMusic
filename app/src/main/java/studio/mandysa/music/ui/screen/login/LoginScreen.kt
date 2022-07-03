@@ -110,6 +110,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel()) {
         )
         Column(
             modifier = Modifier
+                .widthIn(max = 600.dp)
                 .fillMaxWidth()
                 .padding(vertical = verticalMargin, horizontal = horizontalMargin),
             horizontalAlignment = Alignment.CenterHorizontally
