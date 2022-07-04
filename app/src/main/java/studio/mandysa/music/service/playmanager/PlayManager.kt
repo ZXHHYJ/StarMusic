@@ -58,9 +58,7 @@ object PlayManager {
 
     private val mRunnable = object : Runnable {
         override fun run() {
-            mMediaPlayer?.run {
-                mProgress.value = currentPosition.toInt()
-            }
+            mProgress.value = mMediaPlayer?.currentPosition?.toInt() ?: return
             mHandler.postDelayed(this, 1000)
         }
     }

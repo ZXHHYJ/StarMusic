@@ -4,7 +4,7 @@
     <strong>Hello MandySa Music!</strong>
     <br>
     <br>
-    <a href="https://gitee.com/liuxiaoliu66/mandysa_music/wikis">Wiki</a>
+    <a href="https://gitee.com/ZXHHYJ/mandysa_music/wikis">Wiki</a>
 </p>
 
 <p align="center">
