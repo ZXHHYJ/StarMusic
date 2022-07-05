@@ -18,7 +18,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.viewModelFactory
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
-import dev.olshevski.navigation.reimagined.pop
 import dev.olshevski.navigation.reimagined.popAll
 import kotlinx.parcelize.RawValue
 import studio.mandysa.music.R
@@ -45,7 +44,7 @@ fun SongMenu(
         addInitializer(SongMenuViewModel::class) { SongMenuViewModel(model.id) }
     })
 ) {
-    val isLike by songMenuViewModel.liked.observeAsState()
+    val isLike by songMenuViewModel.likedLiveData.observeAsState()
     DialogCard {
         LazyColumn {
             item {

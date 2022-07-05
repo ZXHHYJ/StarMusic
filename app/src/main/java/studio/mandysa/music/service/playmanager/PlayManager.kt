@@ -11,6 +11,7 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
+import studio.mandysa.music.logic.config.MUSIC_URL
 import studio.mandysa.music.service.playmanager.model.MetaAlbum
 import studio.mandysa.music.service.playmanager.model.MetaArtist
 import studio.mandysa.music.service.playmanager.model.MetaMusic
@@ -185,7 +186,8 @@ object PlayManager {
         mProgress.value = 0
         mChangeMusic.value = metaMusic
         mMediaPlayer?.run {
-            setMediaItem(MediaItem.fromUri(metaMusic.url.toUri()))
+            val url = MUSIC_URL + metaMusic.id
+            setMediaItem(MediaItem.fromUri(url.toUri()))
             prepare()
         }
     }

@@ -5,7 +5,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.map
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import studio.mandysa.music.logic.network.api
+import studio.mandysa.music.logic.config.api
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.Lyric
 

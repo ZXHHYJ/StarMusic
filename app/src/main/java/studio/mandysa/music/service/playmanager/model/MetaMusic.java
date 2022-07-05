@@ -12,8 +12,6 @@ public interface MetaMusic<T extends MetaArtist, E extends MetaAlbum> {
 
     String getCoverUrl();
 
-    String getUrl();
-
     List<T> getArtist();
 
     E getAlbum();

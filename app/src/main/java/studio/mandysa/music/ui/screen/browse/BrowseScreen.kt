@@ -81,10 +81,10 @@ fun BrowseScreen(
         }
     }
 
-    val bannerItems by browseViewModel.bannersLiveData.observeAsState(arrayListOf())
-    val recommendSongs by browseViewModel.recommendSongLiveData.observeAsState(arrayListOf())
-    val recommendPlaylist by browseViewModel.recommendPlaylistLiveData.observeAsState(arrayListOf())
-    val playlistSquare by browseViewModel.playlistSquareLiveData.observeAsState(arrayListOf())
+    val bannerItems by browseViewModel.bannersLiveData.observeAsState()
+    val recommendSongs by browseViewModel.recommendSongLiveData.observeAsState()
+    val recommendPlaylist by browseViewModel.recommendPlaylistLiveData.observeAsState()
+    val playlistSquare by browseViewModel.playlistSquareLiveData.observeAsState()
     StateLayout(viewModel = browseViewModel) {
         AppLazyVerticalGrid(modifier = Modifier.fillMaxSize()) {
             item {
@@ -102,30 +102,34 @@ fun BrowseScreen(
                         contentPadding = PaddingValues(horizontal = horizontalMargin),
                         horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2)
                     ) {
-                        items(bannerItems) {
-                            BannerItem(typeTitle = it.typeTitle, bannerUrl = it.pic)
+                        bannerItems?.let {
+                            items(it) {
+                                BannerItem(typeTitle = it.typeTitle, bannerUrl = it.pic)
+                            }
                         }
                     }
                 } else {
                     Column {
                         val pagerState = rememberPagerState()
-                        HorizontalPager(
-                            count = bannerItems.size,
-                            itemSpacing = horizontalMargin,
-                            contentPadding = PaddingValues(horizontal = horizontalMargin),
-                            state = pagerState
-                        ) {
-                            val model = bannerItems[it]
-                            BannerItem(typeTitle = model.typeTitle, bannerUrl = model.pic)
+                        bannerItems?.let {
+                            HorizontalPager(
+                                count = it.size,
+                                itemSpacing = horizontalMargin,
+                                contentPadding = PaddingValues(horizontal = horizontalMargin),
+                                state = pagerState
+                            ) { index ->
+                                val model = it[index]
+                                BannerItem(typeTitle = model.typeTitle, bannerUrl = model.pic)
+                            }
+                            Spacer(modifier = Modifier.height(5.dp))
+                            HorizontalPagerIndicator(
+                                pagerState = pagerState,
+                                activeColor = onBackground,
+                                modifier = Modifier
+                                    .align(Alignment.CenterHorizontally)
+                                    .padding(horizontal = horizontalMargin),
+                            )
                         }
-                        Spacer(modifier = Modifier.height(5.dp))
-                        HorizontalPagerIndicator(
-                            pagerState = pagerState,
-                            activeColor = onBackground,
-                            modifier = Modifier
-                                .align(Alignment.CenterHorizontally)
-                                .padding(horizontal = horizontalMargin),
-                        )
                     }
                 }
             }
@@ -137,9 +141,11 @@ fun BrowseScreen(
                     contentPadding = PaddingValues(horizontal = horizontalMargin),
                     horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2),
                 ) {
-                    items(recommendPlaylist) { model ->
-                        PlaylistItem(title = model.name, coverUrl = model.picUrl) {
-                            mainNavController.navigate(ScreenDestination.Playlist(model.id))
+                    recommendPlaylist?.let {
+                        items(it) { model ->
+                            PlaylistItem(title = model.name, coverUrl = model.picUrl) {
+                                mainNavController.navigate(ScreenDestination.Playlist(model.id))
+                            }
                         }
                     }
                 }
@@ -152,9 +158,11 @@ fun BrowseScreen(
                     contentPadding = PaddingValues(horizontal = horizontalMargin),
                     horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2),
                 ) {
-                    items(playlistSquare) { model ->
-                        PlaylistItem(title = model.name, coverUrl = model.picUrl) {
-                            mainNavController.navigate(ScreenDestination.Playlist(model.id))
+                    playlistSquare?.let {
+                        items(it) { model ->
+                            PlaylistItem(title = model.name, coverUrl = model.picUrl) {
+                                mainNavController.navigate(ScreenDestination.Playlist(model.id))
+                            }
                         }
                     }
                 }
@@ -162,9 +170,11 @@ fun BrowseScreen(
             item {
                 ItemSubTitle(stringResource(R.string.recommend_song))
             }
-            autoItems(recommendSongs.size) {
-                SongItem(dialogNavController, recommendSongs[it]) {
-                    PlayManager.loadPlaylist(recommendSongs, it)
+            recommendSongs?.let {
+                autoItems(it.size) { index ->
+                    SongItem(dialogNavController, it[index]) {
+                        PlayManager.loadPlaylist(it, index)
+                    }
                 }
             }
             item {

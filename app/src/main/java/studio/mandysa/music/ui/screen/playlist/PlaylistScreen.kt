@@ -1,6 +1,5 @@
 package studio.mandysa.music.ui.screen.playlist
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -26,6 +25,7 @@ import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.AppDivider
 import studio.mandysa.music.ui.common.AppLazyVerticalGrid
 import studio.mandysa.music.ui.common.MenuItem
+import studio.mandysa.music.ui.common.StateLayout
 import studio.mandysa.music.ui.item.ContentColumnItem
 import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.screen.DialogDestination
@@ -33,7 +33,6 @@ import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.onBackground
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PlaylistScreen(
     mainNavController: NavController<ScreenDestination>,
@@ -57,50 +56,52 @@ fun PlaylistScreen(
                 Icon(Icons.Rounded.ArrowBack, null)
             }
         }
-        AppLazyVerticalGrid(modifier = Modifier.fillMaxSize()) {
-            item {
-                ContentColumnItem(
-                    dialogNavController = dialogNavController,
-                    coverUrl = playlistInfo?.coverImgUrl,
-                    title = playlistInfo?.name,
-                    message = playlistInfo?.description
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .padding(horizontal = horizontalMargin)
-                            .padding(bottom = 5.dp)
+        StateLayout(viewModel = playlistViewModel) {
+            AppLazyVerticalGrid(modifier = Modifier.fillMaxSize()) {
+                item {
+                    ContentColumnItem(
+                        dialogNavController = dialogNavController,
+                        coverUrl = playlistInfo?.coverImgUrl,
+                        title = playlistInfo?.name,
+                        message = playlistInfo?.description
                     ) {
-                        MenuItem(
-                            modifier = Modifier.weight(1.0f),
-                            title = stringResource(id = R.string.play_all),
-                            imageVector = Icons.Rounded.PlayArrow,
-                            enabled = songs?.isNotEmpty() ?: false
+                        Row(
+                            modifier = Modifier
+                                .padding(horizontal = horizontalMargin)
+                                .padding(bottom = 5.dp)
                         ) {
-                            PlayManager.loadPlaylist(songs!!, 0)
-                        }
-                        Spacer(modifier = Modifier.width(5.dp))
-                        MenuItem(
-                            modifier = Modifier.weight(1.0f),
-                            title = stringResource(id = R.string.more),
-                            imageVector = Icons.Rounded.MoreVert
-                        ) {
-                            dialogNavController.navigate(DialogDestination.PlaylistMenu(id))
+                            MenuItem(
+                                modifier = Modifier.weight(1.0f),
+                                title = stringResource(id = R.string.play_all),
+                                imageVector = Icons.Rounded.PlayArrow,
+                                enabled = songs?.isNotEmpty() ?: false
+                            ) {
+                                PlayManager.loadPlaylist(songs!!, 0)
+                            }
+                            Spacer(modifier = Modifier.width(5.dp))
+                            MenuItem(
+                                modifier = Modifier.weight(1.0f),
+                                title = stringResource(id = R.string.more),
+                                imageVector = Icons.Rounded.MoreVert
+                            ) {
+                                dialogNavController.navigate(DialogDestination.PlaylistMenu(id))
+                            }
                         }
                     }
                 }
-            }
-            item {
-                AppDivider()
-            }
-            songs?.let {
-                autoItems(it.size) { pos ->
-                    SongItem(dialogNavController, it[pos]) {
-                        PlayManager.loadPlaylist(it, pos)
+                item {
+                    AppDivider()
+                }
+                songs?.let {
+                    autoItems(it.size) { pos ->
+                        SongItem(dialogNavController, it[pos]) {
+                            PlayManager.loadPlaylist(it, pos)
+                        }
                     }
                 }
-            }
-            item {
-                Spacer(modifier = Modifier.padding(paddingValues))
+                item {
+                    Spacer(modifier = Modifier.padding(paddingValues))
+                }
             }
         }
     }

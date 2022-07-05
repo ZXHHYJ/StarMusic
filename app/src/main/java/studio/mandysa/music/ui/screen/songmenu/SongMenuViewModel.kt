@@ -6,26 +6,26 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import studio.mandysa.music.logic.network.api
+import studio.mandysa.music.logic.config.api
 
 class SongMenuViewModel(val id: String) : ViewModel() {
 
-    private val mLiked = MutableLiveData<Boolean>()
+    private val mLikedLiveData = MutableLiveData<Boolean>()
 
-    val liked: LiveData<Boolean> = mLiked
+    val likedLiveData: LiveData<Boolean> = mLikedLiveData
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            mLiked.postValue(api.getLikeList().indexOf(id) != -1)
+            mLikedLiveData.postValue(api.getLikeList().indexOf(id) != -1)
         }
     }
 
     fun likeMusic(like: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            if (like == mLiked.value)
+            if (like == mLikedLiveData.value)
                 return@launch
             if (api.likeMusic(id = id, like = like).code == 200) {
-                mLiked.postValue(like)
+                mLikedLiveData.postValue(like)
             }
         }
     }

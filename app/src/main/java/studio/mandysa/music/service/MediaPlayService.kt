@@ -175,7 +175,7 @@ class MediaPlayService : LifecycleService() {
             val notificationChannel = NotificationChannel(
                 CHANNEL_ID,
                 getString(R.string.channel_name),
-                NotificationManager.IMPORTANCE_LOW
+                NotificationManager.IMPORTANCE_MIN
             )
             notificationChannel.description = getString(R.string.channel_description)
             notificationChannel.enableVibration(false)

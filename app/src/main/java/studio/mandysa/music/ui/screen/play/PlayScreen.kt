@@ -25,10 +25,10 @@ import studio.mandysa.music.ui.common.KenBurns
 import studio.mandysa.music.ui.common.PanelState
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
-import studio.mandysa.music.ui.theme.horizontalMargin
-import studio.mandysa.music.ui.theme.navHeight
-import studio.mandysa.music.ui.theme.translucentWhite
-import studio.mandysa.music.ui.theme.verticalMargin
+import studio.mandysa.music.ui.theme.*
+
+val maxWidth
+    @Composable get() = if (isMedium) 300.dp else 340.dp
 
 enum class PlayScreenDestination {
     Main,
@@ -65,6 +65,8 @@ fun PlayScreen(
         )
         Column(
             modifier = Modifier
+                .align(Alignment.Center)
+                .widthIn(max = 600.dp)
                 .fillMaxSize()
                 .statusBarsPadding()
                 .navigationBarsPadding()
@@ -107,6 +109,8 @@ fun PlayScreen(
             }
             BottomNavigation(
                 modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .widthIn(max = maxWidth)
                     .fillMaxWidth()
                     .height(navHeight)
                     .padding(horizontal = horizontalMargin),

@@ -7,7 +7,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import kotlinx.coroutines.flow.flow
-import studio.mandysa.music.logic.network.api
+import studio.mandysa.music.logic.config.api
 
 class SingerViewModel(id: String) : ViewModel() {
     val singerInfo = flow {

@@ -9,8 +9,8 @@ public abstract class SwipeRefreshViewModel extends ViewModel {
 
     public final LiveData<Boolean> isRefreshing = mIsRefreshingLiveData;
 
-    abstract public void init();
-
     abstract public void refresh();
+
+    abstract public boolean isRefresh();
 
 }

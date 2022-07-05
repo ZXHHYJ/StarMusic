@@ -1,4 +1,4 @@
-package studio.mandysa.music.logic.network
+package studio.mandysa.music.logic.config
 
 /**
  * @author 黄浩

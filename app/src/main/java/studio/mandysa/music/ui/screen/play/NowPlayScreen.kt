@@ -11,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -22,6 +21,7 @@ import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.RoundIcon
 import studio.mandysa.music.ui.common.SeekBar
+import studio.mandysa.music.ui.theme.isMedium
 import studio.mandysa.music.ui.theme.translucentWhite
 import studio.mandysa.music.ui.theme.verticalMargin
 
@@ -31,28 +31,39 @@ fun NowPlayScreen() {
         modifier = Modifier
             .fillMaxSize()
             .systemBarsPadding(),
-        verticalArrangement = Arrangement.Bottom, horizontalAlignment = Alignment.CenterHorizontally
+        verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AlbumCover()
-        Spacer(modifier = Modifier.height(10.dp))
-        TitleAndArtist()
-        Spacer(modifier = Modifier.height(15.dp))
-        MusicProgressBar()
-        MusicControlBar()
+        if (isMedium) {
+            AlbumCover()
+            TitleAndArtist()
+            MusicProgressBar()
+            MusicControlBar()
+        } else {
+            AlbumCover()
+            Spacer(modifier = Modifier.height(10.dp))
+            TitleAndArtist()
+            Spacer(modifier = Modifier.height(15.dp))
+            MusicProgressBar()
+            MusicControlBar()
+        }
     }
 }
 
 
 @Composable
 private fun AlbumCover() {
-    val configuration = LocalConfiguration.current
-    val screenWidth =
-        if (configuration.screenWidthDp.dp <= configuration.screenHeightDp.dp) configuration.screenWidthDp.dp else configuration.screenHeightDp.dp
-    Card(elevation = 5.dp, shape = RoundedCornerShape(12.dp)) {
+    Card(
+        modifier = Modifier
+            .widthIn(max = maxWidth)
+            .heightIn(max = maxWidth),
+        elevation = 5.dp,
+        shape = RoundedCornerShape(12.dp)
+    ) {
         val coverUrl by PlayManager.changeMusicLiveData().map { return@map it.coverUrl }
             .observeAsState()
         coverUrl?.let {
-            AppAsyncImage(size = screenWidth * 0.84f, url = it)
+            AppAsyncImage(size = maxWidth, url = it)
         }
     }
 }
@@ -61,8 +72,9 @@ private fun AlbumCover() {
 private fun TitleAndArtist() {
     Column(
         modifier = Modifier
-            .padding(vertical = verticalMargin, horizontal = 35.dp)
-            .fillMaxWidth(),
+            .widthIn(max = maxWidth)
+            .fillMaxWidth()
+            .padding(vertical = verticalMargin),
         horizontalAlignment = Alignment.Start
     ) {
         val title by PlayManager.changeMusicLiveData().map { return@map it.title }
@@ -98,17 +110,18 @@ private fun MusicProgressBar() {
     val musicDuration by PlayManager.playingMusicDurationLiveData().map {
         it
     }.observeAsState(1)
+
     SeekBar(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 35.dp),
+            .widthIn(max = maxWidth)
+            .fillMaxWidth(),
         value = musicPlaybackProgress,
         maxValue = musicDuration,
         onValueChange = { PlayManager.seekTo(it) }
     )
     Row(
         modifier = Modifier
-            .padding(horizontal = 35.dp)
+            .widthIn(max = maxWidth)
             .fillMaxWidth()
     ) {
         Text(text = musicPlaybackProgress.toTime(), color = translucentWhite)
@@ -119,10 +132,14 @@ private fun MusicProgressBar() {
 
 @Composable
 private fun MusicControlBar() {
+    val smallButtonSize = if (isMedium) 50.dp else 60.dp
+    val middleButtonSize = if (isMedium) 65.dp else 85.dp
+
     Row(
         modifier = Modifier
+            .widthIn(max = maxWidth)
             .fillMaxWidth()
-            .padding(vertical = 50.dp),
+            .padding(vertical = if (isMedium) 15.dp else 50.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -130,14 +147,14 @@ private fun MusicControlBar() {
             if (it) R.drawable.ic_play else R.drawable.ic_pause
         }.observeAsState(R.drawable.ic_play)
         RoundIcon(
-            size = 60.dp,
+            size = smallButtonSize,
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_previous),
             tint = Color.White,
             contentDescription = null
         ) { PlayManager.skipToPrevious() }
         Box(modifier = Modifier.padding(horizontal = 35.dp)) {
             RoundIcon(
-                size = 85.dp,
+                size = middleButtonSize,
                 imageVector = ImageVector.vectorResource(id = playPauseState),
                 tint = Color.White,
                 contentDescription = null
@@ -148,7 +165,7 @@ private fun MusicControlBar() {
             }
         }
         RoundIcon(
-            size = 60.dp,
+            size = smallButtonSize,
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_next),
             tint = Color.White,
             contentDescription = null

@@ -1,14 +1,15 @@
 package studio.mandysa.music.logic.manager
 
 import androidx.lifecycle.LiveData
-import simon.tuke.livedata
-import simon.tuke.value
+import studio.mandysa.fastkt.serial
+import studio.mandysa.fastkt.serialLiveData
+import studio.mandysa.music.logic.config.noBackup
 
 object UserManager {
 
-    private var mUserId by value<String?>(key = "userid")
+    private var mUserId by serial<String?>(key = "userid", def = null, noBackup)
 
-    private val mCookieLiveData by livedata<String?>(key = "cookie")
+    private val mCookieLiveData by serialLiveData<String?>(key = "cookie", def = null, noBackup)
 
     var isLoginLiveData: LiveData<String?> = mCookieLiveData
 

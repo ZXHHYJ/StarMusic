@@ -21,6 +21,9 @@ fun StateLayout(
     content: @Composable () -> Unit
 ) {
     val isRefreshing by viewModel.isRefreshing.observeAsState(false)
+    if (viewModel.isRefresh) {
+        viewModel.refresh()
+    }
     SwipeRefresh(
         modifier = modifier,
         state = rememberSwipeRefreshState(isRefreshing),

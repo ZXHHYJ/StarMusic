@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import studio.mandysa.music.logic.network.api
+import studio.mandysa.music.logic.config.api
 import studio.mandysa.music.logic.manager.UserManager
 import studio.mandysa.music.ui.common.POPWindows
 

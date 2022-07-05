@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.flow
-import studio.mandysa.music.logic.network.api
+import studio.mandysa.music.logic.config.api
 
 class SearchSingerViewModel(keywords: String) : ViewModel() {
 

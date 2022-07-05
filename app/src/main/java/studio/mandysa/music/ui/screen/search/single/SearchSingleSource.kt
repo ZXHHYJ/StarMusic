@@ -3,7 +3,7 @@ package studio.mandysa.music.ui.screen.search.single
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import studio.mandysa.music.logic.model.SearchSongModel
-import studio.mandysa.music.logic.network.api
+import studio.mandysa.music.logic.config.api
 
 class SearchSingleSource(private val keywords: String) : PagingSource<Int, SearchSongModel>() {
     override fun getRefreshKey(state: PagingState<Int, SearchSongModel>): Int? {

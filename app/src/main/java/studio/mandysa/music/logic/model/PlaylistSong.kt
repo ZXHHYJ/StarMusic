@@ -1,7 +1,6 @@
 package studio.mandysa.music.logic.model
 
 import mandysax.anna2.annotation.Value
-import studio.mandysa.music.logic.network.MUSIC_URL
 import studio.mandysa.music.service.playmanager.model.MetaMusic
 import java.io.Serializable
 
@@ -20,10 +19,6 @@ class PlaylistSong : MetaMusic<SingerModel, AlbumModel>, Serializable {
 
     override fun getTitle(): String {
         return name
-    }
-
-    override fun getUrl(): String {
-        return MUSIC_URL + id
     }
 
     override fun getCoverUrl(): String {

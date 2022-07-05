@@ -3,7 +3,7 @@ package studio.mandysa.music.ui.screen.singer
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import studio.mandysa.music.logic.model.SingerAlbumModel
-import studio.mandysa.music.logic.network.api
+import studio.mandysa.music.logic.config.api
 
 class SingerAlbumPagingSource(private val id: String) : PagingSource<Int, SingerAlbumModel>() {
 

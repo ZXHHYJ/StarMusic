@@ -85,7 +85,9 @@ fun SearchScreen(
                     fontSize = 16.sp,
                 ),
                 keyboardActions = KeyboardActions(onSearch = {
-                    isSearch = true
+                    if (keywords.isNotEmpty()) {
+                        isSearch = true
+                    }
                     focusManager.clearFocus()
                     keyboardController?.hide()
                 }),
