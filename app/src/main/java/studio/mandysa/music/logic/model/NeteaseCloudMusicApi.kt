@@ -2,8 +2,8 @@ package studio.mandysa.music.logic.model
 
 import mandysax.anna2.annotation.*
 import mandysax.anna2.model.ResponseBody
-import studio.mandysa.music.logic.manager.UserManager.cookie
-import studio.mandysa.music.logic.manager.UserManager.userId
+import studio.mandysa.music.logic.repository.UserRepository.cookie
+import studio.mandysa.music.logic.repository.UserRepository.userId
 
 /**
  * @author 黄浩
@@ -84,7 +84,7 @@ interface NeteaseCloudMusicApi {
 
     @Get("user/playlist")
     @Path("playlist")
-    suspend fun getUserPlaylist(@Query("uid") uid: String = userId()): List<UserPlaylist>
+    suspend fun getUserPlaylist(@Query("uid") uid: String = userId()): ArrayList<UserPlaylist>
 
     //获取账号信息
     @Post("user/account")

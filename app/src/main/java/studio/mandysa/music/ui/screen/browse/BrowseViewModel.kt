@@ -47,17 +47,17 @@ class BrowseViewModel : SwipeRefreshViewModel() {
     val playlistSquareLiveData: LiveData<ArrayList<PlaylistModel>> = mPlaylistSquareLiveData
 
     override fun refresh() {
-        viewModelScope.launch {
-            mIsRefreshingLiveData.value = true
-            try {
+        try {
+            viewModelScope.launch {
+                mIsRefreshingLiveData.value = true
                 mBannersLiveData.value = api.getBannerList()
                 mRecommendSongLiveData.value = api.getRecommendSong()
                 mRecommendPlaylistLiveData.value = api.getRecommendPlaylist()
                 mPlaylistSquareLiveData.value = api.getPlaylistSquare()
-            } catch (e: Exception) {
-                POPWindows.postValue(e.message.toString())
+                mIsRefreshingLiveData.value = false
             }
-            mIsRefreshingLiveData.value = false
+        } catch (e: Exception) {
+            POPWindows.postValue(e.message.toString())
         }
     }
 

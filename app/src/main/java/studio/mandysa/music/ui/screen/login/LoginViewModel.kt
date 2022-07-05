@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import studio.mandysa.music.logic.config.api
-import studio.mandysa.music.logic.manager.UserManager
+import studio.mandysa.music.logic.repository.UserRepository
 import studio.mandysa.music.ui.common.POPWindows
 
 class LoginViewModel : ViewModel() {
@@ -56,7 +56,7 @@ class LoginViewModel : ViewModel() {
             viewModelScope.launch {
                 val model = api.phoneLogin(mobilePhone, captcha)
                 if (model.cookie.isNotEmpty()) {
-                    UserManager.update(model.cookie, model.id)
+                    UserRepository.update(model.cookie, model.id)
                 } else {
                     POPWindows.postValue("登录失败")
                 }

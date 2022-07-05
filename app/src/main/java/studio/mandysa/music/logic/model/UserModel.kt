@@ -1,23 +1,24 @@
-package studio.mandysa.music.logic.model;
+package studio.mandysa.music.logic.model
 
-import mandysax.anna2.annotation.Value;
+import mandysax.anna2.annotation.Value
+import java.io.Serializable
 
 /**
  * @author 黄浩
  */
-public final class UserModel {
+class UserModel : Serializable {
     @Value("userId")
-    public String userId;
+    lateinit var userId: String
 
     @Value("nickname")
-    public String nickname;
+    lateinit var nickname: String
 
     @Value("avatarUrl")
-    public String avatarUrl;
+    lateinit var avatarUrl: String
 
     @Value("signature")
-    public String signature;
+    lateinit var signature: String
 
     @Value("createTime")
-    public String createTime;
+    lateinit var createTime: String
 }

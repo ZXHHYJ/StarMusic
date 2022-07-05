@@ -16,7 +16,7 @@ import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop
 import dev.olshevski.navigation.reimagined.popAll
 import studio.mandysa.music.R
-import studio.mandysa.music.logic.manager.UserManager
+import studio.mandysa.music.logic.repository.UserRepository
 import studio.mandysa.music.ui.common.DialogCard
 import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.screen.DialogDestination
@@ -44,7 +44,7 @@ fun MeMenu(
             ) {
                 dialogNavController.popAll()
                 mainNavController.popAll()
-                UserManager.signOut()
+                UserRepository.signOut()
             }
         }
     }

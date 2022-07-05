@@ -22,8 +22,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
+import studio.mandysa.music.logic.repository.PlayHistoryRepository
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.MenuItem
+import studio.mandysa.music.ui.common.StateLayout
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.ItemTitle
 import studio.mandysa.music.ui.item.PlaylistItem
@@ -40,80 +42,99 @@ fun MeScreen(
     paddingValues: PaddingValues,
     meViewModel: MeViewModel = viewModel()
 ) {
-    val userInfo by meViewModel.userInfo.observeAsState()
-    val playlist by meViewModel.allPlaylist.observeAsState(listOf())
-    LazyColumn {
-        item {
-            ItemTitle(stringResource(R.string.me))
-        }
-        item {
-            userInfo?.let {
-                Card(
-                    modifier = Modifier.padding(horizontal = horizontalMargin),
-                    shape = cornerShape
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(100.dp)
-                            .clickable {
-                                dialogNavController.navigate(DialogDestination.MeMenu)
-                            },
-                        verticalAlignment = Alignment.CenterVertically
+    val userInfo by meViewModel.userInfoLiveData.observeAsState()
+    val playlist by meViewModel.allPlaylistLiveData.observeAsState()
+    val playHistory by PlayHistoryRepository.playHistoryLiveData.observeAsState()
+    StateLayout(viewModel = meViewModel) {
+        LazyColumn {
+            item {
+                ItemTitle(stringResource(R.string.me))
+            }
+            item {
+                userInfo?.let {
+                    Card(
+                        modifier = Modifier.padding(horizontal = horizontalMargin),
+                        shape = cornerShape
                     ) {
-                        Box(modifier = Modifier.padding(horizontal = 10.dp)) {
-                            AppAsyncImage(size = 70.dp, 35.dp, url = it.avatarUrl)
-                        }
-                        Column {
-                            Text(text = it.nickname)
-                            Spacer(modifier = Modifier.height(5.dp))
-                            Text(text = it.signature)
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(100.dp)
+                                .clickable {
+                                    dialogNavController.navigate(DialogDestination.MeMenu)
+                                },
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Box(modifier = Modifier.padding(horizontal = 10.dp)) {
+                                AppAsyncImage(size = 70.dp, 35.dp, url = it.avatarUrl)
+                            }
+                            Column {
+                                Text(text = it.nickname)
+                                Spacer(modifier = Modifier.height(5.dp))
+                                Text(text = it.signature)
+                            }
                         }
                     }
                 }
             }
-        }
-        item {
-            ItemSubTitle(stringResource(R.string.me_playlist))
-        }
-        item {
-            LazyRow(
-                contentPadding = PaddingValues(horizontal = horizontalMargin),
-                horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2)
-            ) {
-                items(playlist) {
-                    PlaylistItem(title = it.name, coverUrl = it.coverImgUrl) {
-                        mainNavController.navigate(ScreenDestination.Playlist(it.id))
+            item {
+                ItemSubTitle(stringResource(R.string.me_playlist))
+            }
+            item {
+                LazyRow(
+                    contentPadding = PaddingValues(horizontal = horizontalMargin),
+                    horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2)
+                ) {
+                    playlist?.let { it ->
+                        items(it) {
+                            PlaylistItem(title = it.name, coverUrl = it.coverImgUrl) {
+                                mainNavController.navigate(ScreenDestination.Playlist(it.id))
+                            }
+                        }
                     }
                 }
             }
-        }
-        item {
-            ItemSubTitle(stringResource(R.string.recently_played))
-        }
-        item {
-            ItemSubTitle(stringResource(R.string.more))
-        }
-        item {
-            MenuItem(
-                modifier = Modifier.padding(horizontal = horizontalMargin),
-                title = stringResource(id = R.string.setting),
-                imageVector = Icons.Rounded.Favorite
-            ) {
-                mainNavController.navigate(ScreenDestination.Setting)
+            item {
+                ItemSubTitle(stringResource(R.string.recently_played))
             }
-        }
-        item {
-            MenuItem(
-                modifier = Modifier.padding(horizontal = horizontalMargin),
-                title = stringResource(id = R.string.about),
-                imageVector = Icons.Rounded.Info
-            ) {
-                mainNavController.navigate(ScreenDestination.About)
+            item {
+                LazyRow(
+                    contentPadding = PaddingValues(horizontal = horizontalMargin),
+                    horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2)
+                ) {
+                    playHistory?.let { it ->
+                        items(it) {
+                            PlaylistItem(title = it.title, coverUrl = it.coverUrl) {
+                                mainNavController.navigate(ScreenDestination.Playlist(it.album.id))
+                            }
+                        }
+                    }
+                }
             }
-        }
-        item {
-            Spacer(modifier = Modifier.padding(paddingValues))
+            item {
+                ItemSubTitle(stringResource(R.string.more))
+            }
+            item {
+                MenuItem(
+                    modifier = Modifier.padding(horizontal = horizontalMargin),
+                    title = stringResource(id = R.string.setting),
+                    imageVector = Icons.Rounded.Favorite
+                ) {
+                    mainNavController.navigate(ScreenDestination.Setting)
+                }
+            }
+            item {
+                MenuItem(
+                    modifier = Modifier.padding(horizontal = horizontalMargin),
+                    title = stringResource(id = R.string.about),
+                    imageVector = Icons.Rounded.Info
+                ) {
+                    mainNavController.navigate(ScreenDestination.About)
+                }
+            }
+            item {
+                Spacer(modifier = Modifier.padding(paddingValues))
+            }
         }
     }
 }

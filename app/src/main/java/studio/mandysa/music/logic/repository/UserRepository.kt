@@ -1,11 +1,11 @@
-package studio.mandysa.music.logic.manager
+package studio.mandysa.music.logic.repository
 
 import androidx.lifecycle.LiveData
 import studio.mandysa.fastkt.serial
 import studio.mandysa.fastkt.serialLiveData
 import studio.mandysa.music.logic.config.noBackup
 
-object UserManager {
+object UserRepository {
 
     private var mUserId by serial<String?>(key = "userid", def = null, noBackup)
 
