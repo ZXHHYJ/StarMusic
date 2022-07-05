@@ -21,7 +21,5 @@
     public static int e(...);
 }
 
--keep public class * extends android.view.View**{}
-
 # mapping.txt文件列出混淆前后的映射
 -printmapping mapping.txt
