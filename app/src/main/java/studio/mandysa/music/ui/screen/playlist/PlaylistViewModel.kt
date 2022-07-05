@@ -28,14 +28,15 @@ class PlaylistViewModel(private val id: String) : SwipeRefreshViewModel() {
 
 
     override fun refresh() {
-        viewModelScope.launch {
-            mIsRefreshingLiveData.value = true
-            try {
+        try {
+            viewModelScope.launch {
+                mIsRefreshingLiveData.value = true
                 mSongsLiveData.value = api.getPlaylistSongs(id = id)
-            } catch (e: Exception) {
-                POPWindows.postValue(e.message.toString())
+                mIsRefreshingLiveData.value = false
             }
-            mIsRefreshingLiveData.value = false
+        } catch (e: Exception) {
+            e.printStackTrace()
+            POPWindows.postValue(e.message.toString())
         }
     }
 
