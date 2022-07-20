@@ -1,16 +1,10 @@
-package studio.mandysa.music.ui.common;
+package studio.mandysa.music.ui.common
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
-public abstract class SwipeRefreshViewModel extends ViewModel {
-    protected final MutableLiveData<Boolean> mIsRefreshingLiveData = new MutableLiveData<>(false);
-
-    public final LiveData<Boolean> isRefreshing = mIsRefreshingLiveData;
-
-    abstract public void refresh();
-
-    abstract public boolean isRefresh();
-
+abstract class SwipeRefreshViewModel : ViewModel() {
+    val isRefreshing = MutableLiveData(false)
+    abstract suspend fun preview()
+    abstract suspend fun refresh()
 }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--播放列表标题-->
+    <color name="tv_color_title">#323232</color>
+
+    <!--浅色字体颜色-->
+    <color name="tv_color_light">#7A7A7A</color>
+
+    <!--主题色-->
+    <color name="theme_color">#2196F3</color>
+    <!--音乐被选中-->
+    <color name="music_select_color">@color/theme_color</color>
+
+    <color name="widget_bg_color_light">#EEEEF0</color>
+
+    <!--半透明白色-->
+    <color name="translucent_white">#99FFFFFF</color>
+
+    <!--半透明灰色-->
+    <color name="translucent_black">#40000000</color>
+
+    <color name="translucent_divider">#25FFFFFF</color>
+</resources>

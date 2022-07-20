@@ -3,7 +3,6 @@ package studio.mandysa.music.ui.theme
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import com.kyant.color.palette.Hct
 import com.kyant.color.palette.Hct.Companion.toHct
@@ -42,7 +41,7 @@ val contentColor: Color
 
 //bottomBarItem背景颜色
 val neutralColor: Color
-    @Composable get() = 82.accent1 withNight 20.accent2
+    @Composable get() = 84.accent2 withNight 20.accent2
 
 //bottomBarItem指示颜色
 val indicatorColor: Color
@@ -57,17 +56,16 @@ fun Color.toHct(): Hct {
     return Srgb(red.toDouble(), green.toDouble(), blue.toDouble()).toHct(type = HctType.Cam16)
 }
 
-val LocalTonalPalettes = staticCompositionLocalOf {
-    Color.Blue.toHct().generateTonalPalettes()
-}
+val LocalTonalPalettes
+    @Composable get() = MaterialTheme.colorScheme.primary.toHct().generateTonalPalettes()
 
 inline val Number.accent1
-    @Composable get() = with(LocalTonalPalettes.current) {
+    @Composable get() = with(LocalTonalPalettes) {
         keyColor.transform(toDouble(), style.accent1Spec).toColor()
     }
 
 inline val Number.accent2
-    @Composable get() = with(LocalTonalPalettes.current) {
+    @Composable get() = with(LocalTonalPalettes) {
         keyColor.transform(toDouble(), style.accent2Spec).toColor()
     }
 

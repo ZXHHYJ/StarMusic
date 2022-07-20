@@ -30,7 +30,7 @@ import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.AppLazyVerticalGrid
 import studio.mandysa.music.ui.common.POPWindows
 import studio.mandysa.music.ui.common.SearchBar
-import studio.mandysa.music.ui.common.StateLayout
+import studio.mandysa.music.ui.common.SwipeRefreshLayout
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.ItemTitle
 import studio.mandysa.music.ui.item.PlaylistItem
@@ -85,7 +85,7 @@ fun BrowseScreen(
     val recommendSongs by browseViewModel.recommendSongLiveData.observeAsState()
     val recommendPlaylist by browseViewModel.recommendPlaylistLiveData.observeAsState()
     val playlistSquare by browseViewModel.playlistSquareLiveData.observeAsState()
-    StateLayout(viewModel = browseViewModel) {
+    SwipeRefreshLayout(viewModel = browseViewModel) {
         AppLazyVerticalGrid(modifier = Modifier.fillMaxSize()) {
             item {
                 ItemTitle(stringResource(R.string.browse))

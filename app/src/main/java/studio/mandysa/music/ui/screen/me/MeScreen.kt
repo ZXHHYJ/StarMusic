@@ -22,10 +22,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
-import studio.mandysa.music.logic.repository.PlayHistoryRepository
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.MenuItem
-import studio.mandysa.music.ui.common.StateLayout
+import studio.mandysa.music.ui.common.SwipeRefreshLayout
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.ItemTitle
 import studio.mandysa.music.ui.item.PlaylistItem
@@ -44,8 +43,8 @@ fun MeScreen(
 ) {
     val userInfo by meViewModel.userInfoLiveData.observeAsState()
     val playlist by meViewModel.allPlaylistLiveData.observeAsState()
-    val playHistory by PlayHistoryRepository.playHistoryLiveData.observeAsState()
-    StateLayout(viewModel = meViewModel) {
+    //val playHistory by PlayHistoryRepository.playHistoryLiveData.observeAsState()
+    SwipeRefreshLayout(viewModel = meViewModel) {
         LazyColumn {
             item {
                 ItemTitle(stringResource(R.string.me))
@@ -102,13 +101,14 @@ fun MeScreen(
                     contentPadding = PaddingValues(horizontal = horizontalMargin),
                     horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2)
                 ) {
-                    playHistory?.let { it ->
+                    // TODO: 播放历史 
+                   /* playHistory?.let { it ->
                         items(it) {
                             PlaylistItem(title = it.title, coverUrl = it.coverUrl) {
                                 mainNavController.navigate(ScreenDestination.Playlist(it.album.id))
                             }
                         }
-                    }
+                    }*/
                 }
             }
             item {

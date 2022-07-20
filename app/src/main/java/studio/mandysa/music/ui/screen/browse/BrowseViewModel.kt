@@ -1,68 +1,43 @@
 package studio.mandysa.music.ui.screen.browse
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.globalLiveData
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
+import androidx.lifecycle.MutableLiveData
 import studio.mandysa.music.logic.config.api
-import studio.mandysa.music.logic.config.cache
 import studio.mandysa.music.logic.model.BannerModel
 import studio.mandysa.music.logic.model.PlaylistModel
 import studio.mandysa.music.logic.model.RecommendSong
-import studio.mandysa.music.ui.common.POPWindows
 import studio.mandysa.music.ui.common.SwipeRefreshViewModel
 
 class BrowseViewModel : SwipeRefreshViewModel() {
 
-    private val mBannersLiveData by globalLiveData<ArrayList<BannerModel>>(
-        key = "banners",
-        def = null,
-        fastKt = cache
-    )
+    private val mBannersLiveData = MutableLiveData<List<BannerModel>>()
 
-    val bannersLiveData: LiveData<ArrayList<BannerModel>> = mBannersLiveData
+    val bannersLiveData: LiveData<List<BannerModel>> = mBannersLiveData
 
-    private val mRecommendSongLiveData by globalLiveData<ArrayList<RecommendSong>>(
-        key = "recommend_song",
-        def = null,
-        fastKt = cache
-    )
+    private val mRecommendSongLiveData = MutableLiveData<List<RecommendSong>>()
 
-    val recommendSongLiveData: LiveData<ArrayList<RecommendSong>> = mRecommendSongLiveData
+    val recommendSongLiveData: LiveData<List<RecommendSong>> = mRecommendSongLiveData
 
-    private val mRecommendPlaylistLiveData by globalLiveData<ArrayList<PlaylistModel>>(
-        key = "recommend_playlist",
-        def = null,
-        fastKt = cache
-    )
+    private val mRecommendPlaylistLiveData = MutableLiveData<List<PlaylistModel>>()
 
-    val recommendPlaylistLiveData: LiveData<ArrayList<PlaylistModel>> = mRecommendPlaylistLiveData
+    val recommendPlaylistLiveData: LiveData<List<PlaylistModel>> = mRecommendPlaylistLiveData
 
-    private val mPlaylistSquareLiveData by globalLiveData<ArrayList<PlaylistModel>>(
-        key = "playlist_square",
-        def = null,
-        fastKt = cache
-    )
+    private val mPlaylistSquareLiveData = MutableLiveData<List<PlaylistModel>>()
 
-    val playlistSquareLiveData: LiveData<ArrayList<PlaylistModel>> = mPlaylistSquareLiveData
+    val playlistSquareLiveData: LiveData<List<PlaylistModel>> = mPlaylistSquareLiveData
 
-    override fun refresh() {
-        try {
-            viewModelScope.launch {
-                mIsRefreshingLiveData.value = true
-                mBannersLiveData.value = api.getBannerList()
-                mRecommendSongLiveData.value = api.getRecommendSong()
-                mRecommendPlaylistLiveData.value = api.getRecommendPlaylist()
-                mPlaylistSquareLiveData.value = api.getPlaylistSquare()
-                mIsRefreshingLiveData.value = false
-            }
-        } catch (e: Exception) {
-            POPWindows.postValue(e.message.toString())
-        }
+    override suspend fun preview() {
+        mBannersLiveData.value = api.cache().getBannerList()
+        mRecommendSongLiveData.value = api.cache().getRecommendSong()
+        mRecommendPlaylistLiveData.value = api.cache().getRecommendPlaylist()
+        mPlaylistSquareLiveData.value = api.cache().getPlaylistSquare()
     }
 
-    override fun isRefresh(): Boolean {
-        return bannersLiveData.value == null || recommendPlaylistLiveData.value == null || recommendSongLiveData.value == null || playlistSquareLiveData.value == null
+    override suspend fun refresh() {
+        mBannersLiveData.value = api.network().getBannerList()
+        mRecommendSongLiveData.value = api.network().getRecommendSong()
+        mRecommendPlaylistLiveData.value = api.network().getRecommendPlaylist()
+        mPlaylistSquareLiveData.value = api.network().getPlaylistSquare()
     }
 
 }

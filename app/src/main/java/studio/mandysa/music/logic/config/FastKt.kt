@@ -8,6 +8,3 @@ import studio.mandysa.fastkt.FastKt
 
 //持久
 lateinit var noBackup: FastKt
-
-//缓存
-lateinit var cache: FastKt

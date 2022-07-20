@@ -25,7 +25,7 @@ import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.AppDivider
 import studio.mandysa.music.ui.common.AppLazyVerticalGrid
 import studio.mandysa.music.ui.common.MenuItem
-import studio.mandysa.music.ui.common.StateLayout
+import studio.mandysa.music.ui.common.SwipeRefreshLayout
 import studio.mandysa.music.ui.item.ContentColumnItem
 import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.screen.DialogDestination
@@ -56,7 +56,7 @@ fun PlaylistScreen(
                 Icon(Icons.Rounded.ArrowBack, null)
             }
         }
-        StateLayout(viewModel = playlistViewModel) {
+        SwipeRefreshLayout(viewModel = playlistViewModel) {
             AppLazyVerticalGrid(modifier = Modifier.fillMaxSize()) {
                 item {
                     ContentColumnItem(

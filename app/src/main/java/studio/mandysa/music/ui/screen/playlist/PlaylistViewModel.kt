@@ -1,50 +1,29 @@
 package studio.mandysa.music.ui.screen.playlist
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.globalLiveData
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
-import studio.mandysa.fastkt.serialLiveData
+import androidx.lifecycle.MutableLiveData
 import studio.mandysa.music.logic.config.api
-import studio.mandysa.music.logic.config.cache
 import studio.mandysa.music.logic.model.PlaylistInfoModel
 import studio.mandysa.music.logic.model.PlaylistSong
-import studio.mandysa.music.ui.common.POPWindows
 import studio.mandysa.music.ui.common.SwipeRefreshViewModel
 
 class PlaylistViewModel(private val id: String) : SwipeRefreshViewModel() {
+    private val mSongsLiveData = MutableLiveData<List<PlaylistSong>>()
 
-    private val mSongsLiveData by globalLiveData<ArrayList<PlaylistSong>>(
-        key = id,
-        def = null,
-        fastKt = cache
-    )
+    val songsLiveData: LiveData<List<PlaylistSong>> = mSongsLiveData
 
-    val songsLiveData: LiveData<ArrayList<PlaylistSong>> = mSongsLiveData
-
-    private val mPlaylistInfoModelLiveData by serialLiveData<PlaylistInfoModel>(
-        key = "${id}_playlist_info_model",
-        def = null,
-        fastKt = cache
-    )
+    private val mPlaylistInfoModelLiveData = MutableLiveData<PlaylistInfoModel>()
 
     val playlistInfoModelLiveData: LiveData<PlaylistInfoModel> = mPlaylistInfoModelLiveData
 
-    override fun refresh() {
-        try {
-            viewModelScope.launch {
-                mIsRefreshingLiveData.value = true
-                mSongsLiveData.value = api.getPlaylistSongs(id = id)
-                mPlaylistInfoModelLiveData.value = api.getSongListInfo(id = id)
-                mIsRefreshingLiveData.value = false
-            }
-        } catch (e: Exception) {
-            POPWindows.postValue(e.message.toString())
-        }
+    override suspend fun preview() {
+        mPlaylistInfoModelLiveData.value = api.cache().getSongListInfo(id = id)
+        mSongsLiveData.value = api.cache().getPlaylistSongs(id = id)
     }
 
-    override fun isRefresh(): Boolean {
-        return mPlaylistInfoModelLiveData.value == null || mSongsLiveData.value == null
+    override suspend fun refresh() {
+        mPlaylistInfoModelLiveData.value = api.network().getSongListInfo(id = id)
+        mSongsLiveData.value = api.network().getPlaylistSongs(id = id)
     }
 
 }

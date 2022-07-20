@@ -40,15 +40,12 @@ fun KenBurns(modifier: Modifier, imageUrl: String, paused: Boolean) {
 /**
  * bitmap模糊算法来自于AppleMusic
  */
-private class BlurKenBurnsView : KenBurnsView {
-
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(
+private class BlurKenBurnsView(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
+    KenBurnsView(
         context,
         attrs,
         defStyle
-    )
+    ) {
 
     var imageUrl: String? = null
         set(value) {
@@ -75,7 +72,7 @@ private class BlurKenBurnsView : KenBurnsView {
         val canvas = Canvas(blurBitmap)
         canvas.drawColor(0x40000000)
         blurBitmap = scaleBitmap(blurBitmap, blurBitmap.height * 150 / blurBitmap.width)
-        blurBitmap = meshBitmap(blurBitmap, floats)
+        blurBitmap = meshBitmap(blurBitmap)
         blurBitmap = Toolkit.blur(blurBitmap, 25)
         return blurBitmap
     }
@@ -155,7 +152,7 @@ private class BlurKenBurnsView : KenBurnsView {
         1.0283f
     )
 
-    private fun meshBitmap(old: Bitmap, floats: FloatArray): Bitmap {
+    private fun meshBitmap(old: Bitmap): Bitmap {
         val fArr2 = FloatArray(72)
         var i = 0
         while (i <= 5) {

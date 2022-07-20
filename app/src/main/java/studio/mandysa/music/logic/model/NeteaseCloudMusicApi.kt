@@ -1,9 +1,11 @@
 package studio.mandysa.music.logic.model
 
+import com.drake.net.cache.CacheMode
 import mandysax.anna2.annotation.*
 import mandysax.anna2.model.ResponseBody
 import studio.mandysa.music.logic.repository.UserRepository.cookie
 import studio.mandysa.music.logic.repository.UserRepository.userId
+import java.util.concurrent.TimeUnit
 
 /**
  * @author 黄浩
@@ -56,13 +58,13 @@ interface NeteaseCloudMusicApi {
     //获取推荐歌曲
     @Get("recommend/songs")
     @Path("data/dailySongs")
-    suspend fun getRecommendSong(@Query("cookie") cookie: String = cookie()): ArrayList<RecommendSong>
+    suspend fun getRecommendSong(@Query("cookie") cookie: String = cookie()): List<RecommendSong>
 
     //获取推荐歌单
     @Get("recommend/resource")
     @Path("recommend")
     @FormUrlEncoded
-    suspend fun getRecommendPlaylist(@Query("cookie") cookie: String = cookie()): ArrayList<PlaylistModel>
+    suspend fun getRecommendPlaylist(@Query("cookie") cookie: String = cookie()): List<PlaylistModel>
 
     //歌单广场
     @Get("personalized")
@@ -84,7 +86,7 @@ interface NeteaseCloudMusicApi {
 
     @Get("user/playlist")
     @Path("playlist")
-    suspend fun getUserPlaylist(@Query("uid") uid: String = userId()): ArrayList<UserPlaylist>
+    suspend fun getUserPlaylist(@Query("uid") uid: String = userId()): List<UserPlaylist>
 
     //获取账号信息
     @Post("user/account")
@@ -146,7 +148,7 @@ interface NeteaseCloudMusicApi {
     suspend fun getPlaylistSongs(
         @Query("cookie") cookie: String = cookie(),
         @Query("id") id: String
-    ): ArrayList<PlaylistSong>
+    ): List<PlaylistSong>
 
     @Get("artist/album")
     @Path("hotAlbums")
@@ -188,4 +190,11 @@ interface NeteaseCloudMusicApi {
         @Query("key") key: String,
         @Query("timestamp") timestamp: Long = System.currentTimeMillis()
     ): CheckModel
+
+    @EnableCache(CacheMode.READ)
+    @CacheValidTime(1, TimeUnit.DAYS)
+    suspend fun cache(): NeteaseCloudMusicApi
+
+    @EnableCache(CacheMode.WRITE)
+    suspend fun network(): NeteaseCloudMusicApi
 }
