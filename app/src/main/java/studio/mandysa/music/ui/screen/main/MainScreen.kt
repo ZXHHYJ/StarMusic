@@ -12,7 +12,6 @@ import androidx.compose.material.icons.rounded.Contactless
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.*
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -38,15 +37,16 @@ import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.screen.album.AlbumScreen
 import studio.mandysa.music.ui.screen.browse.BrowseScreen
 import studio.mandysa.music.ui.screen.controller.ControllerScreen
-import studio.mandysa.music.ui.screen.me.AboutScreen
 import studio.mandysa.music.ui.screen.me.MeScreen
-import studio.mandysa.music.ui.screen.me.SettingScreen
+import studio.mandysa.music.ui.screen.me.about.AboutScreen
 import studio.mandysa.music.ui.screen.me.artistsub.ArtistSubScreen
 import studio.mandysa.music.ui.screen.me.menu.MeMenu
+import studio.mandysa.music.ui.screen.me.meplaylist.MePlaylistScreen
+import studio.mandysa.music.ui.screen.me.meplaylist.playlistmenu.PlaylistMenu
+import studio.mandysa.music.ui.screen.me.setting.SettingScreen
 import studio.mandysa.music.ui.screen.message.Message
 import studio.mandysa.music.ui.screen.play.PlayScreen
 import studio.mandysa.music.ui.screen.playlist.PlaylistScreen
-import studio.mandysa.music.ui.screen.playlistmenu.PlaylistMenu
 import studio.mandysa.music.ui.screen.search.SearchScreen
 import studio.mandysa.music.ui.screen.singer.SingerScreen
 import studio.mandysa.music.ui.screen.songmenu.SongMenu
@@ -351,6 +351,13 @@ fun MainScreen() {
                         ScreenDestination.ArtistSub -> {
                             ArtistSubScreen(
                                 mainNavController = navController,
+                                paddingValues = padding
+                            )
+                        }
+                        ScreenDestination.MePlaylist -> {
+                            MePlaylistScreen(
+                                navController,
+                                dialogNavController,
                                 paddingValues = padding
                             )
                         }

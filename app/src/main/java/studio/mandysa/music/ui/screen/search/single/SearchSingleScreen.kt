@@ -28,7 +28,7 @@ fun SearchSingleScreen(
     LazyColumn {
         itemsIndexed(songs) { index, item ->
             SongItem(dialogNavController = dialogNavController, song = item!!) {
-                PlayManager.loadPlaylist(songs.itemSnapshotList, index)
+                PlayManager.play(songs.itemSnapshotList, index)
             }
         }
         item {

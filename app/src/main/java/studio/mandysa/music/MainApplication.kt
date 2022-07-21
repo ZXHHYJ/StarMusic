@@ -7,7 +7,6 @@ import okhttp3.Cache
 import studio.mandysa.fastkt.FastKt
 import studio.mandysa.music.logic.config.BASE_URL
 import studio.mandysa.music.logic.config.noBackup
-import studio.mandysa.music.logic.ktx.playManager
 import studio.mandysa.music.service.MediaPlayService
 import studio.mandysa.music.service.playmanager.PlayManager
 
@@ -28,7 +27,7 @@ class MainApplication : Application() {
 
         PlayManager.init(this)
         //初始化播放管理器
-        playManager {
+        PlayManager.apply {
             //确保播放音乐时播放启动服务
             pauseLiveData()
                 .observeForever {

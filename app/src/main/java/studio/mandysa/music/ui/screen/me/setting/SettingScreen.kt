@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.screen.me
+package studio.mandysa.music.ui.screen.me.setting
 
 import androidx.compose.runtime.Composable
 

@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.screen.me.playlist
+package studio.mandysa.music.ui.screen.me.meplaylist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData

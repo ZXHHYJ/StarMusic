@@ -6,8 +6,8 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material.icons.rounded.Shuffle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.viewModelFactory
 import dev.olshevski.navigation.reimagined.NavController
-import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
@@ -76,15 +75,16 @@ fun PlaylistScreen(
                                 imageVector = Icons.Rounded.PlayArrow,
                                 enabled = songs?.isNotEmpty() ?: false
                             ) {
-                                PlayManager.loadPlaylist(songs!!, 0)
+                                PlayManager.play(songs!!, 0)
                             }
                             Spacer(modifier = Modifier.width(5.dp))
                             MenuItem(
                                 modifier = Modifier.weight(1.0f),
-                                title = stringResource(id = R.string.more),
-                                imageVector = Icons.Rounded.MoreVert
+                                title = stringResource(id = R.string.shuffle_play),
+                                imageVector = Icons.Rounded.Shuffle,
+                                enabled = songs?.isNotEmpty() ?: false
                             ) {
-                                dialogNavController.navigate(DialogDestination.PlaylistMenu(id))
+                                PlayManager.shufflePlay(songs!!, 0)
                             }
                         }
                     }
@@ -95,7 +95,7 @@ fun PlaylistScreen(
                 songs?.let {
                     autoItems(it.size) { pos ->
                         SongItem(dialogNavController, it[pos]) {
-                            PlayManager.loadPlaylist(it, pos)
+                            PlayManager.play(it, pos)
                         }
                     }
                 }

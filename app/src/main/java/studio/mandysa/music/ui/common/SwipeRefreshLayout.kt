@@ -2,10 +2,9 @@ package studio.mandysa.music.ui.common
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewModelScope
 import com.drake.net.exception.NoCacheException
@@ -48,9 +47,15 @@ fun SwipeRefreshLayout(
     }
 
     val isRefreshing by viewModel.isRefreshing.observeAsState(false)
+    var previewed by rememberSaveable {
+        mutableStateOf(false)
+    }
     Box(modifier = modifier) {
         DisposableEffect(key1 = this, effect = {
-            preview()
+            if (!previewed) {
+                preview()
+                previewed = true
+            }
             onDispose { }
         })
         SwipeRefresh(

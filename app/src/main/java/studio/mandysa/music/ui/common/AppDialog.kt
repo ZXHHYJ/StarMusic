@@ -11,7 +11,7 @@ import studio.mandysa.music.ui.theme.dialogBackground
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DialogCard(scope: @Composable () -> Unit) {
+fun AppDialog(scope: @Composable () -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = cornerShape,

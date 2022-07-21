@@ -15,7 +15,7 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.R
 import studio.mandysa.music.logic.ktx.copy
-import studio.mandysa.music.ui.common.DialogCard
+import studio.mandysa.music.ui.common.AppDialog
 import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
@@ -23,7 +23,7 @@ import studio.mandysa.music.ui.theme.textColor
 
 @Composable
 fun Message(dialogNavController: NavController<DialogDestination>, message: String) {
-    DialogCard {
+    AppDialog {
         Column(
             modifier = Modifier
                 .padding(horizontal = horizontalMargin)

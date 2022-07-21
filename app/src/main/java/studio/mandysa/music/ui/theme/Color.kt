@@ -22,6 +22,9 @@ val Blue90 = Color(0xFFDDE0FF)
 val textColor: Color
     @Composable get() = MaterialTheme.colorScheme.onBackground
 
+val remindTextColor: Color
+    @Composable get() = 40.accent1
+
 //灰色
 val textColorLight = Color(0xFF7A7A7A)
 

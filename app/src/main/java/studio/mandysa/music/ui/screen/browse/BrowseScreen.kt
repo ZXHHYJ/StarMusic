@@ -173,7 +173,7 @@ fun BrowseScreen(
             recommendSongs?.let {
                 autoItems(it.size) { index ->
                     SongItem(dialogNavController, it[index]) {
-                        PlayManager.loadPlaylist(it, index)
+                        PlayManager.play(it, index)
                     }
                 }
             }

@@ -26,6 +26,7 @@ import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.common.SwipeRefreshLayout
 import studio.mandysa.music.ui.item.ItemSubTitle
+import studio.mandysa.music.ui.item.ItemSubsTitle
 import studio.mandysa.music.ui.item.ItemTitle
 import studio.mandysa.music.ui.item.PlaylistItem
 import studio.mandysa.music.ui.screen.DialogDestination
@@ -77,7 +78,12 @@ fun MeScreen(
                 }
             }
             item {
-                ItemSubTitle(stringResource(R.string.me_playlist))
+                ItemSubsTitle(
+                    stringResource(R.string.me_playlist),
+                    stringResource(R.string.view_all)
+                ) {
+                    mainNavController.navigate(ScreenDestination.MePlaylist)
+                }
             }
             item {
                 LazyRow(
@@ -102,13 +108,13 @@ fun MeScreen(
                     horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2)
                 ) {
                     // TODO: 播放历史 
-                   /* playHistory?.let { it ->
-                        items(it) {
-                            PlaylistItem(title = it.title, coverUrl = it.coverUrl) {
-                                mainNavController.navigate(ScreenDestination.Playlist(it.album.id))
-                            }
-                        }
-                    }*/
+                    /* playHistory?.let { it ->
+                         items(it) {
+                             PlaylistItem(title = it.title, coverUrl = it.coverUrl) {
+                                 mainNavController.navigate(ScreenDestination.Playlist(it.album.id))
+                             }
+                         }
+                     }*/
                 }
             }
             item {

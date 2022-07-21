@@ -1,4 +1,4 @@
-package studio.mandysa.music.logic.ktx
+package studio.mandysa.music.logic.utils
 
 import kotlin.math.abs
 

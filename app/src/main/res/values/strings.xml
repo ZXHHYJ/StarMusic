@@ -42,6 +42,7 @@
     <string name="add_like">添加到我喜欢</string>
     <string name="remove_like">从我喜欢中移除</string>
     <string name="play_all">播放全部</string>
+    <string name="new_playlist">新建歌单</string>
     <string name="remove_playlist">删除歌单</string>
     <string name="popular_song">热门歌曲</string>
     <string name="singer_album">歌手专辑</string>
@@ -57,4 +58,6 @@
 
     <string name="network_error">你已离线</string>
     <string name="retry">重试</string>
+    <string name="view_all">查看全部</string>
+    <string name="shuffle_play">随机播放</string>
 </resources>

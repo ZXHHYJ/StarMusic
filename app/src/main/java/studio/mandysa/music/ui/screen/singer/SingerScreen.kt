@@ -91,7 +91,7 @@ fun SingerScreen(
             }
             autoItems(songs.size) {
                 SongItem(dialogNavController = dialogNavController, song = songs[it]) {
-                    PlayManager.loadPlaylist(songs, it)
+                    PlayManager.play(songs, it)
                 }
             }
             item {

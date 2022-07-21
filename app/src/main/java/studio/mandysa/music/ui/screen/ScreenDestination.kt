@@ -28,4 +28,7 @@ sealed class ScreenDestination : Parcelable {
 
     @Parcelize
     object ArtistSub : ScreenDestination()
+
+    @Parcelize
+    object MePlaylist : ScreenDestination()
 }

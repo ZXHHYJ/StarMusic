@@ -142,9 +142,19 @@ object PlayManager {
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun loadPlaylist(list: List<*>, index: Int) {
+    fun play(list: List<*>, index: Int) {
         mPlayList.value = list as List<MetaMusic<MetaArtist, MetaAlbum>>
         updateIndex(index)
+    }
+
+    /**
+     * 随机播放
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun shufflePlay(list: List<*>, index: Int) {
+        val mutableList = list as MutableList<MetaMusic<MetaArtist, MetaAlbum>>
+        mutableList.shuffle()
+        play(mutableList, index)
     }
 
     fun seekTo(position: Int) {

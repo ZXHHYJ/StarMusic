@@ -19,7 +19,6 @@ import coil.imageLoader
 import coil.request.ImageRequest
 import kotlinx.coroutines.launch
 import studio.mandysa.music.R
-import studio.mandysa.music.logic.ktx.playManager
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.allArtist
 
@@ -42,7 +41,7 @@ class MediaPlayService : LifecycleService() {
 
     private inner class OnPlayStateReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            playManager {
+            PlayManager.apply {
                 when (intent.extras?.getInt(PlayButtonReceiver.PLAY_BACK_STATE)) {
                     PlaybackState.STATE_PLAYING -> play()
                     PlaybackState.STATE_PAUSED -> pause()
@@ -81,7 +80,7 @@ class MediaPlayService : LifecycleService() {
     }
 
     private fun refreshMediaSession() {
-        playManager {
+        PlayManager.apply {
             mSession.setPlaybackState(
                 PlaybackState.Builder()
                     .setActions(PlaybackState.ACTION_SEEK_TO)
@@ -96,7 +95,7 @@ class MediaPlayService : LifecycleService() {
 
     //监听播放器的状态更新
     private fun initPlayManagerChanged() {
-        playManager {
+        PlayManager.apply {
             changeMusicLiveData().observe(this@MediaPlayService) {
                 mMediaNotification
                     .setContentTitle(it.title)
@@ -172,14 +171,15 @@ class MediaPlayService : LifecycleService() {
         super.onCreate()
         if (!::mNotificationManager.isInitialized) {
             mNotificationManager = getSystemService(NotificationManager::class.java)
-            val notificationChannel = NotificationChannel(
+            val channel = NotificationChannel(
                 CHANNEL_ID,
                 getString(R.string.channel_name),
-                NotificationManager.IMPORTANCE_MIN
+                NotificationManager.IMPORTANCE_LOW
             )
-            notificationChannel.description = getString(R.string.channel_description)
-            notificationChannel.enableVibration(false)
-            mNotificationManager.createNotificationChannel(notificationChannel)
+            channel.description = getString(R.string.channel_description)
+            channel.setShowBadge(false);
+            channel.enableVibration(false)
+            mNotificationManager.createNotificationChannel(channel)
             //通知渠道设置
         }
         mSession = MediaSession(this, packageName).apply {
@@ -187,9 +187,7 @@ class MediaPlayService : LifecycleService() {
             setCallback(object : MediaSession.Callback() {
                 override fun onSeekTo(pos: Long) {
                     super.onSeekTo(pos)
-                    playManager {
-                        seekTo(pos.toInt())
-                    }
+                    PlayManager.seekTo(pos.toInt())
                 }
             })
         }

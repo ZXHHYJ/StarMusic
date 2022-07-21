@@ -25,7 +25,7 @@ import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.service.playmanager.model.MetaMusic
 import studio.mandysa.music.ui.common.AppAsyncImage
-import studio.mandysa.music.ui.common.DialogCard
+import studio.mandysa.music.ui.common.AppDialog
 import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
@@ -45,7 +45,7 @@ fun SongMenu(
     })
 ) {
     val isLike by songMenuViewModel.likedLiveData.observeAsState()
-    DialogCard {
+    AppDialog {
         LazyColumn {
             item {
                 Box(

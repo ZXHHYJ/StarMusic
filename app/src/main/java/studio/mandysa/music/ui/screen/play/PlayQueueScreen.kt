@@ -37,7 +37,7 @@ fun PlayQueueScreen(dialogNavController: NavController<DialogDestination>) {
                 index,
                 model
             ) {
-                PlayManager.loadPlaylist(playlist, index)
+                PlayManager.play(playlist, index)
             }
         }
     }

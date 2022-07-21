@@ -17,7 +17,7 @@ import dev.olshevski.navigation.reimagined.pop
 import dev.olshevski.navigation.reimagined.popAll
 import studio.mandysa.music.R
 import studio.mandysa.music.logic.repository.UserRepository
-import studio.mandysa.music.ui.common.DialogCard
+import studio.mandysa.music.ui.common.AppDialog
 import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
@@ -28,7 +28,7 @@ fun MeMenu(
     mainNavController: NavController<ScreenDestination>,
     dialogNavController: NavController<DialogDestination>
 ) {
-    DialogCard {
+    AppDialog {
         Column(modifier = Modifier.padding(horizontal = horizontalMargin)) {
             Spacer(modifier = Modifier.height(10.dp))
             MenuItem(

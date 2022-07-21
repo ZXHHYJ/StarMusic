@@ -37,7 +37,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import studio.mandysa.music.R
-import studio.mandysa.music.ui.common.DialogCard
+import studio.mandysa.music.ui.common.AppDialog
 import studio.mandysa.music.ui.common.KenBurns
 import studio.mandysa.music.ui.theme.dialogBackground
 import studio.mandysa.music.ui.theme.horizontalMargin
@@ -53,7 +53,7 @@ private fun LoginDialog() {
             dismissOnBackPress = false, dismissOnClickOutside = false
         )
     ) {
-        DialogCard {
+        AppDialog {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
