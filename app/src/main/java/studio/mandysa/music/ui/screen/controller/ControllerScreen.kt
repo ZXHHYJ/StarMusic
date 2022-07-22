@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,6 +25,7 @@ import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.KenBurns
 import studio.mandysa.music.ui.common.PanelState
+import studio.mandysa.music.ui.theme.cornerShape
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.neutralColor
 
@@ -97,10 +99,13 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
                                 modifier = Modifier
                                     .size(controlBarHeight)
                                     .padding(8.dp)
+                                    .clip(cornerShape)
                                     .clickable {
-                                        if (PlayManager.pauseLiveData().value == true)
+                                        if (PlayManager.isPaused()) {
                                             PlayManager.play()
-                                        else PlayManager.pause()
+                                        } else {
+                                            PlayManager.pause()
+                                        }
                                     }
                             )
                             Icon(
@@ -110,6 +115,7 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
                                 modifier = Modifier
                                     .size(controlBarHeight)
                                     .padding(8.dp)
+                                    .clip(cornerShape)
                                     .clickable {
                                         PlayManager.skipToNext()
                                     }

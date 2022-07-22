@@ -1,14 +1,17 @@
 package studio.mandysa.music.ui.screen.play
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -19,7 +22,6 @@ import androidx.lifecycle.map
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.AppAsyncImage
-import studio.mandysa.music.ui.common.RoundIcon
 import studio.mandysa.music.ui.common.SeekBar
 import studio.mandysa.music.ui.theme.isMedium
 import studio.mandysa.music.ui.theme.translucentWhite
@@ -132,7 +134,7 @@ private fun MusicProgressBar() {
 
 @Composable
 private fun MusicControlBar() {
-    val smallButtonSize = if (isMedium) 50.dp else 60.dp
+    val smallButtonSize = if (isMedium) 55.dp else 65.dp
     val middleButtonSize = if (isMedium) 65.dp else 85.dp
 
     Row(
@@ -146,29 +148,39 @@ private fun MusicControlBar() {
         val playPauseState by PlayManager.pauseLiveData().map {
             if (it) R.drawable.ic_play else R.drawable.ic_pause
         }.observeAsState(R.drawable.ic_play)
-        RoundIcon(
-            size = smallButtonSize,
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_previous),
-            tint = Color.White,
-            contentDescription = null
-        ) { PlayManager.skipToPrevious() }
+        Icon(
+            ImageVector.vectorResource(id = R.drawable.ic_skip_previous), null,
+            Modifier
+                .size(smallButtonSize)
+                .clip(RoundedCornerShape(smallButtonSize))
+                .clickable {
+                    PlayManager.skipToPrevious()
+                },
+            tint = Color.White
+        )
         Box(modifier = Modifier.padding(horizontal = 35.dp)) {
-            RoundIcon(
-                size = middleButtonSize,
-                imageVector = ImageVector.vectorResource(id = playPauseState),
-                tint = Color.White,
-                contentDescription = null
-            ) {
-                if (PlayManager.pauseLiveData().value == true)
-                    PlayManager.play()
-                else PlayManager.pause()
-            }
+            Icon(
+                ImageVector.vectorResource(id = playPauseState), null,
+                Modifier
+                    .size(middleButtonSize)
+                    .clip(RoundedCornerShape(middleButtonSize))
+                    .clickable {
+                        if (PlayManager.isPaused())
+                            PlayManager.play()
+                        else PlayManager.pause()
+                    },
+                tint = Color.White
+            )
         }
-        RoundIcon(
-            size = smallButtonSize,
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_next),
-            tint = Color.White,
-            contentDescription = null
-        ) { PlayManager.skipToNext() }
+        Icon(
+            ImageVector.vectorResource(id = R.drawable.ic_skip_next), null,
+            Modifier
+                .size(smallButtonSize)
+                .clip(RoundedCornerShape(smallButtonSize))
+                .clickable {
+                    PlayManager.skipToNext()
+                },
+            tint = Color.White
+        )
     }
 }
