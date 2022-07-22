@@ -54,10 +54,14 @@ class LoginViewModel : ViewModel() {
         try {
             mDialogState.value = true
             viewModelScope.launch {
-                val model = api.phoneLogin(mobilePhone, captcha)
-                if (model.cookie.isNotEmpty()) {
-                    UserRepository.update(model.cookie, model.id)
-                } else {
+                try {
+                    val model = api.phoneLogin(mobilePhone, captcha)
+                    if (model.cookie.isNotEmpty()) {
+                        UserRepository.update(model.cookie, model.id)
+                    } else {
+                        POPWindows.postValue("登录失败")
+                    }
+                } catch (e: Exception) {
                     POPWindows.postValue("登录失败")
                 }
             }

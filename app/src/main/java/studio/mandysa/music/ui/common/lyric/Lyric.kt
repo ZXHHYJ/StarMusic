@@ -1,7 +1,6 @@
 package studio.mandysa.music.ui.common.lyric
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,7 +13,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,10 +48,22 @@ fun Lyric(
             state.animateScrollToItem(position - 2)
         }
     }
-    LazyColumn(modifier = modifier, state = state) {
+    LazyColumn(modifier = modifier
+        .graphicsLayer { alpha = 0.99F }
+        .drawWithContent {
+            val colors = listOf(
+                Color.Transparent, Color.Black, Color.Black, Color.Black, Color.Black,
+                Color.Black, Color.Black, Color.Black, Color.Transparent
+            )
+            drawContent()
+            drawRect(
+                brush = Brush.verticalGradient(colors),
+                blendMode = BlendMode.DstIn
+            )
+        }, state = state) {
         lyrics?.let {
             itemsIndexed(it) { index, model ->
-                Box(
+                Text(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
@@ -58,15 +73,12 @@ fun Lyric(
                         .clip(cornerShape)
                         .clickable {
                             onClick.invoke(model.second)
-                        }
-                ) {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = model.first,
-                        color = if (position == index) Color.White else translucentWhite,
-                        fontSize = 34.sp, fontWeight = FontWeight.Bold
-                    )
-                }
+                        },
+                    text = model.first,
+                    color = if (position == index) Color.White else translucentWhite,
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }

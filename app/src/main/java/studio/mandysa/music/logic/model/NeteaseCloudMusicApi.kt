@@ -183,13 +183,24 @@ interface NeteaseCloudMusicApi {
     @Path("data/qrimg")
     suspend fun getQRImg(@Query("key") key: String, @Query("qrimg") qrimg: Boolean = true): String
 
-    // 二维码检测扫码状态接口
+    //二维码检测扫码状态接口
     //https://neteasecloudmusicapi.vercel.app/#/?id=_3-%e4%ba%8c%e7%bb%b4%e7%a0%81%e6%a3%80%e6%b5%8b%e6%89%ab%e7%a0%81%e7%8a%b6%e6%80%81%e6%8e%a5%e5%8f%a3
     @Get("login/qr/check")
     suspend fun check(
         @Query("key") key: String,
         @Query("timestamp") timestamp: Long = System.currentTimeMillis()
     ): CheckModel
+
+
+    //最近播放-歌曲
+    //https://neteasecloudmusicapi.vercel.app/#/?id=%e6%9c%80%e8%bf%91%e6%92%ad%e6%94%be-%e6%ad%8c%e6%9b%b2
+    @Get("record/recent/song")
+    suspend fun getRecentSongs(@Query("cookie") cookie: String = cookie()): String
+
+    //获取我的数字专辑
+    //https://neteasecloudmusicapi.vercel.app/#/?id=%e6%9c%80%e8%bf%91%e6%92%ad%e6%94%be-%e6%ad%8c%e6%9b%b2
+    @Get("digitalAlbum/purchased")
+    suspend fun getMyDigitalAlbum(@Query("cookie") cookie: String = cookie()): String
 
     @EnableCache(CacheMode.READ)
     @CacheValidTime(1, TimeUnit.DAYS)
