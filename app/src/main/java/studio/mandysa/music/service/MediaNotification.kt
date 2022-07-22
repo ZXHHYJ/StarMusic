@@ -1,81 +1,91 @@
 package studio.mandysa.music.service
 
 import android.app.Notification
-import android.app.Notification.MediaStyle
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
-import android.media.session.MediaSession
-import android.media.session.PlaybackState
 import android.os.Build
-import studio.mandysa.music.MainActivity
+import android.support.v4.media.session.MediaSessionCompat
+import android.support.v4.media.session.PlaybackStateCompat
+import androidx.core.app.NotificationCompat
+import androidx.media.session.MediaButtonReceiver
 import studio.mandysa.music.R
 
-class MediaNotification(context: Context, session: MediaSession, channelId: String) :
-    Notification.Builder(context, channelId) {
-
-    private val mPlayAction = PlayButtonReceiver.buildMediaButtonAction(
-        context,
-        R.drawable.ic_play,
-        PlaybackState.STATE_PLAYING
-    )
-    private val mPauseAction = PlayButtonReceiver.buildMediaButtonAction(
-        context,
-        R.drawable.ic_pause,
-        PlaybackState.STATE_PAUSED
-    )
-    private val mNextAction = PlayButtonReceiver.buildMediaButtonAction(
-        context,
-        R.drawable.ic_skip_next,
-        PlaybackState.STATE_SKIPPING_TO_NEXT
-    )
-    private val mPrevAction = PlayButtonReceiver.buildMediaButtonAction(
-        context,
-        R.drawable.ic_skip_previous,
-        PlaybackState.STATE_SKIPPING_TO_PREVIOUS
-    )
-    private val mStopAction by lazy {
-        PlayButtonReceiver.buildMediaButtonAction(
-            context,
-            R.drawable.ic_round_clear_24,
-            PlaybackState.STATE_STOPPED
-        )
-    }
+class MediaNotification(val context: Context, mediaSessionCompat: MediaSessionCompat, channelId: String) :
+    NotificationCompat.Builder(context, channelId) {
 
     fun setAction(playing: Boolean): MediaNotification {
-        if (mAndroid12) {
-            setActions(
-                mPrevAction,
-                if (!playing) mPlayAction else mPauseAction,
-                mNextAction,
-                mStopAction
+        clearActions()
+        addAction(
+            NotificationCompat.Action(
+                R.drawable.ic_skip_previous,
+                "test",
+                MediaButtonReceiver.buildMediaButtonPendingIntent(
+                    context,
+                    PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
+                )
             )
-        } else setActions(mPrevAction, if (!playing) mPlayAction else mPauseAction, mNextAction)
+        )
+        addAction(
+            NotificationCompat.Action(
+                if (playing) R.drawable.ic_pause else R.drawable.ic_play,
+                "test",
+                MediaButtonReceiver.buildMediaButtonPendingIntent(
+                    context,
+                    PlaybackStateCompat.ACTION_PLAY_PAUSE
+                )
+            )
+        )
+        addAction(
+            NotificationCompat.Action(
+                R.drawable.ic_skip_next,
+                "test",
+                MediaButtonReceiver.buildMediaButtonPendingIntent(
+                    context,
+                    PlaybackStateCompat.ACTION_SKIP_TO_NEXT
+                )
+            )
+        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            addAction(
+                NotificationCompat.Action(
+                    R.drawable.ic_round_clear_24,
+                    "test",
+                    MediaButtonReceiver.buildMediaButtonPendingIntent(
+                        context,
+                        PlaybackStateCompat.ACTION_STOP
+                    )
+                )
+            )
+        }
         return this
     }
-
-    private val mAndroid12 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 
     init {
         setShowWhen(false)
         setAction(false)
-        setContentIntent(
-            PendingIntent.getActivity(
-                context,
-                0,
-                Intent(context, MainActivity::class.java),
-                PendingIntent.FLAG_IMMUTABLE
-            )
-        )
-        setDeleteIntent(PlayButtonReceiver.buildDeleteIntent(context))
         setCategory(Notification.CATEGORY_SERVICE)
         setSmallIcon(R.drawable.ic_launcher_foreground)
-        style = if (mAndroid12) {
-            MediaStyle().setShowActionsInCompactView(0, 1, 2, 3)
-                .setMediaSession(session.sessionToken)
-        } else {
-            MediaStyle().setShowActionsInCompactView(0, 1, 2)
-                .setMediaSession(session.sessionToken)
-        }
+            .setStyle(
+                androidx.media.app.NotificationCompat.MediaStyle()
+                    .setShowCancelButton(true)
+                    .setCancelButtonIntent(
+                        MediaButtonReceiver.buildMediaButtonPendingIntent(
+                            context,
+                            PlaybackStateCompat.ACTION_STOP
+                        )
+                    )
+                    .setShowActionsInCompactView(0, 1, 2, 3)
+                    .setMediaSession(mediaSessionCompat.sessionToken)
+            )
+        // Enable launching the player by clicking the notification
+        setContentIntent(mediaSessionCompat.controller.sessionActivity)
+        // Stop the service when the notification is swiped away
+        setDeleteIntent(
+            MediaButtonReceiver.buildMediaButtonPendingIntent(
+                context,
+                PlaybackStateCompat.ACTION_STOP
+            )
+        )
+        // Make the transport controls visible on the lockscreen
+        setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
     }
 }

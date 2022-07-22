@@ -43,6 +43,7 @@
     <string name="remove_like">从我喜欢中移除</string>
     <string name="play_all">播放全部</string>
     <string name="new_playlist">新建歌单</string>
+    <string name="edit_playlist">编辑歌单</string>
     <string name="remove_playlist">删除歌单</string>
     <string name="popular_song">热门歌曲</string>
     <string name="singer_album">歌手专辑</string>

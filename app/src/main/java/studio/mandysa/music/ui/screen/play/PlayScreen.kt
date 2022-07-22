@@ -124,7 +124,7 @@ fun PlayScreen(
                     PlayScreenDestination.PlayQueue
                 ).forEach { screen ->
                     val selected = screen == lastDestination
-                    BottomNavigationItem(modifier = Modifier.clip( RoundedCornerShape(round)),
+                    BottomNavigationItem(modifier = Modifier.clip(cornerShape),
                         icon = {
                             Icon(
                                 screen.tabIcon,

@@ -129,6 +129,10 @@ object PlayManager {
         return mChangeMusic
     }
 
+    fun isPaused(): Boolean {
+        return pauseLiveData().value!!
+    }
+
     fun pauseLiveData(): LiveData<Boolean> {
         return mPause
     }

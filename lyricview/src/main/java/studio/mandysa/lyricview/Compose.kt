@@ -1,2 +1,0 @@
-package studio.mandysa.lyricview
-

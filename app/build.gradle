@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "studio.mandysa.music"
-        minSdk 26
+        minSdk 23
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -61,6 +61,9 @@ dependencies {
     // 持久化 https://gitee.com/ZXHHYJ/FastKt
     implementation 'com.gitee.ZXHHYJ:FastKt:1.1.0'
 
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.media:media:1.6.0'
+
     //noinspection GradleDependency
     implementation "com.squareup.okhttp3:okhttp:4.10.0"
 
@@ -68,7 +71,7 @@ dependencies {
 
     implementation "androidx.paging:paging-compose:1.0.0-alpha15"
 
-    implementation "dev.olshevski.navigation:reimagined:1.1.0"
+    implementation "dev.olshevski.navigation:reimagined:1.1.1"
 
     implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
