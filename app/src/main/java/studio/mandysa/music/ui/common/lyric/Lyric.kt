@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Text
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -60,7 +60,8 @@ fun Lyric(
                 brush = Brush.verticalGradient(colors),
                 blendMode = BlendMode.DstIn
             )
-        }, state = state) {
+        }, state = state
+    ) {
         lyrics?.let {
             itemsIndexed(it) { index, model ->
                 Text(
@@ -76,7 +77,7 @@ fun Lyric(
                         },
                     text = model.first,
                     color = if (position == index) Color.White else translucentWhite,
-                    fontSize = 32.sp,
+                    fontSize = 34.sp,
                     fontWeight = FontWeight.Bold
                 )
             }

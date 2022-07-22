@@ -36,9 +36,11 @@ class LyricViewModel : ViewModel() {
                 val data = s.replace("[", "").split("]")
                 for (i in 0 until data.size - 1) {
                     try {
-                        if (data[data.size - 1].trim().isEmpty())
-                            continue
-                        list.add(Pair(data[data.size - 1].trim(), timeStr(data[i])))
+                        data[data.size - 1].trim().let {
+                            if (it.isNotEmpty()) {
+                                list.add(data[data.size - 1].trim() to timeStr(data[i]))
+                            }
+                        }
                     } catch (e: Exception) {
                     }
                 }
