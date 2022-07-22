@@ -137,10 +137,11 @@ object PlayManager {
         return mPause
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun addNextPlay(model: MetaMusic<*, *>) {
-        val list = mPlayList.value?.toMutableList()
+        val list = mPlayList.value as ArrayList<MetaMusic<MetaArtist, MetaAlbum>>?
         list?.let {
-            list.add(mIndex.value!! + 1, model)
+            list.add(mIndex.value!! + 1, model as MetaMusic<MetaArtist, MetaAlbum>)
             mPlayList.value = it
         }
     }
@@ -156,7 +157,7 @@ object PlayManager {
      */
     @Suppress("UNCHECKED_CAST")
     fun shufflePlay(list: List<*>, index: Int) {
-        val mutableList = list as MutableList<MetaMusic<MetaArtist, MetaAlbum>>
+        val mutableList = (list as MutableList<MetaMusic<MetaArtist, MetaAlbum>>).toMutableList()
         mutableList.shuffle()
         play(mutableList, index)
     }
