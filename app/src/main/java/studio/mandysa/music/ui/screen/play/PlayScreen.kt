@@ -81,7 +81,10 @@ fun PlayScreen(
                     modifier = Modifier
                         .width(40.dp)
                         .height(5.dp)
-                        .background(shape = RoundedCornerShape(5.dp), color = translucentWhite)
+                        .background(
+                            shape = RoundedCornerShape(5.dp),
+                            color = translucentWhiteFixBug
+                        )
                 )
             }
             Box(

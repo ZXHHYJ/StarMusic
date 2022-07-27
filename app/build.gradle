@@ -59,7 +59,7 @@ dependencies {
     // 网络请求库 https://gitee.com/ZXHHYJ/anna
     implementation 'com.gitee.ZXHHYJ:anna:3.0.0'
     // 持久化 https://gitee.com/ZXHHYJ/FastKt
-    implementation 'com.gitee.ZXHHYJ:FastKt:1.1.0'
+    implementation 'com.gitee.ZXHHYJ:FastKt:1.2.0'
 
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.media:media:1.6.0'

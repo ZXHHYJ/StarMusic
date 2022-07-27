@@ -148,7 +148,7 @@ interface NeteaseCloudMusicApi {
     suspend fun getPlaylistSongs(
         @Query("cookie") cookie: String = cookie(),
         @Query("id") id: String
-    ): List<PlaylistSong>
+    ): ArrayList<PlaylistSong>
 
     @Get("artist/album")
     @Path("hotAlbums")
@@ -191,20 +191,25 @@ interface NeteaseCloudMusicApi {
         @Query("timestamp") timestamp: Long = System.currentTimeMillis()
     ): CheckModel
 
-
     //最近播放-歌曲
     //https://neteasecloudmusicapi.vercel.app/#/?id=%e6%9c%80%e8%bf%91%e6%92%ad%e6%94%be-%e6%ad%8c%e6%9b%b2
     @Get("record/recent/song")
+    @Path("data/list")
     suspend fun getRecentSongs(@Query("cookie") cookie: String = cookie()): String
 
     //获取我的数字专辑
     //https://neteasecloudmusicapi.vercel.app/#/?id=%e6%9c%80%e8%bf%91%e6%92%ad%e6%94%be-%e6%ad%8c%e6%9b%b2
     @Get("digitalAlbum/purchased")
-    suspend fun getMyDigitalAlbum(@Query("cookie") cookie: String = cookie()): String
+    @Path("paidAlbums")
+    suspend fun getMyDigitalAlbum(@Query("cookie") cookie: String = cookie()): List<MyDigitalAlbum>
 
     @EnableCache(CacheMode.READ)
-    @CacheValidTime(1, TimeUnit.DAYS)
-    suspend fun cache(): NeteaseCloudMusicApi
+    @CacheValidTime(1, TimeUnit.HOURS)
+    suspend fun shortCache(): NeteaseCloudMusicApi
+
+    @EnableCache(CacheMode.READ)
+    @CacheValidTime(7, TimeUnit.DAYS)
+    suspend fun longCache(): NeteaseCloudMusicApi
 
     @EnableCache(CacheMode.WRITE)
     suspend fun network(): NeteaseCloudMusicApi

@@ -42,7 +42,7 @@ fun PlaylistScreen(
         addInitializer(PlaylistViewModel::class) { return@addInitializer PlaylistViewModel(id) }
     })
 ) {
-    val playlistInfo by playlistViewModel.playlistInfoModelLiveData.observeAsState()
+    val playlistInfo by playlistViewModel.infoModelLiveData.observeAsState()
     val songs by playlistViewModel.songsLiveData.observeAsState()
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(

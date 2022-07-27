@@ -27,10 +27,10 @@ class BrowseViewModel : SwipeRefreshViewModel() {
     val playlistSquareLiveData: LiveData<List<PlaylistModel>> = mPlaylistSquareLiveData
 
     override suspend fun preview() {
-        mBannersLiveData.value = api.cache().getBannerList()
-        mRecommendSongLiveData.value = api.cache().getRecommendSong()
-        mRecommendPlaylistLiveData.value = api.cache().getRecommendPlaylist()
-        mPlaylistSquareLiveData.value = api.cache().getPlaylistSquare()
+        mBannersLiveData.value = api.shortCache().getBannerList()
+        mRecommendSongLiveData.value = api.shortCache().getRecommendSong()
+        mRecommendPlaylistLiveData.value = api.shortCache().getRecommendPlaylist()
+        mPlaylistSquareLiveData.value = api.shortCache().getPlaylistSquare()
     }
 
     override suspend fun refresh() {

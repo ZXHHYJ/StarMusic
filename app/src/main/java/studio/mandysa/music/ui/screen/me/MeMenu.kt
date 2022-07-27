@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.screen.me.menu
+package studio.mandysa.music.ui.screen.me
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

@@ -7,8 +7,11 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.map
 import com.drake.net.exception.HttpFailureException
 import com.drake.net.exception.NoCacheException
+import studio.mandysa.music.R
 import studio.mandysa.music.logic.config.api
+import studio.mandysa.music.logic.config.mainApplication
 import studio.mandysa.music.service.playmanager.PlayManager
+import studio.mandysa.music.ui.common.POPWindows
 import studio.mandysa.music.ui.common.lyric.Lyric
 
 @Composable
@@ -21,11 +24,12 @@ fun LyricScreen() {
     LaunchedEffect(musicId) {
         musicId?.let {
             try {
-                lyric = api.cache().getLyric(it)
+                lyric = api.shortCache().getLyric(it)
             } catch (e: NoCacheException) {
                 lyric = api.network().getLyric(it)
             } catch (e: HttpFailureException) {
-
+                POPWindows.postValue(mainApplication.getString(R.string.network_error))
+            } catch (e: Exception) {
             }
         }
     }

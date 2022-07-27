@@ -3,6 +3,7 @@ package studio.mandysa.music.ui.screen.me
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import studio.mandysa.music.logic.config.api
+import studio.mandysa.music.logic.model.MyDigitalAlbum
 import studio.mandysa.music.logic.model.UserModel
 import studio.mandysa.music.logic.model.UserPlaylist
 import studio.mandysa.music.ui.common.SwipeRefreshViewModel
@@ -13,18 +14,25 @@ class MeViewModel : SwipeRefreshViewModel() {
 
     val userInfoLiveData: LiveData<UserModel> = mUserInfoLiveData
 
-    private val mAllPlaylistLiveData = MutableLiveData<List<UserPlaylist>>()
+    private val mUserPlaylistLiveData = MutableLiveData<List<UserPlaylist>>()
 
-    val allPlaylistLiveData: LiveData<List<UserPlaylist>> = mAllPlaylistLiveData
+    val userPlaylistLiveData: LiveData<List<UserPlaylist>> = mUserPlaylistLiveData
+
+    private val mMyDigitalAlbumsLiveData = MutableLiveData<List<MyDigitalAlbum>>()
+
+    val myDigitalAlbumsLiveData: LiveData<List<MyDigitalAlbum>> = mMyDigitalAlbumsLiveData
 
     override suspend fun preview() {
-        mUserInfoLiveData.value = api.cache().getUserInfo()
-        mAllPlaylistLiveData.value = api.cache().getUserPlaylist()
+        isRefreshing.value = true
+        refresh()
+        isRefreshing.value = false
     }
 
     override suspend fun refresh() {
         mUserInfoLiveData.value = api.network().getUserInfo()
-        mAllPlaylistLiveData.value = api.network().getUserPlaylist()
+        mUserPlaylistLiveData.value = api.network().getUserPlaylist()
+        mMyDigitalAlbumsLiveData.value = api.network().getMyDigitalAlbum()
+        println(api.network().getRecentSongs())
     }
 
 }

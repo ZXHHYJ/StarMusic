@@ -105,8 +105,6 @@ fun AlbumScreen(
                 AppDivider()
             }
             albumInfo?.company?.let {
-                if (it.isEmpty())
-                    return@let
                 item {
                     Text(
                         modifier = Modifier.padding(horizontal = horizontalMargin),

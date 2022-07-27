@@ -43,7 +43,8 @@ fun MeScreen(
     meViewModel: MeViewModel = viewModel()
 ) {
     val userInfo by meViewModel.userInfoLiveData.observeAsState()
-    val playlist by meViewModel.allPlaylistLiveData.observeAsState()
+    val userPlaylists by meViewModel.userPlaylistLiveData.observeAsState()
+    val myDigitalAlbums by meViewModel.myDigitalAlbumsLiveData.observeAsState()
     //val playHistory by PlayHistoryRepository.playHistoryLiveData.observeAsState()
     SwipeRefreshLayout(viewModel = meViewModel) {
         LazyColumn {
@@ -90,7 +91,7 @@ fun MeScreen(
                     contentPadding = PaddingValues(horizontal = horizontalMargin),
                     horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2)
                 ) {
-                    playlist?.let { it ->
+                    userPlaylists?.let { it ->
                         items(it) {
                             PlaylistItem(title = it.name, coverUrl = it.coverImgUrl) {
                                 mainNavController.navigate(ScreenDestination.Playlist(it.id))
@@ -115,6 +116,23 @@ fun MeScreen(
                              }
                          }
                      }*/
+                }
+            }
+            item {
+                ItemSubTitle(stringResource(R.string.my_digital_album))
+            }
+            item {
+                LazyRow(
+                    contentPadding = PaddingValues(horizontal = horizontalMargin),
+                    horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2)
+                ) {
+                    myDigitalAlbums?.let { it ->
+                        items(it) {
+                            PlaylistItem(title = it.albumName, coverUrl = it.cover) {
+                                mainNavController.navigate(ScreenDestination.Album(it.albumId))
+                            }
+                        }
+                    }
                 }
             }
             item {

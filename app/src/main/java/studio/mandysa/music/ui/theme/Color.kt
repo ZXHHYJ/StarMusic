@@ -31,6 +31,11 @@ val textColorLight = Color(0xFF7A7A7A)
 //半透明白色
 val translucentWhite = Color(0x80FFFFFF)
 
+/**
+ * [translucentWhite]透明无效果时使用
+ */
+val translucentWhiteFixBug = Color(0x33FFFFFF)
+
 val onBackground: Color
     @Composable get() = MaterialTheme.colorScheme.onBackground
 

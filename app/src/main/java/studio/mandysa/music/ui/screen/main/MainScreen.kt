@@ -12,12 +12,9 @@ import androidx.compose.material.icons.rounded.Contactless
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -35,12 +32,11 @@ import studio.mandysa.music.ui.common.SlidingPanel
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.screen.album.AlbumScreen
-import studio.mandysa.music.ui.screen.browse.BrowseScreen
 import studio.mandysa.music.ui.screen.controller.ControllerScreen
-import studio.mandysa.music.ui.screen.me.MeScreen
+import studio.mandysa.music.ui.screen.home.HomeScreen
 import studio.mandysa.music.ui.screen.me.about.AboutScreen
 import studio.mandysa.music.ui.screen.me.artistsub.ArtistSubScreen
-import studio.mandysa.music.ui.screen.me.menu.MeMenu
+import studio.mandysa.music.ui.screen.me.MeMenu
 import studio.mandysa.music.ui.screen.me.meplaylist.MePlaylistScreen
 import studio.mandysa.music.ui.screen.me.meplaylist.playlistmenu.PlaylistMenu
 import studio.mandysa.music.ui.screen.me.setting.SettingScreen
@@ -58,21 +54,21 @@ import studio.mandysa.music.ui.theme.neutralColor
 /**
  * Happy 22nd Birthday Shuangshengzi
  */
-enum class BottomNavigationDestination {
+enum class HomeBottomNavigationDestination {
     Browse,
     Me,
 }
 
-val BottomNavigationDestination.tabIcon
+val HomeBottomNavigationDestination.tabIcon
     get() = when (this) {
-        BottomNavigationDestination.Browse -> Icons.Rounded.Contactless
-        BottomNavigationDestination.Me -> Icons.Rounded.Person
+        HomeBottomNavigationDestination.Browse -> Icons.Rounded.Contactless
+        HomeBottomNavigationDestination.Me -> Icons.Rounded.Person
     }
 
-val BottomNavigationDestination.tabName
+val HomeBottomNavigationDestination.tabName
     @Composable get() = when (this) {
-        BottomNavigationDestination.Browse -> stringResource(id = R.string.browse)
-        BottomNavigationDestination.Me -> stringResource(id = R.string.me)
+        HomeBottomNavigationDestination.Browse -> stringResource(id = R.string.browse)
+        HomeBottomNavigationDestination.Me -> stringResource(id = R.string.me)
     }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -121,11 +117,11 @@ fun AppNavigationDrawer(
 @Composable
 fun MainScreen() {
 
-    val navController =
+    val mainNavController =
         rememberNavController<ScreenDestination>(startDestination = ScreenDestination.Main)
 
-    val bottomNavController =
-        rememberNavController(startDestination = BottomNavigationDestination.Browse)
+    val homeNavController =
+        rememberNavController(startDestination = HomeBottomNavigationDestination.Browse)
 
     val dialogNavController = rememberNavController<DialogDestination>(
         initialBackstack = emptyList()
@@ -141,16 +137,16 @@ fun MainScreen() {
         ) {
             when (destination) {
                 is DialogDestination.SongMenu -> {
-                    SongMenu(navController, dialogNavController, model = destination.model)
+                    SongMenu(mainNavController, dialogNavController, model = destination.model)
                 }
                 is DialogDestination.PlaylistMenu -> {
-                    PlaylistMenu(navController, dialogNavController, id = destination.id)
+                    PlaylistMenu(mainNavController, dialogNavController, id = destination.id)
                 }
                 is DialogDestination.Message -> {
                     Message(dialogNavController, message = destination.message)
                 }
                 is DialogDestination.MeMenu -> {
-                    MeMenu(navController, dialogNavController)
+                    MeMenu(mainNavController, dialogNavController)
                 }
             }
         }
@@ -179,10 +175,10 @@ fun MainScreen() {
                             .fillMaxHeight()
                     ) {
                         val navLastDestination =
-                            navController.backstack.entries.last().destination
+                            mainNavController.backstack.entries.last().destination
                         val bottomLastDestination =
-                            bottomNavController.backstack.entries.last().destination
-                        BottomNavigationDestination.values().forEach { screen ->
+                            homeNavController.backstack.entries.last().destination
+                        HomeBottomNavigationDestination.values().forEach { screen ->
                             NavigationRailItem(
                                 label = {
                                     Text(text = screen.tabName)
@@ -196,11 +192,11 @@ fun MainScreen() {
                                 alwaysShowLabel = true,
                                 selected = screen == bottomLastDestination,
                                 onClick = {
-                                    navController.popUpTo {
+                                    mainNavController.popUpTo {
                                         it == ScreenDestination.Main
                                     }
-                                    if (!bottomNavController.moveToTop { it == screen }) {
-                                        bottomNavController.navigate(screen)
+                                    if (!homeNavController.moveToTop { it == screen }) {
+                                        homeNavController.navigate(screen)
                                     }
                                 }
                             )
@@ -221,8 +217,8 @@ fun MainScreen() {
                                     alwaysShowLabel = true,
                                     selected = navLastDestination == screen,
                                     onClick = {
-                                        if (!navController.moveToTop { it == screen }) {
-                                            navController.navigate(screen)
+                                        if (!mainNavController.moveToTop { it == screen }) {
+                                            mainNavController.navigate(screen)
                                         }
                                     }
                                 )
@@ -250,7 +246,7 @@ fun MainScreen() {
                 },
                 bottomBar = {
                     AnimatedVisibility(
-                        visible = navController.backstack.entries.size <= 1,
+                        visible = mainNavController.backstack.entries.size <= 1,
                         enter = expandVertically(),
                         exit = shrinkVertically()
                     ) {
@@ -262,8 +258,8 @@ fun MainScreen() {
                             contentColor = Color.White
                         ) {
                             val bottomLastDestination =
-                                bottomNavController.backstack.entries.last().destination
-                            BottomNavigationDestination.values().forEach { screen ->
+                                homeNavController.backstack.entries.last().destination
+                            HomeBottomNavigationDestination.values().forEach { screen ->
                                 NavigationBarItem(
                                     icon = {
                                         Icon(
@@ -275,8 +271,8 @@ fun MainScreen() {
                                     ),
                                     selected = screen == bottomLastDestination,
                                     onClick = {
-                                        if (!bottomNavController.moveToTop { it == screen }) {
-                                            bottomNavController.navigate(screen)
+                                        if (!homeNavController.moveToTop { it == screen }) {
+                                            homeNavController.navigate(screen)
                                         }
                                     }
                                 )
@@ -286,58 +282,52 @@ fun MainScreen() {
                 }
             ) { padding ->
                 if (panelState != PanelState.EXPANDED) {
-                    NavBackHandler(navController)
-                    //面板展开时不再处理这里的导航
+                    NavBackHandler(mainNavController)
+                    //面板展开时返回事件不再分发到这里
                 }
-                NavHost(navController) { screenDestination ->
+                //避免导航时面板处于展开状态
+                LaunchedEffect(key1 = mainNavController.backstack) {
+                    if (panelState == PanelState.EXPANDED) {
+                        it.invoke(PanelState.COLLAPSED)
+                    }
+                }
+                NavHost(mainNavController) { screenDestination ->
                     when (screenDestination) {
                         ScreenDestination.Main -> {
-                            NavHost(bottomNavController) {
-                                when (it) {
-                                    BottomNavigationDestination.Browse -> {
-                                        BrowseScreen(
-                                            navController,
-                                            dialogNavController,
-                                            paddingValues = padding
-                                        )
-                                    }
-                                    BottomNavigationDestination.Me -> {
-                                        MeScreen(
-                                            navController,
-                                            dialogNavController,
-                                            paddingValues = padding
-                                        )
-                                    }
-                                }
-                            }
+                            HomeScreen(
+                                bottomNavController = homeNavController,
+                                mainNavController = mainNavController,
+                                dialogNavController = dialogNavController,
+                                paddingValues = padding
+                            )
                         }
                         ScreenDestination.Search -> {
                             SearchScreen(
-                                navController,
-                                dialogNavController,
+                                mainNavController = mainNavController,
+                                dialogNavController = dialogNavController,
                                 paddingValues = padding
                             )
                         }
                         is ScreenDestination.Playlist -> {
                             PlaylistScreen(
-                                navController,
-                                dialogNavController,
+                                mainNavController = mainNavController,
+                                dialogNavController = dialogNavController,
                                 paddingValues = padding,
                                 id = screenDestination.id
                             )
                         }
                         is ScreenDestination.Singer -> {
                             SingerScreen(
-                                navController,
-                                dialogNavController,
+                                mainNavController = mainNavController,
+                                dialogNavController = dialogNavController,
                                 paddingValues = padding,
                                 id = screenDestination.id
                             )
                         }
                         is ScreenDestination.Album -> {
                             AlbumScreen(
-                                navController,
-                                dialogNavController,
+                                mainNavController = mainNavController,
+                                dialogNavController = dialogNavController,
                                 paddingValues = padding,
                                 id = screenDestination.id
                             )
@@ -350,14 +340,14 @@ fun MainScreen() {
                         }
                         ScreenDestination.ArtistSub -> {
                             ArtistSubScreen(
-                                mainNavController = navController,
+                                mainNavController = mainNavController,
                                 paddingValues = padding
                             )
                         }
                         ScreenDestination.MePlaylist -> {
                             MePlaylistScreen(
-                                navController,
-                                dialogNavController,
+                                mainNavController = mainNavController,
+                                dialogNavController = dialogNavController,
                                 paddingValues = padding
                             )
                         }
@@ -367,7 +357,7 @@ fun MainScreen() {
         })
     {
         PlayScreen(
-            mainNavController = navController,
+            mainNavController = mainNavController,
             dialogNavController = dialogNavController,
             panelState = panelState,
             it

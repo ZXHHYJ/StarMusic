@@ -7,11 +7,14 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewModelScope
+import com.drake.net.exception.HttpFailureException
 import com.drake.net.exception.NoCacheException
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
+import studio.mandysa.music.R
+import studio.mandysa.music.logic.config.mainApplication
 
 @Composable
 fun SwipeRefreshLayout(
@@ -27,6 +30,8 @@ fun SwipeRefreshLayout(
                 viewModel.refresh()
                 viewModel.isRefreshing.value = false
             } catch (e: CancellationException) {
+            } catch (e: HttpFailureException) {
+                POPWindows.postValue(mainApplication.getString(R.string.network_error))
             } catch (e: Exception) {
                 POPWindows.postValue(e.message.toString())
             }
@@ -41,7 +46,7 @@ fun SwipeRefreshLayout(
             } catch (e: NoCacheException) {
                 refresh()
             } catch (e: Exception) {
-                POPWindows.postValue(e.message.toString())
+
             }
         }
     }

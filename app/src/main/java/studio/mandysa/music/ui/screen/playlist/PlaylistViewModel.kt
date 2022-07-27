@@ -1,29 +1,30 @@
 package studio.mandysa.music.ui.screen.playlist
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import studio.mandysa.music.logic.config.api
 import studio.mandysa.music.logic.model.PlaylistInfoModel
 import studio.mandysa.music.logic.model.PlaylistSong
+import studio.mandysa.music.logic.repository.PlaylistRepository.Companion.playlistRepository
 import studio.mandysa.music.ui.common.SwipeRefreshViewModel
 
 class PlaylistViewModel(private val id: String) : SwipeRefreshViewModel() {
-    private val mSongsLiveData = MutableLiveData<List<PlaylistSong>>()
+    private val mRepository = playlistRepository(id)
 
-    val songsLiveData: LiveData<List<PlaylistSong>> = mSongsLiveData
+    val songsLiveData: LiveData<ArrayList<PlaylistSong>> = mRepository.songsLiveData
 
-    private val mPlaylistInfoModelLiveData = MutableLiveData<PlaylistInfoModel>()
-
-    val playlistInfoModelLiveData: LiveData<PlaylistInfoModel> = mPlaylistInfoModelLiveData
+    val infoModelLiveData: LiveData<PlaylistInfoModel> = mRepository.infoLiveData
 
     override suspend fun preview() {
-        mPlaylistInfoModelLiveData.value = api.cache().getSongListInfo(id = id)
-        mSongsLiveData.value = api.cache().getPlaylistSongs(id = id)
+        if (songsLiveData.value == null || infoModelLiveData.value == null) {
+            isRefreshing.value = true
+            refresh()
+            isRefreshing.value = true
+        }
     }
 
     override suspend fun refresh() {
-        mPlaylistInfoModelLiveData.value = api.network().getSongListInfo(id = id)
-        mSongsLiveData.value = api.network().getPlaylistSongs(id = id)
+        mRepository.infoLiveData.value = api.network().getSongListInfo(id = id)
+        mRepository.songsLiveData.value = api.network().getPlaylistSongs(id = id)
     }
 
 }

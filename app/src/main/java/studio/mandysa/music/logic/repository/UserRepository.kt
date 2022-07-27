@@ -3,17 +3,17 @@ package studio.mandysa.music.logic.repository
 import androidx.lifecycle.LiveData
 import studio.mandysa.fastkt.serial
 import studio.mandysa.fastkt.serialLiveData
-import studio.mandysa.music.logic.config.noBackup
+import studio.mandysa.music.logic.config.noBackupFastKt
 
 object UserRepository {
 
-    private var mUserId by serial<String?>(key = "userid", def = null, noBackup)
+    private var mUserId by serial<String?>(key = "userid", def = null, noBackupFastKt)
 
-    private val mCookieLiveData by serialLiveData<String?>(key = "cookie", def = null, noBackup)
+    private val mCookieLiveData by serialLiveData<String?>(key = "cookie", def = null, noBackupFastKt)
 
     var isLoginLiveData: LiveData<String?> = mCookieLiveData
 
-    fun update(cookie: String, userId: String) {
+    fun login(cookie: String, userId: String) {
         mUserId = userId
         mCookieLiveData.postValue(cookie)
     }

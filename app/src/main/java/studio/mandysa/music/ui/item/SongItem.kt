@@ -49,14 +49,16 @@ fun SongItem(
             Text(
                 text = song.title,
                 color = textColor,
-                fontSize = 15.sp, maxLines = 1,
+                fontSize = 15.sp,
+                maxLines = 1,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.weight(1.0f))
             Text(
                 text = song.artist.allArtist(),
                 color = textColorLight,
-                fontSize = 13.sp, maxLines = 1,
+                fontSize = 13.sp,
+                maxLines = 1,
                 textAlign = TextAlign.Center
             )
         }

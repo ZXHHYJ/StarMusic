@@ -1,10 +1,13 @@
 package studio.mandysa.music.ui.screen.play
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,6 +28,7 @@ import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.SeekBar
 import studio.mandysa.music.ui.theme.isMedium
 import studio.mandysa.music.ui.theme.translucentWhite
+import studio.mandysa.music.ui.theme.translucentWhiteFixBug
 import studio.mandysa.music.ui.theme.verticalMargin
 
 @Composable
@@ -72,29 +76,47 @@ private fun AlbumCover() {
 
 @Composable
 private fun TitleAndArtist() {
-    Column(
+    Row(
         modifier = Modifier
             .widthIn(max = maxWidth)
             .fillMaxWidth()
-            .padding(vertical = verticalMargin),
-        horizontalAlignment = Alignment.Start
+            .padding(vertical = verticalMargin), verticalAlignment = Alignment.CenterVertically
     ) {
-        val title by PlayManager.changeMusicLiveData().map { return@map it.title }
-            .observeAsState("")
-        val musician by PlayManager.changeMusicLiveData().map {
-            it.artist[0].name
-        }.observeAsState("")
-        Text(
-            text = title,
-            color = Color.White,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(modifier = Modifier.padding(top = 2.dp))
-        Text(
-            text = musician,
-            color = translucentWhite,
-            fontSize = 16.sp
+        Column(
+            modifier = Modifier
+                .weight(1.0f),
+            horizontalAlignment = Alignment.Start
+        ) {
+            val title by PlayManager.changeMusicLiveData().map { return@map it.title }
+                .observeAsState("")
+            val musician by PlayManager.changeMusicLiveData().map {
+                it.artist[0].name
+            }.observeAsState("")
+            Text(
+                text = title,
+                color = Color.White,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1
+            )
+            Spacer(modifier = Modifier.padding(top = 2.dp))
+            Text(
+                text = musician,
+                color = translucentWhite,
+                fontSize = 16.sp,
+                maxLines = 1
+            )
+        }
+        Icon(
+            Icons.Rounded.MoreVert, null,
+            Modifier
+                .size(32.dp)
+                .clip(RoundedCornerShape(32.dp))
+                .background(translucentWhiteFixBug)
+                .clickable {
+
+                },
+            tint = Color.White
         )
     }
 }

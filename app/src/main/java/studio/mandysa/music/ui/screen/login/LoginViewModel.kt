@@ -5,10 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.drake.net.exception.HttpFailureException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import studio.mandysa.music.R
 import studio.mandysa.music.logic.config.api
+import studio.mandysa.music.logic.config.mainApplication
 import studio.mandysa.music.logic.repository.UserRepository
 import studio.mandysa.music.ui.common.POPWindows
 
@@ -23,9 +26,9 @@ class LoginViewModel : ViewModel() {
     val sendCaptchaSecond: LiveData<Int> = mSendCaptchaSecond
 
     fun sendCaptcha(mobilePhone: String) {
-        try {
-            mDialogState.value = true
-            viewModelScope.launch {
+        viewModelScope.launch {
+            try {
+                mDialogState.value = true
                 val responseBody = api.sendCaptcha(mobilePhone)
                 if (responseBody.code == 200) {
                     withContext(Dispatchers.Main) {
@@ -42,32 +45,31 @@ class LoginViewModel : ViewModel() {
                 } else {
                     POPWindows.postValue(responseBody.message)
                 }
+            } catch (e: HttpFailureException) {
+                POPWindows.postValue(mainApplication.getString(R.string.network_error))
+            } catch (e: Exception) {
+                POPWindows.postValue(e.message.toString())
+            } finally {
                 mDialogState.value = false
             }
-        } catch (e: Exception) {
-            POPWindows.postValue(e.message.toString())
-            mDialogState.value = false
         }
     }
 
     fun login(mobilePhone: String, captcha: String) {
-        try {
-            mDialogState.value = true
-            viewModelScope.launch {
-                try {
-                    val model = api.phoneLogin(mobilePhone, captcha)
-                    if (model.cookie.isNotEmpty()) {
-                        UserRepository.update(model.cookie, model.id)
-                    } else {
-                        POPWindows.postValue("登录失败")
-                    }
-                } catch (e: Exception) {
-                    POPWindows.postValue("登录失败")
+        viewModelScope.launch {
+            try {
+                mDialogState.value = true
+                val model = api.phoneLogin(mobilePhone, captcha)
+                if (model.cookie.isNotEmpty()) {
+                    UserRepository.login(model.cookie, model.id)
+                } else {
+                    POPWindows.postValue(model.message)
                 }
+            } catch (e: Exception) {
+                POPWindows.postValue(e.message.toString())
+            } finally {
+                mDialogState.value = false
             }
-            mDialogState.value = false
-        } catch (e: Exception) {
-            POPWindows.postValue(e.message.toString())
         }
     }
 
