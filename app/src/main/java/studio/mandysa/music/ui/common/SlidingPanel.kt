@@ -49,8 +49,8 @@ fun SlidingPanel(
             panelStateChange.invoke(swipeableState.currentValue)
         }
         Box(
-            modifier = Modifier
-                .fillMaxSize(), contentAlignment = Alignment.BottomCenter
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
         ) {
             Box(
                 modifier = Modifier

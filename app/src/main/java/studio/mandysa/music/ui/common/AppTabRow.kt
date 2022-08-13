@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import studio.mandysa.music.ui.theme.neutralColor
 import studio.mandysa.music.ui.theme.onBackground
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTabRow(selectedTabIndex: Int, tabs: @Composable () -> Unit) {
     TabRow(

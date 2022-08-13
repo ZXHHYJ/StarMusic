@@ -78,8 +78,8 @@ val HomeBottomNavigationDestination.tabName
 fun AppNavigationDrawer(
     modifier: Modifier = Modifier,
     drawerContent: @Composable RowScope.() -> Unit,
-    controllerBar: @Composable () -> Unit,
-    bottomBar: @Composable () -> Unit,
+    controllerBar: @Composable ColumnScope.() -> Unit,
+    bottomBar: @Composable ColumnScope.() -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
     BoxWithConstraints(modifier = modifier) {
@@ -91,13 +91,10 @@ fun AppNavigationDrawer(
                     modifier = Modifier
                         .fillMaxHeight()
                         .weight(1.0f),
+                    containerColor = Color.Transparent,
                     content = content,
                     bottomBar = {
-                        Column {
-                            controllerBar.invoke()
-                            if (!isMedium)
-                                bottomBar.invoke()
-                        }
+                        Column(content = if (!isMedium) bottomBar else controllerBar)
                     }
                 )
             }
@@ -163,7 +160,7 @@ fun MainScreen() {
     )
 
     SlidingPanel(
-        modifier = Modifier.background(MaterialTheme.colorScheme.background),
+        modifier = Modifier.fillMaxSize(),
         panelHeight = 0.dp,
         panelStateChange = {
             panelState = it

@@ -116,7 +116,6 @@ fun PlayScreen(
                     .align(Alignment.CenterHorizontally)
                     .widthIn(max = maxWidth)
                     .fillMaxWidth()
-                    .height(navHeight)
                     .padding(horizontal = horizontalMargin),
                 elevation = 0.dp,
                 backgroundColor = Color.Transparent
