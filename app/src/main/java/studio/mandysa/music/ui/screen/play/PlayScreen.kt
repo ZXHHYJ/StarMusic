@@ -100,7 +100,7 @@ fun PlayScreen(
                 AnimatedNavHost(navController) {
                     when (it) {
                         PlayScreenDestination.Main -> {
-                            NowPlayScreen()
+                            NowPlayScreen(dialogNavController)
                         }
                         PlayScreenDestination.Lyric -> {
                             LyricScreen()

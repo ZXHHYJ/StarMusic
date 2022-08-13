@@ -1,6 +1,11 @@
 package studio.mandysa.music.ui.screen.login
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.CountDownTimer
+import android.os.Handler
+import android.os.Looper
+import android.util.Base64
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,6 +30,9 @@ class LoginViewModel : ViewModel() {
 
     val sendCaptchaSecond: LiveData<Int> = mSendCaptchaSecond
 
+    /**
+     *
+     */
     fun sendCaptcha(mobilePhone: String) {
         viewModelScope.launch {
             try {
@@ -55,7 +63,10 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    fun login(mobilePhone: String, captcha: String) {
+    /**
+     *
+     */
+    fun mobileLogin(mobilePhone: String, captcha: String) {
         viewModelScope.launch {
             try {
                 mDialogState.value = true
@@ -70,6 +81,52 @@ class LoginViewModel : ViewModel() {
             } finally {
                 mDialogState.value = false
             }
+        }
+    }
+
+    private var mTask: Runnable? = null
+
+    private val mHandler = Handler(Looper.myLooper()!!)
+
+    private val mQRBitmapLiveData = MutableLiveData<Bitmap>()
+
+    val qrBitmapLiveData = mQRBitmapLiveData
+
+    fun refreshQr() {
+        viewModelScope.launch {
+            val qrkey = api.getQRKey()
+            val qrimg = api.getQRImg(qrkey)
+            if (mTask != null)
+                mHandler.removeCallbacks(mTask!!)
+            mTask = object : Runnable {
+                override fun run() {
+                    try {
+                        viewModelScope.launch {
+                            val check = api.check(qrkey)
+                            if (check.code == 803 && check.cookie.isNotEmpty()) {
+                                val userInfo = api.getUserInfo(check.cookie)
+                                UserRepository.login(check.cookie, userInfo.userId)
+                            }
+                        }
+                    } catch (e: Exception) {
+                    }
+                    mHandler.postDelayed(this, 500)
+                }
+            }
+            mHandler.post(mTask!!)
+            mQRBitmapLiveData.postValue(base64ToBitmap(qrimg))
+        }
+    }
+
+    private fun base64ToBitmap(base64String: String): Bitmap {
+        val decode: ByteArray = Base64.decode(base64String.split(",")[1], Base64.DEFAULT)
+        return BitmapFactory.decodeByteArray(decode, 0, decode.size)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        mTask?.let {
+            mHandler.removeCallbacks(it)
         }
     }
 

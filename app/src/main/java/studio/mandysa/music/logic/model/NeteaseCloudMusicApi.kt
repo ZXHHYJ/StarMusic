@@ -207,10 +207,6 @@ interface NeteaseCloudMusicApi {
     @CacheValidTime(1, TimeUnit.HOURS)
     suspend fun shortCache(): NeteaseCloudMusicApi
 
-    @EnableCache(CacheMode.READ)
-    @CacheValidTime(7, TimeUnit.DAYS)
-    suspend fun longCache(): NeteaseCloudMusicApi
-
     @EnableCache(CacheMode.WRITE)
     suspend fun network(): NeteaseCloudMusicApi
 }

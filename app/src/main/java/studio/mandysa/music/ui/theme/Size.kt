@@ -8,7 +8,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import studio.mandysa.music.MainActivity
 
-val navHeight = 56.dp
+val navHeight = 80.dp
 
 val verticalMargin = 10.dp
 

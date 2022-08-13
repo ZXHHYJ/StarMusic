@@ -36,6 +36,9 @@ val translucentWhite = Color(0x80FFFFFF)
  */
 val translucentWhiteFixBug = Color(0x33FFFFFF)
 
+val background: Color
+    @Composable get() = 95.accent1
+
 val onBackground: Color
     @Composable get() = MaterialTheme.colorScheme.onBackground
 

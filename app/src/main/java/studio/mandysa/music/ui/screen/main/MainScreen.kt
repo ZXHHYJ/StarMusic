@@ -33,10 +33,11 @@ import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.screen.album.AlbumScreen
 import studio.mandysa.music.ui.screen.controller.ControllerScreen
+import studio.mandysa.music.ui.screen.fm.FmScreen
 import studio.mandysa.music.ui.screen.home.HomeScreen
+import studio.mandysa.music.ui.screen.me.MeMenu
 import studio.mandysa.music.ui.screen.me.about.AboutScreen
 import studio.mandysa.music.ui.screen.me.artistsub.ArtistSubScreen
-import studio.mandysa.music.ui.screen.me.MeMenu
 import studio.mandysa.music.ui.screen.me.meplaylist.MePlaylistScreen
 import studio.mandysa.music.ui.screen.me.meplaylist.playlistmenu.PlaylistMenu
 import studio.mandysa.music.ui.screen.me.setting.SettingScreen
@@ -46,6 +47,7 @@ import studio.mandysa.music.ui.screen.playlist.PlaylistScreen
 import studio.mandysa.music.ui.screen.search.SearchScreen
 import studio.mandysa.music.ui.screen.singer.SingerScreen
 import studio.mandysa.music.ui.screen.songmenu.SongMenu
+import studio.mandysa.music.ui.screen.toplist.ToplistScreen
 import studio.mandysa.music.ui.theme.indicatorColor
 import studio.mandysa.music.ui.theme.isMedium
 import studio.mandysa.music.ui.theme.navHeight
@@ -266,7 +268,10 @@ fun MainScreen() {
                                             screen.tabIcon,
                                             contentDescription = null
                                         )
-                                    }, colors = NavigationBarItemDefaults.colors(
+                                    }, label = {
+                                        Text(text = screen.tabName)
+                                    },
+                                    colors = NavigationBarItemDefaults.colors(
                                         indicatorColor = indicatorColor
                                     ),
                                     selected = screen == bottomLastDestination,
@@ -350,6 +355,16 @@ fun MainScreen() {
                                 dialogNavController = dialogNavController,
                                 paddingValues = padding
                             )
+                        }
+                        ScreenDestination.FmScreen -> {
+                            FmScreen(
+                                mainNavController = mainNavController,
+                                dialogNavController = dialogNavController,
+                                paddingValues = padding
+                            )
+                        }
+                        ScreenDestination.ToplistScreen -> {
+                            ToplistScreen()
                         }
                     }
                 }

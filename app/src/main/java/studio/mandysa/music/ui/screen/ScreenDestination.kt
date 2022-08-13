@@ -31,4 +31,10 @@ sealed class ScreenDestination : Parcelable {
 
     @Parcelize
     object MePlaylist : ScreenDestination()
+
+    @Parcelize
+    object FmScreen : ScreenDestination()
+
+    @Parcelize
+    object ToplistScreen : ScreenDestination()
 }

@@ -18,7 +18,7 @@ class PlaylistViewModel(private val id: String) : SwipeRefreshViewModel() {
         if (songsLiveData.value == null || infoModelLiveData.value == null) {
             isRefreshing.value = true
             refresh()
-            isRefreshing.value = true
+            isRefreshing.value = false
         }
     }
 

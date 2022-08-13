@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import studio.mandysa.music.logic.config.api
 import studio.mandysa.music.logic.model.BannerModel
+import studio.mandysa.music.logic.model.ListModel
 import studio.mandysa.music.logic.model.PlaylistModel
 import studio.mandysa.music.logic.model.RecommendSong
 import studio.mandysa.music.ui.common.SwipeRefreshViewModel
@@ -26,11 +27,16 @@ class BrowseViewModel : SwipeRefreshViewModel() {
 
     val playlistSquareLiveData: LiveData<List<PlaylistModel>> = mPlaylistSquareLiveData
 
+/*    private val mToplistLiveData = MutableLiveData<List<ListModel>>()
+
+    val toplistLiveData: LiveData<List<ListModel>> = mToplistLiveData*/
+
     override suspend fun preview() {
         mBannersLiveData.value = api.shortCache().getBannerList()
         mRecommendSongLiveData.value = api.shortCache().getRecommendSong()
         mRecommendPlaylistLiveData.value = api.shortCache().getRecommendPlaylist()
         mPlaylistSquareLiveData.value = api.shortCache().getPlaylistSquare()
+       // mToplistLiveData.value = api.shortCache().getToplist()
     }
 
     override suspend fun refresh() {
@@ -38,6 +44,7 @@ class BrowseViewModel : SwipeRefreshViewModel() {
         mRecommendSongLiveData.value = api.network().getRecommendSong()
         mRecommendPlaylistLiveData.value = api.network().getRecommendPlaylist()
         mPlaylistSquareLiveData.value = api.network().getPlaylistSquare()
+       // mToplistLiveData.value = api.network().getToplist()
     }
 
 }

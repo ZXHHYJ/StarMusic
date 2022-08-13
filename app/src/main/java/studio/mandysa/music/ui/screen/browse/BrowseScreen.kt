@@ -4,8 +4,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Equalizer
+import androidx.compose.material.icons.rounded.QueueMusic
+import androidx.compose.material.icons.rounded.Radio
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,8 +35,8 @@ import studio.mandysa.music.ui.common.POPWindows
 import studio.mandysa.music.ui.common.SearchBar
 import studio.mandysa.music.ui.common.SwipeRefreshLayout
 import studio.mandysa.music.ui.item.ItemSubTitle
-import studio.mandysa.music.ui.item.ItemTitle
 import studio.mandysa.music.ui.item.PlaylistItem
+import studio.mandysa.music.ui.item.RoundIconItem
 import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
@@ -48,7 +51,6 @@ fun BrowseScreen(
     browseViewModel: BrowseViewModel = viewModel()
 ) {
 
-    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun BannerItem(typeTitle: String, bannerUrl: String) {
         Column(
@@ -85,11 +87,9 @@ fun BrowseScreen(
     val recommendSongs by browseViewModel.recommendSongLiveData.observeAsState()
     val recommendPlaylist by browseViewModel.recommendPlaylistLiveData.observeAsState()
     val playlistSquare by browseViewModel.playlistSquareLiveData.observeAsState()
+    //val toplist by browseViewModel.toplistLiveData.observeAsState()
     SwipeRefreshLayout(viewModel = browseViewModel) {
         AppLazyVerticalGrid(modifier = Modifier.fillMaxSize()) {
-            item {
-                ItemTitle(stringResource(R.string.browse))
-            }
             item {
                 SearchBar(onClick = { mainNavController.navigate(ScreenDestination.Search) }) {
                     Text(text = stringResource(id = R.string.search_hint))
@@ -134,6 +134,38 @@ fun BrowseScreen(
                 }
             }
             item {
+                LazyRow(
+                    modifier = Modifier.padding(top = 10.dp),
+                    contentPadding = PaddingValues(horizontal = horizontalMargin),
+                    horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2)
+                ) {
+                    item {
+                        RoundIconItem(
+                            icon = Icons.Rounded.Radio,
+                            title = stringResource(id = R.string.fm)
+                        ) {
+
+                        }
+                    }
+                    item {
+                        RoundIconItem(
+                            icon = Icons.Rounded.Equalizer,
+                            title = stringResource(id = R.string.toplist)
+                        ) {
+
+                        }
+                    }
+                    item {
+                        RoundIconItem(
+                            icon = Icons.Rounded.QueueMusic,
+                            title = stringResource(id = R.string.playlist)
+                        ) {
+
+                        }
+                    }
+                }
+            }
+            item {
                 ItemSubTitle(stringResource(R.string.recommend_playlist))
             }
             item {
@@ -167,6 +199,23 @@ fun BrowseScreen(
                     }
                 }
             }
+            /*item {
+                ItemSubTitle(stringResource(R.string.toplist))
+            }
+            item {
+                LazyRow(
+                    contentPadding = PaddingValues(horizontal = horizontalMargin),
+                    horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2),
+                ) {
+                    toplist?.let {
+                        items(it) { model ->
+                            PlaylistItem(title = model.name, coverUrl = model.coverImgUrl) {
+                                mainNavController.navigate(ScreenDestination.Playlist(model.id))
+                            }
+                        }
+                    }
+                }
+            }*/
             item {
                 ItemSubTitle(stringResource(R.string.recommend_song))
             }

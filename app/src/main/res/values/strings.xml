@@ -62,4 +62,7 @@
     <string name="view_all">查看全部</string>
     <string name="shuffle_play">随机播放</string>
     <string name="my_digital_album">我的数字专辑</string>
+    <string name="toplist">排行榜</string>
+    <string name="fm">FM</string>
+    <string name="playlist">歌单</string>
 </resources>

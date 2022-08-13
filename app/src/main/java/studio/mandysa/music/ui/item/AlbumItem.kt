@@ -24,7 +24,6 @@ private fun stampToDate(s: String): String {
     return SimpleDateFormat.getDateInstance().format(date)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlbumItem(mateAlbum: MetaAlbum, onClick: () -> Unit) {
     val size = 120.dp

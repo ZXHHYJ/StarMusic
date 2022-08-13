@@ -6,10 +6,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Favorite
-import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,15 +24,13 @@ import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.common.SwipeRefreshLayout
 import studio.mandysa.music.ui.item.ItemSubTitle
-import studio.mandysa.music.ui.item.ItemSubsTitle
-import studio.mandysa.music.ui.item.ItemTitle
 import studio.mandysa.music.ui.item.PlaylistItem
+import studio.mandysa.music.ui.item.RoundIconItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.cornerShape
 import studio.mandysa.music.ui.theme.horizontalMargin
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MeScreen(
     mainNavController: NavController<ScreenDestination>,
@@ -48,9 +44,6 @@ fun MeScreen(
     //val playHistory by PlayHistoryRepository.playHistoryLiveData.observeAsState()
     SwipeRefreshLayout(viewModel = meViewModel) {
         LazyColumn {
-            item {
-                ItemTitle(stringResource(R.string.me))
-            }
             item {
                 userInfo?.let {
                     Card(
@@ -79,18 +72,51 @@ fun MeScreen(
                 }
             }
             item {
-                ItemSubsTitle(
-                    stringResource(R.string.me_playlist),
-                    stringResource(R.string.view_all)
+                LazyRow(
+                    modifier = Modifier.padding(top = 10.dp),
+                    contentPadding = PaddingValues(horizontal = horizontalMargin),
+                    horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2)
                 ) {
-                    mainNavController.navigate(ScreenDestination.MePlaylist)
+                    item {
+                        RoundIconItem(icon = Icons.Rounded.Favorite, title = "我喜欢") {
+
+                        }
+                    }
+                    item {
+                        RoundIconItem(icon = Icons.Rounded.Download, title = "本地") {
+
+                        }
+                    }
+                    item {
+                        RoundIconItem(icon = Icons.Rounded.Album, title = "歌单") {
+
+                        }
+                    }
+                    item {
+                        RoundIconItem(icon = Icons.Rounded.Check, title = "已购") {
+
+                        }
+                    }
                 }
+            }
+            item {
+                ItemSubTitle(
+                    stringResource(R.string.me_playlist),
+                )
             }
             item {
                 LazyRow(
                     contentPadding = PaddingValues(horizontal = horizontalMargin),
                     horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2)
                 ) {
+                    item {
+                        PlaylistItem(
+                            title = stringResource(id = R.string.view_all),
+                            icon = Icons.Rounded.Add
+                        ) {
+                            mainNavController.navigate(ScreenDestination.MePlaylist)
+                        }
+                    }
                     userPlaylists?.let { it ->
                         items(it) {
                             PlaylistItem(title = it.name, coverUrl = it.coverImgUrl) {
@@ -142,7 +168,7 @@ fun MeScreen(
                 MenuItem(
                     modifier = Modifier.padding(horizontal = horizontalMargin),
                     title = stringResource(id = R.string.setting),
-                    imageVector = Icons.Rounded.Favorite
+                    imageVector = Icons.Rounded.Settings
                 ) {
                     mainNavController.navigate(ScreenDestination.Setting)
                 }

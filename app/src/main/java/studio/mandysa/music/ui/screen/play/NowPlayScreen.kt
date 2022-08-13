@@ -22,17 +22,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
+import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.SeekBar
-import studio.mandysa.music.ui.theme.isMedium
-import studio.mandysa.music.ui.theme.translucentWhite
-import studio.mandysa.music.ui.theme.translucentWhiteFixBug
-import studio.mandysa.music.ui.theme.verticalMargin
+import studio.mandysa.music.ui.screen.DialogDestination
+import studio.mandysa.music.ui.theme.*
 
 @Composable
-fun NowPlayScreen() {
+fun NowPlayScreen(dialogNavController: NavController<DialogDestination>) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -40,19 +40,10 @@ fun NowPlayScreen() {
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (isMedium) {
-            AlbumCover()
-            TitleAndArtist()
-            MusicProgressBar()
-            MusicControlBar()
-        } else {
-            AlbumCover()
-            Spacer(modifier = Modifier.height(10.dp))
-            TitleAndArtist()
-            Spacer(modifier = Modifier.height(15.dp))
-            MusicProgressBar()
-            MusicControlBar()
-        }
+        AlbumCover()
+        TitleAndArtist(dialogNavController)
+        MusicProgressBar()
+        MusicControlBar()
     }
 }
 
@@ -61,10 +52,11 @@ fun NowPlayScreen() {
 private fun AlbumCover() {
     Card(
         modifier = Modifier
+            .padding(bottom = 5.dp)
             .widthIn(max = maxWidth)
             .heightIn(max = maxWidth),
-        elevation = 5.dp,
-        shape = RoundedCornerShape(12.dp)
+        elevation = 10.dp,
+        shape = cornerShape
     ) {
         val coverUrl by PlayManager.changeMusicLiveData().map { return@map it.coverUrl }
             .observeAsState()
@@ -75,7 +67,7 @@ private fun AlbumCover() {
 }
 
 @Composable
-private fun TitleAndArtist() {
+private fun TitleAndArtist(dialogNavController: NavController<DialogDestination>) {
     Row(
         modifier = Modifier
             .widthIn(max = maxWidth)
@@ -107,6 +99,7 @@ private fun TitleAndArtist() {
                 maxLines = 1
             )
         }
+        val metaMusic by PlayManager.changeMusicLiveData().observeAsState()
         Icon(
             Icons.Rounded.MoreVert, null,
             Modifier
@@ -114,7 +107,7 @@ private fun TitleAndArtist() {
                 .clip(RoundedCornerShape(32.dp))
                 .background(translucentWhiteFixBug)
                 .clickable {
-
+                    dialogNavController.navigate(DialogDestination.SongMenu(metaMusic!!))
                 },
             tint = Color.White
         )

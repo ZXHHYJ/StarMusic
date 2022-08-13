@@ -18,10 +18,10 @@ fun ItemSubTitle(title: String = "默认标题") {
     Text(
         text = title,
         color = textColor,
-        fontSize = 19.sp,
+        fontSize = 16.sp,
         fontWeight = FontWeight.Bold,
         modifier = Modifier
             .padding(horizontal = horizontalMargin)
-            .padding(top = 25.dp, bottom = verticalMargin)
+            .padding(top = 10.dp, bottom = verticalMargin)
     )
 }

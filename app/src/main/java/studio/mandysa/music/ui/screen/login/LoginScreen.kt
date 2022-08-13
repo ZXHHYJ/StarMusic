@@ -1,5 +1,6 @@
 package studio.mandysa.music.ui.screen.login
 
+import android.widget.ImageView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,10 +12,8 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBackIos
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.*
 import androidx.compose.material3.ExposedDropdownMenuDefaults.textFieldColors
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -32,17 +31,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import dev.olshevski.navigation.reimagined.NavHost
+import dev.olshevski.navigation.reimagined.navigate
+import dev.olshevski.navigation.reimagined.pop
+import dev.olshevski.navigation.reimagined.rememberNavController
 import studio.mandysa.music.R
 import studio.mandysa.music.ui.common.AppDialog
 import studio.mandysa.music.ui.common.KenBurns
-import studio.mandysa.music.ui.theme.dialogBackground
-import studio.mandysa.music.ui.theme.horizontalMargin
-import studio.mandysa.music.ui.theme.translucentWhite
-import studio.mandysa.music.ui.theme.verticalMargin
+import studio.mandysa.music.ui.theme.*
 
 
 @Preview
@@ -77,6 +78,8 @@ private fun PreviewLoginScreen() {
 @ExperimentalMaterial3Api
 @Composable
 fun LoginScreen(loginViewModel: LoginViewModel = viewModel()) {
+    val loginNavController =
+        rememberNavController<LoginDestination>(startDestination = LoginDestination.Phone)
     val keyboardController = LocalSoftwareKeyboardController.current
     val textFileColors = textFieldColors(
         textColor = Color.Black,
@@ -120,62 +123,119 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel()) {
                 contentDescription = null,
                 tint = Color.White
             )
-            var phone by rememberSaveable { mutableStateOf("") }
-            var captcha by rememberSaveable { mutableStateOf("") }
-            val captchaSecond by loginViewModel.sendCaptchaSecond.observeAsState(0)
-            Box(contentAlignment = Alignment.CenterEnd) {
-                OutlinedTextField(
-                    value = phone, singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                    placeholder = { Text(stringResource(R.string.phone)) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = verticalMargin),
-                    onValueChange = {
-                        if (it.length <= 11) {
-                            phone = it
+            NavHost(loginNavController) { screenDestination ->
+                when (screenDestination) {
+                    LoginDestination.Phone -> {
+                        var phone by rememberSaveable { mutableStateOf("") }
+                        var captcha by rememberSaveable { mutableStateOf("") }
+                        val captchaSecond by loginViewModel.sendCaptchaSecond.observeAsState(0)
+                        Box(contentAlignment = Alignment.CenterEnd) {
+                            OutlinedTextField(
+                                value = phone, singleLine = true,
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                                placeholder = { Text(stringResource(R.string.phone)) },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = verticalMargin),
+                                onValueChange = {
+                                    if (it.length <= 11) {
+                                        phone = it
+                                    }
+                                },
+                                colors = textFileColors
+                            )
+                            Text(text = if (captchaSecond == 0) stringResource(R.string.send_captcha) else "$captchaSecond",
+                                modifier = Modifier
+                                    .padding(end = 10.dp)
+                                    .clickable {
+                                        loginViewModel.sendCaptcha(phone)
+                                    })
                         }
-                    },
-                    colors = textFileColors
-                )
-                Text(text = if (captchaSecond == 0) stringResource(R.string.send_captcha) else "$captchaSecond",
-                    modifier = Modifier
-                        .padding(end = 10.dp)
-                        .clickable {
-                            loginViewModel.sendCaptcha(phone)
-                        })
-            }
-            OutlinedTextField(
-                value = captcha, singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                placeholder = { Text(stringResource(R.string.captcha)) },
-                modifier = Modifier.fillMaxWidth(),
-                onValueChange = {
-                    if (it.length <= 4) {
-                        captcha = it
+                        OutlinedTextField(
+                            value = captcha, singleLine = true,
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                            placeholder = { Text(stringResource(R.string.captcha)) },
+                            modifier = Modifier.fillMaxWidth(),
+                            onValueChange = {
+                                if (it.length <= 4) {
+                                    captcha = it
+                                }
+                            }, colors = textFileColors
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Button(
+                            modifier = Modifier.size(60.dp),
+                            onClick = {
+                                if (phone.isEmpty() || captcha.isEmpty()) {
+                                    // TODO: 处理一下手机号或验证码没有填写的情况
+                                    return@Button
+                                }
+                                loginViewModel.mobileLogin(mobilePhone = phone, captcha = captcha)
+                            },
+                            elevation = null,
+                            colors = buttonColors(backgroundColor = translucentWhite),
+                            shape = RoundedCornerShape(30.dp)
+                        ) {
+                            Icon(
+                                modifier = Modifier.rotate(180f),
+                                imageVector = Icons.Rounded.ArrowBackIos,
+                                contentDescription = null
+                            )
+                        }
                     }
-                }, colors = textFileColors
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            Button(
-                modifier = Modifier.size(60.dp),
-                onClick = {
-                    if (phone.isEmpty() || captcha.isEmpty()) {
-                        // TODO: 处理一下手机号或验证码没有填写的情况
-                        return@Button
+                    LoginDestination.QRCode -> {
+                        val qrBitmap by loginViewModel.qrBitmapLiveData.observeAsState(null)
+
+                        if (qrBitmap == null)
+                            loginViewModel.refreshQr()
+
+                        Card(
+                            modifier = Modifier.size(250.dp),
+                            colors = CardDefaults.cardColors(containerColor = translucentWhite),
+                        ) {
+                            if (qrBitmap != null) {
+                                //使用ImageView去显示Bitmap
+                                AndroidView(
+                                    modifier = Modifier.fillMaxSize(),
+                                    factory = { ImageView(it) }) {
+                                    it.setImageBitmap(qrBitmap)
+                                }
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Button(
+                            modifier = Modifier
+                                .width(80.dp)
+                                .height(40.dp),
+                            onClick = {
+                                loginViewModel.refreshQr()
+                            },
+                            elevation = null,
+                            colors = buttonColors(backgroundColor = translucentWhite),
+                            shape = RoundedCornerShape(30.dp)
+                        ) {
+                            Text(text = "刷新")
+                        }
                     }
-                    loginViewModel.login(mobilePhone = phone, captcha = captcha)
-                },
-                elevation = null,
-                colors = buttonColors(backgroundColor = translucentWhite),
-                shape = RoundedCornerShape(30.dp)
-            ) {
-                Icon(
-                    modifier = Modifier.rotate(180f),
-                    imageVector = Icons.Rounded.ArrowBackIos,
-                    contentDescription = null
-                )
+                }
             }
+        }
+        Button(
+            onClick = {
+                if (loginNavController.backstack.entries.last().destination == LoginDestination.Phone) {
+                    loginNavController.navigate(LoginDestination.QRCode)
+                } else {
+                    loginNavController.pop()
+                }
+            },
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .navigationBarsPadding(),
+            elevation = null,
+            colors = buttonColors(backgroundColor = translucentWhite),
+            shape = cornerShape
+        ) {
+            Text(text = "切换")
         }
     }
 }
