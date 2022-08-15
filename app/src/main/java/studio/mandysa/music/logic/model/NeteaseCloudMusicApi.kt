@@ -204,8 +204,11 @@ interface NeteaseCloudMusicApi {
     suspend fun getMyDigitalAlbum(@Query("cookie") cookie: String = cookie()): List<MyDigitalAlbum>
 
     @EnableCache(CacheMode.READ)
-    @CacheValidTime(1, TimeUnit.HOURS)
-    suspend fun shortCache(): NeteaseCloudMusicApi
+    @CacheValidTime(7, TimeUnit.DAYS)
+    suspend fun longCache(): NeteaseCloudMusicApi
+
+    @EnableCache(CacheMode.READ)
+    suspend fun onlyCache(): NeteaseCloudMusicApi
 
     @EnableCache(CacheMode.WRITE)
     suspend fun network(): NeteaseCloudMusicApi

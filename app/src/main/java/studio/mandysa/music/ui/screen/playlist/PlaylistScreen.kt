@@ -65,7 +65,7 @@ fun PlaylistScreen(
                 scrollBehavior = scrollBehavior
             )
         }) {
-        SwipeRefreshLayout(viewModel = playlistViewModel, modifier = Modifier.padding(it)) {
+        Preview(modifier = Modifier.padding(it), refresh = { playlistViewModel.refresh() }) {
             AppLazyVerticalGrid(modifier = Modifier.fillMaxSize()) {
                 item {
                     ContentColumnItem(
@@ -99,10 +99,10 @@ fun PlaylistScreen(
                         }
                     }
                 }
-                songs?.let {
-                    autoItems(it.size) { pos ->
-                        SongItem(dialogNavController, it[pos]) {
-                            PlayManager.play(it, pos)
+                songs?.let { list ->
+                    autoItems(list.size) { pos ->
+                        SongItem(dialogNavController, list[pos]) {
+                            PlayManager.play(list, pos)
                         }
                     }
                 }

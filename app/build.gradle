@@ -32,6 +32,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
@@ -69,14 +70,13 @@ dependencies {
 
     implementation "com.github.kyant0:color:2022.2-dev01"
 
-    implementation "androidx.paging:paging-compose:1.0.0-alpha15"
+    implementation "androidx.paging:paging-compose:1.0.0-alpha16"
 
     implementation "dev.olshevski.navigation:reimagined:1.1.1"
 
     implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
     implementation "com.google.accompanist:accompanist-flowlayout:$accompanist_version"
-    implementation "com.google.accompanist:accompanist-swiperefresh:$accompanist_version"
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.2"

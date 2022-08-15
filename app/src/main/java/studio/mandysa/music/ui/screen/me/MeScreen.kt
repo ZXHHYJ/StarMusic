@@ -22,7 +22,7 @@ import studio.mandysa.music.R
 import studio.mandysa.music.ui.common.AppCard
 import studio.mandysa.music.ui.common.AppRoundAsyncImage
 import studio.mandysa.music.ui.common.MenuItem
-import studio.mandysa.music.ui.common.SwipeRefreshLayout
+import studio.mandysa.music.ui.common.Preview
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.PlaylistItem
 import studio.mandysa.music.ui.item.RoundIconItem
@@ -41,9 +41,13 @@ fun MeScreen(
 ) {
     val userInfo by meViewModel.userInfoLiveData.observeAsState()
     val userPlaylists by meViewModel.userPlaylistLiveData.observeAsState()
-    val myDigitalAlbums by meViewModel.myDigitalAlbumsLiveData.observeAsState()
     //val playHistory by PlayHistoryRepository.playHistoryLiveData.observeAsState()
-    SwipeRefreshLayout(viewModel = meViewModel) {
+    Preview(
+        modifier = Modifier.statusBarsPadding(),
+        refresh = {
+            meViewModel.refresh()
+        }
+    ) {
         LazyColumn {
             item {
                 userInfo?.let {
@@ -99,6 +103,11 @@ fun MeScreen(
 
                         }
                     }
+                    item {
+                        RoundIconItem(icon = Icons.Rounded.Star, title = "收藏的专辑") {
+
+                        }
+                    }
                 }
             }
             item {
@@ -135,7 +144,14 @@ fun MeScreen(
                     contentPadding = PaddingValues(horizontal = horizontalMargin),
                     horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2)
                 ) {
-                    // TODO: 播放历史 
+                    // TODO: 播放历史
+                    item {
+                        PlaylistItem(
+                            icon = Icons.Rounded.MoreVert
+                        ) {
+                            //mainNavController.navigate(ScreenDestination.MePlaylist)
+                        }
+                    }
                     /* playHistory?.let { it ->
                          items(it) {
                              PlaylistItem(title = it.title, coverUrl = it.coverUrl) {
@@ -145,7 +161,7 @@ fun MeScreen(
                      }*/
                 }
             }
-            item {
+            /*item {
                 ItemSubTitle(stringResource(R.string.my_digital_album))
             }
             item {
@@ -161,7 +177,7 @@ fun MeScreen(
                         }
                     }
                 }
-            }
+            }*/
             item {
                 ItemSubTitle(stringResource(R.string.more))
             }

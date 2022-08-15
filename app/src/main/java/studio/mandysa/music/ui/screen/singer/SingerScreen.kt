@@ -24,6 +24,7 @@ import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.AppLazyVerticalGrid
+import studio.mandysa.music.ui.common.AppScaffold
 import studio.mandysa.music.ui.item.AlbumItem
 import studio.mandysa.music.ui.item.ContentColumnItem
 import studio.mandysa.music.ui.item.ItemSubTitle
@@ -45,7 +46,10 @@ fun SingerScreen(
 ) {
     val singerInfo by singerViewModel.singerInfo.observeAsState()
     val albums = singerViewModel.albumSource.collectAsLazyPagingItems()
-    val songs by singerViewModel.songs.observeAsState(listOf())
+    val songs by singerViewModel.songs.observeAsState()
+    AppScaffold(topBar = {}) {
+
+    }
     Column {
         TopAppBar(
             modifier = Modifier.fillMaxWidth(),
@@ -87,9 +91,11 @@ fun SingerScreen(
             item {
                 ItemSubTitle(stringResource(id = R.string.popular_song))
             }
-            autoItems(songs.size) {
-                SongItem(dialogNavController = dialogNavController, song = songs[it]) {
-                    PlayManager.play(songs, it)
+            songs?.let { list ->
+                autoItems(list.size) {
+                    SongItem(dialogNavController = dialogNavController, song = list[it]) {
+                        PlayManager.play(list, it)
+                    }
                 }
             }
             item {

@@ -12,23 +12,22 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import studio.mandysa.music.ui.theme.neutralColor
 
 @Composable
 fun Preview(
     modifier: Modifier = Modifier,
-    load: suspend () -> Unit,
+    refresh: suspend () -> Unit,
     content: @Composable () -> Unit
 ) {
     var loaded by rememberSaveable {
         mutableStateOf(false)
     }
-    var progress by remember {
+    var progress by rememberSaveable {
         mutableStateOf(0f)
     }
-    val lineColor = neutralColor
-    val lineHeight = 10f
 
     val animator = ValueAnimator.ofFloat(0f, 1f)
 
@@ -41,9 +40,6 @@ fun Preview(
                 animator.interpolator = LinearInterpolator()
                 animator.addUpdateListener {
                     progress = it.animatedValue as Float
-                    if (loaded && progress == 1f) {
-                        animator.repeatCount = 1
-                    }
                 }
                 animator.repeatCount = ValueAnimator.INFINITE
                 animator.start()
@@ -54,19 +50,25 @@ fun Preview(
             })
             LaunchedEffect(key1 = this, block = {
                 launch {
-                    load.invoke()
+                    refresh.invoke()
                     loaded = true
+                    progress = 0f
+                    animator.cancel()
                 }
             })
         }
         BoxWithConstraints {
             content.invoke()
+            //线的颜色
+            val lineColor = neutralColor
             Canvas(
                 modifier = Modifier
                     .statusBarsPadding()
                     .align(Alignment.TopCenter)
                     .fillMaxSize(),
                 onDraw = {
+                    //线高
+                    val lineHeight = 5.dp.toPx()
                     val width = maxWidth.toPx()
                     val progressWidth = width / 2 * progress
                     drawLine(

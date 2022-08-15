@@ -24,7 +24,7 @@ fun LyricScreen() {
     LaunchedEffect(musicId) {
         musicId?.let {
             try {
-                lyric = api.shortCache().getLyric(it)
+                lyric = api.longCache().getLyric(it)
             } catch (e: NoCacheException) {
                 lyric = api.network().getLyric(it)
             } catch (e: HttpFailureException) {

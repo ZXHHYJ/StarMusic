@@ -88,7 +88,7 @@ fun BrowseScreen(
     val recommendPlaylist by browseViewModel.recommendPlaylistLiveData.observeAsState()
     val playlistSquare by browseViewModel.playlistSquareLiveData.observeAsState()
     //val toplist by browseViewModel.toplistLiveData.observeAsState()
-    Preview(load = { browseViewModel.network() }) {
+    Preview(refresh = { browseViewModel.network() }) {
         AppLazyVerticalGrid(
             modifier = Modifier
                 .fillMaxSize()
