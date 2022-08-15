@@ -1,18 +1,21 @@
 package studio.mandysa.music.ui.screen.playlist
 
+import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Shuffle
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -21,17 +24,14 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.ui.common.AppDivider
-import studio.mandysa.music.ui.common.AppLazyVerticalGrid
-import studio.mandysa.music.ui.common.MenuItem
-import studio.mandysa.music.ui.common.SwipeRefreshLayout
+import studio.mandysa.music.ui.common.*
 import studio.mandysa.music.ui.item.ContentColumnItem
 import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
-import studio.mandysa.music.ui.theme.onBackground
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlaylistScreen(
     mainNavController: NavController<ScreenDestination>,
@@ -44,18 +44,28 @@ fun PlaylistScreen(
 ) {
     val playlistInfo by playlistViewModel.infoModelLiveData.observeAsState()
     val songs by playlistViewModel.songsLiveData.observeAsState()
-    Column(modifier = Modifier.fillMaxSize()) {
-        TopAppBar(
-            modifier = Modifier.fillMaxWidth(),
-            backgroundColor = Color.Transparent,
-            contentColor = onBackground,
-            elevation = 0.dp
-        ) {
-            IconButton(onClick = { mainNavController.pop() }) {
-                Icon(Icons.Rounded.ArrowBack, null)
-            }
-        }
-        SwipeRefreshLayout(viewModel = playlistViewModel) {
+
+    val decayAnimationSpec = rememberSplineBasedDecay<Float>()
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(
+        decayAnimationSpec,
+        rememberTopAppBarState()
+    )
+    AppScaffold(
+        modifier = Modifier
+            .statusBarsPadding()
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            AppMediumTopAppBar(
+                title = {},
+                navigationIcon = {
+                    IconButton(onClick = { mainNavController.pop() }) {
+                        Icon(Icons.Rounded.ArrowBack, null)
+                    }
+                },
+                scrollBehavior = scrollBehavior
+            )
+        }) {
+        SwipeRefreshLayout(viewModel = playlistViewModel, modifier = Modifier.padding(it)) {
             AppLazyVerticalGrid(modifier = Modifier.fillMaxSize()) {
                 item {
                     ContentColumnItem(
@@ -88,9 +98,6 @@ fun PlaylistScreen(
                             }
                         }
                     }
-                }
-                item {
-                    AppDivider()
                 }
                 songs?.let {
                     autoItems(it.size) { pos ->

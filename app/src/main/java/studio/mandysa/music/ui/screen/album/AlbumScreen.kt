@@ -26,7 +26,6 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.ui.common.AppDivider
 import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.item.ContentColumnItem
 import studio.mandysa.music.ui.item.SongItem
@@ -36,7 +35,6 @@ import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.onBackground
 import studio.mandysa.music.ui.theme.textColorLight
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AlbumScreen(
     mainNavController: NavController<ScreenDestination>,
@@ -91,18 +89,12 @@ fun AlbumScreen(
                     }
                 }
             }
-            stickyHeader {
-                AppDivider()
-            }
             albumInfo?.let {
                 itemsIndexed(it.songList) { index, item ->
                     SongItem(dialogNavController = dialogNavController, song = item) {
                         PlayManager.play(it.songList, index)
                     }
                 }
-            }
-            item {
-                AppDivider()
             }
             albumInfo?.company?.let {
                 item {

@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -15,7 +14,6 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import studio.mandysa.music.ui.theme.round
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppAsyncImage(
     size: Dp,
@@ -44,4 +42,13 @@ fun AppAsyncImage(
             contentDescription = null,
         )
     }
+}
+
+@Composable
+fun AppRoundAsyncImage(
+    size: Dp,
+    url: String,
+    onClick: (() -> Unit)? = null
+) {
+    AppAsyncImage(size = size, cornerSize = size / 2, url = url, onClick = onClick)
 }

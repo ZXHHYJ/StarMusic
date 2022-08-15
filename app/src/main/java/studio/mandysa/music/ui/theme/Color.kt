@@ -44,10 +44,10 @@ val dialogBackground: Color
     @Composable get() = 94.accent2 withNight 18.accent2
 
 //容器颜色
-val contentColor: Color
+val containerColor: Color
     @Composable get() = 90.accent2 withNight 20.accent2
 
-//bottomBarItem背景颜色
+//中性色
 val neutralColor: Color
     @Composable get() = 84.accent2 withNight 20.accent2
 

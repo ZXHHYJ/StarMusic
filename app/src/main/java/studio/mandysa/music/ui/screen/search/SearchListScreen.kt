@@ -12,7 +12,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.R
-import studio.mandysa.music.ui.common.AppDivider
 import studio.mandysa.music.ui.common.AppTabRow
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
@@ -37,7 +36,6 @@ fun SearchListScreen(
     keywords: String
 ) {
     Column {
-        AppDivider()
         var selectedIndex by rememberSaveable {
             mutableStateOf(0)
         }

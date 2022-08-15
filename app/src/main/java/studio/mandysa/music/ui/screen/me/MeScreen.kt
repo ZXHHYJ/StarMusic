@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
-import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,7 +19,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
-import studio.mandysa.music.ui.common.AppAsyncImage
+import studio.mandysa.music.ui.common.AppCard
+import studio.mandysa.music.ui.common.AppRoundAsyncImage
 import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.common.SwipeRefreshLayout
 import studio.mandysa.music.ui.item.ItemSubTitle
@@ -28,8 +28,9 @@ import studio.mandysa.music.ui.item.PlaylistItem
 import studio.mandysa.music.ui.item.RoundIconItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
-import studio.mandysa.music.ui.theme.cornerShape
 import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.textColor
+import studio.mandysa.music.ui.theme.verticalMargin
 
 @Composable
 fun MeScreen(
@@ -46,9 +47,10 @@ fun MeScreen(
         LazyColumn {
             item {
                 userInfo?.let {
-                    Card(
-                        modifier = Modifier.padding(horizontal = horizontalMargin),
-                        shape = cornerShape
+                    AppCard(
+                        modifier = Modifier
+                            .padding(horizontal = horizontalMargin)
+                            .padding(top = verticalMargin),
                     ) {
                         Row(
                             modifier = Modifier
@@ -60,12 +62,12 @@ fun MeScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Box(modifier = Modifier.padding(horizontal = 10.dp)) {
-                                AppAsyncImage(size = 70.dp, 35.dp, url = it.avatarUrl)
+                                AppRoundAsyncImage(size = 70.dp, url = it.avatarUrl)
                             }
                             Column {
-                                Text(text = it.nickname)
+                                Text(text = it.nickname, color = textColor)
                                 Spacer(modifier = Modifier.height(5.dp))
-                                Text(text = it.signature)
+                                Text(text = it.signature, color = textColor)
                             }
                         }
                     }
@@ -89,7 +91,7 @@ fun MeScreen(
                     }
                     item {
                         RoundIconItem(icon = Icons.Rounded.Album, title = "歌单") {
-
+                            mainNavController.navigate(ScreenDestination.MePlaylist)
                         }
                     }
                     item {
@@ -111,7 +113,6 @@ fun MeScreen(
                 ) {
                     item {
                         PlaylistItem(
-                            title = stringResource(id = R.string.view_all),
                             icon = Icons.Rounded.Add
                         ) {
                             mainNavController.navigate(ScreenDestination.MePlaylist)

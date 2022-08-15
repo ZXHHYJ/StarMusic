@@ -32,8 +32,8 @@ import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.AppLazyVerticalGrid
 import studio.mandysa.music.ui.common.POPWindows
+import studio.mandysa.music.ui.common.Preview
 import studio.mandysa.music.ui.common.SearchBar
-import studio.mandysa.music.ui.common.SwipeRefreshLayout
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.PlaylistItem
 import studio.mandysa.music.ui.item.RoundIconItem
@@ -58,7 +58,7 @@ fun BrowseScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Card(
-                shape = cornerShape,
+                shape = roundedCornerShape,
                 modifier = Modifier
                     .height(140.dp)
                     .clickable {
@@ -88,8 +88,12 @@ fun BrowseScreen(
     val recommendPlaylist by browseViewModel.recommendPlaylistLiveData.observeAsState()
     val playlistSquare by browseViewModel.playlistSquareLiveData.observeAsState()
     //val toplist by browseViewModel.toplistLiveData.observeAsState()
-    SwipeRefreshLayout(viewModel = browseViewModel) {
-        AppLazyVerticalGrid(modifier = Modifier.fillMaxSize()) {
+    Preview(load = { browseViewModel.network() }) {
+        AppLazyVerticalGrid(
+            modifier = Modifier
+                .fillMaxSize()
+                .statusBarsPadding()
+        ) {
             item {
                 SearchBar(onClick = { mainNavController.navigate(ScreenDestination.Search) }) {
                     Text(text = stringResource(id = R.string.search_hint))
@@ -152,7 +156,7 @@ fun BrowseScreen(
                             icon = Icons.Rounded.Equalizer,
                             title = stringResource(id = R.string.toplist)
                         ) {
-
+                            mainNavController.navigate(ScreenDestination.ToplistScreen)
                         }
                     }
                     item {

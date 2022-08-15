@@ -1,6 +1,6 @@
 package studio.mandysa.music.ui.screen.login
 
-import android.widget.ImageView
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -23,15 +23,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -190,16 +191,19 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel()) {
                             loginViewModel.refreshQr()
 
                         Card(
-                            modifier = Modifier.size(250.dp),
+                            modifier = Modifier
+                                .size(250.dp)
+                                .drawWithContent {
+                                    drawContent()
+                                },
                             colors = CardDefaults.cardColors(containerColor = translucentWhite),
                         ) {
-                            if (qrBitmap != null) {
-                                //使用ImageView去显示Bitmap
-                                AndroidView(
+                            qrBitmap?.let {
+                                Image(
+                                    bitmap = it.asImageBitmap(),
+                                    contentDescription = null,
                                     modifier = Modifier.fillMaxSize(),
-                                    factory = { ImageView(it) }) {
-                                    it.setImageBitmap(qrBitmap)
-                                }
+                                )
                             }
                         }
                         Spacer(modifier = Modifier.height(10.dp))
@@ -233,7 +237,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel()) {
                 .navigationBarsPadding(),
             elevation = null,
             colors = buttonColors(backgroundColor = translucentWhite),
-            shape = cornerShape
+            shape = roundedCornerShape
         ) {
             Text(text = "切换")
         }

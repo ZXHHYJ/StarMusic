@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import studio.mandysa.music.ui.theme.contentColor
+import studio.mandysa.music.ui.theme.containerColor
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.onBackground
 import studio.mandysa.music.ui.theme.verticalMargin
@@ -25,7 +25,7 @@ fun SearchBar(onClick: () -> Unit = {}, rowScope: @Composable RowScope.() -> Uni
             .padding(horizontal = horizontalMargin, vertical = verticalMargin)
             .height(48.dp)
             .clip(CircleShape)
-            .background(contentColor)
+            .background(containerColor)
             .clickable(onClick = onClick)
             .padding(horizontal = horizontalMargin),
         horizontalArrangement = Arrangement.spacedBy(horizontalMargin),

@@ -56,7 +56,7 @@ private fun AlbumCover() {
             .widthIn(max = maxWidth)
             .heightIn(max = maxWidth),
         elevation = 10.dp,
-        shape = cornerShape
+        shape = roundedCornerShape
     ) {
         val coverUrl by PlayManager.changeMusicLiveData().map { return@map it.coverUrl }
             .observeAsState()

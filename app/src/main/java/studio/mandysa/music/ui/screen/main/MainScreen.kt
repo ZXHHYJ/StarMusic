@@ -27,6 +27,8 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
+import studio.mandysa.music.ui.common.AppNavigationBarItem
+import studio.mandysa.music.ui.common.AppNavigationRailItem
 import studio.mandysa.music.ui.common.PanelState
 import studio.mandysa.music.ui.common.SlidingPanel
 import studio.mandysa.music.ui.screen.DialogDestination
@@ -48,7 +50,7 @@ import studio.mandysa.music.ui.screen.search.SearchScreen
 import studio.mandysa.music.ui.screen.singer.SingerScreen
 import studio.mandysa.music.ui.screen.songmenu.SongMenu
 import studio.mandysa.music.ui.screen.toplist.ToplistScreen
-import studio.mandysa.music.ui.theme.indicatorColor
+import studio.mandysa.music.ui.theme.background
 import studio.mandysa.music.ui.theme.isMedium
 import studio.mandysa.music.ui.theme.navHeight
 import studio.mandysa.music.ui.theme.neutralColor
@@ -78,8 +80,8 @@ val HomeBottomNavigationDestination.tabName
 fun AppNavigationDrawer(
     modifier: Modifier = Modifier,
     drawerContent: @Composable RowScope.() -> Unit,
-    controllerBar: @Composable ColumnScope.() -> Unit,
-    bottomBar: @Composable ColumnScope.() -> Unit,
+    controllerBar: @Composable () -> Unit,
+    bottomBar: @Composable () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
     BoxWithConstraints(modifier = modifier) {
@@ -94,7 +96,11 @@ fun AppNavigationDrawer(
                     containerColor = Color.Transparent,
                     content = content,
                     bottomBar = {
-                        Column(content = if (!isMedium) bottomBar else controllerBar)
+                        Column {
+                            controllerBar.invoke()
+                            if (!isMedium)
+                                bottomBar.invoke()
+                        }
                     }
                 )
             }
@@ -167,18 +173,21 @@ fun MainScreen() {
         },
         content = {
             AppNavigationDrawer(
-                modifier = Modifier.statusBarsPadding(),
+                modifier = Modifier.fillMaxSize(),
                 drawerContent = {
                     NavigationRail(
                         modifier = Modifier
                             .fillMaxHeight()
+                            .statusBarsPadding(),
+                        containerColor = background
                     ) {
+                        //上部分
                         val navLastDestination =
                             mainNavController.backstack.entries.last().destination
                         val bottomLastDestination =
                             homeNavController.backstack.entries.last().destination
                         HomeBottomNavigationDestination.values().forEach { screen ->
-                            NavigationRailItem(
+                            AppNavigationRailItem(
                                 label = {
                                     Text(text = screen.tabName)
                                 },
@@ -201,9 +210,10 @@ fun MainScreen() {
                             )
                         }
                         Spacer(modifier = Modifier.weight(1.0f))
+                        //下部分
                         val bottomRailItemFunction: @Composable (String, ImageVector, ScreenDestination) -> Unit =
                             { text, icon, screen ->
-                                NavigationRailItem(
+                                AppNavigationRailItem(
                                     label = {
                                         Text(text = text)
                                     },
@@ -213,7 +223,6 @@ fun MainScreen() {
                                             contentDescription = null
                                         )
                                     },
-                                    alwaysShowLabel = true,
                                     selected = navLastDestination == screen,
                                     onClick = {
                                         if (!mainNavController.moveToTop { it == screen }) {
@@ -259,7 +268,7 @@ fun MainScreen() {
                             val bottomLastDestination =
                                 homeNavController.backstack.entries.last().destination
                             HomeBottomNavigationDestination.values().forEach { screen ->
-                                NavigationBarItem(
+                                AppNavigationBarItem(
                                     icon = {
                                         Icon(
                                             screen.tabIcon,
@@ -268,9 +277,6 @@ fun MainScreen() {
                                     }, label = {
                                         Text(text = screen.tabName)
                                     },
-                                    colors = NavigationBarItemDefaults.colors(
-                                        indicatorColor = indicatorColor
-                                    ),
                                     selected = screen == bottomLastDestination,
                                     onClick = {
                                         if (!homeNavController.moveToTop { it == screen }) {

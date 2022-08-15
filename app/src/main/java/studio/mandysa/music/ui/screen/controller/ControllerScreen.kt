@@ -25,7 +25,7 @@ import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.KenBurns
 import studio.mandysa.music.ui.common.PanelState
-import studio.mandysa.music.ui.theme.cornerShape
+import studio.mandysa.music.ui.theme.roundedCornerShape
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.neutralColor
 
@@ -99,7 +99,7 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
                                 modifier = Modifier
                                     .size(controlBarHeight)
                                     .padding(8.dp)
-                                    .clip(cornerShape)
+                                    .clip(roundedCornerShape)
                                     .clickable {
                                         if (PlayManager.isPaused()) {
                                             PlayManager.play()
@@ -115,7 +115,7 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
                                 modifier = Modifier
                                     .size(controlBarHeight)
                                     .padding(8.dp)
-                                    .clip(cornerShape)
+                                    .clip(roundedCornerShape)
                                     .clickable {
                                         PlayManager.skipToNext()
                                     }

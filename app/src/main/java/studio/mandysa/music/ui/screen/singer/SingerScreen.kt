@@ -23,7 +23,6 @@ import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.ui.common.AppDivider
 import studio.mandysa.music.ui.common.AppLazyVerticalGrid
 import studio.mandysa.music.ui.item.AlbumItem
 import studio.mandysa.music.ui.item.ContentColumnItem
@@ -69,7 +68,6 @@ fun SingerScreen(
                     //no toolbar
                 }
             }
-            item { AppDivider() }
             item {
                 ItemSubTitle(stringResource(id = R.string.album))
             }

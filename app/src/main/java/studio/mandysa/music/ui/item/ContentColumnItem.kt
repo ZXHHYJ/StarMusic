@@ -14,11 +14,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.google.accompanist.placeholder.material.placeholder
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.ui.screen.DialogDestination
-import studio.mandysa.music.ui.theme.cornerShape
+import studio.mandysa.music.ui.theme.roundedCornerShape
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.isMedium
 import studio.mandysa.music.ui.theme.textColor
@@ -35,7 +34,7 @@ fun ContentColumnItem(
     fun CoverItem() {
         Card(
             modifier = Modifier.size(250.dp),
-            shape = cornerShape,
+            shape = roundedCornerShape,
             elevation = 10.dp
         ) {
             AsyncImage(
@@ -52,8 +51,7 @@ fun ContentColumnItem(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = horizontalMargin)
-                .placeholder(title == null),
+                .padding(horizontal = horizontalMargin),
             text = title ?: "",
             fontSize = 17.sp,
             fontWeight = FontWeight.Bold,
@@ -69,8 +67,7 @@ fun ContentColumnItem(
                     message?.let {
                         dialogNavController.navigate(DialogDestination.Message(it))
                     }
-                }
-                .placeholder(message == null),
+                },
             text = message ?: "",
             fontSize = 15.sp,
             fontWeight = FontWeight.Bold,
