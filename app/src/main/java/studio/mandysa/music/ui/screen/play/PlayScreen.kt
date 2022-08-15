@@ -67,7 +67,6 @@ fun PlayScreen(
         Column(
             modifier = Modifier
                 .align(Alignment.Center)
-                .widthIn(max = 600.dp)
                 .fillMaxSize()
                 .statusBarsPadding()
                 .navigationBarsPadding()
@@ -87,26 +86,46 @@ fun PlayScreen(
                         )
                 )
             }
-            Box(
+            Row(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxSize()
                     .weight(1.0f)
             ) {
                 BackHandler(panelState == PanelState.EXPANDED) {
                     function.invoke(PanelState.COLLAPSED)
                 }
-                NavBackHandler(navController)
-                //处理返回逻辑
-                AnimatedNavHost(navController) {
-                    when (it) {
-                        PlayScreenDestination.Main -> {
-                            NowPlayScreen(dialogNavController)
-                        }
-                        PlayScreenDestination.Lyric -> {
-                            LyricScreen()
-                        }
-                        PlayScreenDestination.PlayQueue -> {
-                            PlayQueueScreen(dialogNavController)
+                if (isMedium) {
+                    Box(
+                        modifier = Modifier
+                            .widthIn(max = maxWidth)
+                            .weight(1.0f), contentAlignment = Alignment.Center
+                    ) {
+                        NowPlayScreen(dialogNavController)
+                    }
+                    val lastDestination = navController.backstack.entries.last().destination
+                    if (lastDestination == PlayScreenDestination.Main) {
+                        navController.navigate(PlayScreenDestination.Lyric)
+                    }
+                } else {
+                    NavBackHandler(navController)
+                    //处理返回逻辑
+                }
+                Box(
+                    modifier = Modifier
+                        .widthIn(max = maxWidth)
+                        .weight(1.0f), contentAlignment = Alignment.Center
+                ) {
+                    AnimatedNavHost(navController) {
+                        when (it) {
+                            PlayScreenDestination.Main -> {
+                                NowPlayScreen(dialogNavController)
+                            }
+                            PlayScreenDestination.Lyric -> {
+                                LyricScreen()
+                            }
+                            PlayScreenDestination.PlayQueue -> {
+                                PlayQueueScreen(dialogNavController)
+                            }
                         }
                     }
                 }

@@ -23,11 +23,9 @@ class PlaylistRepository(viewModel: ViewModel, id: String) {
 
     companion object {
 
-
         fun ViewModel.playlistRepository(id: String): PlaylistRepository {
             return PlaylistRepository(this, id)
         }
-
 
     }
 }
