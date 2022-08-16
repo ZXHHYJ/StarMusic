@@ -20,8 +20,8 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
 import studio.mandysa.music.ui.common.AppCard
+import studio.mandysa.music.ui.common.AppMenuButton
 import studio.mandysa.music.ui.common.AppRoundAsyncImage
-import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.common.Preview
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.PlaylistItem
@@ -41,7 +41,7 @@ fun MeScreen(
 ) {
     val userInfo by meViewModel.userInfoLiveData.observeAsState()
     val userPlaylists by meViewModel.userPlaylistLiveData.observeAsState()
-    //val playHistory by PlayHistoryRepository.playHistoryLiveData.observeAsState()
+    val recentSongs by meViewModel.recentSongsLiveData.observeAsState()
     Preview(
         modifier = Modifier.statusBarsPadding(),
         refresh = {
@@ -152,6 +152,13 @@ fun MeScreen(
                             //mainNavController.navigate(ScreenDestination.MePlaylist)
                         }
                     }
+                    recentSongs?.let { list ->
+                        items(list) {
+                            PlaylistItem(title = it.title, coverUrl = it.coverUrl) {
+                                mainNavController.navigate(ScreenDestination.Album(it.album.id))
+                            }
+                        }
+                    }
                     /* playHistory?.let { it ->
                          items(it) {
                              PlaylistItem(title = it.title, coverUrl = it.coverUrl) {
@@ -182,19 +189,19 @@ fun MeScreen(
                 ItemSubTitle(stringResource(R.string.more))
             }
             item {
-                MenuItem(
+                AppMenuButton(
                     modifier = Modifier.padding(horizontal = horizontalMargin),
                     title = stringResource(id = R.string.setting),
-                    imageVector = Icons.Rounded.Settings
+                    icon = Icons.Rounded.Settings
                 ) {
                     mainNavController.navigate(ScreenDestination.Setting)
                 }
             }
             item {
-                MenuItem(
+                AppMenuButton(
                     modifier = Modifier.padding(horizontal = horizontalMargin),
                     title = stringResource(id = R.string.about),
-                    imageVector = Icons.Rounded.Info
+                    icon = Icons.Rounded.Info
                 ) {
                     mainNavController.navigate(ScreenDestination.About)
                 }

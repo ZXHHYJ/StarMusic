@@ -3,7 +3,12 @@ package studio.mandysa.music
 import android.app.Application
 import android.content.Intent
 import android.os.Build
+import androidx.compose.runtime.snapshotFlow
 import com.drake.net.NetConfig
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import okhttp3.Cache
 import studio.mandysa.fastkt.FastKt
 import studio.mandysa.music.logic.config.BASE_URL
@@ -17,6 +22,8 @@ import studio.mandysa.music.service.playmanager.PlayManager
  * @author 黄浩
  */
 class MainApplication : Application() {
+
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate() {
         super.onCreate()
 
@@ -34,16 +41,21 @@ class MainApplication : Application() {
         //初始化播放管理器
         PlayManager.init(this)
         //确保播放音乐时播放启动服务
-        PlayManager.pauseLiveData()
-            .observeForever {
-                if (it == false)
-                    startPlayerService()
+        snapshotFlow {
+            PlayManager.pause
+        }.onEach {
+            if (it == false) {
+                startPlayerService()
             }
-        PlayManager.changeMusicLiveData()
-            .observeForever {
-                if (it != null)
-                    startPlayerService()
+        }.launchIn(GlobalScope)
+
+        snapshotFlow {
+            PlayManager.changeMusic
+        }.onEach {
+            if (it != null) {
+                startPlayerService()
             }
+        }.launchIn(GlobalScope)
     }
 
     private fun startPlayerService() {

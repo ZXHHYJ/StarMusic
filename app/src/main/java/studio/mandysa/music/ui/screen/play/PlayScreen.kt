@@ -12,14 +12,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.FontDownload
 import androidx.compose.material.icons.rounded.FormatListBulleted
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.map
 import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.KenBurns
@@ -54,14 +51,11 @@ fun PlayScreen(
 ) {
     val navController = rememberNavController(startDestination = PlayScreenDestination.Main)
     Box {
-        val coverUrl by PlayManager.changeMusicLiveData().map {
-            it.coverUrl
-        }.observeAsState("")
         KenBurns(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.Gray),
-            imageUrl = coverUrl,
+            imageUrl = PlayManager.changeMusic?.coverUrl ?: "",
             paused = panelState == PanelState.COLLAPSED
         )
         Column(

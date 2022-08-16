@@ -13,7 +13,6 @@ import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,7 +21,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.lifecycle.map
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.R
@@ -239,9 +237,7 @@ fun MainScreen() {
                     }
                 },
                 controllerBar = {
-                    val isVisible by PlayManager.changeMusicLiveData().map {
-                        return@map true
-                    }.observeAsState(false)
+                    val isVisible = PlayManager.changeMusic != null
                     AnimatedVisibility(
                         visible = isVisible,
                         enter = expandVertically(),

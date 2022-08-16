@@ -43,18 +43,18 @@ class AppLazyVerticalGridScope(
     private val lazyGridScope: LazyGridScope,
     private val isMedium: Boolean
 ) {
-    fun autoItems(
+    fun adaptiveItems(
         count: Int,
         itemContent: @Composable (LazyGridItemScope.(index: Int) -> Unit)
     ) {
         for (i in 0 until count) {
-            autoItem {
+            adaptiveItem {
                 itemContent.invoke(this, i)
             }
         }
     }
 
-    fun autoItem(scope: @Composable LazyGridItemScope.() -> Unit) {
+    fun adaptiveItem(scope: @Composable LazyGridItemScope.() -> Unit) {
         lazyGridScope.item(
             span = { GridItemSpan(if (isMedium) 1 else 2) },
             content = scope

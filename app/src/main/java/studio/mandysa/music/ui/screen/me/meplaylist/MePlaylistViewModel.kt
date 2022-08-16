@@ -1,16 +1,21 @@
 package studio.mandysa.music.ui.screen.me.meplaylist
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.flow
 import studio.mandysa.music.logic.config.api
+import studio.mandysa.music.logic.model.UserPlaylist
 
 class MePlaylistViewModel : ViewModel() {
 
-    //获取用户的所以歌单，*网易云把我喜欢也算在里面
-    val meAllPlaylist = flow {
-        emit(api.getUserPlaylist())
-    }.asLiveData(context = viewModelScope.coroutineContext)
+    private var mMePlaylistList = mutableStateOf<List<UserPlaylist>?>(null)
+
+    /**
+     * 获取用户所有歌单
+     */
+    fun getMePlaylistListState() = mMePlaylistList
+
+    suspend fun refresh() {
+        mMePlaylistList.value = api.getUserPlaylist()
+    }
 
 }

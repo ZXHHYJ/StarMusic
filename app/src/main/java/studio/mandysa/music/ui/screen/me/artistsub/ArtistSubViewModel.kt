@@ -1,13 +1,17 @@
 package studio.mandysa.music.ui.screen.me.artistsub
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.flow
 import studio.mandysa.music.logic.config.api
+import studio.mandysa.music.logic.model.ArtistSubModel
 
 class ArtistSubViewModel : ViewModel() {
-    val artistSubs = flow {
-        emit(api.artistSublist())
-    }.asLiveData(context = viewModelScope.coroutineContext)
+    var artistSublist by mutableStateOf<List<ArtistSubModel>?>(null)
+        private set
+
+    suspend fun refresh() {
+        artistSublist = api.artistSublist()
+    }
 }

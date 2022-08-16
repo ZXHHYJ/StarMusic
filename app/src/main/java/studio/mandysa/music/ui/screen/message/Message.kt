@@ -16,7 +16,7 @@ import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.R
 import studio.mandysa.music.logic.ktx.copy
 import studio.mandysa.music.ui.common.AppDialog
-import studio.mandysa.music.ui.common.MenuItem
+import studio.mandysa.music.ui.common.AppMenuButton
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.textColor
@@ -40,9 +40,9 @@ fun Message(dialogNavController: NavController<DialogDestination>, message: Stri
             )
             Spacer(modifier = Modifier.height(5.dp))
             val context = LocalContext.current
-            MenuItem(
+            AppMenuButton(
                 title = stringResource(id = R.string.copy),
-                imageVector = Icons.Rounded.ContentCopy
+                icon = Icons.Rounded.ContentCopy
             ) {
                 copy(context, message)
                 dialogNavController.pop()

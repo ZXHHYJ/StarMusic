@@ -4,14 +4,12 @@ import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -22,10 +20,7 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.logic.model.UserPlaylist
-import studio.mandysa.music.ui.common.AppAsyncImage
-import studio.mandysa.music.ui.common.AppCard
-import studio.mandysa.music.ui.common.AppMediumTopAppBar
-import studio.mandysa.music.ui.common.AppScaffold
+import studio.mandysa.music.ui.common.*
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
@@ -91,23 +86,24 @@ fun MePlaylistScreen(
                 scrollBehavior = scrollBehavior
             )
         }) { it ->
-        val list by mePlaylistViewModel.meAllPlaylist.observeAsState()
-        LazyColumn(
-            modifier = Modifier
-                .padding(it)
-                .padding(horizontal = horizontalMargin),
-            verticalArrangement = Arrangement.spacedBy(5.dp),
-        ) {
-            list?.let {
-                itemsIndexed(it) { index, value ->
-                    //第一个是我喜欢的歌单
-                    if (index != 0) {
-                        PlaylistItem(userPlaylist = value)
+        val list by remember { mePlaylistViewModel.getMePlaylistListState() }
+        Preview(refresh = { mePlaylistViewModel.refresh() }) {
+            AppLazyVerticalGrid(
+                modifier = Modifier
+                    .padding(it),
+                contentPadding = PaddingValues(horizontal = horizontalMargin),
+                horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2),
+                verticalArrangement = Arrangement.spacedBy(5.dp),
+            ) {
+                list?.let {
+                    adaptiveItems(it.size) { index ->
+                        //第一个是我喜欢的歌单
+                        PlaylistItem(userPlaylist = it[index])
                     }
                 }
-            }
-            item {
-                Spacer(modifier = Modifier.padding(paddingValues))
+                item {
+                    Spacer(modifier = Modifier.padding(paddingValues))
+                }
             }
         }
     }

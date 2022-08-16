@@ -79,19 +79,19 @@ fun PlaylistScreen(
                                 .padding(horizontal = horizontalMargin)
                                 .padding(bottom = 5.dp)
                         ) {
-                            MenuItem(
+                            AppMenuButton(
                                 modifier = Modifier.weight(1.0f),
                                 title = stringResource(id = R.string.play_all),
-                                imageVector = Icons.Rounded.PlayArrow,
+                                icon = Icons.Rounded.PlayArrow,
                                 enabled = songs?.isNotEmpty() ?: false
                             ) {
                                 PlayManager.play(songs!!, 0)
                             }
                             Spacer(modifier = Modifier.width(5.dp))
-                            MenuItem(
+                            AppMenuButton(
                                 modifier = Modifier.weight(1.0f),
                                 title = stringResource(id = R.string.shuffle_play),
-                                imageVector = Icons.Rounded.Shuffle,
+                                icon = Icons.Rounded.Shuffle,
                                 enabled = songs?.isNotEmpty() ?: false
                             ) {
                                 PlayManager.shufflePlay(songs!!, 0)
@@ -100,7 +100,7 @@ fun PlaylistScreen(
                     }
                 }
                 songs?.let { list ->
-                    autoItems(list.size) { pos ->
+                    adaptiveItems(list.size) { pos ->
                         SongItem(dialogNavController, list[pos]) {
                             PlayManager.play(list, pos)
                         }

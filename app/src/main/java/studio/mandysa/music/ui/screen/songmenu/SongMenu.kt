@@ -26,7 +26,7 @@ import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.service.playmanager.model.MetaMusic
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.AppDialog
-import studio.mandysa.music.ui.common.MenuItem
+import studio.mandysa.music.ui.common.AppMenuButton
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
@@ -78,40 +78,40 @@ fun SongMenu(
                 }
             }
             item {
-                MenuItem(
+                AppMenuButton(
                     modifier = Modifier.padding(horizontal = horizontalMargin),
                     title = stringResource(id = if (isLike == true) R.string.remove_like else R.string.add_like),
-                    imageVector = if (isLike == true) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
+                    icon = if (isLike == true) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
                     enabled = isLike != null
                 ) {
                     songMenuViewModel.likeMusic(isLike == false)
                 }
             }
             item {
-                MenuItem(
+                AppMenuButton(
                     modifier = Modifier.padding(horizontal = horizontalMargin),
                     title = "${stringResource(id = R.string.album)}:${model.album.name}",
-                    imageVector = Icons.Rounded.Album
+                    icon = Icons.Rounded.Album
                 ) {
                     dialogNavController.popAll()
                     mainNavController.navigate(ScreenDestination.Album(model.album.id))
                 }
             }
             item {
-                MenuItem(
+                AppMenuButton(
                     modifier = Modifier.padding(horizontal = horizontalMargin),
                     title = stringResource(id = R.string.next_play),
-                    imageVector = Icons.Rounded.Add
+                    icon = Icons.Rounded.Add
                 ) {
                     dialogNavController.popAll()
                     PlayManager.addNextPlay(model)
                 }
             }
             items(model.artist) {
-                MenuItem(
+                AppMenuButton(
                     modifier = Modifier.padding(horizontal = horizontalMargin),
                     title = "${stringResource(id = R.string.singer)}:${it.name}",
-                    imageVector = Icons.Rounded.Person
+                    icon = Icons.Rounded.Person
                 ) {
                     dialogNavController.popAll()
                     mainNavController.navigate(ScreenDestination.Singer(it.id))

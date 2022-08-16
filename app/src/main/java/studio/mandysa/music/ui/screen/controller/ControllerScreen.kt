@@ -6,11 +6,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.cardColors
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,17 +16,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.map
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.KenBurns
 import studio.mandysa.music.ui.common.PanelState
-import studio.mandysa.music.ui.theme.roundedCornerShape
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.neutralColor
+import studio.mandysa.music.ui.theme.roundedCornerShape
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
     val controlBarHeight = 50.dp
@@ -48,9 +43,7 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
         }
         Box(modifier = Modifier.padding(horizontal = horizontalMargin)) {
             Box {
-                val coverUrl by PlayManager.changeMusicLiveData().map {
-                    it.coverUrl
-                }.observeAsState("")
+                val coverUrl = PlayManager.changeMusic?.coverUrl ?: ""
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -77,23 +70,17 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
                                 .fillMaxSize(),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            val title by PlayManager.changeMusicLiveData()
-                                .map { return@map it.title }
-                                .observeAsState("")
                             Text(
                                 modifier = Modifier
                                     .padding(start = 16.dp)
                                     .weight(1.0f),
-                                text = title,
+                                text = PlayManager.changeMusic?.title ?: "",
                                 fontSize = 16.sp, maxLines = 1,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White
                             )
-                            val playPauseState by PlayManager.pauseLiveData().map {
-                                if (it) R.drawable.ic_play else R.drawable.ic_pause
-                            }.observeAsState(R.drawable.ic_play)
                             Icon(
-                                painter = painterResource(playPauseState),
+                                painter = painterResource(if (PlayManager.pause != false) R.drawable.ic_play else R.drawable.ic_pause),
                                 tint = Color.White,
                                 contentDescription = null,
                                 modifier = Modifier
@@ -101,7 +88,7 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
                                     .padding(8.dp)
                                     .clip(roundedCornerShape)
                                     .clickable {
-                                        if (PlayManager.isPaused()) {
+                                        if (PlayManager.pause != false) {
                                             PlayManager.play()
                                         } else {
                                             PlayManager.pause()

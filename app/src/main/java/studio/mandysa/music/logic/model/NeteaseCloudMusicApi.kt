@@ -169,7 +169,7 @@ interface NeteaseCloudMusicApi {
     suspend fun getAlbumContent(
         @Query("cookie") cookie: String = cookie(),
         @Query("id") id: String
-    ): AlbumContentModel
+    ): AlbumInfoModel
 
     //二维码key生成接口
     //https://neteasecloudmusicapi.vercel.app/#/?id=_1-%e4%ba%8c%e7%bb%b4%e7%a0%81-key-%e7%94%9f%e6%88%90%e6%8e%a5%e5%8f%a3
@@ -195,7 +195,10 @@ interface NeteaseCloudMusicApi {
     //https://neteasecloudmusicapi.vercel.app/#/?id=%e6%9c%80%e8%bf%91%e6%92%ad%e6%94%be-%e6%ad%8c%e6%9b%b2
     @Get("record/recent/song")
     @Path("data/list")
-    suspend fun getRecentSongs(@Query("cookie") cookie: String = cookie()): String
+    suspend fun getRecentSongs(
+        @Query("cookie") cookie: String = cookie(),
+        @Query("limit") limit: Int
+    ): List<RecentSongModel>
 
     //获取我的数字专辑
     //https://neteasecloudmusicapi.vercel.app/#/?id=%e6%9c%80%e8%bf%91%e6%92%ad%e6%94%be-%e6%ad%8c%e6%9b%b2

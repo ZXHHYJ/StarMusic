@@ -9,8 +9,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,15 +27,16 @@ import studio.mandysa.music.ui.theme.verticalMargin
 
 @Composable
 fun PlayQueueScreen(dialogNavController: NavController<DialogDestination>) {
-    val playlist by PlayManager.changePlayListLiveData().observeAsState(listOf())
     LazyColumn {
-        itemsIndexed(playlist) { index, model ->
-            SongItem(
-                dialogNavController,
-                index,
-                model
-            ) {
-                PlayManager.play(playlist, index)
+        PlayManager.playlist?.let {
+            itemsIndexed(it) { index, model ->
+                SongItem(
+                    dialogNavController,
+                    index,
+                    model
+                ) {
+                    PlayManager.play(it, index)
+                }
             }
         }
     }

@@ -16,10 +16,10 @@ import studio.mandysa.music.ui.theme.containerColor
 import studio.mandysa.music.ui.theme.verticalMargin
 
 @Composable
-fun MenuItem(
+fun AppMenuButton(
     modifier: Modifier = Modifier,
     title: String,
-    imageVector: ImageVector,
+    icon: ImageVector,
     enabled: Boolean = true,
     onClick: () -> Unit
 ) {
@@ -35,7 +35,7 @@ fun MenuItem(
             text = title, fontSize = 17.sp,
             fontWeight = FontWeight.Bold
         )
-        Icon(imageVector = imageVector, contentDescription = null)
+        Icon(imageVector = icon, contentDescription = null)
     }
     Spacer(modifier = Modifier.height(verticalMargin))
 }

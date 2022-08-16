@@ -50,7 +50,6 @@ fun BrowseScreen(
     paddingValues: PaddingValues,
     browseViewModel: BrowseViewModel = viewModel()
 ) {
-
     @Composable
     fun BannerItem(typeTitle: String, bannerUrl: String) {
         Column(
@@ -203,28 +202,11 @@ fun BrowseScreen(
                     }
                 }
             }
-            /*item {
-                ItemSubTitle(stringResource(R.string.toplist))
-            }
-            item {
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = horizontalMargin),
-                    horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2),
-                ) {
-                    toplist?.let {
-                        items(it) { model ->
-                            PlaylistItem(title = model.name, coverUrl = model.coverImgUrl) {
-                                mainNavController.navigate(ScreenDestination.Playlist(model.id))
-                            }
-                        }
-                    }
-                }
-            }*/
             item {
                 ItemSubTitle(stringResource(R.string.recommend_song))
             }
             recommendSongs?.let {
-                autoItems(it.size) { index ->
+                adaptiveItems(it.size) { index ->
                     SongItem(dialogNavController, it[index]) {
                         PlayManager.play(it, index)
                     }
