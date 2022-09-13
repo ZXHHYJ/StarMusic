@@ -4,29 +4,30 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Contactless
 import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.ui.common.AppNavigationBarItem
-import studio.mandysa.music.ui.common.AppNavigationRailItem
 import studio.mandysa.music.ui.common.PanelState
 import studio.mandysa.music.ui.common.SlidingPanel
 import studio.mandysa.music.ui.screen.DialogDestination
@@ -48,10 +49,8 @@ import studio.mandysa.music.ui.screen.search.SearchScreen
 import studio.mandysa.music.ui.screen.singer.SingerScreen
 import studio.mandysa.music.ui.screen.songmenu.SongMenu
 import studio.mandysa.music.ui.screen.toplist.ToplistScreen
-import studio.mandysa.music.ui.theme.background
+import studio.mandysa.music.ui.theme.anyBarColor
 import studio.mandysa.music.ui.theme.isMedium
-import studio.mandysa.music.ui.theme.navHeight
-import studio.mandysa.music.ui.theme.neutralColor
 
 /**
  * Happy 22nd Birthday Shuangshengzi
@@ -73,7 +72,6 @@ val HomeBottomNavigationDestination.tabName
         HomeBottomNavigationDestination.Me -> stringResource(id = R.string.me)
     }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppNavigationDrawer(
     modifier: Modifier = Modifier,
@@ -82,36 +80,30 @@ fun AppNavigationDrawer(
     bottomBar: @Composable () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
-    BoxWithConstraints(modifier = modifier) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            Row(modifier = Modifier.weight(1.0f)) {
-                if (isMedium)
-                    drawerContent.invoke(this)
-                Scaffold(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(1.0f),
-                    containerColor = Color.Transparent,
-                    content = content,
-                    bottomBar = {
-                        Column {
-                            controllerBar.invoke()
-                            if (!isMedium)
-                                bottomBar.invoke()
-                        }
-                    }
-                )
+    var size by remember {
+        mutableStateOf(IntSize.Zero)
+    }
+    Row(modifier = modifier) {
+        if (isMedium) {
+            drawerContent.invoke(this)
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(1.0f)
+        ) {
+            content.invoke(PaddingValues(bottom = with(LocalDensity.current) { size.height.toDp() }))
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .onSizeChanged {
+                    size = it
+                }) {
+                controllerBar.invoke()
+                if (!isMedium)
+                    bottomBar.invoke()
             }
-            Box(
-                modifier = Modifier
-                    .height(LocalDensity.current.run {
-                        WindowInsets.navigationBars
-                            .getBottom(this)
-                            .toDp()
-                    })
-                    .fillMaxWidth()
-                    .background(neutralColor)
-            )
+
         }
     }
 }
@@ -171,12 +163,13 @@ fun MainScreen() {
         },
         content = {
             AppNavigationDrawer(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .statusBarsPadding(),
                 drawerContent = {
-                    NavigationRail(
+                    /*NavigationRail(
                         modifier = Modifier
-                            .fillMaxHeight()
-                            .statusBarsPadding(),
+                            .fillMaxHeight(),
                         containerColor = background
                     ) {
                         //上部分
@@ -209,6 +202,7 @@ fun MainScreen() {
                         }
                         Spacer(modifier = Modifier.weight(1.0f))
                         //下部分
+                        // TODO: 待优化
                         val bottomRailItemFunction: @Composable (String, ImageVector, ScreenDestination) -> Unit =
                             { text, icon, screen ->
                                 AppNavigationRailItem(
@@ -234,10 +228,10 @@ fun MainScreen() {
                             Icons.Rounded.Search,
                             ScreenDestination.Search
                         )
-                    }
+                    }*/
                 },
                 controllerBar = {
-                    val isVisible = PlayManager.changeMusic != null
+                    val isVisible = PlayManager.selectMusic != null
                     AnimatedVisibility(
                         visible = isVisible,
                         enter = expandVertically(),
@@ -254,11 +248,35 @@ fun MainScreen() {
                         enter = expandVertically(),
                         exit = shrinkVertically()
                     ) {
-                        NavigationBar(
+                        BottomNavigation(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(navHeight),
-                            containerColor = neutralColor,
+                                .navigationBarsPadding(),
+                            backgroundColor = anyBarColor
+                        ) {
+                            val bottomLastDestination =
+                                homeNavController.backstack.entries.last().destination
+                            HomeBottomNavigationDestination.values().forEach { screen ->
+                                BottomNavigationItem(
+                                    selected = screen == bottomLastDestination,
+                                    onClick = {
+                                        if (!homeNavController.moveToTop { it == screen }) {
+                                            homeNavController.navigate(screen)
+                                        }
+                                    },
+                                    icon = {
+                                        Icon(
+                                            screen.tabIcon,
+                                            contentDescription = null
+                                        )
+                                    }, label = {
+                                        Text(text = screen.tabName)
+                                    })
+                            }
+                        }
+                        /*NavigationBar(
+                            modifier = Modifier.fillMaxWidth(),
+                            containerColor = anyBarColor,
                             contentColor = Color.White
                         ) {
                             val bottomLastDestination =
@@ -281,7 +299,7 @@ fun MainScreen() {
                                     }
                                 )
                             }
-                        }
+                        }*/
                     }
                 }
             ) { padding ->

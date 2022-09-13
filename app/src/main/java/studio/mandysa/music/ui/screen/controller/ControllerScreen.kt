@@ -3,10 +3,9 @@ package studio.mandysa.music.ui.screen.controller
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults.cardColors
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,8 +20,8 @@ import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.KenBurns
 import studio.mandysa.music.ui.common.PanelState
+import studio.mandysa.music.ui.theme.anyBarColor
 import studio.mandysa.music.ui.theme.horizontalMargin
-import studio.mandysa.music.ui.theme.neutralColor
 import studio.mandysa.music.ui.theme.roundedCornerShape
 
 @Composable
@@ -38,20 +37,19 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
                 .height(20.dp)
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
-                .background(neutralColor)
+                .background(anyBarColor)
         ) {
         }
         Box(modifier = Modifier.padding(horizontal = horizontalMargin)) {
             Box {
-                val coverUrl = PlayManager.changeMusic?.coverUrl ?: ""
+                val coverUrl = PlayManager.selectMusic?.coverUrl ?: ""
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(controlBarHeight)
-                        .align(Alignment.BottomCenter), colors = cardColors(
-                        contentColor = Color.Transparent,
-                        containerColor = Color.Transparent
-                    )
+                        .align(Alignment.BottomCenter),
+                    contentColor = Color.Transparent,
+                    backgroundColor = Color.Transparent
                 ) {
                     Box {
                         KenBurns(
@@ -62,7 +60,7 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
                                 .clickable(onClick = onClick)
                                 .background(Color.Gray),
                             imageUrl = coverUrl,
-                            paused = panelState != PanelState.COLLAPSED
+                            paused = PlayManager.pause ?: false
                         )
                         Row(
                             modifier = Modifier
@@ -74,7 +72,7 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
                                 modifier = Modifier
                                     .padding(start = 16.dp)
                                     .weight(1.0f),
-                                text = PlayManager.changeMusic?.title ?: "",
+                                text = PlayManager.selectMusic?.title ?: "",
                                 fontSize = 16.sp, maxLines = 1,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White
@@ -110,7 +108,7 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
                         }
                     }
                 }
-                AppAsyncImage(size = coverSize, url = coverUrl)
+                AppAsyncImage(modifier = Modifier.size(coverSize), url = coverUrl)
             }
         }
     }

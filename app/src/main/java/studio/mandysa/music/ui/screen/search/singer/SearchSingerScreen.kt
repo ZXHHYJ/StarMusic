@@ -12,7 +12,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.ui.common.Preview
-import studio.mandysa.music.ui.item.ItemSinger
+import studio.mandysa.music.ui.item.SingerItem
 import studio.mandysa.music.ui.screen.ScreenDestination
 
 @Composable
@@ -29,7 +29,7 @@ fun SearchSingerScreen(
         LazyColumn {
             singers?.let {
                 items(singers) {
-                    ItemSinger(model = it) {
+                    SingerItem(model = it) {
                         mainNavController.navigate(ScreenDestination.Singer(it.id))
                     }
                 }

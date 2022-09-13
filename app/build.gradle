@@ -29,12 +29,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
 
     buildFeatures {
@@ -46,6 +46,7 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+
     namespace 'studio.mandysa.music'
 }
 
@@ -54,13 +55,15 @@ dependencies {
     // 媒体播放器 https://exoplayer.dev/
     implementation 'com.google.android.exoplayer:exoplayer-core:2.18.0'
     // 图片加载库 https://github.com/coil-kt/coil/blob/main/README-zh.md
-    implementation "io.coil-kt:coil-compose:2.1.0"
-    // 随机放大图片 https://github.com/flavioarfaria/KenBurnsView
-    implementation 'com.flaviofaria:kenburnsview:1.0.7'
+    implementation "io.coil-kt:coil-compose:2.2.0"
     // 网络请求库 https://gitee.com/ZXHHYJ/anna
     implementation 'com.gitee.ZXHHYJ:anna:3.0.2'
-    // 持久化 https://gitee.com/ZXHHYJ/FastKt
-    implementation 'com.gitee.ZXHHYJ:FastKt:1.2.0'
+
+    implementation project(path: ':mytheme')
+
+    implementation('com.github.liangjingkanji:Serialize:1.3.2') {
+        exclude(group: "androidx.appcompat", module: "appcompat")
+    }
 
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.media:media:1.6.0'
@@ -68,28 +71,22 @@ dependencies {
     //noinspection GradleDependency
     implementation "com.squareup.okhttp3:okhttp:4.10.0"
 
-    implementation "com.github.kyant0:color:2022.2-dev01"
-
-    implementation "androidx.paging:paging-compose:1.0.0-alpha16"
-
-    implementation "dev.olshevski.navigation:reimagined:1.1.1"
+    implementation "dev.olshevski.navigation:reimagined:1.2.0"
 
     implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
-    implementation "com.google.accompanist:accompanist-flowlayout:$accompanist_version"
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
 
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation "androidx.activity:activity-compose:1.5.1"
+
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
-    implementation "androidx.activity:activity-compose:1.5.0"
 
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
-    implementation "androidx.compose.material3:material3:1.0.0-alpha16"
-    implementation "androidx.compose.material3:material3-window-size-class:1.0.0-alpha16"
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-service:$lifecycle_version"

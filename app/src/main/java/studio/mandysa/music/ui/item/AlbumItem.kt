@@ -2,10 +2,8 @@ package studio.mandysa.music.ui.item
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Text
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,10 +33,14 @@ fun AlbumItem(mateAlbum: MetaAlbum, onClick: () -> Unit) {
                 modifier = Modifier
                     .fillMaxSize()
                     .offset(x = 5.dp),
-                colors = CardDefaults.cardColors(Color.LightGray),
+                backgroundColor = Color.LightGray,
                 shape = RoundedCornerShape(size)
             ) {}
-            AppAsyncImage(size = size, url = mateAlbum.coverUrl, onClick = onClick)
+            AppAsyncImage(
+                modifier = Modifier.size(size),
+                url = mateAlbum.coverUrl,
+                onClick = onClick
+            )
         }
         Text(
             modifier = Modifier.fillMaxWidth(),

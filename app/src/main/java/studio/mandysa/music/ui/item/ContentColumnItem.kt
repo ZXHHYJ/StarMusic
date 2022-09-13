@@ -3,7 +3,7 @@ package studio.mandysa.music.ui.item
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
-import androidx.compose.material3.Text
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,9 +17,9 @@ import coil.compose.AsyncImage
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.ui.screen.DialogDestination
-import studio.mandysa.music.ui.theme.roundedCornerShape
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.isMedium
+import studio.mandysa.music.ui.theme.roundedCornerShape
 import studio.mandysa.music.ui.theme.textColor
 
 @Composable

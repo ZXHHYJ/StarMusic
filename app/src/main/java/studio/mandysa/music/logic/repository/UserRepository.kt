@@ -1,15 +1,14 @@
 package studio.mandysa.music.logic.repository
 
 import androidx.lifecycle.LiveData
-import studio.mandysa.fastkt.serial
-import studio.mandysa.fastkt.serialLiveData
-import studio.mandysa.music.logic.config.noBackupFastKt
+import com.drake.serialize.serialize.serial
+import com.drake.serialize.serialize.serialLiveData
 
 object UserRepository {
 
-    private var mUserId by serial<String?>(key = "userid", def = null, noBackupFastKt)
+    private var mUserId by serial<String?>(name = "userid", default = null)
 
-    private val mCookieLiveData by serialLiveData<String?>(key = "cookie", def = null, noBackupFastKt)
+    private val mCookieLiveData by serialLiveData<String?>(name = "cookie", default = null)
 
     var isLoginLiveData: LiveData<String?> = mCookieLiveData
 

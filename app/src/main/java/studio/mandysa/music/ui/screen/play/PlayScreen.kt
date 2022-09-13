@@ -50,13 +50,13 @@ fun PlayScreen(
     function: (PanelState) -> Unit
 ) {
     val navController = rememberNavController(startDestination = PlayScreenDestination.Main)
-    Box {
+    Box(modifier = Modifier.fillMaxSize()) {
         KenBurns(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.Gray),
-            imageUrl = PlayManager.changeMusic?.coverUrl ?: "",
-            paused = panelState == PanelState.COLLAPSED
+            imageUrl = PlayManager.selectMusic?.coverUrl ?: "",
+            paused = PlayManager.pause ?: false
         )
         Column(
             modifier = Modifier

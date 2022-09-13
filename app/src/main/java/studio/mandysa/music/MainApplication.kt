@@ -10,11 +10,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import okhttp3.Cache
-import studio.mandysa.fastkt.FastKt
 import studio.mandysa.music.logic.config.BASE_URL
-import studio.mandysa.music.logic.config.cacheFastKt
 import studio.mandysa.music.logic.config.mainApplication
-import studio.mandysa.music.logic.config.noBackupFastKt
 import studio.mandysa.music.service.MediaPlayService
 import studio.mandysa.music.service.playmanager.PlayManager
 
@@ -26,10 +23,6 @@ class MainApplication : Application() {
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate() {
         super.onCreate()
-
-        noBackupFastKt = FastKt(noBackupFilesDir.toString(), "FastKt")
-
-        cacheFastKt = FastKt(cacheDir.toString(), "FastKt")
 
         mainApplication = this
 
@@ -50,7 +43,7 @@ class MainApplication : Application() {
         }.launchIn(GlobalScope)
 
         snapshotFlow {
-            PlayManager.changeMusic
+            PlayManager.selectMusic
         }.onEach {
             if (it != null) {
                 startPlayerService()

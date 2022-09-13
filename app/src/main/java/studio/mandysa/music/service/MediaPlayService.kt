@@ -89,7 +89,7 @@ class MediaPlayService : LifecycleService() {
             mInitPlayManagerChanged = true
         }
         snapshotFlow {
-            PlayManager.changeMusic
+            PlayManager.selectMusic
         }.onEach {
             if (it == null) return@onEach
             mMediaNotification
@@ -133,7 +133,7 @@ class MediaPlayService : LifecycleService() {
             PlayManager.duration
         }.onEach {
             if (it == null) return@onEach
-            PlayManager.changeMusic?.let { model ->
+            PlayManager.selectMusic?.let { model ->
                 mMediaSession.setMetadata(
                     MediaMetadataCompat.Builder()
                         .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, it.toLong())
@@ -167,6 +167,7 @@ class MediaPlayService : LifecycleService() {
         mMediaSession.isActive = false
         mMediaSession.release()
         instance = null
+        PlayManager.release()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -202,13 +203,12 @@ class MediaPlayService : LifecycleService() {
                 }
 
                 override fun onMediaButtonEvent(mediaButtonEvent: Intent?): Boolean {
-                    println(mediaButtonEvent)
                     return super.onMediaButtonEvent(mediaButtonEvent)
                 }
 
                 override fun onStop() {
                     super.onStop()
-                    PlayManager.stop()
+                    PlayManager.release()
                     stopSelf()
                 }
 

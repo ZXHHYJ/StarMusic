@@ -6,7 +6,6 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -14,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import studio.mandysa.music.ui.theme.neutralColor
+import studio.mandysa.music.ui.theme.anyBarColor
 
 @Composable
 fun Preview(
@@ -60,10 +59,9 @@ fun Preview(
         BoxWithConstraints {
             content.invoke()
             //线的颜色
-            val lineColor = neutralColor
+            val lineColor = anyBarColor
             Canvas(
                 modifier = Modifier
-                    .statusBarsPadding()
                     .align(Alignment.TopCenter)
                     .fillMaxSize(),
                 onDraw = {

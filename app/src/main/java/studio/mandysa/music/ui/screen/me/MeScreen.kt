@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -19,9 +19,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
+import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.AppCard
 import studio.mandysa.music.ui.common.AppMenuButton
-import studio.mandysa.music.ui.common.AppRoundAsyncImage
 import studio.mandysa.music.ui.common.Preview
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.PlaylistItem
@@ -66,7 +66,11 @@ fun MeScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Box(modifier = Modifier.padding(horizontal = 10.dp)) {
-                                AppRoundAsyncImage(size = 70.dp, url = it.avatarUrl)
+                                AppAsyncImage(
+                                    modifier = Modifier.size(70.dp),
+                                    cornerSize = 70.dp / 2,
+                                    url = it.avatarUrl
+                                )
                             }
                             Column {
                                 Text(text = it.nickname, color = textColor)

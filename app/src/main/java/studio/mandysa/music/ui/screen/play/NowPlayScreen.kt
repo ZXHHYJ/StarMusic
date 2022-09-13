@@ -5,10 +5,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,7 +55,10 @@ private fun AlbumCover() {
         elevation = 10.dp,
         shape = roundedCornerShape
     ) {
-        AppAsyncImage(size = maxWidth, url = PlayManager.changeMusic?.coverUrl ?: "")
+        AppAsyncImage(
+            modifier = Modifier.size(maxWidth),
+            url = PlayManager.selectMusic?.coverUrl
+        )
     }
 }
 
@@ -73,7 +76,7 @@ private fun TitleAndArtist(dialogNavController: NavController<DialogDestination>
             horizontalAlignment = Alignment.Start
         ) {
             Text(
-                text = PlayManager.changeMusic?.title ?: "",
+                text = PlayManager.selectMusic?.title ?: "",
                 color = Color.White,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
@@ -81,7 +84,7 @@ private fun TitleAndArtist(dialogNavController: NavController<DialogDestination>
             )
             Spacer(modifier = Modifier.padding(top = 2.dp))
             Text(
-                text = PlayManager.changeMusic?.artist?.get(0)?.name ?: "",
+                text = PlayManager.selectMusic?.artist?.get(0)?.name ?: "",
                 color = translucentWhite,
                 fontSize = 16.sp,
                 maxLines = 1
@@ -94,7 +97,7 @@ private fun TitleAndArtist(dialogNavController: NavController<DialogDestination>
                 .clip(RoundedCornerShape(32.dp))
                 .background(translucentWhiteFixBug)
                 .clickable {
-                    dialogNavController.navigate(DialogDestination.SongMenu(PlayManager.changeMusic!!))
+                    dialogNavController.navigate(DialogDestination.SongMenu(PlayManager.selectMusic!!))
                 },
             tint = Color.White
         )

@@ -56,8 +56,7 @@ object PlayManager {
         })
     }
 
-
-    private val mRunnable = object : Runnable {
+    private val mProgressUpdateRunnable = object : Runnable {
         override fun run() {
             progress = mMediaPlayer?.currentPosition?.toInt() ?: return
             mTimeHandler.postDelayed(this, 1000)
@@ -74,6 +73,13 @@ object PlayManager {
         get() {
             if (field == null) {
                 field = createExoPlayer(mContext)
+                selectMusic?.let { it ->
+                    val saveProgress = progress
+                    playMusic(it)
+                    saveProgress?.let {
+                        seekTo(it)
+                    }
+                }
             }
             return field
         }
@@ -86,7 +92,7 @@ object PlayManager {
     /**
      * 当前播放的歌曲
      */
-    var changeMusic by mutableStateOf<MetaMusic<*, *>?>(null)
+    var selectMusic by mutableStateOf<MetaMusic<*, *>?>(null)
         private set
 
     /**
@@ -172,33 +178,29 @@ object PlayManager {
     fun play() {
         if (mMediaPlayer!!.isPlaying)
             return
-        mTimeHandler.post(mRunnable)
+        mTimeHandler.post(mProgressUpdateRunnable)
         mMediaPlayer!!.play()
     }
 
     fun pause() {
         if (!mMediaPlayer!!.isPlaying)
             return
-        mTimeHandler.removeCallbacks(mRunnable)
+        mTimeHandler.removeCallbacks(mProgressUpdateRunnable)
         mMediaPlayer!!.pause()
     }
 
     private fun playMusic(metaMusic: MetaMusic<*, *>) {
         progress = 0
-        changeMusic = metaMusic
-        changeMusic = metaMusic
-        mMediaPlayer?.run {
-            val url = MUSIC_URL + metaMusic.id
-            setMediaItem(MediaItem.fromUri(url.toUri()))
-            prepare()
-        }
+        selectMusic = metaMusic
+
+        val url = MUSIC_URL + metaMusic.id
+        mMediaPlayer?.setMediaItem(MediaItem.fromUri(url.toUri()))
+        mMediaPlayer?.prepare()
     }
 
-    fun stop() {
-        mMediaPlayer?.run {
-            stop()
-            release()
-        }
+    fun release() {
+        mMediaPlayer?.stop()
+        mMediaPlayer?.release()
         mMediaPlayer = null
     }
 

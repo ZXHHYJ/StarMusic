@@ -23,19 +23,20 @@ fun AppLazyVerticalGrid(
     userScrollEnabled: Boolean = true,
     content: AppLazyVerticalGridScope.() -> Unit
 ) {
-    val isMedium = isMedium
-    LazyVerticalGrid(
-        GridCells.Fixed(2),
-        modifier,
-        state,
-        contentPadding,
-        reverseLayout,
-        verticalArrangement,
-        horizontalArrangement,
-        flingBehavior,
-        userScrollEnabled,
-    ) {
-        content.invoke(AppLazyVerticalGridScope(this, isMedium))
+    isMedium.let {
+        LazyVerticalGrid(
+            GridCells.Fixed(2),
+            modifier,
+            state,
+            contentPadding,
+            reverseLayout,
+            verticalArrangement,
+            horizontalArrangement,
+            flingBehavior,
+            userScrollEnabled,
+        ) {
+            content.invoke(AppLazyVerticalGridScope(this, it))
+        }
     }
 }
 

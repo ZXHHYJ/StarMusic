@@ -4,24 +4,22 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Card
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Equalizer
 import androidx.compose.material.icons.rounded.QueueMusic
 import androidx.compose.material.icons.rounded.Radio
-import androidx.compose.material3.Card
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.AsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
@@ -30,10 +28,7 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.ui.common.AppLazyVerticalGrid
-import studio.mandysa.music.ui.common.POPWindows
-import studio.mandysa.music.ui.common.Preview
-import studio.mandysa.music.ui.common.SearchBar
+import studio.mandysa.music.ui.common.*
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.PlaylistItem
 import studio.mandysa.music.ui.item.RoundIconItem
@@ -64,11 +59,9 @@ fun BrowseScreen(
                         POPWindows.postValue("尚未支持的功能")
                     }
             ) {
-                AsyncImage(
-                    model = bannerUrl,
-                    contentDescription = null,
+                AppAsyncImage(
                     modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
+                    url = bannerUrl
                 )
             }
             Text(
@@ -88,11 +81,7 @@ fun BrowseScreen(
     val playlistSquare by browseViewModel.playlistSquareLiveData.observeAsState()
     //val toplist by browseViewModel.toplistLiveData.observeAsState()
     Preview(refresh = { browseViewModel.network() }) {
-        AppLazyVerticalGrid(
-            modifier = Modifier
-                .fillMaxSize()
-                .statusBarsPadding()
-        ) {
+        AppLazyVerticalGrid(modifier = Modifier.fillMaxSize()) {
             item {
                 SearchBar(onClick = { mainNavController.navigate(ScreenDestination.Search) }) {
                     Text(text = stringResource(id = R.string.search_hint))

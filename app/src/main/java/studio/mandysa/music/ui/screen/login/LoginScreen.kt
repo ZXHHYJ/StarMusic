@@ -6,14 +6,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
+import androidx.compose.material.*
 import androidx.compose.material.ButtonDefaults.buttonColors
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.ExposedDropdownMenuDefaults.textFieldColors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBackIos
-import androidx.compose.material3.*
-import androidx.compose.material3.ExposedDropdownMenuDefaults.textFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -68,15 +65,13 @@ private fun LoginDialog() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview
 private fun PreviewLoginScreen() {
     LoginScreen()
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
-@ExperimentalMaterial3Api
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun LoginScreen(loginViewModel: LoginViewModel = viewModel()) {
     val loginNavController =
@@ -84,7 +79,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel()) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val textFileColors = textFieldColors(
         textColor = Color.Black,
-        containerColor = translucentWhite,
+        backgroundColor = translucentWhite,
         cursorColor = Color.Black,
         focusedIndicatorColor = Color.Transparent,
         unfocusedIndicatorColor = Color.Transparent,
@@ -196,7 +191,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel()) {
                                 .drawWithContent {
                                     drawContent()
                                 },
-                            colors = CardDefaults.cardColors(containerColor = translucentWhite),
+                            backgroundColor = translucentWhite,
                         ) {
                             qrBitmap?.let {
                                 Image(

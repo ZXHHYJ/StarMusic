@@ -2,8 +2,8 @@ package studio.mandysa.music.ui.screen.search
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material3.Tab
-import androidx.compose.material3.Text
+import androidx.compose.material.Tab
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

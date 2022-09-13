@@ -19,3 +19,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "mandysa_music"
 include ':app'
+include ':mytheme'

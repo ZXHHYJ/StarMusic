@@ -4,9 +4,9 @@ package studio.mandysa.music.ui.screen.songmenu
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -58,7 +58,7 @@ fun SongMenu(
                         modifier = Modifier
                             .height(80.dp)
                     ) {
-                        AppAsyncImage(size = 80.dp, url = model.coverUrl)
+                        AppAsyncImage(modifier = Modifier.size(80.dp), url = model.coverUrl)
                         Column(modifier = Modifier.padding(verticalMargin)) {
                             Text(
                                 text = model.title,

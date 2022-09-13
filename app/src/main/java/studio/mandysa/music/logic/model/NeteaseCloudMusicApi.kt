@@ -14,7 +14,7 @@ interface NeteaseCloudMusicApi {
 
     //发送验证码
     @Get("captcha/sent")
-    suspend fun sendCaptcha(@Query("phone") phone: String): CaptchaModel
+    suspend fun sendCaptcha(    @Query("phone") phone: String): CaptchaModel
 
     @Get("login/cellphone")
     suspend fun phoneLogin(

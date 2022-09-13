@@ -14,7 +14,7 @@ import studio.mandysa.music.ui.common.lyric.Lyric
 
 @Composable
 fun LyricScreen() {
-    val musicId = PlayManager.changeMusic?.id
+    val musicId = PlayManager.selectMusic?.id
     var lyric by remember { mutableStateOf("") }
     LaunchedEffect(musicId) {
         musicId?.let {
