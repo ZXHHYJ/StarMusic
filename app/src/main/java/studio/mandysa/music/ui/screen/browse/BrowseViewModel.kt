@@ -7,8 +7,17 @@ import studio.mandysa.music.logic.config.api
 import studio.mandysa.music.logic.model.BannerModel
 import studio.mandysa.music.logic.model.PlaylistModel
 import studio.mandysa.music.logic.model.RecommendSong
+import studio.mandysa.music.logic.model.UserModel
+import studio.mandysa.music.ui.screen.me.MeViewModel
 
 class BrowseViewModel : ViewModel() {
+
+    private val mUserInfoLiveData = MutableLiveData<UserModel>()
+
+    /**
+     * 获取用户信息，参考[MeViewModel]
+     */
+    val userInfoLiveData: LiveData<UserModel> = mUserInfoLiveData
 
     private val mBannersLiveData = MutableLiveData<List<BannerModel>>()
 
@@ -27,6 +36,8 @@ class BrowseViewModel : ViewModel() {
     val playlistSquareLiveData: LiveData<List<PlaylistModel>> = mPlaylistSquareLiveData
 
     suspend fun network() {
+        mUserInfoLiveData.value = api.network().getUserInfo()
+
         mBannersLiveData.value = api.network().getBannerList()
         mRecommendSongLiveData.value = api.network().getRecommendSong()
         mRecommendPlaylistLiveData.value = api.network().getRecommendPlaylist()

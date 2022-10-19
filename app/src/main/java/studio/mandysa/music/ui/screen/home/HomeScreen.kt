@@ -7,8 +7,8 @@ import dev.olshevski.navigation.reimagined.NavHost
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.screen.browse.BrowseScreen
+import studio.mandysa.music.ui.screen.local.LocalScreen
 import studio.mandysa.music.ui.screen.main.HomeBottomNavigationDestination
-import studio.mandysa.music.ui.screen.me.MeScreen
 
 @Composable
 fun HomeScreen(
@@ -19,18 +19,18 @@ fun HomeScreen(
 ) {
     NavHost(bottomNavController) {
         when (it) {
-            HomeBottomNavigationDestination.Browse -> {
+            HomeBottomNavigationDestination.NeteaseCloud -> {
                 BrowseScreen(
                     mainNavController,
                     dialogNavController,
-                    paddingValues = paddingValues
+                    paddingValues
                 )
             }
-            HomeBottomNavigationDestination.Me -> {
-                MeScreen(
+            HomeBottomNavigationDestination.Local -> {
+                LocalScreen(
                     mainNavController,
                     dialogNavController,
-                    paddingValues = paddingValues
+                    paddingValues
                 )
             }
         }

@@ -8,6 +8,9 @@ sealed class ScreenDestination : Parcelable {
     @Parcelize
     object Main : ScreenDestination()
 
+    /**
+     * 网易云的screen从这里开始
+     */
     @Parcelize
     object Search : ScreenDestination()
 
@@ -37,4 +40,11 @@ sealed class ScreenDestination : Parcelable {
 
     @Parcelize
     object ToplistScreen : ScreenDestination()
+
+    @Parcelize
+    object MeScreen : ScreenDestination()
+
+    /**
+     * 本地音乐的Screen从这里开始
+     */
 }

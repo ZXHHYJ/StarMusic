@@ -30,10 +30,7 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.ui.common.AppLazyVerticalGrid
-import studio.mandysa.music.ui.common.POPWindows
-import studio.mandysa.music.ui.common.Preview
-import studio.mandysa.music.ui.common.SearchBar
+import studio.mandysa.music.ui.common.*
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.PlaylistItem
 import studio.mandysa.music.ui.item.RoundIconItem
@@ -83,6 +80,7 @@ fun BrowseScreen(
         }
     }
 
+    val userInfo by browseViewModel.userInfoLiveData.observeAsState()
     val bannerItems by browseViewModel.bannersLiveData.observeAsState()
     val recommendSongs by browseViewModel.recommendSongLiveData.observeAsState()
     val recommendPlaylist by browseViewModel.recommendPlaylistLiveData.observeAsState()
@@ -96,7 +94,18 @@ fun BrowseScreen(
         ) {
             item {
                 SearchBar(onClick = { mainNavController.navigate(ScreenDestination.Search) }) {
-                    Text(text = stringResource(id = R.string.search_hint))
+                    Text(
+                        text = stringResource(id = R.string.search_hint),
+                        modifier = Modifier.weight(1.0f)
+                    )
+                    userInfo?.let {
+                        AppRoundAsyncImage(
+                            size = 35.dp,
+                            url = it.avatarUrl
+                        ) {
+                            mainNavController.navigate(ScreenDestination.MeScreen)
+                        }
+                    }
                 }
             }
             item {

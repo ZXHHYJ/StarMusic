@@ -38,6 +38,7 @@ import studio.mandysa.music.ui.screen.controller.ControllerScreen
 import studio.mandysa.music.ui.screen.fm.FmScreen
 import studio.mandysa.music.ui.screen.home.HomeScreen
 import studio.mandysa.music.ui.screen.me.MeMenu
+import studio.mandysa.music.ui.screen.me.MeScreen
 import studio.mandysa.music.ui.screen.me.about.AboutScreen
 import studio.mandysa.music.ui.screen.me.artistsub.ArtistSubScreen
 import studio.mandysa.music.ui.screen.me.meplaylist.MePlaylistScreen
@@ -56,20 +57,20 @@ import studio.mandysa.music.ui.theme.*
  * Happy 22nd Birthday Shuangshengzi
  */
 enum class HomeBottomNavigationDestination {
-    Browse,
-    Me,
+    NeteaseCloud,
+    Local,
 }
 
 val HomeBottomNavigationDestination.tabIcon
     get() = when (this) {
-        HomeBottomNavigationDestination.Browse -> Icons.Rounded.Contactless
-        HomeBottomNavigationDestination.Me -> Icons.Rounded.Person
+        HomeBottomNavigationDestination.NeteaseCloud -> Icons.Rounded.Contactless
+        HomeBottomNavigationDestination.Local -> Icons.Rounded.Person
     }
 
 val HomeBottomNavigationDestination.tabName
     @Composable get() = when (this) {
-        HomeBottomNavigationDestination.Browse -> stringResource(id = R.string.browse)
-        HomeBottomNavigationDestination.Me -> stringResource(id = R.string.me)
+        HomeBottomNavigationDestination.NeteaseCloud -> stringResource(id = R.string.browse)
+        HomeBottomNavigationDestination.Local -> stringResource(id = R.string.me)
     }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -123,7 +124,7 @@ fun MainScreen() {
         rememberNavController<ScreenDestination>(startDestination = ScreenDestination.Main)
 
     val homeNavController =
-        rememberNavController(startDestination = HomeBottomNavigationDestination.Browse)
+        rememberNavController(startDestination = HomeBottomNavigationDestination.NeteaseCloud)
 
     val dialogNavController = rememberNavController<DialogDestination>(
         initialBackstack = emptyList()
@@ -364,6 +365,13 @@ fun MainScreen() {
                         }
                         ScreenDestination.ToplistScreen -> {
                             ToplistScreen()
+                        }
+                        ScreenDestination.MeScreen -> {
+                            MeScreen(
+                                mainNavController,
+                                dialogNavController,
+                                padding
+                            )
                         }
                     }
                 }
