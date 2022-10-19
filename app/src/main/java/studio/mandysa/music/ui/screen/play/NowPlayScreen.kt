@@ -5,11 +5,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,6 +21,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.map
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
@@ -55,10 +58,11 @@ private fun AlbumCover() {
         elevation = 10.dp,
         shape = roundedCornerShape
     ) {
-        AppAsyncImage(
-            modifier = Modifier.size(maxWidth),
-            url = PlayManager.selectMusic?.coverUrl
-        )
+        val coverUrl by PlayManager.changeMusicLiveData().map { return@map it.coverUrl }
+            .observeAsState()
+        coverUrl?.let {
+            AppAsyncImage(size = maxWidth, url = it)
+        }
     }
 }
 
@@ -75,8 +79,13 @@ private fun TitleAndArtist(dialogNavController: NavController<DialogDestination>
                 .weight(1.0f),
             horizontalAlignment = Alignment.Start
         ) {
+            val title by PlayManager.changeMusicLiveData().map { return@map it.title }
+                .observeAsState("")
+            val musician by PlayManager.changeMusicLiveData().map {
+                it.artist[0].name
+            }.observeAsState("")
             Text(
-                text = PlayManager.selectMusic?.title ?: "",
+                text = title,
                 color = Color.White,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
@@ -84,12 +93,13 @@ private fun TitleAndArtist(dialogNavController: NavController<DialogDestination>
             )
             Spacer(modifier = Modifier.padding(top = 2.dp))
             Text(
-                text = PlayManager.selectMusic?.artist?.get(0)?.name ?: "",
+                text = musician,
                 color = translucentWhite,
                 fontSize = 16.sp,
                 maxLines = 1
             )
         }
+        val metaMusic by PlayManager.changeMusicLiveData().observeAsState()
         Icon(
             Icons.Rounded.MoreVert, null,
             Modifier
@@ -97,7 +107,7 @@ private fun TitleAndArtist(dialogNavController: NavController<DialogDestination>
                 .clip(RoundedCornerShape(32.dp))
                 .background(translucentWhiteFixBug)
                 .clickable {
-                    dialogNavController.navigate(DialogDestination.SongMenu(PlayManager.selectMusic!!))
+                    dialogNavController.navigate(DialogDestination.SongMenu(metaMusic!!))
                 },
             tint = Color.White
         )
@@ -110,12 +120,20 @@ private fun MusicProgressBar() {
         val s: Int = this / 1000
         return (s / 60).toString() + ":" + s % 60
     }
+
+    val musicPlaybackProgress by PlayManager.playingMusicProgressLiveData().map {
+        it
+    }.observeAsState(0)
+    val musicDuration by PlayManager.playingMusicDurationLiveData().map {
+        it
+    }.observeAsState(1)
+
     SeekBar(
         modifier = Modifier
             .widthIn(max = maxWidth)
             .fillMaxWidth(),
-        value = PlayManager.progress ?: 0,
-        maxValue = PlayManager.duration ?: 0,
+        value = musicPlaybackProgress,
+        maxValue = musicDuration,
         onValueChange = { PlayManager.seekTo(it) }
     )
     Row(
@@ -123,9 +141,9 @@ private fun MusicProgressBar() {
             .widthIn(max = maxWidth)
             .fillMaxWidth()
     ) {
-        Text(text = (PlayManager.progress ?: 0).toTime(), color = translucentWhite)
+        Text(text = musicPlaybackProgress.toTime(), color = translucentWhite)
         Spacer(modifier = Modifier.weight(1f))
-        Text(text = (PlayManager.duration ?: 0).toTime(), color = translucentWhite)
+        Text(text = musicDuration.toTime(), color = translucentWhite)
     }
 }
 
@@ -142,6 +160,9 @@ private fun MusicControlBar() {
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
+        val playPauseState by PlayManager.pauseLiveData().map {
+            if (it) R.drawable.ic_play else R.drawable.ic_pause
+        }.observeAsState(R.drawable.ic_play)
         Icon(
             ImageVector.vectorResource(id = R.drawable.ic_skip_previous), null,
             Modifier
@@ -154,15 +175,12 @@ private fun MusicControlBar() {
         )
         Box(modifier = Modifier.padding(horizontal = 35.dp)) {
             Icon(
-                ImageVector.vectorResource(
-                    id = if (PlayManager.pause != false) R.drawable.ic_play else R.drawable.ic_pause
-                ),
-                null,
+                ImageVector.vectorResource(id = playPauseState), null,
                 Modifier
                     .size(middleButtonSize)
                     .clip(RoundedCornerShape(middleButtonSize))
                     .clickable {
-                        if (PlayManager.pause != false)
+                        if (PlayManager.isPaused())
                             PlayManager.play()
                         else PlayManager.pause()
                     },

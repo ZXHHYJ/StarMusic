@@ -46,7 +46,6 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
-
     namespace 'studio.mandysa.music'
 }
 
@@ -56,13 +55,18 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer-core:2.18.0'
     // 图片加载库 https://github.com/coil-kt/coil/blob/main/README-zh.md
     implementation "io.coil-kt:coil-compose:2.2.0"
+    // 随机放大图片 https://github.com/flavioarfaria/KenBurnsView
+    implementation 'com.flaviofaria:kenburnsview:1.0.7'
     // 网络请求库 https://gitee.com/ZXHHYJ/anna
     implementation 'com.gitee.ZXHHYJ:anna:3.0.2'
 
-    implementation project(path: ':mytheme')
-
     implementation('com.github.liangjingkanji:Serialize:1.3.2') {
         exclude(group: "androidx.appcompat", module: "appcompat")
+    }
+
+    api("com.github.Kyant0:Monet:0.1.0-alpha03"){
+        exclude(group: "androidx.compose.ui", module: "ui")
+        exclude(group: "androidx.compose.material3", module: "material3")
     }
 
     implementation 'androidx.core:core-ktx:1.8.0'
@@ -71,23 +75,26 @@ dependencies {
     //noinspection GradleDependency
     implementation "com.squareup.okhttp3:okhttp:4.10.0"
 
+    implementation "androidx.paging:paging-compose:1.0.0-alpha16"
+
     implementation "dev.olshevski.navigation:reimagined:1.2.0"
 
     implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-flowlayout:$accompanist_version"
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
 
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
     implementation "androidx.activity:activity-compose:1.5.1"
 
-    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
-
-    implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation "androidx.compose.material3:material3:1.0.0-rc01"
 
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-service:$lifecycle_version"
 

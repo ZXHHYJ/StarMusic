@@ -2,10 +2,10 @@ package studio.mandysa.music.ui.common
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -16,18 +16,18 @@ import studio.mandysa.music.ui.theme.containerColor
 import studio.mandysa.music.ui.theme.verticalMargin
 
 @Composable
-fun AppMenuButton(
+fun MenuItem(
     modifier: Modifier = Modifier,
     title: String,
-    icon: ImageVector,
+    imageVector: ImageVector,
     enabled: Boolean = true,
     onClick: () -> Unit
 ) {
-    Button(
+    FilledTonalButton(
         modifier = modifier
             .height(50.dp),
         enabled = enabled,
-        colors = ButtonDefaults.buttonColors(backgroundColor = containerColor),
+        colors = ButtonDefaults.filledTonalButtonColors(containerColor = containerColor),
         onClick = onClick,
     ) {
         Text(
@@ -35,7 +35,7 @@ fun AppMenuButton(
             text = title, fontSize = 17.sp,
             fontWeight = FontWeight.Bold
         )
-        Icon(imageVector = icon, contentDescription = null)
+        Icon(imageVector = imageVector, contentDescription = null)
     }
     Spacer(modifier = Modifier.height(verticalMargin))
 }

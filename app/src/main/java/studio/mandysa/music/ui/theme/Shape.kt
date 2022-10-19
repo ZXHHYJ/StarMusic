@@ -5,4 +5,4 @@ import androidx.compose.runtime.Composable
 
 //默认圆角形状，除非使用这个不协调，否则不要使用其他shape
 val roundedCornerShape: RoundedCornerShape
-    @Composable get() = RoundedCornerShape(defaultRound)
+    @Composable get() = RoundedCornerShape(round)

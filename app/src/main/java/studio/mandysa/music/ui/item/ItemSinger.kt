@@ -2,10 +2,10 @@ package studio.mandysa.music.ui.item
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ChevronRight
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,8 +20,8 @@ import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.theme.*
 
 @Composable
-fun SingerItem(model: SearchSingerModel, onClick: () -> Unit) {
-    SingerItem(
+fun ItemSinger(model: SearchSingerModel, onClick: () -> Unit) {
+    ItemSinger(
         picUrl = model.picUrl,
         name = model.name,
         hint = "${stringResource(id = R.string.album)}:${model.albumSize}"
@@ -31,8 +31,8 @@ fun SingerItem(model: SearchSingerModel, onClick: () -> Unit) {
 }
 
 @Composable
-fun SingerItem(model: ArtistSubModel, onClick: () -> Unit) {
-    SingerItem(
+fun ItemSinger(model: ArtistSubModel, onClick: () -> Unit) {
+    ItemSinger(
         picUrl = model.picUrl,
         name = model.nickname,
         hint = "${stringResource(id = R.string.album)}:${model.albumSize}"
@@ -42,7 +42,7 @@ fun SingerItem(model: ArtistSubModel, onClick: () -> Unit) {
 }
 
 @Composable
-fun SingerItem(picUrl: String, name: String, hint: String, onClick: () -> Unit) {
+fun ItemSinger(picUrl: String, name: String, hint: String, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -55,7 +55,7 @@ fun SingerItem(picUrl: String, name: String, hint: String, onClick: () -> Unit) 
                 .padding(horizontal = horizontalMargin, vertical = verticalMargin)
                 .size(50.dp), contentAlignment = Alignment.Center
         ) {
-            AppAsyncImage(modifier = Modifier.size(50.dp), cornerSize = 25.dp, url = picUrl)
+            AppAsyncImage(size = 50.dp, cornerSize = 25.dp, url = picUrl)
         }
         Column(
             modifier = Modifier

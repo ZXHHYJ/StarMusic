@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import studio.mandysa.music.logic.config.api
 import studio.mandysa.music.logic.model.MyDigitalAlbum
-import studio.mandysa.music.logic.model.RecentSongModel
 import studio.mandysa.music.logic.model.UserModel
 import studio.mandysa.music.logic.model.UserPlaylist
 
@@ -23,26 +22,11 @@ class MeViewModel : ViewModel() {
 
     val myDigitalAlbumsLiveData: LiveData<List<MyDigitalAlbum>> = mMyDigitalAlbumsLiveData
 
-    private val mRecentSongsLiveData = MutableLiveData<List<RecentSongModel>>()
-
-    val recentSongsLiveData: LiveData<List<RecentSongModel>> = mRecentSongsLiveData
-
     suspend fun refresh() {
         mUserInfoLiveData.value = api.network().getUserInfo()
-        api.network().getUserPlaylist().let { list ->
-            val newList = list.toMutableList()
-            list.forEach {
-                //删除不是自己创建的歌单
-                if (it.nickname != mUserInfoLiveData.value?.nickname) {
-                    newList.remove(it)
-                }
-            }
-            //删除我喜欢的歌单
-            newList.removeAt(0)
-            mUserPlaylistLiveData.value = newList
-        }
+        mUserPlaylistLiveData.value = api.network().getUserPlaylist()
         mMyDigitalAlbumsLiveData.value = api.network().getMyDigitalAlbum()
-        mRecentSongsLiveData.value = api.network().getRecentSongs(limit = 10)
+        //println(api.network().getRecentSongs())
     }
 
 }

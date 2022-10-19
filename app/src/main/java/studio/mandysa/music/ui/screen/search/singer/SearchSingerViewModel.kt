@@ -1,19 +1,15 @@
 package studio.mandysa.music.ui.screen.search.singer
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.flow
 import studio.mandysa.music.logic.config.api
-import studio.mandysa.music.logic.model.SearchSingerModel
 
-class SearchSingerViewModel(private val keywords: String) : ViewModel() {
+class SearchSingerViewModel(keywords: String) : ViewModel() {
 
-    var singers by mutableStateOf<List<SearchSingerModel>?>(null)
-        private set
-
-    suspend fun refresh() {
-        singers = api.searchSinger(keywords = keywords)
-    }
+    val singers = flow {
+        emit(api.searchSinger(keywords = keywords))
+    }.asLiveData(viewModelScope.coroutineContext)
 
 }

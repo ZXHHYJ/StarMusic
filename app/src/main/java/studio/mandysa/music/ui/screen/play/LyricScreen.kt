@@ -2,7 +2,9 @@ package studio.mandysa.music.ui.screen.play
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.map
 import com.drake.net.exception.HttpFailureException
 import com.drake.net.exception.NoCacheException
 import studio.mandysa.music.R
@@ -14,8 +16,11 @@ import studio.mandysa.music.ui.common.lyric.Lyric
 
 @Composable
 fun LyricScreen() {
-    val musicId = PlayManager.selectMusic?.id
+    val musicId by PlayManager.changeMusicLiveData().map {
+        it.id
+    }.observeAsState()
     var lyric by remember { mutableStateOf("") }
+    val liveTime by PlayManager.playingMusicProgressLiveData().observeAsState(0)
     LaunchedEffect(musicId) {
         musicId?.let {
             try {
@@ -28,7 +33,7 @@ fun LyricScreen() {
             }
         }
     }
-    Lyric(modifier = Modifier.fillMaxSize(), lyric = lyric, liveTime = PlayManager.progress ?: 0) {
+    Lyric(modifier = Modifier.fillMaxSize(), lyric = lyric, liveTime = liveTime) {
         PlayManager.seekTo(it)
     }
 }

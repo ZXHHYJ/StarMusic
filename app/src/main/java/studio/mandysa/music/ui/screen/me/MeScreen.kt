@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -19,9 +19,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
-import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.AppCard
-import studio.mandysa.music.ui.common.AppMenuButton
+import studio.mandysa.music.ui.common.AppRoundAsyncImage
+import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.common.Preview
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.PlaylistItem
@@ -41,7 +41,7 @@ fun MeScreen(
 ) {
     val userInfo by meViewModel.userInfoLiveData.observeAsState()
     val userPlaylists by meViewModel.userPlaylistLiveData.observeAsState()
-    val recentSongs by meViewModel.recentSongsLiveData.observeAsState()
+    //val playHistory by PlayHistoryRepository.playHistoryLiveData.observeAsState()
     Preview(
         modifier = Modifier.statusBarsPadding(),
         refresh = {
@@ -66,11 +66,7 @@ fun MeScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Box(modifier = Modifier.padding(horizontal = 10.dp)) {
-                                AppAsyncImage(
-                                    modifier = Modifier.size(70.dp),
-                                    cornerSize = 70.dp / 2,
-                                    url = it.avatarUrl
-                                )
+                                AppRoundAsyncImage(size = 70.dp, url = it.avatarUrl)
                             }
                             Column {
                                 Text(text = it.nickname, color = textColor)
@@ -156,13 +152,6 @@ fun MeScreen(
                             //mainNavController.navigate(ScreenDestination.MePlaylist)
                         }
                     }
-                    recentSongs?.let { list ->
-                        items(list) {
-                            PlaylistItem(title = it.title, coverUrl = it.coverUrl) {
-                                mainNavController.navigate(ScreenDestination.Album(it.album.id))
-                            }
-                        }
-                    }
                     /* playHistory?.let { it ->
                          items(it) {
                              PlaylistItem(title = it.title, coverUrl = it.coverUrl) {
@@ -193,19 +182,19 @@ fun MeScreen(
                 ItemSubTitle(stringResource(R.string.more))
             }
             item {
-                AppMenuButton(
+                MenuItem(
                     modifier = Modifier.padding(horizontal = horizontalMargin),
                     title = stringResource(id = R.string.setting),
-                    icon = Icons.Rounded.Settings
+                    imageVector = Icons.Rounded.Settings
                 ) {
                     mainNavController.navigate(ScreenDestination.Setting)
                 }
             }
             item {
-                AppMenuButton(
+                MenuItem(
                     modifier = Modifier.padding(horizontal = horizontalMargin),
                     title = stringResource(id = R.string.about),
-                    icon = Icons.Rounded.Info
+                    imageVector = Icons.Rounded.Info
                 ) {
                     mainNavController.navigate(ScreenDestination.About)
                 }

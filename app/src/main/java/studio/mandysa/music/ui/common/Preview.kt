@@ -6,6 +6,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -62,6 +63,7 @@ fun Preview(
             val lineColor = anyBarColor
             Canvas(
                 modifier = Modifier
+                    .statusBarsPadding()
                     .align(Alignment.TopCenter)
                     .fillMaxSize(),
                 onDraw = {

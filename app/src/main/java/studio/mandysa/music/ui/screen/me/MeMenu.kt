@@ -18,7 +18,7 @@ import dev.olshevski.navigation.reimagined.popAll
 import studio.mandysa.music.R
 import studio.mandysa.music.logic.repository.UserRepository
 import studio.mandysa.music.ui.common.AppDialog
-import studio.mandysa.music.ui.common.AppMenuButton
+import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
@@ -31,16 +31,16 @@ fun MeMenu(
     AppDialog {
         Column(modifier = Modifier.padding(horizontal = horizontalMargin)) {
             Spacer(modifier = Modifier.height(10.dp))
-            AppMenuButton(
+            MenuItem(
                 title = stringResource(id = R.string.singers_i_follow),
-                icon = Icons.Rounded.Favorite
+                imageVector = Icons.Rounded.Favorite
             ) {
                 dialogNavController.pop()
                 mainNavController.navigate(ScreenDestination.ArtistSub)
             }
-            AppMenuButton(
+            MenuItem(
                 title = stringResource(id = R.string.sign_out),
-                icon = Icons.Rounded.ExitToApp
+                imageVector = Icons.Rounded.ExitToApp
             ) {
                 dialogNavController.popAll()
                 mainNavController.popAll()

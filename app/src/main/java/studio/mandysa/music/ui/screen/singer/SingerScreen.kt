@@ -2,22 +2,37 @@ package studio.mandysa.music.ui.screen.singer
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.navigate
+import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.AppLazyVerticalGrid
-import studio.mandysa.music.ui.common.Preview
+import studio.mandysa.music.ui.common.AppScaffold
+import studio.mandysa.music.ui.item.AlbumItem
 import studio.mandysa.music.ui.item.ContentColumnItem
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.onBackground
 
 @Composable
 fun SingerScreen(
@@ -25,21 +40,34 @@ fun SingerScreen(
     dialogNavController: NavController<DialogDestination>,
     paddingValues: PaddingValues,
     id: String,
-    viewModel: SingerViewModel = viewModel(factory = viewModelFactory {
+    singerViewModel: SingerViewModel = viewModel(factory = viewModelFactory {
         addInitializer(SingerViewModel::class) { SingerViewModel(id) }
     })
 ) {
-    val singerDetails = viewModel.singerDetails
-    /*val albums = viewModel.albumSource.collectAsLazyPagingItems()*/
-    val songs = viewModel.singerHotSongs
-    Preview(modifier = Modifier, refresh = { viewModel.refresh() }) {
-        AppLazyVerticalGrid() {
+    val singerInfo by singerViewModel.singerInfo.observeAsState()
+    val albums = singerViewModel.albumSource.collectAsLazyPagingItems()
+    val songs by singerViewModel.songs.observeAsState()
+    AppScaffold(topBar = {}) {
+
+    }
+    Column {
+        TopAppBar(
+            modifier = Modifier.fillMaxWidth(),
+            backgroundColor = Color.Transparent,
+            contentColor = onBackground,
+            elevation = 0.dp
+        ) {
+            IconButton(onClick = { mainNavController.pop() }) {
+                Icon(Icons.Rounded.ArrowBack, null)
+            }
+        }
+        AppLazyVerticalGrid {
             item {
                 ContentColumnItem(
                     dialogNavController = dialogNavController,
-                    coverUrl = singerDetails?.cover ?: "",
-                    title = singerDetails?.name ?: "",
-                    message = singerDetails?.briefDesc ?: ""
+                    coverUrl = singerInfo?.cover ?: "",
+                    title = singerInfo?.name ?: "",
+                    message = singerInfo?.briefDesc ?: ""
                 ) {
                     //no toolbar
                 }
@@ -53,25 +81,25 @@ fun SingerScreen(
                     contentPadding = PaddingValues(horizontal = horizontalMargin),
                     horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2)
                 ) {
-                    /*items(albums) {
+                    items(albums) {
                         AlbumItem(mateAlbum = it!!) {
                             mainNavController.navigate(ScreenDestination.Album(it.id))
                         }
-                    }*/
+                    }
                 }
             }
             item {
                 ItemSubTitle(stringResource(id = R.string.popular_song))
             }
             songs?.let { list ->
-                adaptiveItems(list.size) {
+                autoItems(list.size) {
                     SongItem(dialogNavController = dialogNavController, song = list[it]) {
                         PlayManager.play(list, it)
                     }
                 }
-                item {
-                    Spacer(modifier = Modifier.padding(paddingValues))
-                }
+            }
+            item {
+                Spacer(modifier = Modifier.padding(paddingValues))
             }
         }
     }

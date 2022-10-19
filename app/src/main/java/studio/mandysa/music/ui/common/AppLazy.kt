@@ -23,20 +23,19 @@ fun AppLazyVerticalGrid(
     userScrollEnabled: Boolean = true,
     content: AppLazyVerticalGridScope.() -> Unit
 ) {
-    isMedium.let {
-        LazyVerticalGrid(
-            GridCells.Fixed(2),
-            modifier,
-            state,
-            contentPadding,
-            reverseLayout,
-            verticalArrangement,
-            horizontalArrangement,
-            flingBehavior,
-            userScrollEnabled,
-        ) {
-            content.invoke(AppLazyVerticalGridScope(this, it))
-        }
+    val isMedium = isMedium
+    LazyVerticalGrid(
+        GridCells.Fixed(2),
+        modifier,
+        state,
+        contentPadding,
+        reverseLayout,
+        verticalArrangement,
+        horizontalArrangement,
+        flingBehavior,
+        userScrollEnabled,
+    ) {
+        content.invoke(AppLazyVerticalGridScope(this, isMedium))
     }
 }
 
@@ -44,18 +43,18 @@ class AppLazyVerticalGridScope(
     private val lazyGridScope: LazyGridScope,
     private val isMedium: Boolean
 ) {
-    fun adaptiveItems(
+    fun autoItems(
         count: Int,
         itemContent: @Composable (LazyGridItemScope.(index: Int) -> Unit)
     ) {
         for (i in 0 until count) {
-            adaptiveItem {
+            autoItem {
                 itemContent.invoke(this, i)
             }
         }
     }
 
-    fun adaptiveItem(scope: @Composable LazyGridItemScope.() -> Unit) {
+    fun autoItem(scope: @Composable LazyGridItemScope.() -> Unit) {
         lazyGridScope.item(
             span = { GridItemSpan(if (isMedium) 1 else 2) },
             content = scope

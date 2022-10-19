@@ -17,7 +17,7 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.R
 import studio.mandysa.music.ui.common.AppDialog
-import studio.mandysa.music.ui.common.AppMenuButton
+import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
@@ -37,17 +37,17 @@ fun PlaylistMenu(
                 Spacer(modifier = Modifier.height(10.dp))
             }
             item {
-                AppMenuButton(
+                MenuItem(
                     title = stringResource(id = R.string.new_playlist),
-                    icon = Icons.Rounded.Add
+                    imageVector = Icons.Rounded.Add
                 ) {
                     dialogNavController.pop()
                 }
             }
             item {
-                AppMenuButton(
+                MenuItem(
                     title = stringResource(id = R.string.remove_playlist),
-                    icon = Icons.Rounded.Delete
+                    imageVector = Icons.Rounded.Delete
                 ) {
                     dialogNavController.pop()
                 }

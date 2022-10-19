@@ -9,5 +9,4 @@ class PlaylistRepository(id: String) {
     val songsLiveData by serialLiveData<ArrayList<PlaylistSong>?>(name = "playlist${id}songs")
 
     val infoLiveData by serialLiveData<PlaylistInfoModel?>(name = "playlist${id}info")
-
 }

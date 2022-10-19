@@ -8,7 +8,7 @@ val verticalMargin = 10.dp
 
 val horizontalMargin = 16.dp
 
-val defaultRound = 10.dp
+val round = 8.dp
 
 val isMedium: Boolean
-    @Composable get() = with(LocalConfiguration.current) { this.screenWidthDp.dp >= 600.dp }
+    @Composable get() = LocalConfiguration.current.screenWidthDp.dp >= 600.dp

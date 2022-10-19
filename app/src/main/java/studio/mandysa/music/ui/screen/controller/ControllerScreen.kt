@@ -3,10 +3,13 @@ package studio.mandysa.music.ui.screen.controller
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults.cardColors
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -15,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.map
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.AppAsyncImage
@@ -42,14 +46,17 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
         }
         Box(modifier = Modifier.padding(horizontal = horizontalMargin)) {
             Box {
-                val coverUrl = PlayManager.selectMusic?.coverUrl ?: ""
+                val coverUrl by PlayManager.changeMusicLiveData().map {
+                    it.coverUrl
+                }.observeAsState("")
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(controlBarHeight)
-                        .align(Alignment.BottomCenter),
-                    contentColor = Color.Transparent,
-                    backgroundColor = Color.Transparent
+                        .align(Alignment.BottomCenter), colors = cardColors(
+                        contentColor = Color.Transparent,
+                        containerColor = Color.Transparent
+                    )
                 ) {
                     Box {
                         KenBurns(
@@ -60,7 +67,7 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
                                 .clickable(onClick = onClick)
                                 .background(Color.Gray),
                             imageUrl = coverUrl,
-                            paused = PlayManager.pause ?: false
+                            paused = panelState != PanelState.COLLAPSED
                         )
                         Row(
                             modifier = Modifier
@@ -68,17 +75,23 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
                                 .fillMaxSize(),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            val title by PlayManager.changeMusicLiveData()
+                                .map { return@map it.title }
+                                .observeAsState("")
                             Text(
                                 modifier = Modifier
                                     .padding(start = 16.dp)
                                     .weight(1.0f),
-                                text = PlayManager.selectMusic?.title ?: "",
+                                text = title,
                                 fontSize = 16.sp, maxLines = 1,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White
                             )
+                            val playPauseState by PlayManager.pauseLiveData().map {
+                                if (it) R.drawable.ic_play else R.drawable.ic_pause
+                            }.observeAsState(R.drawable.ic_play)
                             Icon(
-                                painter = painterResource(if (PlayManager.pause != false) R.drawable.ic_play else R.drawable.ic_pause),
+                                painter = painterResource(playPauseState),
                                 tint = Color.White,
                                 contentDescription = null,
                                 modifier = Modifier
@@ -86,7 +99,7 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
                                     .padding(8.dp)
                                     .clip(roundedCornerShape)
                                     .clickable {
-                                        if (PlayManager.pause != false) {
+                                        if (PlayManager.isPaused()) {
                                             PlayManager.play()
                                         } else {
                                             PlayManager.pause()
@@ -108,7 +121,7 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
                         }
                     }
                 }
-                AppAsyncImage(modifier = Modifier.size(coverSize), url = coverUrl)
+                AppAsyncImage(size = coverSize, url = coverUrl)
             }
         }
     }

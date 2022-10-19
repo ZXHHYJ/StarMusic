@@ -3,9 +3,9 @@ package studio.mandysa.music.ui.screen.message
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ContentCopy
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -16,7 +16,7 @@ import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.R
 import studio.mandysa.music.logic.ktx.copy
 import studio.mandysa.music.ui.common.AppDialog
-import studio.mandysa.music.ui.common.AppMenuButton
+import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.textColor
@@ -40,9 +40,9 @@ fun Message(dialogNavController: NavController<DialogDestination>, message: Stri
             )
             Spacer(modifier = Modifier.height(5.dp))
             val context = LocalContext.current
-            AppMenuButton(
+            MenuItem(
                 title = stringResource(id = R.string.copy),
-                icon = Icons.Rounded.ContentCopy
+                imageVector = Icons.Rounded.ContentCopy
             ) {
                 copy(context, message)
                 dialogNavController.pop()

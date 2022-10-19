@@ -4,9 +4,9 @@ package studio.mandysa.music.ui.screen.songmenu
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -26,7 +26,7 @@ import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.service.playmanager.model.MetaMusic
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.AppDialog
-import studio.mandysa.music.ui.common.AppMenuButton
+import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
@@ -58,7 +58,7 @@ fun SongMenu(
                         modifier = Modifier
                             .height(80.dp)
                     ) {
-                        AppAsyncImage(modifier = Modifier.size(80.dp), url = model.coverUrl)
+                        AppAsyncImage(size = 80.dp, url = model.coverUrl)
                         Column(modifier = Modifier.padding(verticalMargin)) {
                             Text(
                                 text = model.title,
@@ -78,40 +78,40 @@ fun SongMenu(
                 }
             }
             item {
-                AppMenuButton(
+                MenuItem(
                     modifier = Modifier.padding(horizontal = horizontalMargin),
                     title = stringResource(id = if (isLike == true) R.string.remove_like else R.string.add_like),
-                    icon = if (isLike == true) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
+                    imageVector = if (isLike == true) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
                     enabled = isLike != null
                 ) {
                     songMenuViewModel.likeMusic(isLike == false)
                 }
             }
             item {
-                AppMenuButton(
+                MenuItem(
                     modifier = Modifier.padding(horizontal = horizontalMargin),
                     title = "${stringResource(id = R.string.album)}:${model.album.name}",
-                    icon = Icons.Rounded.Album
+                    imageVector = Icons.Rounded.Album
                 ) {
                     dialogNavController.popAll()
                     mainNavController.navigate(ScreenDestination.Album(model.album.id))
                 }
             }
             item {
-                AppMenuButton(
+                MenuItem(
                     modifier = Modifier.padding(horizontal = horizontalMargin),
                     title = stringResource(id = R.string.next_play),
-                    icon = Icons.Rounded.Add
+                    imageVector = Icons.Rounded.Add
                 ) {
                     dialogNavController.popAll()
                     PlayManager.addNextPlay(model)
                 }
             }
             items(model.artist) {
-                AppMenuButton(
+                MenuItem(
                     modifier = Modifier.padding(horizontal = horizontalMargin),
                     title = "${stringResource(id = R.string.singer)}:${it.name}",
-                    icon = Icons.Rounded.Person
+                    imageVector = Icons.Rounded.Person
                 ) {
                     dialogNavController.popAll()
                     mainNavController.navigate(ScreenDestination.Singer(it.id))

@@ -3,7 +3,7 @@ package studio.mandysa.music.logic.model
 import mandysax.anna2.annotation.Path
 import mandysax.anna2.annotation.Value
 
-class AlbumInfoModel {
+class AlbumContentModel {
     @Value("songs")
     lateinit var songList: List<MusicModel>
 
