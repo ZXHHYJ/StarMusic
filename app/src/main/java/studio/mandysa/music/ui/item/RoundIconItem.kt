@@ -36,6 +36,11 @@ fun RoundIconItem(icon: ImageVector, title: String, onClick: () -> Unit) {
                 modifier = Modifier.padding(15.dp)
             )
         }
-        Text(text = title, color = onBackground, fontSize = 12.sp)
+        Text(
+            text = title,
+            color = onBackground,
+            fontSize = 12.sp,
+            modifier = Modifier.padding(top = 2.dp)
+        )
     }
 }

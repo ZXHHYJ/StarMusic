@@ -1,6 +1,7 @@
 package studio.mandysa.music.ui.screen.singer
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -23,7 +24,6 @@ import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.ui.common.AppLazyVerticalGrid
 import studio.mandysa.music.ui.common.AppScaffold
 import studio.mandysa.music.ui.item.AlbumItem
 import studio.mandysa.music.ui.item.ContentColumnItem
@@ -61,7 +61,7 @@ fun SingerScreen(
                 Icon(Icons.Rounded.ArrowBack, null)
             }
         }
-        AppLazyVerticalGrid {
+        LazyColumn {
             item {
                 ContentColumnItem(
                     dialogNavController = dialogNavController,
@@ -92,7 +92,7 @@ fun SingerScreen(
                 ItemSubTitle(stringResource(id = R.string.popular_song))
             }
             songs?.let { list ->
-                autoItems(list.size) {
+                items(list.size) {
                     SongItem(dialogNavController = dialogNavController, song = list[it]) {
                         PlayManager.play(list, it)
                     }

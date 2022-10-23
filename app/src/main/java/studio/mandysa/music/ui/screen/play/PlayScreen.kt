@@ -30,7 +30,7 @@ import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.*
 
 val maxWidth
-    @Composable get() = if (isMedium) 300.dp else 340.dp
+    @Composable get() = if (padMode) 300.dp else 340.dp
 
 enum class PlayScreenDestination {
     Main,
@@ -95,7 +95,7 @@ fun PlayScreen(
                 BackHandler(panelState == PanelState.EXPANDED) {
                     function.invoke(PanelState.COLLAPSED)
                 }
-                if (isMedium) {
+                if (padMode) {
                     Box(
                         modifier = Modifier
                             .widthIn(max = maxWidth)

@@ -10,5 +10,5 @@ val horizontalMargin = 16.dp
 
 val round = 8.dp
 
-val isMedium: Boolean
+val padMode: Boolean
     @Composable get() = LocalConfiguration.current.screenWidthDp.dp >= 600.dp

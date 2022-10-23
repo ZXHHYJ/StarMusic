@@ -2,6 +2,7 @@ package studio.mandysa.music.ui.screen.browse
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -87,7 +88,7 @@ fun BrowseScreen(
     val playlistSquare by browseViewModel.playlistSquareLiveData.observeAsState()
     //val toplist by browseViewModel.toplistLiveData.observeAsState()
     Preview(refresh = { browseViewModel.network() }) {
-        AppLazyVerticalGrid(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .statusBarsPadding()
@@ -109,13 +110,13 @@ fun BrowseScreen(
                 }
             }
             item {
-                if (isMedium) {
+                if (padMode) {
                     LazyRow(
                         modifier = Modifier.fillMaxWidth(),
                         contentPadding = PaddingValues(horizontal = horizontalMargin),
                         horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2)
                     ) {
-                        bannerItems?.let {
+                        bannerItems?.let { it ->
                             items(it) {
                                 BannerItem(typeTitle = it.typeTitle, bannerUrl = it.pic)
                             }
@@ -233,7 +234,7 @@ fun BrowseScreen(
                 ItemSubTitle(stringResource(R.string.recommend_song))
             }
             recommendSongs?.let {
-                autoItems(it.size) { index ->
+                items(it.size) { index ->
                     SongItem(dialogNavController, it[index]) {
                         PlayManager.play(it, index)
                     }

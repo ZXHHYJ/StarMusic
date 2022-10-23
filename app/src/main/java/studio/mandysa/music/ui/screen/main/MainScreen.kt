@@ -83,7 +83,7 @@ fun AppNavigationDrawer(
     BoxWithConstraints(modifier = modifier) {
         Column(modifier = Modifier.fillMaxSize()) {
             Row(modifier = Modifier.weight(1.0f)) {
-                if (isMedium)
+                if (padMode)
                     drawerContent.invoke(this)
                 Scaffold(
                     modifier = Modifier
@@ -94,7 +94,7 @@ fun AppNavigationDrawer(
                     bottomBar = {
                         Column {
                             controllerBar.invoke()
-                            if (!isMedium)
+                            if (!padMode)
                                 bottomBar.invoke()
                         }
                     }

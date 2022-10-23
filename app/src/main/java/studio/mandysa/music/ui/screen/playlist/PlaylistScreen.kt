@@ -1,6 +1,7 @@
 package studio.mandysa.music.ui.screen.playlist
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Shuffle
@@ -52,7 +53,7 @@ fun PlaylistScreen(
              )*/
         }) {
         Preview(modifier = Modifier.padding(it), refresh = { playlistViewModel.refresh() }) {
-            AppLazyVerticalGrid(modifier = Modifier.fillMaxSize()) {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
                 item {
                     ContentColumnItem(
                         dialogNavController = dialogNavController,
@@ -86,7 +87,7 @@ fun PlaylistScreen(
                     }
                 }
                 songs?.let { list ->
-                    autoItems(list.size) { pos ->
+                    items(list.size) { pos ->
                         SongItem(dialogNavController, list[pos]) {
                             PlayManager.play(list, pos)
                         }
