@@ -4,13 +4,12 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Contactless
-import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.Source
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -18,7 +17,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -64,13 +62,13 @@ enum class HomeBottomNavigationDestination {
 val HomeBottomNavigationDestination.tabIcon
     get() = when (this) {
         HomeBottomNavigationDestination.NeteaseCloud -> Icons.Rounded.Contactless
-        HomeBottomNavigationDestination.Local -> Icons.Rounded.Person
+        HomeBottomNavigationDestination.Local -> Icons.Rounded.Source
     }
 
 val HomeBottomNavigationDestination.tabName
     @Composable get() = when (this) {
         HomeBottomNavigationDestination.NeteaseCloud -> stringResource(id = R.string.browse)
-        HomeBottomNavigationDestination.Local -> stringResource(id = R.string.me)
+        HomeBottomNavigationDestination.Local -> stringResource(id = R.string.source)
     }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -102,16 +100,6 @@ fun AppNavigationDrawer(
                     }
                 )
             }
-            Box(
-                modifier = Modifier
-                    .height(LocalDensity.current.run {
-                        WindowInsets.navigationBars
-                            .getBottom(this)
-                            .toDp()
-                    })
-                    .fillMaxWidth()
-                    .background(anyBarColor)
-            )
         }
     }
 }

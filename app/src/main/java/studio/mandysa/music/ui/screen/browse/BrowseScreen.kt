@@ -100,7 +100,7 @@ fun BrowseScreen(
                     )
                     userInfo?.let {
                         AppRoundAsyncImage(
-                            size = 35.dp,
+                            size = 30.dp,
                             url = it.avatarUrl
                         ) {
                             mainNavController.navigate(ScreenDestination.MeScreen)
