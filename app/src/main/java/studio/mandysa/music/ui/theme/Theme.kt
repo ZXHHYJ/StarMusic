@@ -61,7 +61,7 @@ fun MandySaMusicTheme(
         }
     }
     // Generate tonal palettes with TonalSpot (default) style
-    val palettes = (wallpaperColor ?: keyColor).toTonalPalettes(style = PaletteStyle.Content)
+    val palettes = (wallpaperColor ?: keyColor).toTonalPalettes(style = PaletteStyle.TonalSpot)
     // In your Theme.kt
     CompositionLocalProvider(LocalTonalPalettes provides palettes) {
         // Map TonalPalettes to Compose Material3 ColorScheme

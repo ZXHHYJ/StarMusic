@@ -2,7 +2,6 @@ package studio.mandysa.music.ui.screen.search
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -10,9 +9,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import dev.olshevski.navigation.reimagined.*
+import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.NavHost
+import dev.olshevski.navigation.reimagined.moveToTop
+import dev.olshevski.navigation.reimagined.navigate
+import dev.olshevski.navigation.reimagined.rememberNavController
 import studio.mandysa.music.R
 import studio.mandysa.music.ui.common.AppTabRow
 import studio.mandysa.music.ui.screen.DialogDestination
@@ -37,7 +39,7 @@ fun SearchListScreen(
     paddingValues: PaddingValues,
     keywords: String
 ) {
-    Column(modifier = Modifier.padding(paddingValues)) {
+    Column {
         var selectedIndex by rememberSaveable {
             mutableStateOf(0)
         }
@@ -69,6 +71,7 @@ fun SearchListScreen(
                         keywords = keywords
                     )
                 }
+
                 SearchListScreenDestination.Singer -> {
                     SearchSingerScreen(
                         mainNavController = mainNavController,

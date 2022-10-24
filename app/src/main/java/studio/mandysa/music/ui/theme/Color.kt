@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.kyant.monet.a1
 import com.kyant.monet.a2
+import com.kyant.monet.n1
 import com.kyant.monet.withNight
 
 //字体颜色
@@ -24,7 +25,7 @@ val translucentWhite = Color(0x80FFFFFF)
 val translucentWhiteFixBug = Color(0x33FFFFFF)
 
 val background
-    @Composable get() = 90.a2 withNight Color.Black
+    @Composable get() = Color.White withNight Color.Black
 
 val onBackground
     @Composable get() = MaterialTheme.colors.onBackground
@@ -43,7 +44,7 @@ val containerColor
 
 //bar专用颜色
 val anyBarColor
-    @Composable get() = 85.a2 withNight 20.a2
+    @Composable get() = 95.a2 withNight 10.n1
 
 //bottomBarItem指示颜色
 val barItemColor

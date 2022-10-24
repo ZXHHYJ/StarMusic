@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -12,6 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import studio.mandysa.music.ui.theme.emptyImageBackground
 import studio.mandysa.music.ui.theme.round
 
 @Composable
@@ -23,6 +25,7 @@ fun AppAsyncImage(
 ) {
     Card(
         shape = RoundedCornerShape(cornerSize),
+        colors = CardDefaults.cardColors(containerColor = emptyImageBackground),
         modifier = Modifier
             .size(size)
     ) {

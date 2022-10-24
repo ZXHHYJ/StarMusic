@@ -108,7 +108,7 @@ class LoginViewModel : ViewModel() {
                                 UserRepository.login(check.cookie, userInfo.userId)
                             }
                         }
-                    } catch (e: Exception) {
+                    } catch (_: Exception) {
                     }
                     mHandler.postDelayed(this, 500)
                 }

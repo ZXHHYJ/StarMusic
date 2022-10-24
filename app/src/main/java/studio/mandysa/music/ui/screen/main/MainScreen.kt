@@ -106,8 +106,9 @@ fun AppNavigationDrawer(
                     size = it
                 }) {
                 controllerBar.invoke()
-                if (!padMode && enableNeteaseCloud == true)
+                if (!padMode && enableNeteaseCloud == true) {
                     bottomBar.invoke()
+                }
                 Box(
                     modifier = Modifier
                         .height(LocalDensity.current.run {
@@ -268,8 +269,9 @@ fun MainScreen() {
                     ) {
                         NavigationBar(
                             modifier = Modifier
-                                .fillMaxWidth(),
-                            containerColor = anyBarColor,
+                                .fillMaxWidth()
+                                .background(anyBarColor),
+                            containerColor = Color.Transparent,
                             contentColor = Color.White
                         ) {
                             val bottomLastDestination =
