@@ -1,7 +1,6 @@
 package studio.mandysa.music.ui.screen.search.singer
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -26,14 +25,11 @@ fun SearchSingerScreen(
     })
 ) {
     val singers by singerViewModel.singers.observeAsState(listOf())
-    LazyColumn {
+    LazyColumn(modifier = Modifier.padding(paddingValues)) {
         items(singers) {
             ItemSinger(model = it) {
                 mainNavController.navigate(ScreenDestination.Singer(it.id))
             }
-        }
-        item {
-            Spacer(modifier = Modifier.padding(paddingValues))
         }
     }
 }

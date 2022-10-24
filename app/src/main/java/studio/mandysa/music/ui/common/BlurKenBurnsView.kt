@@ -8,59 +8,31 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.animation.LinearInterpolator
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.graphics.drawable.toBitmap
-import coil.imageLoader
-import coil.request.ImageRequest
+import coil.load
 import com.flaviofaria.kenburnsview.KenBurnsView
 import com.flaviofaria.kenburnsview.RandomTransitionGenerator
 import com.google.android.renderscript.Toolkit
 
 @Composable
 fun KenBurns(modifier: Modifier, imageUrl: String, paused: Boolean) {
-    val context = LocalContext.current
-    val request = ImageRequest.Builder(context)
-        .data(imageUrl)
-        .crossfade(true)
-        .allowHardware(false)
-        .build()
-    var imageBitmap: Bitmap? by remember {
-        mutableStateOf(null)
-    }
-    LaunchedEffect(key1 = imageUrl, block = {
-        context.imageLoader.execute(request).drawable?.let {
-            imageBitmap =
-                it.toBitmap(it.intrinsicWidth, it.intrinsicHeight, Bitmap.Config.ARGB_8888)
-        }
-    })
-    /*imageBitmap?.let {
-        Image(
-            bitmap = handleImageBlur(it).asImageBitmap(),
-            modifier = modifier,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-        )
-    }*/
-    imageBitmap?.let {
-        AndroidView(factory = {
-            BlurKenBurnsView(it).apply {
-                setTransitionGenerator(
-                    RandomTransitionGenerator(
-                        2000,
-                        LinearInterpolator()
-                    )
+    AndroidView(factory = {
+        BlurKenBurnsView(it).apply {
+            setTransitionGenerator(
+                RandomTransitionGenerator(
+                    2000,
+                    LinearInterpolator()
                 )
-            }
-        }, modifier = modifier) {
-            it.setImageBitmap(imageBitmap)
-            if (paused) {
-                it.pause()
-            } else {
-                it.resume()
-            }
+            )
+        }
+    }, modifier = modifier) {
+        it.imageUrl = imageUrl
+        if (paused) {
+            it.pause()
+        } else {
+            it.resume()
         }
     }
 }
@@ -74,6 +46,14 @@ private class BlurKenBurnsView(context: Context, attrs: AttributeSet? = null, de
         attrs,
         defStyle
     ) {
+
+    var imageUrl: String? = null
+        set(value) {
+            if (value != field) {
+                load(value) {}
+            }
+            field = value
+        }
 
     override fun setImageDrawable(drawable: Drawable?) {
         if (drawable is BitmapDrawable) {

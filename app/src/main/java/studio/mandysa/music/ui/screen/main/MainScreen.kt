@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -14,10 +15,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.map
@@ -72,7 +77,6 @@ val HomeBottomNavigationDestination.tabName
         HomeBottomNavigationDestination.Local -> stringResource(id = R.string.source)
     }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppNavigationDrawer(
     modifier: Modifier = Modifier,
@@ -81,28 +85,38 @@ fun AppNavigationDrawer(
     bottomBar: @Composable () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
-    BoxWithConstraints(modifier = modifier) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            Row(modifier = Modifier.weight(1.0f)) {
-                //判断是否启用在线音乐
-                val enableNeteaseCloud by SettingRepository.enableNeteaseCloud.observeAsState()
-                if (padMode && enableNeteaseCloud == true) {
-                    drawerContent.invoke(this)
-                }
-                Scaffold(
+    val enableNeteaseCloud by SettingRepository.enableNeteaseCloud.observeAsState()
+    var size by remember {
+        mutableStateOf(IntSize.Zero)
+    }
+    Row(modifier = modifier) {
+        if (padMode && enableNeteaseCloud == true) {
+            drawerContent.invoke(this)
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(1.0f)
+        ) {
+            content.invoke(PaddingValues(bottom = with(LocalDensity.current) { size.height.toDp() }))
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .onSizeChanged {
+                    size = it
+                }) {
+                controllerBar.invoke()
+                if (!padMode && enableNeteaseCloud == true)
+                    bottomBar.invoke()
+                Box(
                     modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(1.0f),
-                    containerColor = Color.Transparent,
-                    content = content,
-                    bottomBar = {
-                        Column {
-                            controllerBar.invoke()
-                            if (!padMode && enableNeteaseCloud == true) {
-                                bottomBar.invoke()
-                            }
-                        }
-                    }
+                        .height(LocalDensity.current.run {
+                            WindowInsets.navigationBars
+                                .getBottom(this)
+                                .toDp()
+                        })
+                        .fillMaxWidth()
+                        .background(anyBarColor)
                 )
             }
         }
