@@ -40,6 +40,38 @@ import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.*
 
+@Composable
+private fun BannerItem(typeTitle: String, bannerUrl: String) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Card(
+            shape = roundedCornerShape,
+            modifier = Modifier
+                .height(140.dp)
+                .clickable {
+                    POPWindows.postValue("尚未支持的功能")
+                }
+        ) {
+            AsyncImage(
+                model = bannerUrl,
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+        }
+        Text(
+            text = typeTitle,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            color = textColor,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+    }
+}
+
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun BrowseScreen(
@@ -48,39 +80,6 @@ fun BrowseScreen(
     paddingValues: PaddingValues,
     browseViewModel: BrowseViewModel = viewModel()
 ) {
-
-    @Composable
-    fun BannerItem(typeTitle: String, bannerUrl: String) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Card(
-                shape = roundedCornerShape,
-                modifier = Modifier
-                    .height(140.dp)
-                    .clickable {
-                        POPWindows.postValue("尚未支持的功能")
-                    }
-            ) {
-                AsyncImage(
-                    model = bannerUrl,
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
-            }
-            Text(
-                text = typeTitle,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                color = textColor,
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-        }
-    }
-
     val userInfo by browseViewModel.userInfoLiveData.observeAsState()
     val bannerItems by browseViewModel.bannersLiveData.observeAsState()
     val recommendSongs by browseViewModel.recommendSongLiveData.observeAsState()

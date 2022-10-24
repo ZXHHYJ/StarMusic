@@ -7,13 +7,6 @@ import com.kyant.monet.a1
 import com.kyant.monet.a2
 import com.kyant.monet.withNight
 
-val Blue10 = Color(0xFF000965)
-val Blue20 = Color(0xFF00159E)
-val Blue30 = Color(0xFF0023DA)
-val Blue40 = Color(0xFF1E40FF)
-val Blue80 = Color(0xFFBBC3FF)
-val Blue90 = Color(0xFFDDE0FF)
-
 //字体颜色
 val textColor: Color
     @Composable get() = 2.a1 withNight Color.White

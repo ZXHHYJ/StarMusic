@@ -3,7 +3,9 @@ package studio.mandysa.music.ui.screen.local
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,12 +23,13 @@ fun LocalScreen(
     dialogNavController: NavController<DialogDestination>,
     paddingValues: PaddingValues,
 ) {
-    LazyColumn(
+    LazyVerticalGrid(
         modifier = Modifier
             .fillMaxSize()
-            .statusBarsPadding()
+            .statusBarsPadding(),
+        columns = GridCells.Fixed(2)
     ) {
-        item {
+        item(span = { GridItemSpan(2) }) {
             SearchBar(onClick = { mainNavController.navigate(ScreenDestination.Search) }) {
                 Text(text = stringResource(id = R.string.search_hint))
             }

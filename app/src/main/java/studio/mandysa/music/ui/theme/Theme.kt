@@ -1,45 +1,31 @@
 package studio.mandysa.music.ui.theme
 
-import android.os.Build
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-
-private val LightColorScheme = lightColorScheme(
-    primary = Blue40,
-    onPrimary = Color.White,
-    primaryContainer = Blue90,
-    onPrimaryContainer = Blue10,
-)
-
-private val DarkColorScheme = darkColorScheme(
-    primary = Blue80,
-    onPrimary = Blue20,
-    primaryContainer = Blue30,
-    onPrimaryContainer = Blue90,
-)
+import com.kyant.monet.LocalTonalPalettes
+import com.kyant.monet.PaletteStyle
+import com.kyant.monet.TonalPalettes.Companion.toTonalPalettes
+import com.kyant.monet.dynamicColorScheme
 
 @Composable
 fun MandySaMusicTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamic: Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = if (dynamic) {
-        val context = LocalContext.current
-        if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-    } else {
-        if (darkTheme) DarkColorScheme else LightColorScheme
-    }
-    MaterialTheme(
-        colorScheme = colorScheme,
-        content = {
+    // Obtain a key color
+    val color = Color.White
+    // Generate tonal palettes with TonalSpot (default) style
+    val palettes = color.toTonalPalettes(style = PaletteStyle.Content)
+    // In your Theme.kt
+    CompositionLocalProvider(LocalTonalPalettes provides palettes) {
+        // Map TonalPalettes to Compose Material3 ColorScheme
+        val colorScheme = dynamicColorScheme()
+        MaterialTheme(colorScheme = colorScheme) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -47,6 +33,6 @@ fun MandySaMusicTheme(
             ) {
                 content.invoke()
             }
-        },
-    )
+        }
+    }
 }

@@ -24,6 +24,7 @@ import androidx.lifecycle.map
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.R
+import studio.mandysa.music.logic.repository.SettingRepository
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.AppNavigationBarItem
 import studio.mandysa.music.ui.common.AppNavigationRailItem
@@ -83,8 +84,11 @@ fun AppNavigationDrawer(
     BoxWithConstraints(modifier = modifier) {
         Column(modifier = Modifier.fillMaxSize()) {
             Row(modifier = Modifier.weight(1.0f)) {
-                if (padMode)
+                //判断是否启用在线音乐
+                val enableNeteaseCloud by SettingRepository.enableNeteaseCloud.observeAsState()
+                if (padMode && enableNeteaseCloud == true) {
                     drawerContent.invoke(this)
+                }
                 Scaffold(
                     modifier = Modifier
                         .fillMaxHeight()
@@ -94,8 +98,9 @@ fun AppNavigationDrawer(
                     bottomBar = {
                         Column {
                             controllerBar.invoke()
-                            if (!padMode)
+                            if (!padMode && enableNeteaseCloud == true) {
                                 bottomBar.invoke()
+                            }
                         }
                     }
                 )
@@ -130,12 +135,15 @@ fun MainScreen() {
                 is DialogDestination.SongMenu -> {
                     SongMenu(mainNavController, dialogNavController, model = destination.model)
                 }
+
                 is DialogDestination.PlaylistMenu -> {
                     PlaylistMenu(mainNavController, dialogNavController, id = destination.id)
                 }
+
                 is DialogDestination.Message -> {
                     Message(dialogNavController, message = destination.message)
                 }
+
                 is DialogDestination.MeMenu -> {
                     MeMenu(mainNavController, dialogNavController)
                 }
@@ -294,6 +302,7 @@ fun MainScreen() {
                                 paddingValues = padding
                             )
                         }
+
                         ScreenDestination.Search -> {
                             SearchScreen(
                                 mainNavController = mainNavController,
@@ -301,6 +310,7 @@ fun MainScreen() {
                                 paddingValues = padding
                             )
                         }
+
                         is ScreenDestination.Playlist -> {
                             PlaylistScreen(
                                 mainNavController = mainNavController,
@@ -309,6 +319,7 @@ fun MainScreen() {
                                 id = screenDestination.id
                             )
                         }
+
                         is ScreenDestination.Singer -> {
                             SingerScreen(
                                 mainNavController = mainNavController,
@@ -317,6 +328,7 @@ fun MainScreen() {
                                 id = screenDestination.id
                             )
                         }
+
                         is ScreenDestination.Album -> {
                             AlbumScreen(
                                 mainNavController = mainNavController,
@@ -325,18 +337,22 @@ fun MainScreen() {
                                 id = screenDestination.id
                             )
                         }
+
                         ScreenDestination.About -> {
                             AboutScreen()
                         }
+
                         ScreenDestination.Setting -> {
                             SettingScreen()
                         }
+
                         ScreenDestination.ArtistSub -> {
                             ArtistSubScreen(
                                 mainNavController = mainNavController,
                                 paddingValues = padding
                             )
                         }
+
                         ScreenDestination.MePlaylist -> {
                             MePlaylistScreen(
                                 mainNavController = mainNavController,
@@ -344,6 +360,7 @@ fun MainScreen() {
                                 paddingValues = padding
                             )
                         }
+
                         ScreenDestination.FmScreen -> {
                             FmScreen(
                                 mainNavController = mainNavController,
@@ -351,9 +368,11 @@ fun MainScreen() {
                                 paddingValues = padding
                             )
                         }
+
                         ScreenDestination.ToplistScreen -> {
                             ToplistScreen()
                         }
+
                         ScreenDestination.MeScreen -> {
                             MeScreen(
                                 mainNavController,

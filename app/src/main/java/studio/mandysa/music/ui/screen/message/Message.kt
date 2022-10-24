@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.R
-import studio.mandysa.music.logic.ktx.copy
+import studio.mandysa.music.logic.utils.copyText
 import studio.mandysa.music.ui.common.AppDialog
 import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.screen.DialogDestination
@@ -44,7 +44,7 @@ fun Message(dialogNavController: NavController<DialogDestination>, message: Stri
                 title = stringResource(id = R.string.copy),
                 imageVector = Icons.Rounded.ContentCopy
             ) {
-                copy(context, message)
+                copyText(message)
                 dialogNavController.pop()
             }
         }
