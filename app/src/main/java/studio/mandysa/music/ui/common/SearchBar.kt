@@ -2,7 +2,12 @@ package studio.mandysa.music.ui.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
@@ -18,15 +23,19 @@ import studio.mandysa.music.ui.theme.onBackground
 import studio.mandysa.music.ui.theme.verticalMargin
 
 @Composable
-fun SearchBar(onClick: () -> Unit = {}, rowScope: @Composable RowScope.() -> Unit) {
+fun SearchBar(
+    modifier: Modifier = Modifier,
+    click: () -> Unit = {},
+    rowScope: @Composable RowScope.() -> Unit
+) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = horizontalMargin, vertical = verticalMargin)
             .height(48.dp)
             .clip(CircleShape)
             .background(containerColor)
-            .clickable(onClick = onClick)
+            .clickable(onClick = click)
             .padding(horizontal = horizontalMargin),
         horizontalArrangement = Arrangement.spacedBy(horizontalMargin),
         verticalAlignment = Alignment.CenterVertically

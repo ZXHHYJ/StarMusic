@@ -30,7 +30,7 @@ fun LocalScreen(
         columns = GridCells.Fixed(2)
     ) {
         item(span = { GridItemSpan(2) }) {
-            SearchBar(onClick = { mainNavController.navigate(ScreenDestination.Search) }) {
+            SearchBar(click = { mainNavController.navigate(ScreenDestination.Search) }) {
                 Text(text = stringResource(id = R.string.search_hint))
             }
         }

@@ -93,7 +93,7 @@ fun BrowseScreen(
                 .statusBarsPadding()
         ) {
             item {
-                SearchBar(onClick = { mainNavController.navigate(ScreenDestination.Search) }) {
+                SearchBar(click = { mainNavController.navigate(ScreenDestination.Search) }) {
                     Text(
                         text = stringResource(id = R.string.search_hint),
                         modifier = Modifier.weight(1.0f)

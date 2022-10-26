@@ -47,11 +47,11 @@ import studio.mandysa.music.ui.screen.me.about.AboutScreen
 import studio.mandysa.music.ui.screen.me.artistsub.ArtistSubScreen
 import studio.mandysa.music.ui.screen.me.meplaylist.MePlaylistScreen
 import studio.mandysa.music.ui.screen.me.meplaylist.playlistmenu.PlaylistMenu
-import studio.mandysa.music.ui.screen.me.setting.SettingScreen
 import studio.mandysa.music.ui.screen.message.Message
 import studio.mandysa.music.ui.screen.play.PlayScreen
 import studio.mandysa.music.ui.screen.playlist.PlaylistScreen
 import studio.mandysa.music.ui.screen.search.SearchScreen
+import studio.mandysa.music.ui.screen.setting.SettingScreen
 import studio.mandysa.music.ui.screen.singer.SingerScreen
 import studio.mandysa.music.ui.screen.songmenu.SongMenu
 import studio.mandysa.music.ui.screen.toplist.ToplistScreen
@@ -359,7 +359,11 @@ fun MainScreen() {
                         }
 
                         ScreenDestination.Setting -> {
-                            SettingScreen()
+                            SettingScreen(
+                                mainNavController = mainNavController,
+                                dialogNavController = dialogNavController,
+                                paddingValues = padding
+                            )
                         }
 
                         ScreenDestination.ArtistSub -> {
