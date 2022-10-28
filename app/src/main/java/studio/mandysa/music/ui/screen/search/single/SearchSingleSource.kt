@@ -2,17 +2,17 @@ package studio.mandysa.music.ui.screen.search.single
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import studio.mandysa.music.logic.model.SearchSongModel
+import studio.mandysa.music.logic.bean.SearchSongBean
 import studio.mandysa.music.logic.config.api
 
-class SearchSingleSource(private val keywords: String) : PagingSource<Int, SearchSongModel>() {
-    override fun getRefreshKey(state: PagingState<Int, SearchSongModel>): Int? {
+class SearchSingleSource(private val keywords: String) : PagingSource<Int, SearchSongBean>() {
+    override fun getRefreshKey(state: PagingState<Int, SearchSongBean>): Int? {
         return null
     }
 
-    private val mPageDataMap = HashMap<Int, List<SearchSongModel>>()
+    private val mPageDataMap = HashMap<Int, List<SearchSongBean>>()
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, SearchSongModel> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, SearchSongBean> {
         return try {
             val index = params.key ?: 0
             if (mPageDataMap[index] == null) {

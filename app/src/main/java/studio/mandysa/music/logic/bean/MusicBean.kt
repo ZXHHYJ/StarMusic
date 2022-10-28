@@ -1,4 +1,4 @@
-package studio.mandysa.music.logic.model
+package studio.mandysa.music.logic.bean
 
 import mandysax.anna2.annotation.Value
 import studio.mandysa.music.service.playmanager.model.MetaMusic
@@ -6,7 +6,7 @@ import studio.mandysa.music.service.playmanager.model.MetaMusic
 /**
  * @author 黄浩
  */
-class MusicModel : MetaMusic<SingerModel, AlbumModel> {
+class MusicBean : MetaMusic<SingerBean, AlbumBean> {
     @Value("id")
     private lateinit var id: String
 
@@ -14,12 +14,12 @@ class MusicModel : MetaMusic<SingerModel, AlbumModel> {
     private lateinit var name: String
 
     @Value("al")
-    private lateinit var album: AlbumModel
+    private lateinit var album: AlbumBean
 
     @Value("ar")
-    private lateinit var artists: List<SingerModel>
+    private lateinit var artists: List<SingerBean>
 
-    override fun getArtist(): List<SingerModel> {
+    override fun getArtist(): List<SingerBean> {
         return artists
     }
 
@@ -35,7 +35,7 @@ class MusicModel : MetaMusic<SingerModel, AlbumModel> {
         return name
     }
 
-    override fun getAlbum(): AlbumModel {
+    override fun getAlbum(): AlbumBean {
         return album
     }
 }

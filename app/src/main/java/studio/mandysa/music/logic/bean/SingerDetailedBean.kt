@@ -1,9 +1,9 @@
-package studio.mandysa.music.logic.model
+package studio.mandysa.music.logic.bean
 
 import mandysax.anna2.annotation.Path
 import mandysax.anna2.annotation.Value
 
-class SingerDetailedModel {
+class SingerDetailedBean {
     @Value("cover")
     @Path("artist")
     lateinit var cover: String

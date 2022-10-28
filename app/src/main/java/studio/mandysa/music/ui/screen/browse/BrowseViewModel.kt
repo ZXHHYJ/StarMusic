@@ -4,42 +4,42 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import studio.mandysa.music.logic.config.api
-import studio.mandysa.music.logic.model.BannerModel
-import studio.mandysa.music.logic.model.PlaylistModel
-import studio.mandysa.music.logic.model.RecommendSong
-import studio.mandysa.music.logic.model.UserModel
+import studio.mandysa.music.logic.bean.BannerBean
+import studio.mandysa.music.logic.bean.PlaylistBean
+import studio.mandysa.music.logic.bean.RecommendSongBean
+import studio.mandysa.music.logic.bean.UserBean
 import studio.mandysa.music.ui.screen.me.MeViewModel
 
 class BrowseViewModel : ViewModel() {
 
-    private val mUserInfoLiveData = MutableLiveData<UserModel>()
+    private val mUserInfoLiveData = MutableLiveData<UserBean>()
 
     /**
      * 获取用户信息，参考[MeViewModel]
      */
-    val userInfoLiveData: LiveData<UserModel> = mUserInfoLiveData
+    val userInfoLiveData: LiveData<UserBean> = mUserInfoLiveData
 
-    private val mBannersLiveData = MutableLiveData<List<BannerModel>>()
+    private val mBannersLiveData = MutableLiveData<List<BannerBean>>()
 
-    val bannersLiveData: LiveData<List<BannerModel>> = mBannersLiveData
+    val bannersLiveData: LiveData<List<BannerBean>> = mBannersLiveData
 
-    private val mRecommendSongLiveData = MutableLiveData<List<RecommendSong>>()
+    private val mRecommendSongBeanLiveData = MutableLiveData<List<RecommendSongBean>>()
 
-    val recommendSongLiveData: LiveData<List<RecommendSong>> = mRecommendSongLiveData
+    val recommendSongBeanLiveData: LiveData<List<RecommendSongBean>> = mRecommendSongBeanLiveData
 
-    private val mRecommendPlaylistLiveData = MutableLiveData<List<PlaylistModel>>()
+    private val mRecommendPlaylistLiveData = MutableLiveData<List<PlaylistBean>>()
 
-    val recommendPlaylistLiveData: LiveData<List<PlaylistModel>> = mRecommendPlaylistLiveData
+    val recommendPlaylistLiveData: LiveData<List<PlaylistBean>> = mRecommendPlaylistLiveData
 
-    private val mPlaylistSquareLiveData = MutableLiveData<List<PlaylistModel>>()
+    private val mPlaylistSquareLiveData = MutableLiveData<List<PlaylistBean>>()
 
-    val playlistSquareLiveData: LiveData<List<PlaylistModel>> = mPlaylistSquareLiveData
+    val playlistSquareLiveData: LiveData<List<PlaylistBean>> = mPlaylistSquareLiveData
 
     suspend fun network() {
         mUserInfoLiveData.value = api.network().getUserInfo()
 
         mBannersLiveData.value = api.network().getBannerList()
-        mRecommendSongLiveData.value = api.network().getRecommendSong()
+        mRecommendSongBeanLiveData.value = api.network().getRecommendSong()
         mRecommendPlaylistLiveData.value = api.network().getRecommendPlaylist()
         mPlaylistSquareLiveData.value = api.network().getPlaylistSquare()
     }

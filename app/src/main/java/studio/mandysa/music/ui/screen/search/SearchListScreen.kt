@@ -2,7 +2,6 @@ package studio.mandysa.music.ui.screen.search
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,6 +15,7 @@ import dev.olshevski.navigation.reimagined.NavController
 import kotlinx.coroutines.launch
 import studio.mandysa.music.R
 import studio.mandysa.music.logic.repository.SettingRepository
+import studio.mandysa.music.ui.common.AppTab
 import studio.mandysa.music.ui.common.AppTabRow
 import studio.mandysa.music.ui.common.HorizontalPager
 import studio.mandysa.music.ui.screen.DialogDestination
@@ -51,7 +51,7 @@ fun SearchListScreen(
         pagerState = pagerState
     ) {
         SearchListScreenDestination.values().forEachIndexed { index, destination ->
-            Tab(
+            AppTab(
                 selected = pagerState.currentPage == index,
                 text = {
                     Text(text = destination.tabName)
@@ -66,21 +66,25 @@ fun SearchListScreen(
     HorizontalPager(pages = SearchListScreenDestination.values(), state = pagerState) { t ->
         if (enableNeteaseCloud == true) {
             when (t) {
-                SearchListScreenDestination.Single ->
+                SearchListScreenDestination.Single -> {
                     SearchSingleScreen(
                         dialogNavController = dialogNavController,
                         paddingValues = paddingValues,
                         keywords = keywords
                     )
+                }
 
-                SearchListScreenDestination.Album -> TODO()
+                SearchListScreenDestination.Album -> {
 
-                SearchListScreenDestination.Singer ->
+                }
+
+                SearchListScreenDestination.Singer -> {
                     SearchSingerScreen(
                         mainNavController = mainNavController,
                         paddingValues = paddingValues,
                         keywords = keywords
                     )
+                }
             }
         }
     }

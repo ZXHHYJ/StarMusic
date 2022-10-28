@@ -14,13 +14,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import studio.mandysa.music.R
-import studio.mandysa.music.logic.model.ArtistSubModel
-import studio.mandysa.music.logic.model.SearchSingerModel
+import studio.mandysa.music.logic.bean.ArtistSubBean
+import studio.mandysa.music.logic.bean.SearchSingerBean
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.theme.*
 
 @Composable
-fun ItemSinger(model: SearchSingerModel, onClick: () -> Unit) {
+fun ItemSinger(model: SearchSingerBean, onClick: () -> Unit) {
     ItemSinger(
         picUrl = model.picUrl,
         name = model.name,
@@ -31,7 +31,7 @@ fun ItemSinger(model: SearchSingerModel, onClick: () -> Unit) {
 }
 
 @Composable
-fun ItemSinger(model: ArtistSubModel, onClick: () -> Unit) {
+fun ItemSinger(model: ArtistSubBean, onClick: () -> Unit) {
     ItemSinger(
         picUrl = model.picUrl,
         name = model.nickname,

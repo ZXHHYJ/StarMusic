@@ -57,7 +57,7 @@ fun MeScreen(
     meViewModel: MeViewModel = viewModel()
 ) {
     val userInfo by meViewModel.userInfoLiveData.observeAsState()
-    val userPlaylists by meViewModel.userPlaylistLiveData.observeAsState()
+    val userPlaylists by meViewModel.userPlaylistBeanLiveData.observeAsState()
     //val playHistory by PlayHistoryRepository.playHistoryLiveData.observeAsState()
     Preview(
         modifier = Modifier

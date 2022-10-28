@@ -24,7 +24,7 @@ import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.KenBurns
 import studio.mandysa.music.ui.common.PanelState
-import studio.mandysa.music.ui.theme.anyBarColor
+import studio.mandysa.music.ui.theme.barColor
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.roundedCornerShape
 
@@ -41,7 +41,7 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
                 .height(20.dp)
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
-                .background(anyBarColor)
+                .background(barColor)
         ) {
         }
         Box(modifier = Modifier.padding(horizontal = horizontalMargin)) {

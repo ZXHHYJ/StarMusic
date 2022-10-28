@@ -82,7 +82,7 @@ fun BrowseScreen(
 ) {
     val userInfo by browseViewModel.userInfoLiveData.observeAsState()
     val bannerItems by browseViewModel.bannersLiveData.observeAsState()
-    val recommendSongs by browseViewModel.recommendSongLiveData.observeAsState()
+    val recommendSongs by browseViewModel.recommendSongBeanLiveData.observeAsState()
     val recommendPlaylist by browseViewModel.recommendPlaylistLiveData.observeAsState()
     val playlistSquare by browseViewModel.playlistSquareLiveData.observeAsState()
     //val toplist by browseViewModel.toplistLiveData.observeAsState()

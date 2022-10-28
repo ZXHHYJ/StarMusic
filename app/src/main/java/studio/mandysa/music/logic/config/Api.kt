@@ -1,7 +1,7 @@
 package studio.mandysa.music.logic.config
 
 import mandysax.anna2.Anna2
-import studio.mandysa.music.logic.model.NeteaseCloudMusicApi
+import studio.mandysa.music.logic.bean.NeteaseCloudMusicApi
 
 /**
  * @author 黄浩

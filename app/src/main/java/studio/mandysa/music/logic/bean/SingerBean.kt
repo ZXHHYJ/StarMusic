@@ -1,4 +1,4 @@
-package studio.mandysa.music.logic.model
+package studio.mandysa.music.logic.bean
 
 import mandysax.anna2.annotation.Value
 import studio.mandysa.music.service.playmanager.model.MetaArtist
@@ -8,7 +8,7 @@ import java.io.Serializable
  *
  * @author 黄浩
  */
-class SingerModel : MetaArtist, Serializable {
+class SingerBean : MetaArtist, Serializable {
 
     /*
     "ar": [{

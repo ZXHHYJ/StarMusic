@@ -1,13 +1,16 @@
 package studio.mandysa.music.ui.common
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.Tab
 import androidx.compose.material3.TabPosition
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,6 +22,8 @@ import androidx.compose.ui.unit.lerp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.tabSelectColor
+import studio.mandysa.music.ui.theme.tabUnSelectColor
 import studio.mandysa.music.ui.theme.textColor
 
 @Composable
@@ -65,9 +70,10 @@ fun AppTabRow(modifier: Modifier = Modifier, pagerState: PagerState, tabs: @Comp
             contentColor = textColor,
             indicator = { tabPositions ->
                 TabRowDefaults.Indicator(
-                    Modifier
+                    modifier = Modifier
                         .pagerTabIndicatorOffset(pagerState, tabPositions)
-                        .clip(shape = RoundedCornerShape(3.dp, 3.dp, 0.dp, 0.dp))
+                        .clip(shape = RoundedCornerShape(3.dp, 3.dp, 0.dp, 0.dp)),
+                    color = tabSelectColor
                 )
             },
             divider = {
@@ -76,6 +82,31 @@ fun AppTabRow(modifier: Modifier = Modifier, pagerState: PagerState, tabs: @Comp
             tabs.invoke()
         }
     }
+}
+
+@Composable
+fun AppTab(
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    text: @Composable (() -> Unit)? = null,
+    icon: @Composable (() -> Unit)? = null,
+    selectedContentColor: Color = tabSelectColor,
+    unselectedContentColor: Color = tabUnSelectColor,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
+) {
+    Tab(
+        selected,
+        onClick,
+        modifier,
+        enabled,
+        text,
+        icon,
+        selectedContentColor,
+        unselectedContentColor,
+        interactionSource
+    )
 }
 
 @ExperimentalPagerApi

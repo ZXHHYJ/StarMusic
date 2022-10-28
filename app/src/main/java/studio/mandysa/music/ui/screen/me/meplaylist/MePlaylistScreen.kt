@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
-import studio.mandysa.music.logic.model.UserPlaylist
+import studio.mandysa.music.logic.bean.UserPlaylistBean
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.AppCard
 import studio.mandysa.music.ui.common.AppScaffold
@@ -35,7 +35,7 @@ fun MePlaylistScreen(
 ) {
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
-    fun PlaylistItem(userPlaylist: UserPlaylist) {
+    fun PlaylistItem(userPlaylistBean: UserPlaylistBean) {
         Box(modifier = Modifier.fillMaxWidth()) {
             AppCard(
                 modifier = Modifier
@@ -46,18 +46,18 @@ fun MePlaylistScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .combinedClickable(onClick = {
-                            mainNavController.navigate(ScreenDestination.Playlist(userPlaylist.id))
+                            mainNavController.navigate(ScreenDestination.Playlist(userPlaylistBean.id))
                         }, onLongClick = {
-                            dialogNavController.navigate(DialogDestination.PlaylistMenu(userPlaylist.id))
+                            dialogNavController.navigate(DialogDestination.PlaylistMenu(userPlaylistBean.id))
                         }),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    AppAsyncImage(size = 100.dp, url = userPlaylist.coverImgUrl)
+                    AppAsyncImage(size = 100.dp, url = userPlaylistBean.coverImgUrl)
                     Spacer(modifier = Modifier.width(5.dp))
                     Column {
-                        Text(text = userPlaylist.name, fontSize = 15.sp, color = textColor)
+                        Text(text = userPlaylistBean.name, fontSize = 15.sp, color = textColor)
                         Spacer(modifier = Modifier.height(5.dp))
-                        Text(text = userPlaylist.nickname, fontSize = 14.sp, color = textColor)
+                        Text(text = userPlaylistBean.nickname, fontSize = 14.sp, color = textColor)
                     }
                 }
             }
@@ -89,7 +89,7 @@ fun MePlaylistScreen(
                 itemsIndexed(it) { index, value ->
                     //第一个是我喜欢的歌单
                     if (index != 0) {
-                        PlaylistItem(userPlaylist = value)
+                        PlaylistItem(userPlaylistBean = value)
                     }
                 }
             }

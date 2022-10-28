@@ -2,16 +2,16 @@ package studio.mandysa.music.ui.screen.singer
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import studio.mandysa.music.logic.model.SingerAlbumModel
+import studio.mandysa.music.logic.bean.SingerAlbumBean
 import studio.mandysa.music.logic.config.api
 
-class SingerAlbumPagingSource(private val id: String) : PagingSource<Int, SingerAlbumModel>() {
+class SingerAlbumPagingSource(private val id: String) : PagingSource<Int, SingerAlbumBean>() {
 
-    override fun getRefreshKey(state: PagingState<Int, SingerAlbumModel>): Int? = null
+    override fun getRefreshKey(state: PagingState<Int, SingerAlbumBean>): Int? = null
 
-    private val mPageDataMap = HashMap<Int, List<SingerAlbumModel>>()
+    private val mPageDataMap = HashMap<Int, List<SingerAlbumBean>>()
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, SingerAlbumModel> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, SingerAlbumBean> {
         return try {
             val index = params.key ?: 0
             if (mPageDataMap[index] == null) {

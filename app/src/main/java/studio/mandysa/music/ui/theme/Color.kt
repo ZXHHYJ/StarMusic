@@ -16,17 +16,17 @@ val textColor: Color
 val textColorLight
     @Composable get() = 4.a1 withNight Color.White
 
-//半透明白色
+//半透明白色的文字
 val translucentWhite = Color(0x80FFFFFF)
 
-/**
- * [translucentWhite]透明无效果时使用
- */
+//translucentWhite没有效果时使用
 val translucentWhiteFixBug = Color(0x33FFFFFF)
 
+//背景色
 val background
     @Composable get() = Color.White withNight Color.Black
 
+//背景色的反色
 val onBackground
     @Composable get() = MaterialTheme.colors.onBackground
 
@@ -40,12 +40,22 @@ val emptyImageBackground
 
 //容器颜色
 val containerColor
-    @Composable get() = 95.a2 withNight 70.a2
+    @Composable get() = 86.a2 withNight 70.a2
 
-//bar专用颜色
-val anyBarColor
+//--------------------------------------------------------------------------------------------------------------
+
+//bar颜色
+val barColor
     @Composable get() = 95.a2 withNight 10.n1
 
-//bottomBarItem指示颜色
+//barItem指示颜色
 val barItemColor
     @Composable get() = 90.a2 withNight 25.a2
+
+//tab选中颜色
+val tabSelectColor
+    @Composable get() = 50.a2 withNight 25.a2
+
+//tab未选中颜色
+val tabUnSelectColor
+    @Composable get() = Color.Black withNight Color.White

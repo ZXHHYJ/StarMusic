@@ -1,10 +1,13 @@
-package studio.mandysa.music.logic.model
+package studio.mandysa.music.logic.bean
 
 import mandysax.anna2.annotation.Value
 import studio.mandysa.music.service.playmanager.model.MetaMusic
 import java.io.Serializable
 
-class PlaylistSong : MetaMusic<SingerModel, AlbumModel>, Serializable {
+/**
+ * @author 黄浩
+ */
+class RecommendSongBean : MetaMusic<SingerBean, AlbumBean>, Serializable {
     @Value("name")
     private lateinit var name: String
 
@@ -12,10 +15,13 @@ class PlaylistSong : MetaMusic<SingerModel, AlbumModel>, Serializable {
     private lateinit var id: String
 
     @Value("ar")
-    private lateinit var artistsList: List<SingerModel>
+    private lateinit var artistsList: List<SingerBean>
 
     @Value("al")
-    private lateinit var album: AlbumModel
+    private lateinit var album: AlbumBean
+
+    /*@Value("reason")
+    val reason = ""*/
 
     override fun getTitle(): String {
         return name
@@ -25,7 +31,7 @@ class PlaylistSong : MetaMusic<SingerModel, AlbumModel>, Serializable {
         return album.coverUrl
     }
 
-    override fun getArtist(): List<SingerModel> {
+    override fun getArtist(): List<SingerBean> {
         return artistsList
     }
 
@@ -33,11 +39,7 @@ class PlaylistSong : MetaMusic<SingerModel, AlbumModel>, Serializable {
         return id
     }
 
-    override fun getAlbum(): AlbumModel {
+    override fun getAlbum(): AlbumBean {
         return album
-    }
-
-    override fun toString(): String {
-        return name
     }
 }

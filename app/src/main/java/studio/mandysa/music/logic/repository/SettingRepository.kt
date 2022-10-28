@@ -3,7 +3,7 @@ package studio.mandysa.music.logic.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.drake.serialize.serialize.serialLiveData
-import studio.mandysa.music.logic.bean.UserBean
+import studio.mandysa.music.logic.bean.SerialUserBean
 
 object SettingRepository {
     /**
@@ -25,7 +25,7 @@ object SettingRepository {
     /**
      * 网易云账号登录信息
      */
-    private val mNeteaseCloudUserBean by serialLiveData<UserBean>(
+    private val mNeteaseCloudUserBean by serialLiveData<SerialUserBean>(
         default = null,
         name = "netease_cloud_user_bean"
     )
@@ -51,7 +51,7 @@ object SettingRepository {
     }
 
     fun setNeteaseCloudUserBean(userid: String, cookie: String) {
-        mNeteaseCloudUserBean.value = UserBean(userId, cookie)
+        mNeteaseCloudUserBean.value = SerialUserBean(userId, cookie)
     }
 
 }

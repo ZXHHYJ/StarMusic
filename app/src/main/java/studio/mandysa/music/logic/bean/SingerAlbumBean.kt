@@ -1,9 +1,9 @@
-package studio.mandysa.music.logic.model
+package studio.mandysa.music.logic.bean
 
 import mandysax.anna2.annotation.Value
 import studio.mandysa.music.service.playmanager.model.MetaAlbum
 
-class SingerAlbumModel : MetaAlbum {
+class SingerAlbumBean : MetaAlbum {
     @Value("picUrl")
     private lateinit var picUrl: String
 

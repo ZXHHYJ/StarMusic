@@ -1,11 +1,11 @@
-package studio.mandysa.music.logic.model
+package studio.mandysa.music.logic.bean
 
 import mandysax.anna2.annotation.Path
 import mandysax.anna2.annotation.Value
 
-class AlbumContentModel {
+class AlbumContentBean {
     @Value("songs")
-    lateinit var songList: List<MusicModel>
+    lateinit var songList: List<MusicBean>
 
     @Value("picUrl")
     @Path("album")

@@ -1,4 +1,4 @@
-package studio.mandysa.music.logic.model
+package studio.mandysa.music.logic.bean
 
 import mandysax.anna2.annotation.Path
 import mandysax.anna2.annotation.Value
@@ -6,7 +6,7 @@ import mandysax.anna2.annotation.Value
 /**
  * @author 黄浩
  */
-class MyDigitalAlbum {
+class MyDigitalAlbumBean {
 
 //    {
 //        "total":1,

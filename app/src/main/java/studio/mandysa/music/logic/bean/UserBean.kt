@@ -1,3 +1,24 @@
 package studio.mandysa.music.logic.bean
 
-data class UserBean(val userId: String, val cookie: String)
+import mandysax.anna2.annotation.Value
+import java.io.Serializable
+
+/**
+ * @author 黄浩
+ */
+class UserBean : Serializable {
+    @Value("userId")
+    lateinit var userId: String
+
+    @Value("nickname")
+    lateinit var nickname: String
+
+    @Value("avatarUrl")
+    lateinit var avatarUrl: String
+
+    @Value("signature")
+    lateinit var signature: String
+
+    @Value("createTime")
+    lateinit var createTime: String
+}

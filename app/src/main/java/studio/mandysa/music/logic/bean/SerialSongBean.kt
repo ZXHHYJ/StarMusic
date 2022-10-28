@@ -1,4 +1,4 @@
-package studio.mandysa.music.logic.model
+package studio.mandysa.music.logic.bean
 
 import studio.mandysa.music.service.playmanager.model.MetaAlbum
 import studio.mandysa.music.service.playmanager.model.MetaArtist
@@ -8,13 +8,13 @@ import java.io.Serializable
 /**
  * @author 黄浩
  */
-class SerialSongModel(
+class SerialSongBean(
     private val title: String,
     private val id: String,
     private val coverUrl: String,
     private val artists: MutableList<SerialArtist>,
     private val album: SerialAlbum
-) : MetaMusic<SerialSongModel.SerialArtist, SerialSongModel.SerialAlbum>,
+) : MetaMusic<SerialSongBean.SerialArtist, SerialSongBean.SerialAlbum>,
     Serializable {
 
     override fun getTitle(): String = title

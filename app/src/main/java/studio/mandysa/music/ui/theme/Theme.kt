@@ -28,8 +28,7 @@ import com.kyant.monet.dynamicColorScheme
 fun MandySaMusicTheme(
     content: @Composable () -> Unit
 ) {
-    // Obtain a key color
-    val keyColor = Color.White
+    val defaultColor = Color.White
     //获取壁纸管理器
     val wallpaperManager = WallpaperManager.getInstance(LocalContext.current)
     //壁纸颜色
@@ -41,7 +40,8 @@ fun MandySaMusicTheme(
             try {
                 Color(wallpaperManager.getWallpaperColors(FLAG_SYSTEM)!!.primaryColor.toArgb())
             } catch (e: Exception) {
-                keyColor
+                //windows sub system就会报错
+                MaterialTheme.colorScheme.primary
             }
         DisposableEffect(key1 = null) {
             //判断是否支持获取壁纸颜色
@@ -61,7 +61,7 @@ fun MandySaMusicTheme(
         }
     }
     // Generate tonal palettes with TonalSpot (default) style
-    val palettes = (wallpaperColor ?: keyColor).toTonalPalettes(style = PaletteStyle.TonalSpot)
+    val palettes = (wallpaperColor ?: defaultColor).toTonalPalettes(style = PaletteStyle.TonalSpot)
     // In your Theme.kt
     CompositionLocalProvider(LocalTonalPalettes provides palettes) {
         // Map TonalPalettes to Compose Material3 ColorScheme

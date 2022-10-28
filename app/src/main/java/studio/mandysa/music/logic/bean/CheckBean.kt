@@ -1,8 +1,8 @@
-package studio.mandysa.music.logic.model
+package studio.mandysa.music.logic.bean
 
 import mandysax.anna2.annotation.Value
 
-class CheckModel {
+class CheckBean {
 
     @Value("message")
     lateinit var message: String

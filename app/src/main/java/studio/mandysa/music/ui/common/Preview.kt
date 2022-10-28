@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import studio.mandysa.music.ui.theme.anyBarColor
+import studio.mandysa.music.ui.theme.barColor
 
 @Composable
 fun Preview(
@@ -60,7 +60,7 @@ fun Preview(
         BoxWithConstraints {
             content.invoke()
             //线的颜色
-            val lineColor = anyBarColor
+            val lineColor = barColor
             Canvas(
                 modifier = Modifier
                     .statusBarsPadding()

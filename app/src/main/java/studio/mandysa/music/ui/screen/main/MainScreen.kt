@@ -117,7 +117,7 @@ fun AppNavigationDrawer(
                                 .toDp()
                         })
                         .fillMaxWidth()
-                        .background(anyBarColor)
+                        .background(barColor)
                 )
             }
         }
@@ -270,7 +270,7 @@ fun MainScreen() {
                         NavigationBar(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .background(anyBarColor),
+                                .background(barColor),
                             containerColor = Color.Transparent,
                             contentColor = Color.White
                         ) {
