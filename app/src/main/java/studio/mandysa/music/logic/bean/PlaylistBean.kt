@@ -1,9 +1,8 @@
 package studio.mandysa.music.logic.bean
 
 import mandysax.anna2.annotation.Value
-import java.io.Serializable
 
-class PlaylistBean : Serializable {
+class PlaylistBean {
     @Value("id")
     lateinit var id: String
 

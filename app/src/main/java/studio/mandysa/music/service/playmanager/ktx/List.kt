@@ -1,13 +1,14 @@
 package studio.mandysa.music.service.playmanager.ktx
 
-import studio.mandysa.music.service.playmanager.model.MetaArtist
+import studio.mandysa.music.service.playmanager.bean.MetaArtist
 
 fun List<MetaArtist>.allArtist(): String {
-    var string = ""
-    for (i in 0 until size) {
-        if (i != 0)
-            string += "/"
-        string += get(i).name
+    val builder = StringBuilder()
+    for (i in indices) {
+        if (i != 0) {
+            builder.append("/")
+        }
+        builder.append(get(i).name)
     }
-    return string
+    return builder.toString()
 }

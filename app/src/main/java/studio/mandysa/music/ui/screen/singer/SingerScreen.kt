@@ -17,15 +17,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.viewModelFactory
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
 import dev.olshevski.navigation.reimagined.NavController
-import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.AppScaffold
-import studio.mandysa.music.ui.item.AlbumItem
 import studio.mandysa.music.ui.item.ContentColumnItem
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.SongItem
@@ -45,7 +41,7 @@ fun SingerScreen(
     })
 ) {
     val singerInfo by singerViewModel.singerInfo.observeAsState()
-    val albums = singerViewModel.albumSource.collectAsLazyPagingItems()
+
     val songs by singerViewModel.songs.observeAsState()
     AppScaffold(topBar = {}) {
 
@@ -81,11 +77,11 @@ fun SingerScreen(
                     contentPadding = PaddingValues(horizontal = horizontalMargin),
                     horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2)
                 ) {
-                    items(albums) {
-                        AlbumItem(mateAlbum = it!!) {
-                            mainNavController.navigate(ScreenDestination.Album(it.id))
-                        }
-                    }
+                    /*  items(albums) {
+                          AlbumItem(mateAlbum = it!!) {
+                              mainNavController.navigate(ScreenDestination.Album(it.id))
+                          }
+                      }*/
                 }
             }
             item {

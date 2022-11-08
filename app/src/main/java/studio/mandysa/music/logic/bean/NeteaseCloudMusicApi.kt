@@ -2,7 +2,7 @@ package studio.mandysa.music.logic.bean
 
 import com.drake.net.cache.CacheMode
 import mandysax.anna2.annotation.*
-import mandysax.anna2.model.ResponseBody
+import mandysax.anna2.bean.ResponseBody
 import studio.mandysa.music.logic.repository.UserRepository.cookie
 import studio.mandysa.music.logic.repository.UserRepository.userId
 import java.util.concurrent.TimeUnit

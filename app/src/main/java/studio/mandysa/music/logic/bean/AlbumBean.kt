@@ -1,8 +1,7 @@
 package studio.mandysa.music.logic.bean
 
 import mandysax.anna2.annotation.Value
-import studio.mandysa.music.service.playmanager.model.MetaAlbum
-import java.io.Serializable
+import studio.mandysa.music.service.playmanager.bean.MetaAlbum
 
 /*
    "al": {
@@ -14,16 +13,11 @@ import java.io.Serializable
            "alia": ["Games We Play"]
        }
     */
-class AlbumBean : MetaAlbum, Serializable {
-
-    @Value("id")
-    private lateinit var id: String
-
-    @Value("name")
-    private lateinit var name: String
-
-    @Value("picUrl")
-    private lateinit var picUrl: String
+class AlbumBean(
+    @Value("id") private val id: String,
+    @Value("name") private val name: String,
+    @Value("picUrl") private val picUrl: String
+) : MetaAlbum {
 
     override fun getId(): String {
         return id

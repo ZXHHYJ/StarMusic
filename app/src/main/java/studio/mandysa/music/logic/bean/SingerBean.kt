@@ -1,15 +1,13 @@
 package studio.mandysa.music.logic.bean
 
 import mandysax.anna2.annotation.Value
-import studio.mandysa.music.service.playmanager.model.MetaArtist
-import java.io.Serializable
+import studio.mandysa.music.service.playmanager.bean.MetaArtist
 
 /**
  *
  * @author 黄浩
  */
-class SingerBean : MetaArtist, Serializable {
-
+class SingerBean(@Value("id") private val id: String, @Value("name") private val name: String) : MetaArtist {
     /*
     "ar": [{
 			"id": 10557,
@@ -17,12 +15,6 @@ class SingerBean : MetaArtist, Serializable {
 			"alia": ["Anpu"]
 		}]
      */
-
-    @Value("id")
-    private lateinit var id: String
-
-    @Value("name")
-    private lateinit var name: String
 
     override fun getId(): String {
         return id

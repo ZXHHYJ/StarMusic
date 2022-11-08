@@ -20,9 +20,10 @@ import studio.mandysa.music.ui.theme.round
 fun AppAsyncImage(
     size: Dp,
     cornerSize: Dp = round,
-    url: String,
+    any: Any,
     onClick: (() -> Unit)? = null
 ) {
+    // TODO: 这个函数设计不太好，需要优化
     Card(
         shape = RoundedCornerShape(cornerSize),
         colors = CardDefaults.cardColors(containerColor = emptyImageBackground),
@@ -38,7 +39,7 @@ fun AppAsyncImage(
                     else this
                 },
             model = ImageRequest.Builder(LocalContext.current)
-                .data(url)
+                .data(any)
                 .crossfade(true)
                 .build(),
             contentScale = ContentScale.Crop,
@@ -53,5 +54,5 @@ fun AppRoundAsyncImage(
     url: String,
     onClick: (() -> Unit)? = null
 ) {
-    AppAsyncImage(size = size, cornerSize = size / 2, url = url, onClick = onClick)
+    AppAsyncImage(size = size, cornerSize = size / 2, any = url, onClick = onClick)
 }

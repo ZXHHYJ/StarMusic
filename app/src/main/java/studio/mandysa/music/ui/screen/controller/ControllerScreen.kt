@@ -121,7 +121,7 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
                         }
                     }
                 }
-                AppAsyncImage(size = coverSize, url = coverUrl)
+                AppAsyncImage(size = coverSize, any = coverUrl)
             }
         }
     }

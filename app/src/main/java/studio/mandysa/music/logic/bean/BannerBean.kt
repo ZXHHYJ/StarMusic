@@ -2,9 +2,8 @@ package studio.mandysa.music.logic.bean
 
 import mandysax.anna2.annotation.Path
 import mandysax.anna2.annotation.Value
-import java.io.Serializable
 
-class BannerBean : Serializable {
+class BannerBean {
     @Value("pic")
     lateinit var pic: String
 

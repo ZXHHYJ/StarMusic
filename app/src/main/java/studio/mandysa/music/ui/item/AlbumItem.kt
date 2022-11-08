@@ -5,14 +5,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import studio.mandysa.music.service.playmanager.model.MetaAlbum
+import studio.mandysa.music.service.playmanager.bean.MetaAlbum
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.theme.textColor
 import studio.mandysa.music.ui.theme.textColorLight
@@ -38,7 +37,7 @@ fun AlbumItem(mateAlbum: MetaAlbum, onClick: () -> Unit) {
                 colors = CardDefaults.cardColors(Color.LightGray),
                 shape = RoundedCornerShape(size)
             ) {}
-            AppAsyncImage(size = size, url = mateAlbum.coverUrl, onClick = onClick)
+            AppAsyncImage(size = size, any = mateAlbum.coverUrl, onClick = onClick)
         }
         Text(
             modifier = Modifier.fillMaxWidth(),

@@ -21,7 +21,7 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.allArtist
-import studio.mandysa.music.service.playmanager.model.MetaMusic
+import studio.mandysa.music.service.playmanager.bean.MetaMusic
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.translucentWhite

@@ -61,7 +61,7 @@ private fun AlbumCover() {
         val coverUrl by PlayManager.changeMusicLiveData().map { return@map it.coverUrl }
             .observeAsState()
         coverUrl?.let {
-            AppAsyncImage(size = maxWidth, url = it)
+            AppAsyncImage(size = maxWidth, any = it)
         }
     }
 }

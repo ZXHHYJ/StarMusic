@@ -1,4 +1,4 @@
-package studio.mandysa.music.service.playmanager.model;
+package studio.mandysa.music.service.playmanager.bean;
 
 public interface MetaAlbum {
     String getId();

@@ -52,7 +52,7 @@ fun MePlaylistScreen(
                         }),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    AppAsyncImage(size = 100.dp, url = userPlaylistBean.coverImgUrl)
+                    AppAsyncImage(size = 100.dp, any = userPlaylistBean.coverImgUrl)
                     Spacer(modifier = Modifier.width(5.dp))
                     Column {
                         Text(text = userPlaylistBean.name, fontSize = 15.sp, color = textColor)

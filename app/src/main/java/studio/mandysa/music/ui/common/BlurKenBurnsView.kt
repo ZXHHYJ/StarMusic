@@ -28,7 +28,7 @@ fun KenBurns(modifier: Modifier, imageUrl: String, paused: Boolean) {
             )
         }
     }, modifier = modifier) {
-        it.imageUrl = imageUrl
+        it.setImageUrl(imageUrl)
         if (paused) {
             it.pause()
         } else {
@@ -47,13 +47,20 @@ private class BlurKenBurnsView(context: Context, attrs: AttributeSet? = null, de
         defStyle
     ) {
 
-    var imageUrl: String? = null
-        set(value) {
-            if (value != field) {
-                load(value) {}
-            }
-            field = value
+    private var mImageUrl: String? = null
+
+    fun setImageUrl(url: String) {
+        if (url == mImageUrl) {
+            return
         }
+        if (url.isEmpty()) {
+            return
+        }
+        mImageUrl = url
+        load(url) {
+
+        }
+    }
 
     override fun setImageDrawable(drawable: Drawable?) {
         if (drawable is BitmapDrawable) {

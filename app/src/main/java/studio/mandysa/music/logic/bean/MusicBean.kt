@@ -1,23 +1,17 @@
 package studio.mandysa.music.logic.bean
 
 import mandysax.anna2.annotation.Value
-import studio.mandysa.music.service.playmanager.model.MetaMusic
+import studio.mandysa.music.service.playmanager.bean.MetaMusic
 
 /**
  * @author 黄浩
  */
-class MusicBean : MetaMusic<SingerBean, AlbumBean> {
-    @Value("id")
-    private lateinit var id: String
-
-    @Value("name")
-    private lateinit var name: String
-
-    @Value("al")
-    private lateinit var album: AlbumBean
-
-    @Value("ar")
-    private lateinit var artists: List<SingerBean>
+class MusicBean(
+    @Value("id") private val id: String,
+    @Value("name") private val name: String,
+    @Value("al") private val album: AlbumBean,
+    @Value("ar") private val artists: List<SingerBean>
+) : MetaMusic<SingerBean, AlbumBean> {
 
     override fun getArtist(): List<SingerBean> {
         return artists

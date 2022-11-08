@@ -45,7 +45,7 @@ fun PlaylistItem(title: String, coverUrl: String, onClick: () -> Unit) {
     Column(
         modifier = Modifier.width(120.dp)
     ) {
-        AppAsyncImage(size = 120.dp, url = coverUrl, onClick = onClick)
+        AppAsyncImage(size = 120.dp, any = coverUrl, onClick = onClick)
         Text(
             text = title,
             color = textColor,

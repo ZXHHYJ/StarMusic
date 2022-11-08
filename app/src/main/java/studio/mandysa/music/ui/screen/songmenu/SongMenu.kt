@@ -23,7 +23,7 @@ import kotlinx.parcelize.RawValue
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.allArtist
-import studio.mandysa.music.service.playmanager.model.MetaMusic
+import studio.mandysa.music.service.playmanager.bean.MetaMusic
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.AppDialog
 import studio.mandysa.music.ui.common.MenuItem
@@ -58,7 +58,7 @@ fun SongMenu(
                         modifier = Modifier
                             .height(80.dp)
                     ) {
-                        AppAsyncImage(size = 80.dp, url = model.coverUrl)
+                        AppAsyncImage(size = 80.dp, any = model.coverUrl)
                         Column(modifier = Modifier.padding(verticalMargin)) {
                             Text(
                                 text = model.title,

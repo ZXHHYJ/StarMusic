@@ -55,7 +55,7 @@ fun ItemSinger(picUrl: String, name: String, hint: String, onClick: () -> Unit) 
                 .padding(horizontal = horizontalMargin, vertical = verticalMargin)
                 .size(50.dp), contentAlignment = Alignment.Center
         ) {
-            AppAsyncImage(size = 50.dp, cornerSize = 25.dp, url = picUrl)
+            AppAsyncImage(size = 50.dp, cornerSize = 25.dp, any = picUrl)
         }
         Column(
             modifier = Modifier

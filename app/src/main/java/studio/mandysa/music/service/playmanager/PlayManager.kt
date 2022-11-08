@@ -12,9 +12,9 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
 import studio.mandysa.music.logic.config.MUSIC_URL
-import studio.mandysa.music.service.playmanager.model.MetaAlbum
-import studio.mandysa.music.service.playmanager.model.MetaArtist
-import studio.mandysa.music.service.playmanager.model.MetaMusic
+import studio.mandysa.music.service.playmanager.bean.MetaAlbum
+import studio.mandysa.music.service.playmanager.bean.MetaArtist
+import studio.mandysa.music.service.playmanager.bean.MetaMusic
 
 
 /**

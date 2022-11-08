@@ -97,7 +97,7 @@ class MediaPlayService : LifecycleService() {
                             )
                         ).build()
                         refreshMediaNotifications()
-                    } catch (e: Exception) {
+                    } catch (_: Exception) {
                     }
                 }
             }

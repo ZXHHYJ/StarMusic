@@ -1,13 +1,12 @@
 package studio.mandysa.music.logic.bean
 
 import mandysax.anna2.annotation.Value
-import studio.mandysa.music.service.playmanager.model.MetaMusic
-import java.io.Serializable
+import studio.mandysa.music.service.playmanager.bean.MetaMusic
 
 /**
  * @author 黄浩
  */
-class RecommendSongBean : MetaMusic<SingerBean, AlbumBean>, Serializable {
+class RecommendSongBean : MetaMusic<SingerBean, AlbumBean> {
     @Value("name")
     private lateinit var name: String
 
