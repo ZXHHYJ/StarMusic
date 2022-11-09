@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.theme.containerColor
-import studio.mandysa.music.ui.theme.roundedCornerShape
 import studio.mandysa.music.ui.theme.onBackground
+import studio.mandysa.music.ui.theme.roundedCornerShape
 import studio.mandysa.music.ui.theme.textColor
 
 @Composable
@@ -45,7 +45,7 @@ fun PlaylistItem(title: String, coverUrl: String, onClick: () -> Unit) {
     Column(
         modifier = Modifier.width(120.dp)
     ) {
-        AppAsyncImage(size = 120.dp, any = coverUrl, onClick = onClick)
+        AppAsyncImage(modifier = Modifier.size(120.dp), url = coverUrl, onClick = onClick)
         Text(
             text = title,
             color = textColor,

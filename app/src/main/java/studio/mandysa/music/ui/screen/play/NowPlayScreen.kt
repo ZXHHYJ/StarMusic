@@ -23,8 +23,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
 import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
+import studio.mandysa.music.service.playmanager.ktx.artist
+import studio.mandysa.music.service.playmanager.ktx.coverUrl
+import studio.mandysa.music.service.playmanager.ktx.title
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.SeekBar
 import studio.mandysa.music.ui.screen.DialogDestination
@@ -57,10 +61,10 @@ private fun AlbumCover() {
         elevation = 10.dp,
         shape = roundedCornerShape
     ) {
-        val coverUrl by PlayManager.changeMusicInfoLiveData().map { return@map it.coverUrl }
+        val coverUrl by PlayManager.changeMusicLiveData().map { return@map it.coverUrl }
             .observeAsState()
         coverUrl?.let {
-            AppAsyncImage(size = maxWidth, any = it)
+            AppAsyncImage(modifier = Modifier.size(maxWidth), url = it)
         }
     }
 }
@@ -78,9 +82,9 @@ private fun TitleAndArtist(dialogNavController: NavController<DialogDestination>
                 .weight(1.0f),
             horizontalAlignment = Alignment.Start
         ) {
-            val title by PlayManager.changeMusicInfoLiveData().map { return@map it.title }
+            val title by PlayManager.changeMusicLiveData().map { return@map it.title }
                 .observeAsState("")
-            val musician by PlayManager.changeMusicInfoLiveData().map {
+            val musician by PlayManager.changeMusicLiveData().map {
                 it.artist[0].name
             }.observeAsState("")
             Text(
@@ -98,7 +102,7 @@ private fun TitleAndArtist(dialogNavController: NavController<DialogDestination>
                 maxLines = 1
             )
         }
-        val metaMusic by PlayManager.changeMusicLiveData().observeAsState()
+        val song by PlayManager.changeMusicLiveData().observeAsState()
         Icon(
             Icons.Rounded.MoreVert, null,
             Modifier
@@ -106,7 +110,7 @@ private fun TitleAndArtist(dialogNavController: NavController<DialogDestination>
                 .clip(RoundedCornerShape(32.dp))
                 .background(translucentWhiteFixBug)
                 .clickable {
-                    //dialogNavController.navigate(DialogDestination.SongMenu(metaMusic!!))
+                    dialogNavController.navigate(DialogDestination.SongMenu(song!!))
                 },
             tint = Color.White
         )

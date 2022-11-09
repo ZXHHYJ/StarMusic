@@ -89,9 +89,9 @@ fun SingerScreen(
             }
             songs?.let { list ->
                 items(list.size) {
-                    SongItem(dialogNavController = dialogNavController, song = list[it]) {
-                        //PlayManager.play(list, it)
-                    }
+                    /*SongItem(dialogNavController = dialogNavController, song = list[it]) {
+                        PlayManager.play(list, it)
+                    }*/
                 }
             }
             item {

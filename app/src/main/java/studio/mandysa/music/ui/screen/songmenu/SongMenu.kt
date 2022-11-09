@@ -15,15 +15,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.lifecycle.viewmodel.viewModelFactory
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.popAll
 import kotlinx.parcelize.RawValue
 import studio.mandysa.music.R
-import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.service.playmanager.ktx.allArtist
-import studio.mandysa.music.service.playmanager.bean.MetaMusic
+import studio.mandysa.music.service.playmanager.bean.Song
+import studio.mandysa.music.service.playmanager.ktx.*
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.AppDialog
 import studio.mandysa.music.ui.common.MenuItem
@@ -39,10 +37,8 @@ import studio.mandysa.music.ui.theme.verticalMargin
 fun SongMenu(
     mainNavController: NavController<ScreenDestination>,
     dialogNavController: NavController<DialogDestination>,
-    model: @RawValue MetaMusic<*, *>,
-    songMenuViewModel: SongMenuViewModel = viewModel(factory = viewModelFactory {
-        addInitializer(SongMenuViewModel::class) { SongMenuViewModel(model.id) }
-    })
+    song: @RawValue Song,
+    songMenuViewModel: SongMenuViewModel = viewModel()
 ) {
     val isLike by songMenuViewModel.likedLiveData.observeAsState()
     AppDialog {
@@ -58,17 +54,17 @@ fun SongMenu(
                         modifier = Modifier
                             .height(80.dp)
                     ) {
-                        AppAsyncImage(size = 80.dp, any = model.coverUrl)
+                        AppAsyncImage(modifier = Modifier.size(80.dp), url = song.coverUrl)
                         Column(modifier = Modifier.padding(verticalMargin)) {
                             Text(
-                                text = model.title,
+                                text = song.title,
                                 color = textColor,
                                 fontSize = 15.sp,
                                 maxLines = 1
                             )
                             Spacer(modifier = Modifier.weight(1.0f))
                             Text(
-                                text = model.artist.allArtist(),
+                                text = song.artist.allArtist(),
                                 color = textColorLight,
                                 fontSize = 13.sp,
                                 maxLines = 1,
@@ -90,11 +86,11 @@ fun SongMenu(
             item {
                 MenuItem(
                     modifier = Modifier.padding(horizontal = horizontalMargin),
-                    title = "${stringResource(id = R.string.album)}:${model.album.name}",
+                    title = "${stringResource(id = R.string.album)}:${song.album.name}",
                     imageVector = Icons.Rounded.Album
                 ) {
                     dialogNavController.popAll()
-                    mainNavController.navigate(ScreenDestination.Album(model.album.id))
+                    mainNavController.navigate(ScreenDestination.Album(song.album.id))
                 }
             }
             item {
@@ -107,7 +103,7 @@ fun SongMenu(
                     //PlayManager.addNextPlay(model)
                 }
             }
-            items(model.artist) {
+            items(song.artist) {
                 MenuItem(
                     modifier = Modifier.padding(horizontal = horizontalMargin),
                     title = "${stringResource(id = R.string.singer)}:${it.name}",

@@ -26,34 +26,6 @@ import studio.mandysa.music.ui.theme.tabSelectColor
 import studio.mandysa.music.ui.theme.tabUnSelectColor
 import studio.mandysa.music.ui.theme.textColor
 
-@Composable
-fun AppTabRow(modifier: Modifier = Modifier, selectedTabIndex: Int, tabs: @Composable () -> Unit) {
-    Box {
-        AppDivider(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-        )
-        ScrollableTabRow(
-            modifier = modifier, edgePadding = horizontalMargin,
-            selectedTabIndex = selectedTabIndex,
-            containerColor = Color.Transparent,
-            contentColor = textColor,
-            indicator = { tabPositions ->
-                TabRowDefaults.Indicator(
-                    Modifier
-                        .tabIndicatorOffset(tabPositions[selectedTabIndex])
-                        .clip(shape = RoundedCornerShape(3.dp, 3.dp, 0.dp, 0.dp))
-                )
-            },
-            divider = {
-            },
-        ) {
-            tabs.invoke()
-        }
-    }
-}
-
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun AppTabRow(modifier: Modifier = Modifier, pagerState: PagerState, tabs: @Composable () -> Unit) {

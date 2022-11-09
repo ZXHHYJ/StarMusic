@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.map
 import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.service.playmanager.PlayManager
+import studio.mandysa.music.service.playmanager.ktx.coverUrl
 import studio.mandysa.music.ui.common.KenBurns
 import studio.mandysa.music.ui.common.PanelState
 import studio.mandysa.music.ui.screen.DialogDestination
@@ -55,7 +56,7 @@ fun PlayScreen(
 ) {
     val navController = rememberNavController(startDestination = PlayScreenDestination.Main)
     Box(modifier = Modifier.clipToBounds()) {
-        val coverUrl by PlayManager.changeMusicInfoLiveData().map {
+        val coverUrl by PlayManager.changeMusicLiveData().map {
             it.coverUrl
         }.observeAsState("")
         KenBurns(

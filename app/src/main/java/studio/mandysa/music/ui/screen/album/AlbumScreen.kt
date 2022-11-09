@@ -91,9 +91,9 @@ fun AlbumScreen(
             }
             albumInfo?.let {
                 itemsIndexed(it.songList) { index, item ->
-                    SongItem(dialogNavController = dialogNavController, song = item) {
-                        //PlayManager.play(it.songList, index)
-                    }
+                    /*SongItem(dialogNavController = dialogNavController, song = item) {
+                        PlayManager.play(it.songList, index)
+                    }*/
                 }
             }
             albumInfo?.company?.let {

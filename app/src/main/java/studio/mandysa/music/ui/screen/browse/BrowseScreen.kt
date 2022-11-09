@@ -30,12 +30,10 @@ import com.google.accompanist.pager.rememberPagerState
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
-import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.*
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.item.PlaylistItem
 import studio.mandysa.music.ui.item.RoundIconItem
-import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.*
@@ -100,7 +98,7 @@ fun BrowseScreen(
                     )
                     userInfo?.let {
                         AppRoundAsyncImage(
-                            size = 30.dp,
+                            modifier = Modifier.size(30.dp),
                             url = it.avatarUrl
                         ) {
                             mainNavController.navigate(ScreenDestination.MeScreen)
@@ -234,9 +232,9 @@ fun BrowseScreen(
             }
             recommendSongs?.let {
                 items(it.size) { index ->
-                    SongItem(dialogNavController, it[index]) {
-                        //PlayManager.play(it, index)
-                    }
+                    /*SongItem(dialogNavController, it[index]) {
+                        PlayManager.play(it, index)
+                    }*/
                 }
             }
             item {

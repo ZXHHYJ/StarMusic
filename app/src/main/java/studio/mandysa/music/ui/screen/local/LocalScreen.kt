@@ -39,13 +39,13 @@ fun LocalScreen(
                     .fillMaxSize()
                     .statusBarsPadding()
             ) {
-                item() {
+                item {
                     SearchBar(click = { mainNavController.navigate(ScreenDestination.Search) }) {
                         Text(text = stringResource(id = R.string.search_hint))
                     }
                 }
                 itemsIndexed(localMusicBeans) { index, item->
-                    SongItem(dialogNavController = dialogNavController, bean = item) {
+                    SongItem(dialogNavController = dialogNavController, song = item) {
                         PlayManager.play(localMusicBeans, index)
                     }
                 }

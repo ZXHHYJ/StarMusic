@@ -48,11 +48,18 @@ fun MePlaylistScreen(
                         .combinedClickable(onClick = {
                             mainNavController.navigate(ScreenDestination.Playlist(userPlaylistBean.id))
                         }, onLongClick = {
-                            dialogNavController.navigate(DialogDestination.PlaylistMenu(userPlaylistBean.id))
+                            dialogNavController.navigate(
+                                DialogDestination.PlaylistMenu(
+                                    userPlaylistBean.id
+                                )
+                            )
                         }),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    AppAsyncImage(size = 100.dp, any = userPlaylistBean.coverImgUrl)
+                    AppAsyncImage(
+                        modifier = Modifier.size(100.dp),
+                        url = userPlaylistBean.coverImgUrl
+                    )
                     Spacer(modifier = Modifier.width(5.dp))
                     Column {
                         Text(text = userPlaylistBean.name, fontSize = 15.sp, color = textColor)

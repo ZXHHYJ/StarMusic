@@ -19,39 +19,6 @@ import studio.mandysa.music.service.playmanager.bean.Song
  */
 object PlayManager {
 
-    data class MusicInfo(
-        val song: Song,
-        val title: String,
-        val coverUrl: String,
-        val artist: Array<Song.NetworkBean.Artist>,
-        val album: Song.NetworkBean.Album
-    ) {
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (javaClass != other?.javaClass) return false
-
-            other as MusicInfo
-
-            if (song != other.song) return false
-            if (title != other.title) return false
-            if (coverUrl != other.coverUrl) return false
-            if (!artist.contentEquals(other.artist)) return false
-            if (album != other.album) return false
-
-            return true
-        }
-
-        override fun hashCode(): Int {
-            var result = song.hashCode()
-            result = 31 * result + title.hashCode()
-            result = 31 * result + coverUrl.hashCode()
-            result = 31 * result + artist.contentHashCode()
-            result = 31 * result + album.hashCode()
-            return result
-        }
-
-    }
-
     private fun createExoPlayer(context: Context) = ExoPlayer.Builder(context).build().apply {
         addListener(object : Player.Listener {
             override fun onPlayerError(error: PlaybackException) {
@@ -119,11 +86,6 @@ object PlayManager {
     private val mChangeMusic = MutableLiveData<Song>()
 
     /**
-     * 当前歌曲播放信息
-     */
-    private val mChangeMusicInfo = MutableLiveData<MusicInfo>()
-
-    /**
      * 播放列表
      */
     private val mPlayList = MutableLiveData<List<Song>>()
@@ -162,10 +124,6 @@ object PlayManager {
 
     fun changeMusicLiveData(): LiveData<Song> {
         return mChangeMusic
-    }
-
-    fun changeMusicInfoLiveData(): LiveData<MusicInfo> {
-        return mChangeMusicInfo
     }
 
     fun isPaused(): Boolean {
@@ -238,30 +196,6 @@ object PlayManager {
     private fun playMusic(song: Song) {
         mProgress.value = 0
         mChangeMusic.value = song
-        mChangeMusicInfo.value = when (song) {
-            is Song.LocalBean -> {
-                val coverUrl = "content://media/external/audio/albumart/${song.albumId}"
-                MusicInfo(
-                    song,
-                    song.songName,
-                    coverUrl,
-                    arrayOf(Song.NetworkBean.Artist(song.artistId.toString(), song.artist)),
-                    Song.NetworkBean.Album(
-                        "",
-                        coverUrl,
-                        song.album,
-                        ""
-                    )
-                )
-            }
-            is Song.NetworkBean -> MusicInfo(
-                song,
-                song.title,
-                song.coverUrl,
-                song.artist,
-                song.album
-            )
-        }
         mMediaPlayer?.run {
             when (song) {
                 is Song.LocalBean -> {

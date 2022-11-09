@@ -12,12 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.net.toUri
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
-import studio.mandysa.music.service.playmanager.bean.MetaMusic
 import studio.mandysa.music.service.playmanager.bean.Song
 import studio.mandysa.music.service.playmanager.ktx.allArtist
+import studio.mandysa.music.service.playmanager.ktx.artist
+import studio.mandysa.music.service.playmanager.ktx.coverUrl
+import studio.mandysa.music.service.playmanager.ktx.title
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.theme.*
@@ -26,39 +27,7 @@ import studio.mandysa.music.ui.theme.*
 @Composable
 fun SongItem(
     dialogNavController: NavController<DialogDestination>,
-    bean: Song.LocalBean,
-    onClick: () -> Unit
-) {
-    SongItem(
-        "content://media/external/audio/albumart/${bean.albumId}".toUri(),
-        bean.songName,
-        bean.artist,
-        { },
-        onClick
-    )
-}
-
-@Composable
-fun SongItem(
-    dialogNavController: NavController<DialogDestination>,
-    song: MetaMusic<*, *>,
-    onClick: () -> Unit
-) {
-    SongItem(
-        song.coverUrl,
-        song.title,
-        song.artist.allArtist(),
-        { dialogNavController.navigate(DialogDestination.SongMenu(song)) },
-        onClick
-    )
-}
-
-@Composable
-private fun SongItem(
-    coverUrl: Any,
-    title: String,
-    artists: String,
-    moreVertOnClink: () -> Unit,
+    song: Song,
     onClick: () -> Unit
 ) {
     Row(
@@ -73,7 +42,7 @@ private fun SongItem(
                 .padding(horizontal = horizontalMargin, vertical = verticalMargin)
                 .size(50.dp), contentAlignment = Alignment.Center
         ) {
-            AppAsyncImage(size = 50.dp, any = coverUrl)
+            AppAsyncImage(modifier =Modifier.size(50.dp), url = song.coverUrl)
         }
         Column(
             modifier = Modifier
@@ -82,7 +51,7 @@ private fun SongItem(
                 .padding(vertical = verticalMargin),
         ) {
             Text(
-                text = title,
+                text = song.title,
                 color = textColor,
                 fontSize = 15.sp,
                 maxLines = 1,
@@ -90,7 +59,7 @@ private fun SongItem(
             )
             Spacer(modifier = Modifier.weight(1.0f))
             Text(
-                text = artists,
+                text = song.artist.allArtist(),
                 color = textColorLight,
                 fontSize = 13.sp,
                 maxLines = 1,
@@ -102,7 +71,9 @@ private fun SongItem(
             tint = onBackground,
             contentDescription = null,
             modifier = Modifier
-                .clickable(onClick = moreVertOnClink)
+                .clickable {
+                    dialogNavController.navigate(DialogDestination.SongMenu(song))
+                }
         )
         Spacer(modifier = Modifier.padding(end = horizontalMargin))
     }

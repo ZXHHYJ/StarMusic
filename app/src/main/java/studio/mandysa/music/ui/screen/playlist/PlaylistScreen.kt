@@ -88,9 +88,9 @@ fun PlaylistScreen(
                 }
                 songs?.let { list ->
                     items(list.size) { pos ->
-                        SongItem(dialogNavController, list[pos]) {
-                            //PlayManager.play(list, pos)
-                        }
+                        /*SongItem(dialogNavController, list[pos]) {
+                            PlayManager.play(list, pos)
+                        }*/
                     }
                 }
                 item {

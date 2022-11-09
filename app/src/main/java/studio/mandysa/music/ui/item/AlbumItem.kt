@@ -37,7 +37,11 @@ fun AlbumItem(mateAlbum: MetaAlbum, onClick: () -> Unit) {
                 colors = CardDefaults.cardColors(Color.LightGray),
                 shape = RoundedCornerShape(size)
             ) {}
-            AppAsyncImage(size = size, any = mateAlbum.coverUrl, onClick = onClick)
+            AppAsyncImage(
+                modifier = Modifier.size(size),
+                url = mateAlbum.coverUrl,
+                onClick = onClick
+            )
         }
         Text(
             modifier = Modifier.fillMaxWidth(),

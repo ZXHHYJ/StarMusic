@@ -3,11 +3,11 @@ package studio.mandysa.music.ui.screen
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
-import studio.mandysa.music.service.playmanager.bean.MetaMusic
+import studio.mandysa.music.service.playmanager.bean.Song
 
 sealed class DialogDestination : Parcelable {
     @Parcelize
-    data class SongMenu(val model: @RawValue MetaMusic<*, *>) : DialogDestination()
+    data class SongMenu(val song: @RawValue Song) : DialogDestination()
 
     @Parcelize
     data class PlaylistMenu(val id: String) : DialogDestination()

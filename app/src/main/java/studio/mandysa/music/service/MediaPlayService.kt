@@ -23,6 +23,9 @@ import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.PlayManager.isPaused
 import studio.mandysa.music.service.playmanager.PlayManager.playingMusicProgressLiveData
 import studio.mandysa.music.service.playmanager.ktx.allArtist
+import studio.mandysa.music.service.playmanager.ktx.artist
+import studio.mandysa.music.service.playmanager.ktx.coverUrl
+import studio.mandysa.music.service.playmanager.ktx.title
 
 class MediaPlayService : LifecycleService() {
 
@@ -77,7 +80,7 @@ class MediaPlayService : LifecycleService() {
     //监听播放器的状态更新
     private fun initPlayManagerChanged() {
         PlayManager.apply {
-            changeMusicInfoLiveData().observe(this@MediaPlayService) {
+            changeMusicLiveData().observe(this@MediaPlayService) {
                 mMediaNotification
                     .setContentTitle(it.title)
                     .setContentText(it.artist.allArtist())
@@ -109,7 +112,7 @@ class MediaPlayService : LifecycleService() {
                 refreshMediaSession()
             }
             playingMusicDurationLiveData().observe(this@MediaPlayService) {
-                changeMusicInfoLiveData().value?.apply {
+                changeMusicLiveData().value?.apply {
                     mMediaSession.setMetadata(
                         MediaMetadataCompat.Builder()
                             .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, it.toLong())

@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
+import studio.mandysa.music.service.playmanager.ktx.coverUrl
+import studio.mandysa.music.service.playmanager.ktx.title
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.KenBurns
 import studio.mandysa.music.ui.common.PanelState
@@ -46,7 +48,7 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
         }
         Box(modifier = Modifier.padding(horizontal = horizontalMargin)) {
             Box {
-                val coverUrl by PlayManager.changeMusicInfoLiveData().map {
+                val coverUrl by PlayManager.changeMusicLiveData().map {
                     it.coverUrl
                 }.observeAsState("")
                 Card(
@@ -75,7 +77,7 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
                                 .fillMaxSize(),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            val title by PlayManager.changeMusicInfoLiveData()
+                            val title by PlayManager.changeMusicLiveData()
                                 .map { return@map it.title }
                                 .observeAsState("")
                             Text(
@@ -121,7 +123,7 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
                         }
                     }
                 }
-                AppAsyncImage(size = coverSize, any = coverUrl)
+                AppAsyncImage(modifier = Modifier.size(coverSize), url = coverUrl)
             }
         }
     }

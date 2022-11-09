@@ -1,34 +1,57 @@
 package studio.mandysa.music.ui.common
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import studio.mandysa.music.ui.theme.emptyImageBackground
 import studio.mandysa.music.ui.theme.round
 
 @Composable
-fun AppAsyncImage(
-    size: Dp,
-    cornerSize: Dp = round,
-    any: Any,
+fun AppRoundAsyncImage(
+    modifier: Modifier = Modifier,
+    emptyBackground: Color = emptyImageBackground,
+    url: String,
     onClick: (() -> Unit)? = null
 ) {
-    // TODO: 这个函数设计不太好，需要优化
-    Card(
-        shape = RoundedCornerShape(cornerSize),
-        colors = CardDefaults.cardColors(containerColor = emptyImageBackground),
-        modifier = Modifier
-            .size(size)
+    var size by remember {
+        mutableStateOf(IntSize.Zero)
+    }
+    AppAsyncImage(
+        modifier = modifier.onSizeChanged {
+            size = it
+        },
+        emptyBackground = emptyBackground, cornerSize = size.height.dp / 2,
+        url = url,
+        onClick = onClick
+    )
+}
+
+@Composable
+fun AppAsyncImage(
+    modifier: Modifier = Modifier,
+    emptyBackground: Color = emptyImageBackground,
+    cornerSize: Dp = round,
+    url: String,
+    onClick: (() -> Unit)? = null
+) {
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(cornerSize))
+            .background(color = emptyBackground)
     ) {
         AsyncImage(
             modifier = Modifier
@@ -39,20 +62,11 @@ fun AppAsyncImage(
                     else this
                 },
             model = ImageRequest.Builder(LocalContext.current)
-                .data(any)
+                .data(url)
                 .crossfade(true)
                 .build(),
             contentScale = ContentScale.Crop,
             contentDescription = null,
         )
     }
-}
-
-@Composable
-fun AppRoundAsyncImage(
-    size: Dp,
-    url: String,
-    onClick: (() -> Unit)? = null
-) {
-    AppAsyncImage(size = size, cornerSize = size / 2, any = url, onClick = onClick)
 }

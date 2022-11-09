@@ -148,7 +148,7 @@ fun MainScreen() {
         ) {
             when (destination) {
                 is DialogDestination.SongMenu -> {
-                    SongMenu(mainNavController, dialogNavController, model = destination.model)
+                    SongMenu(mainNavController, dialogNavController, song = destination.song)
                 }
 
                 is DialogDestination.PlaylistMenu -> {
