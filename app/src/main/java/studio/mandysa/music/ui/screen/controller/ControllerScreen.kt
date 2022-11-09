@@ -46,7 +46,7 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
         }
         Box(modifier = Modifier.padding(horizontal = horizontalMargin)) {
             Box {
-                val coverUrl by PlayManager.changeMusicLiveData().map {
+                val coverUrl by PlayManager.changeMusicInfoLiveData().map {
                     it.coverUrl
                 }.observeAsState("")
                 Card(
@@ -75,7 +75,7 @@ fun ControllerScreen(panelState: PanelState?, onClick: () -> Unit) {
                                 .fillMaxSize(),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            val title by PlayManager.changeMusicLiveData()
+                            val title by PlayManager.changeMusicInfoLiveData()
                                 .map { return@map it.title }
                                 .observeAsState("")
                             Text(

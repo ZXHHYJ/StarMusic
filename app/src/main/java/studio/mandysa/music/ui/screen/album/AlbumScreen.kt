@@ -76,7 +76,7 @@ fun AlbumScreen(
                             imageVector = Icons.Rounded.PlayArrow,
                             enabled = albumInfo?.songList != null
                         ) {
-                            PlayManager.play(albumInfo!!.songList, 0)
+                            //PlayManager.play(albumInfo!!.songList, 0)
                         }
                         Spacer(modifier = Modifier.width(5.dp))
                         MenuItem(
@@ -92,7 +92,7 @@ fun AlbumScreen(
             albumInfo?.let {
                 itemsIndexed(it.songList) { index, item ->
                     SongItem(dialogNavController = dialogNavController, song = item) {
-                        PlayManager.play(it.songList, index)
+                        //PlayManager.play(it.songList, index)
                     }
                 }
             }

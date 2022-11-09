@@ -11,13 +11,17 @@ import studio.mandysa.music.R
 import studio.mandysa.music.logic.config.api
 import studio.mandysa.music.logic.config.mainApplication
 import studio.mandysa.music.service.playmanager.PlayManager
+import studio.mandysa.music.service.playmanager.bean.Song
 import studio.mandysa.music.ui.common.POPWindows
 import studio.mandysa.music.ui.common.lyric.Lyric
 
 @Composable
 fun LyricScreen() {
     val musicId by PlayManager.changeMusicLiveData().map {
-        it.id
+        when (it) {
+            is Song.LocalBean -> null
+            is Song.NetworkBean -> it.id
+        }
     }.observeAsState()
     var lyric by remember { mutableStateOf("") }
     val liveTime by PlayManager.playingMusicProgressLiveData().observeAsState(0)
@@ -29,7 +33,7 @@ fun LyricScreen() {
                 lyric = api.network().getLyric(it)
             } catch (e: HttpFailureException) {
                 POPWindows.postValue(mainApplication.getString(R.string.network_error))
-            } catch (e: Exception) {
+            } catch (_: Exception) {
             }
         }
     }

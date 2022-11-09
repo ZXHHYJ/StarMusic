@@ -77,7 +77,7 @@ class MediaPlayService : LifecycleService() {
     //监听播放器的状态更新
     private fun initPlayManagerChanged() {
         PlayManager.apply {
-            changeMusicLiveData().observe(this@MediaPlayService) {
+            changeMusicInfoLiveData().observe(this@MediaPlayService) {
                 mMediaNotification
                     .setContentTitle(it.title)
                     .setContentText(it.artist.allArtist())
@@ -109,7 +109,7 @@ class MediaPlayService : LifecycleService() {
                 refreshMediaSession()
             }
             playingMusicDurationLiveData().observe(this@MediaPlayService) {
-                changeMusicLiveData().value?.apply {
+                changeMusicInfoLiveData().value?.apply {
                     mMediaSession.setMetadata(
                         MediaMetadataCompat.Builder()
                             .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, it.toLong())

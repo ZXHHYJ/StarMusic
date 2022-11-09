@@ -55,7 +55,7 @@ fun PlayScreen(
 ) {
     val navController = rememberNavController(startDestination = PlayScreenDestination.Main)
     Box(modifier = Modifier.clipToBounds()) {
-        val coverUrl by PlayManager.changeMusicLiveData().map {
+        val coverUrl by PlayManager.changeMusicInfoLiveData().map {
             it.coverUrl
         }.observeAsState("")
         KenBurns(

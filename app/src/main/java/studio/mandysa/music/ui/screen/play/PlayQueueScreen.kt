@@ -32,13 +32,13 @@ fun PlayQueueScreen(dialogNavController: NavController<DialogDestination>) {
     val playlist by PlayManager.changePlayListLiveData().observeAsState(listOf())
     LazyColumn {
         itemsIndexed(playlist) { index, model ->
-            SongItem(
+            /*SongItem(
                 dialogNavController,
                 index,
                 model
             ) {
                 PlayManager.play(playlist, index)
-            }
+            }*/
         }
     }
 }

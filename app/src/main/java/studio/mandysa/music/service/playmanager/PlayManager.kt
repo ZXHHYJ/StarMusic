@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.exoplayer2.ExoPlayer
@@ -12,15 +11,46 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
 import studio.mandysa.music.logic.config.MUSIC_URL
-import studio.mandysa.music.service.playmanager.bean.MetaAlbum
-import studio.mandysa.music.service.playmanager.bean.MetaArtist
-import studio.mandysa.music.service.playmanager.bean.MetaMusic
+import studio.mandysa.music.service.playmanager.bean.Song
 
 
 /**
  * @author 黄浩
  */
 object PlayManager {
+
+    data class MusicInfo(
+        val song: Song,
+        val title: String,
+        val coverUrl: String,
+        val artist: Array<Song.NetworkBean.Artist>,
+        val album: Song.NetworkBean.Album
+    ) {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as MusicInfo
+
+            if (song != other.song) return false
+            if (title != other.title) return false
+            if (coverUrl != other.coverUrl) return false
+            if (!artist.contentEquals(other.artist)) return false
+            if (album != other.album) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = song.hashCode()
+            result = 31 * result + title.hashCode()
+            result = 31 * result + coverUrl.hashCode()
+            result = 31 * result + artist.contentHashCode()
+            result = 31 * result + album.hashCode()
+            return result
+        }
+
+    }
 
     private fun createExoPlayer(context: Context) = ExoPlayer.Builder(context).build().apply {
         addListener(object : Player.Listener {
@@ -86,12 +116,17 @@ object PlayManager {
     /**
      * 当前播放的歌曲
      */
-    private val mChangeMusic = MutableLiveData<MetaMusic<*, *>>()
+    private val mChangeMusic = MutableLiveData<Song>()
+
+    /**
+     * 当前歌曲播放信息
+     */
+    private val mChangeMusicInfo = MutableLiveData<MusicInfo>()
 
     /**
      * 播放列表
      */
-    private val mPlayList = MutableLiveData<List<MetaMusic<*, *>>>()
+    private val mPlayList = MutableLiveData<List<Song>>()
 
     /**
      * 播放状态
@@ -113,7 +148,7 @@ object PlayManager {
      */
     private val mDuration = MutableLiveData<Int>()
 
-    fun changePlayListLiveData(): LiveData<List<MetaMusic<*, *>>> {
+    fun changePlayListLiveData(): LiveData<List<Song>> {
         return mPlayList
     }
 
@@ -125,8 +160,12 @@ object PlayManager {
         return mDuration
     }
 
-    fun changeMusicLiveData(): LiveData<MetaMusic<*, *>> {
+    fun changeMusicLiveData(): LiveData<Song> {
         return mChangeMusic
+    }
+
+    fun changeMusicInfoLiveData(): LiveData<MusicInfo> {
+        return mChangeMusicInfo
     }
 
     fun isPaused(): Boolean {
@@ -138,26 +177,25 @@ object PlayManager {
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun addNextPlay(model: MetaMusic<*, *>) {
-        val list = mPlayList.value as ArrayList<MetaMusic<MetaArtist, MetaAlbum>>?
+    fun addNextPlay(song: Song) {
+        val list = mPlayList.value as ArrayList<Song>?
         list?.let {
-            list.add(mIndex.value!! + 1, model as MetaMusic<MetaArtist, MetaAlbum>)
+            list.add(mIndex.value!! + 1, song)
             mPlayList.value = it
         }
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun play(list: List<*>, index: Int) {
-        mPlayList.value = list as List<MetaMusic<MetaArtist, MetaAlbum>>
+    fun play(list: List<Song>, index: Int) {
+        mPlayList.value = list
         updateIndex(index)
     }
 
     /**
      * 随机播放
      */
-    @Suppress("UNCHECKED_CAST")
-    fun shufflePlay(list: List<*>, index: Int) {
-        val mutableList = (list as MutableList<MetaMusic<MetaArtist, MetaAlbum>>).toMutableList()
+    fun shufflePlay(list: List<Song>, index: Int) {
+        val mutableList = list.toMutableList()
         mutableList.shuffle()
         play(mutableList, index)
     }
@@ -197,21 +235,54 @@ object PlayManager {
         mMediaPlayer!!.pause()
     }
 
-    private fun playMusic(metaMusic: MetaMusic<*, *>) {
+    private fun playMusic(song: Song) {
         mProgress.value = 0
-        mChangeMusic.value = metaMusic
+        mChangeMusic.value = song
+        mChangeMusicInfo.value = when (song) {
+            is Song.LocalBean -> {
+                val coverUrl = "content://media/external/audio/albumart/${song.albumId}"
+                MusicInfo(
+                    song,
+                    song.songName,
+                    coverUrl,
+                    arrayOf(Song.NetworkBean.Artist(song.artistId.toString(), song.artist)),
+                    Song.NetworkBean.Album(
+                        "",
+                        coverUrl,
+                        song.album,
+                        ""
+                    )
+                )
+            }
+            is Song.NetworkBean -> MusicInfo(
+                song,
+                song.title,
+                song.coverUrl,
+                song.artist,
+                song.album
+            )
+        }
         mMediaPlayer?.run {
-            val url = MUSIC_URL + metaMusic.id
-            setMediaItem(MediaItem.fromUri(url.toUri()))
-            prepare()
+            when (song) {
+                is Song.LocalBean -> {
+                    setMediaItem(MediaItem.fromUri(song.data))
+                    prepare()
+                    // TODO: 未测试
+                }
+                is Song.NetworkBean -> {
+                    val url = MUSIC_URL + song.id
+                    setMediaItem(MediaItem.fromUri(url))
+                    prepare()
+                }
+            }
         }
     }
 
     init {
         mIndex.observeForever { p1: Int ->
             if (mPlayList.value != null) {
-                val metaMusic: MetaMusic<*, *> = mPlayList.value!![p1]
-                playMusic(metaMusic)
+                val song = mPlayList.value!![p1]
+                playMusic(song)
             }
         }
     }

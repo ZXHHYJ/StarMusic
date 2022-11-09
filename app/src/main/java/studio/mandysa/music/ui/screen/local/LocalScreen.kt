@@ -1,12 +1,8 @@
 package studio.mandysa.music.ui.screen.local
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,6 +15,7 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
 import studio.mandysa.music.logic.repository.LocalMusicRepository
+import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.AppButton
 import studio.mandysa.music.ui.common.SearchBar
 import studio.mandysa.music.ui.item.SongItem
@@ -47,9 +44,9 @@ fun LocalScreen(
                         Text(text = stringResource(id = R.string.search_hint))
                     }
                 }
-                items(localMusicBeans) {
-                    SongItem(dialogNavController = dialogNavController, bean = it) {
-
+                itemsIndexed(localMusicBeans) { index, item->
+                    SongItem(dialogNavController = dialogNavController, bean = item) {
+                        PlayManager.play(localMusicBeans, index)
                     }
                 }
             }

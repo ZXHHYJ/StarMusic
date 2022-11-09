@@ -13,11 +13,16 @@ import studio.mandysa.music.service.playmanager.bean.MetaAlbum
            "alia": ["Games We Play"]
        }
     */
-class AlbumBean(
-    @Value("id") private val id: String,
-    @Value("name") private val name: String,
-    @Value("picUrl") private val picUrl: String
-) : MetaAlbum {
+class AlbumBean : MetaAlbum {
+
+    @Value("id")
+    private lateinit var id: String;
+
+    @Value("name")
+    private lateinit var name: String;
+
+    @Value("picUrl")
+    private lateinit var picUrl: String;
 
     override fun getId(): String {
         return id

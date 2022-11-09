@@ -104,7 +104,7 @@ fun SongMenu(
                     imageVector = Icons.Rounded.Add
                 ) {
                     dialogNavController.popAll()
-                    PlayManager.addNextPlay(model)
+                    //PlayManager.addNextPlay(model)
                 }
             }
             items(model.artist) {

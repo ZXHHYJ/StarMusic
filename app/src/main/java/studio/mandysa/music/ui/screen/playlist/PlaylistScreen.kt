@@ -70,18 +70,18 @@ fun PlaylistScreen(
                                 modifier = Modifier.weight(1.0f),
                                 title = stringResource(id = R.string.play_all),
                                 imageVector = Icons.Rounded.PlayArrow,
-                                enabled = songs?.isNotEmpty() ?: false
+                                enabled = songs?.isNotEmpty() == true
                             ) {
-                                PlayManager.play(songs!!, 0)
+                                //PlayManager.play(songs!!, 0)
                             }
                             Spacer(modifier = Modifier.width(5.dp))
                             MenuItem(
                                 modifier = Modifier.weight(1.0f),
                                 title = stringResource(id = R.string.shuffle_play),
                                 imageVector = Icons.Rounded.Shuffle,
-                                enabled = songs?.isNotEmpty() ?: false
+                                enabled = songs?.isNotEmpty() == true
                             ) {
-                                PlayManager.shufflePlay(songs!!, 0)
+                                //PlayManager.shufflePlay(songs!!, 0)
                             }
                         }
                     }
@@ -89,7 +89,7 @@ fun PlaylistScreen(
                 songs?.let { list ->
                     items(list.size) { pos ->
                         SongItem(dialogNavController, list[pos]) {
-                            PlayManager.play(list, pos)
+                            //PlayManager.play(list, pos)
                         }
                     }
                 }
