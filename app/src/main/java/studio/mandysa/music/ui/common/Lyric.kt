@@ -1,5 +1,6 @@
 package studio.mandysa.music.ui.common.lyric
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,14 +20,15 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import studio.mandysa.music.ui.theme.roundedCornerShape
 import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.roundedCornerShape
 import studio.mandysa.music.ui.theme.translucentWhite
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Lyric(
     modifier: Modifier = Modifier,
@@ -34,7 +36,6 @@ fun Lyric(
     liveTime: Int,
     onClick: (Int) -> Unit
 ) {
-
     /**
      * 处理时间
      * 时间转换为毫秒millisecond
@@ -57,61 +58,64 @@ fun Lyric(
     var lyrics by rememberSaveable {
         mutableStateOf(listOf<Pair<String, Int>>())
     }
-    LaunchedEffect(key1 = lyric) {
-        val list = ArrayList<Pair<String, Int>>()
-        for (s in lyric.split("\n")) {
-            val data = s.replace("[", "").split("]")
+    LaunchedEffect(lyric) {
+        val list = arrayListOf<Pair<String, Int>>()
+        for (string in lyric.split("\n")) {
+            val data = string.replace("[", "").split("]")
             for (i in 0 until data.size - 1) {
                 try {
                     data[data.size - 1].trim().let {
                         if (it.isNotEmpty()) {
-                            list.add(data[data.size - 1].trim() to timeStr(data[i]))
+                            list.add(it to timeStr(data[i]))
                         }
                     }
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                 }
             }
         }
         lyrics = list
     }
-    LaunchedEffect(key1 = liveTime) {
+    LaunchedEffect(liveTime) {
         lyrics.forEachIndexed { index, lrcContent ->
             if (liveTime >= lrcContent.second) {
                 position = index
             }
         }
     }
-    LaunchedEffect(key1 = position) {
+    LaunchedEffect(position) {
         if (position > 2 && !state.isScrollInProgress) {
             state.animateScrollToItem(position - 2)
         }
     }
-    LazyColumn(modifier = modifier
-        .graphicsLayer { alpha = 0.99F }
-        .drawWithContent {
-            val colors = listOf(
-                Color.Transparent, Color.Black, Color.Black, Color.Black, Color.Black,
-                Color.Black, Color.Black, Color.Black, Color.Transparent
-            )
-            drawContent()
-            drawRect(
-                brush = Brush.verticalGradient(colors),
-                blendMode = BlendMode.DstIn
-            )
-        }, state = state
+    LazyColumn(
+        modifier = modifier
+            .graphicsLayer { alpha = 0.99F }
+            .drawWithContent {
+                val colors = listOf(
+                    Color.Transparent, Color.Black, Color.Black, Color.Black, Color.Black,
+                    Color.Black, Color.Black, Color.Black, Color.Transparent
+                )
+                drawContent()
+                drawRect(
+                    brush = Brush.verticalGradient(colors),
+                    blendMode = BlendMode.DstIn
+                )
+            },
+        state = state
     ) {
         itemsIndexed(lyrics) { index, model ->
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .clip(roundedCornerShape)
+                    .clickable {
+                        onClick.invoke(model.second)
+                    }
                     .padding(
                         vertical = 20.dp,
                         horizontal = horizontalMargin
                     )
-                    .clip(roundedCornerShape)
-                    .clickable {
-                        onClick.invoke(model.second)
-                    },
+                    .animateItemPlacement(),
                 text = model.first,
                 color = if (position == index) Color.White else translucentWhite,
                 fontSize = 34.sp,

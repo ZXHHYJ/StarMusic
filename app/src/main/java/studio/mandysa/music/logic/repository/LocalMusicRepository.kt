@@ -1,5 +1,6 @@
 package studio.mandysa.music.logic.repository
 
+import android.media.MediaMetadataRetriever
 import android.provider.MediaStore
 import studio.mandysa.music.logic.config.mainApplication
 import studio.mandysa.music.service.playmanager.bean.Song
@@ -8,6 +9,7 @@ import studio.mandysa.music.service.playmanager.bean.Song
 object LocalMusicRepository {
 
     fun getAudioFiles(): List<Song.LocalBean> {
+        MediaMetadataRetriever.METADATA_KEY_WRITER
         val query = mainApplication.contentResolver.query(
             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
             arrayOf(
@@ -18,11 +20,11 @@ object LocalMusicRepository {
                 MediaStore.Audio.AudioColumns.DURATION,
                 MediaStore.Audio.AudioColumns.IS_MUSIC,
                 MediaStore.Audio.AudioColumns.DATA,
-                MediaStore.Audio.Media.TITLE
+                MediaStore.Audio.AudioColumns.TITLE
             ),
             MediaStore.Audio.AudioColumns.IS_MUSIC + "!=0",
             null,
-            MediaStore.Audio.Media.DEFAULT_SORT_ORDER
+            null
         )
         val list = ArrayList<Song.LocalBean>()
         while (query != null && query.moveToNext()) {
@@ -39,7 +41,7 @@ object LocalMusicRepository {
             val data =
                 query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.DATA))
             val songName =
-                query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE))
+                query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.TITLE))
             list.add(Song.LocalBean(album, albumId, artist, artistId, duration, data, songName))
         }
         query?.close()
