@@ -17,7 +17,9 @@ import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import studio.mandysa.music.ui.theme.horizontalMargin
@@ -58,6 +60,56 @@ fun Lyric(
     var lyrics by rememberSaveable {
         mutableStateOf(listOf<Pair<String, Int>>())
     }
+    var lyricBoxSize by remember {
+        mutableStateOf(IntSize.Zero)
+    }
+    var selectLyricItemBoxSize by remember {
+        mutableStateOf(IntSize.Zero)
+    }
+    LazyColumn(
+        modifier = modifier
+            .graphicsLayer { alpha = 0.99F }
+            .drawWithContent {
+                val colors = listOf(
+                    Color.Transparent, Color.Black, Color.Black, Color.Black, Color.Black,
+                    Color.Black, Color.Black, Color.Black, Color.Transparent
+                )
+                drawContent()
+                drawRect(
+                    brush = Brush.verticalGradient(colors),
+                    blendMode = BlendMode.DstIn
+                )
+            }
+            .onSizeChanged {
+                lyricBoxSize = it
+            },
+        state = state
+    ) {
+        itemsIndexed(lyrics) { index, model ->
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(roundedCornerShape)
+                    .clickable {
+                        onClick.invoke(model.second)
+                    }
+                    .padding(
+                        vertical = 20.dp,
+                        horizontal = horizontalMargin
+                    )
+                    .animateItemPlacement()
+                    .onSizeChanged {
+                        if (position == index) {
+                            selectLyricItemBoxSize = it
+                        }
+                    },
+                text = model.first,
+                color = if (position == index) Color.White else translucentWhite,
+                fontSize = 34.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
     LaunchedEffect(lyric) {
         val list = arrayListOf<Pair<String, Int>>()
         for (string in lyric.split("\n")) {
@@ -83,44 +135,9 @@ fun Lyric(
         }
     }
     LaunchedEffect(position) {
-        if (position > 2 && !state.isScrollInProgress) {
-            state.animateScrollToItem(position - 2)
-        }
-    }
-    LazyColumn(
-        modifier = modifier
-            .graphicsLayer { alpha = 0.99F }
-            .drawWithContent {
-                val colors = listOf(
-                    Color.Transparent, Color.Black, Color.Black, Color.Black, Color.Black,
-                    Color.Black, Color.Black, Color.Black, Color.Transparent
-                )
-                drawContent()
-                drawRect(
-                    brush = Brush.verticalGradient(colors),
-                    blendMode = BlendMode.DstIn
-                )
-            },
-        state = state
-    ) {
-        itemsIndexed(lyrics) { index, model ->
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(roundedCornerShape)
-                    .clickable {
-                        onClick.invoke(model.second)
-                    }
-                    .padding(
-                        vertical = 20.dp,
-                        horizontal = horizontalMargin
-                    )
-                    .animateItemPlacement(),
-                text = model.first,
-                color = if (position == index) Color.White else translucentWhite,
-                fontSize = 34.sp,
-                fontWeight = FontWeight.Bold
-            )
+        if (!state.isScrollInProgress) {
+            val height = lyricBoxSize.height / 2 - selectLyricItemBoxSize.height / 2
+            state.animateScrollToItem(position.coerceAtLeast(0), -height)
         }
     }
 }

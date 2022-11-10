@@ -6,13 +6,16 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import com.drake.net.exception.HttpFailureException
 import com.drake.net.exception.NoCacheException
-import com.mpatric.mp3agic.Mp3File
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.jaudiotagger.audio.AudioFileIO
+import org.jaudiotagger.tag.FieldKey
 import studio.mandysa.music.logic.config.api
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.bean.Song
 import studio.mandysa.music.ui.common.lyric.Lyric
+import java.io.File
+
 
 @Composable
 fun LyricScreen() {
@@ -23,12 +26,11 @@ fun LyricScreen() {
             is Song.LocalBean -> {
                 launch(Dispatchers.IO) {
                     val model = (song as Song.LocalBean)
-                    lyric = try {
-                        val mp3File = Mp3File(model.data)
-                        mp3File.id3v2Tag.lyrics
+                    try {
+                        val audioFile = AudioFileIO.read(File(model.data))
+                        lyric = audioFile.tag.getFirst(FieldKey.LYRICS)
                     } catch (e: Exception) {
-                        // TODO: 部分歌曲获取歌词未知错误
-                        ""
+                        e.printStackTrace()
                     }
                 }
             }
