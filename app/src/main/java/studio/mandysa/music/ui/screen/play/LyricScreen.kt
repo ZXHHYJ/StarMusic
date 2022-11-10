@@ -13,7 +13,7 @@ import org.jaudiotagger.tag.FieldKey
 import studio.mandysa.music.logic.config.api
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.bean.Song
-import studio.mandysa.music.ui.common.lyric.Lyric
+import studio.mandysa.music.ui.common.Lyric
 import java.io.File
 
 

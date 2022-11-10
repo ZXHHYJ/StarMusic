@@ -1,9 +1,8 @@
-package studio.mandysa.music.ui.common.lyric
+package studio.mandysa.music.ui.common
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -18,6 +17,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
@@ -85,6 +85,9 @@ fun Lyric(
             },
         state = state
     ) {
+        item {
+            Spacer(modifier = Modifier.height(with(LocalDensity.current) { lyricBoxSize.height.toDp() } / 2))
+        }
         itemsIndexed(lyrics) { index, model ->
             Text(
                 modifier = Modifier
@@ -108,6 +111,9 @@ fun Lyric(
                 fontSize = 34.sp,
                 fontWeight = FontWeight.Bold
             )
+        }
+        item {
+            Spacer(modifier = Modifier.height(with(LocalDensity.current) { lyricBoxSize.height.toDp() } / 2))
         }
     }
     LaunchedEffect(lyric) {
@@ -134,10 +140,10 @@ fun Lyric(
             }
         }
     }
-    LaunchedEffect(position) {
+    LaunchedEffect(position, selectLyricItemBoxSize) {
         if (!state.isScrollInProgress) {
-            val height = lyricBoxSize.height / 2 - selectLyricItemBoxSize.height / 2
-            state.animateScrollToItem(position.coerceAtLeast(0), -height)
+            val height = (lyricBoxSize.height - selectLyricItemBoxSize.height) / 2
+            state.animateScrollToItem((position + 1).coerceAtLeast(0), -height)
         }
     }
 }
