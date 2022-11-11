@@ -5,46 +5,94 @@ import kotlinx.parcelize.Parcelize
 
 sealed class ScreenDestination : Parcelable {
 
+    /**
+     * 主页
+     */
     @Parcelize
     object Main : ScreenDestination()
 
     /**
-     * 网易云的screen从这里开始
+     * 搜索
      */
     @Parcelize
     object Search : ScreenDestination()
 
+    /**
+     * 歌单内容
+     */
     @Parcelize
-    data class Playlist(val id: String) : ScreenDestination()
+    data class PlaylistCnt(val id: String) : ScreenDestination()
 
+    /**
+     * 歌手
+     */
     @Parcelize
     data class Singer(val id: String) : ScreenDestination()
 
+    /**
+     * 单曲
+     */
     @Parcelize
-    data class Album(val id: String) : ScreenDestination()
+    object Single : ScreenDestination()
 
+    /**
+     * 专辑
+     */
+    @Parcelize
+    object Album : ScreenDestination()
+
+    /**
+     * 播放列表
+     */
+    @Parcelize
+    object PlayList : ScreenDestination()
+
+    /**
+     * 专辑内容
+     */
+    @Parcelize
+    data class AlbumCnt(val id: String) : ScreenDestination()
+
+    /**
+     * 设置
+     */
     @Parcelize
     object Setting : ScreenDestination()
 
+    /**
+     * 关于
+     */
     @Parcelize
     object About : ScreenDestination()
 
+    /**
+     * 关注的歌手
+     */
     @Parcelize
     object ArtistSub : ScreenDestination()
 
+    /**
+     * 我的歌单
+     */
     @Parcelize
     object MePlaylist : ScreenDestination()
 
+    /**
+     * 电台
+     */
     @Parcelize
     object FmScreen : ScreenDestination()
 
+    /**
+     * 排行榜
+     */
     @Parcelize
     object ToplistScreen : ScreenDestination()
 
+    /**
+     * 我的页面
+     */
     @Parcelize
     object MeScreen : ScreenDestination()
 
-    /**
-     * 本地音乐的Screen从这里开始
-     */
 }

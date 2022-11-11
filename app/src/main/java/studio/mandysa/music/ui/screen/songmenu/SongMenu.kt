@@ -90,7 +90,7 @@ fun SongMenu(
                     imageVector = Icons.Rounded.Album
                 ) {
                     dialogNavController.popAll()
-                    mainNavController.navigate(ScreenDestination.Album(song.album.id))
+                    mainNavController.navigate(ScreenDestination.AlbumCnt(song.album.id))
                 }
             }
             item {

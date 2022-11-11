@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.screen.playlist
+package studio.mandysa.music.ui.screen.playlistcnt
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,7 +7,7 @@ import studio.mandysa.music.logic.bean.PlaylistInfoBean
 import studio.mandysa.music.logic.bean.PlaylistSongBean
 import studio.mandysa.music.logic.repository.PlaylistRepository
 
-class PlaylistViewModel(private val id: String) : ViewModel() {
+class PlaylistCntViewModel(private val id: String) : ViewModel() {
     private val mRepository = PlaylistRepository(id)
 
     val songsLiveData: MutableLiveData<ArrayList<PlaylistSongBean>?> = mRepository.songsLiveData

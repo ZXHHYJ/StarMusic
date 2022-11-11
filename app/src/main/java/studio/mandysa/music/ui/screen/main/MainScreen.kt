@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Album
 import androidx.compose.material.icons.rounded.Contactless
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.Source
@@ -38,6 +39,7 @@ import studio.mandysa.music.ui.common.SlidingPanel
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.screen.album.AlbumScreen
+import studio.mandysa.music.ui.screen.albumcnt.AlbumCntScreen
 import studio.mandysa.music.ui.screen.controller.ControllerScreen
 import studio.mandysa.music.ui.screen.fm.FmScreen
 import studio.mandysa.music.ui.screen.home.HomeScreen
@@ -49,10 +51,12 @@ import studio.mandysa.music.ui.screen.me.meplaylist.MePlaylistScreen
 import studio.mandysa.music.ui.screen.me.meplaylist.playlistmenu.PlaylistMenu
 import studio.mandysa.music.ui.screen.message.Message
 import studio.mandysa.music.ui.screen.play.PlayScreen
-import studio.mandysa.music.ui.screen.playlist.PlaylistScreen
+import studio.mandysa.music.ui.screen.playlist.PlayListScreen
+import studio.mandysa.music.ui.screen.playlistcnt.PlaylistCntScreen
 import studio.mandysa.music.ui.screen.search.SearchScreen
 import studio.mandysa.music.ui.screen.setting.SettingScreen
 import studio.mandysa.music.ui.screen.singer.SingerScreen
+import studio.mandysa.music.ui.screen.single.SingleScreen
 import studio.mandysa.music.ui.screen.songmenu.SongMenu
 import studio.mandysa.music.ui.screen.toplist.ToplistScreen
 import studio.mandysa.music.ui.theme.*
@@ -77,10 +81,11 @@ val HomeBottomNavigationDestination.tabName
         HomeBottomNavigationDestination.Local -> stringResource(id = R.string.source)
     }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppNavigationDrawer(
+private fun AppNavigationDrawer(
     modifier: Modifier = Modifier,
-    drawerContent: @Composable RowScope.() -> Unit,
+    drawerContent: @Composable () -> Unit,
     controllerBar: @Composable () -> Unit,
     bottomBar: @Composable () -> Unit,
     content: @Composable (PaddingValues) -> Unit
@@ -89,15 +94,8 @@ fun AppNavigationDrawer(
     var size by remember {
         mutableStateOf(IntSize.Zero)
     }
-    Row(modifier = modifier) {
-        if (padMode && enableNeteaseCloud == true) {
-            drawerContent.invoke(this)
-        }
-        Box(
-            modifier = Modifier
-                .fillMaxHeight()
-                .weight(1.0f)
-        ) {
+    val contentBox: @Composable () -> Unit = {
+        Box(modifier = Modifier.fillMaxSize()) {
             content.invoke(PaddingValues(bottom = with(LocalDensity.current) { size.height.toDp() }))
             Column(modifier = Modifier
                 .fillMaxWidth()
@@ -122,6 +120,24 @@ fun AppNavigationDrawer(
             }
         }
     }
+    when (padMode) {
+        true -> {
+            PermanentNavigationDrawer(
+                modifier = modifier,
+                drawerContent = drawerContent,
+                content = contentBox
+            )
+        }
+        false -> {
+            val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+            ModalNavigationDrawer(
+                modifier = modifier,
+                drawerState = drawerState,
+                drawerContent = drawerContent, content = contentBox
+            )
+        }
+    }
+
 }
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -186,8 +202,7 @@ fun MainScreen() {
                 drawerContent = {
                     NavigationRail(
                         modifier = Modifier
-                            .fillMaxHeight()
-                            .statusBarsPadding(),
+                            .fillMaxHeight(),
                         containerColor = background
                     ) {
                         //上部分
@@ -218,29 +233,50 @@ fun MainScreen() {
                                 }
                             )
                         }
+
+                        AppNavigationRailItem(
+                            label = {
+                                Text(text = stringResource(id = R.string.album))
+                            },
+                            icon = {
+                                Icon(
+                                    Icons.Rounded.Album,
+                                    contentDescription = null
+                                )
+                            },
+                            selected = navLastDestination is ScreenDestination.AlbumCnt,
+                            onClick = {
+
+                            }
+                        )
+
+                        @Composable
+                        fun BottomRailItem(
+                            text: String,
+                            icon: ImageVector,
+                            screen: ScreenDestination
+                        ) {
+                            AppNavigationRailItem(
+                                label = {
+                                    Text(text = text)
+                                },
+                                icon = {
+                                    Icon(
+                                        icon,
+                                        contentDescription = null
+                                    )
+                                },
+                                selected = navLastDestination == screen,
+                                onClick = {
+                                    if (!mainNavController.moveToTop { it == screen }) {
+                                        mainNavController.navigate(screen)
+                                    }
+                                }
+                            )
+                        }
                         Spacer(modifier = Modifier.weight(1.0f))
                         //下部分
-                        val bottomRailItemFunction: @Composable (String, ImageVector, ScreenDestination) -> Unit =
-                            { text, icon, screen ->
-                                AppNavigationRailItem(
-                                    label = {
-                                        Text(text = text)
-                                    },
-                                    icon = {
-                                        Icon(
-                                            icon,
-                                            contentDescription = null
-                                        )
-                                    },
-                                    selected = navLastDestination == screen,
-                                    onClick = {
-                                        if (!mainNavController.moveToTop { it == screen }) {
-                                            mainNavController.navigate(screen)
-                                        }
-                                    }
-                                )
-                            }
-                        bottomRailItemFunction.invoke(
+                        BottomRailItem(
                             stringResource(id = R.string.search),
                             Icons.Rounded.Search,
                             ScreenDestination.Search
@@ -308,103 +344,106 @@ fun MainScreen() {
                         it.invoke(PanelState.COLLAPSED)
                     }
                 }
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding)
-                ) {
-                    NavHost(mainNavController) { screenDestination ->
-                        when (screenDestination) {
-                            ScreenDestination.Main -> {
-                                HomeScreen(
-                                    bottomNavController = homeNavController,
-                                    mainNavController = mainNavController,
-                                    dialogNavController = dialogNavController,
-                                    paddingValues = padding
-                                )
-                            }
+                NavHost(mainNavController) { screenDestination ->
+                    when (screenDestination) {
+                        ScreenDestination.Main -> {
+                            HomeScreen(
+                                bottomNavController = homeNavController,
+                                mainNavController = mainNavController,
+                                dialogNavController = dialogNavController,
+                                paddingValues = padding
+                            )
+                        }
 
-                            ScreenDestination.Search -> {
-                                SearchScreen(
-                                    mainNavController = mainNavController,
-                                    dialogNavController = dialogNavController,
-                                    paddingValues = padding
-                                )
-                            }
+                        ScreenDestination.Search -> {
+                            SearchScreen(
+                                mainNavController = mainNavController,
+                                dialogNavController = dialogNavController,
+                                paddingValues = padding
+                            )
+                        }
 
-                            is ScreenDestination.Playlist -> {
-                                PlaylistScreen(
-                                    mainNavController = mainNavController,
-                                    dialogNavController = dialogNavController,
-                                    paddingValues = padding,
-                                    id = screenDestination.id
-                                )
-                            }
+                        is ScreenDestination.PlaylistCnt -> {
+                            PlaylistCntScreen(
+                                mainNavController = mainNavController,
+                                dialogNavController = dialogNavController,
+                                paddingValues = padding,
+                                id = screenDestination.id
+                            )
+                        }
 
-                            is ScreenDestination.Singer -> {
-                                SingerScreen(
-                                    mainNavController = mainNavController,
-                                    dialogNavController = dialogNavController,
-                                    paddingValues = padding,
-                                    id = screenDestination.id
-                                )
-                            }
+                        is ScreenDestination.Singer -> {
+                            SingerScreen(
+                                mainNavController = mainNavController,
+                                dialogNavController = dialogNavController,
+                                paddingValues = padding,
+                                id = screenDestination.id
+                            )
+                        }
 
-                            is ScreenDestination.Album -> {
-                                AlbumScreen(
-                                    mainNavController = mainNavController,
-                                    dialogNavController = dialogNavController,
-                                    paddingValues = padding,
-                                    id = screenDestination.id
-                                )
-                            }
+                        is ScreenDestination.AlbumCnt -> {
+                            AlbumCntScreen(
+                                mainNavController = mainNavController,
+                                dialogNavController = dialogNavController,
+                                paddingValues = padding,
+                                id = screenDestination.id
+                            )
+                        }
 
-                            ScreenDestination.About -> {
-                                AboutScreen()
-                            }
+                        ScreenDestination.About -> {
+                            AboutScreen()
+                        }
 
-                            ScreenDestination.Setting -> {
-                                SettingScreen(
-                                    mainNavController = mainNavController,
-                                    dialogNavController = dialogNavController,
-                                    paddingValues = padding
-                                )
-                            }
+                        ScreenDestination.Setting -> {
+                            SettingScreen(
+                                mainNavController = mainNavController,
+                                dialogNavController = dialogNavController,
+                                paddingValues = padding
+                            )
+                        }
 
-                            ScreenDestination.ArtistSub -> {
-                                ArtistSubScreen(
-                                    mainNavController = mainNavController,
-                                    paddingValues = padding
-                                )
-                            }
+                        ScreenDestination.ArtistSub -> {
+                            ArtistSubScreen(
+                                mainNavController = mainNavController,
+                                paddingValues = padding
+                            )
+                        }
 
-                            ScreenDestination.MePlaylist -> {
-                                MePlaylistScreen(
-                                    mainNavController = mainNavController,
-                                    dialogNavController = dialogNavController,
-                                    paddingValues = padding
-                                )
-                            }
+                        ScreenDestination.MePlaylist -> {
+                            MePlaylistScreen(
+                                mainNavController = mainNavController,
+                                dialogNavController = dialogNavController,
+                                paddingValues = padding
+                            )
+                        }
 
-                            ScreenDestination.FmScreen -> {
-                                FmScreen(
-                                    mainNavController = mainNavController,
-                                    dialogNavController = dialogNavController,
-                                    paddingValues = padding
-                                )
-                            }
+                        ScreenDestination.FmScreen -> {
+                            FmScreen(
+                                mainNavController = mainNavController,
+                                dialogNavController = dialogNavController,
+                                paddingValues = padding
+                            )
+                        }
 
-                            ScreenDestination.ToplistScreen -> {
-                                ToplistScreen()
-                            }
+                        ScreenDestination.ToplistScreen -> {
+                            ToplistScreen()
+                        }
 
-                            ScreenDestination.MeScreen -> {
-                                MeScreen(
-                                    mainNavController,
-                                    dialogNavController,
-                                    padding
-                                )
-                            }
+                        ScreenDestination.MeScreen -> {
+                            MeScreen(
+                                mainNavController,
+                                dialogNavController,
+                                padding
+                            )
+                        }
+                        ScreenDestination.Album -> {
+                            AlbumScreen()
+                        }
+                        ScreenDestination.PlayList -> {
+                            PlayListScreen()
+                        }
+                        ScreenDestination.Single -> {
+                            SingleScreen()
                         }
                     }
                 }

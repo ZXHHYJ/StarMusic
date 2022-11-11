@@ -19,13 +19,11 @@ import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.logic.bean.UserPlaylistBean
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.AppCard
-import studio.mandysa.music.ui.common.AppScaffold
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.textColor
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MePlaylistScreen(
     mainNavController: NavController<ScreenDestination>,
@@ -46,7 +44,7 @@ fun MePlaylistScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .combinedClickable(onClick = {
-                            mainNavController.navigate(ScreenDestination.Playlist(userPlaylistBean.id))
+                            mainNavController.navigate(ScreenDestination.PlaylistCnt(userPlaylistBean.id))
                         }, onLongClick = {
                             dialogNavController.navigate(
                                 DialogDestination.PlaylistMenu(
@@ -70,39 +68,23 @@ fun MePlaylistScreen(
             }
         }
     }
-    AppScaffold(modifier = Modifier
-        .statusBarsPadding(),
-        topBar = {
-            /*AppMediumTopAppBar(
-                title = {
-                    Text(text = "我的歌单")
-                },
-                navigationIcon = {
-                    IconButton(onClick = { mainNavController.pop() }) {
-                        Icon(Icons.Rounded.ArrowBack, null)
-                    }
-                },
-                scrollBehavior = scrollBehavior
-            )*/
-        }) { it ->
-        val list by mePlaylistViewModel.meAllPlaylist.observeAsState()
-        LazyColumn(
-            modifier = Modifier
-                .padding(it)
-                .padding(horizontal = horizontalMargin),
-            verticalArrangement = Arrangement.spacedBy(5.dp),
-        ) {
-            list?.let {
-                itemsIndexed(it) { index, value ->
-                    //第一个是我喜欢的歌单
-                    if (index != 0) {
-                        PlaylistItem(userPlaylistBean = value)
-                    }
+
+    val list by mePlaylistViewModel.meAllPlaylist.observeAsState()
+    LazyColumn(
+        modifier = Modifier
+            .padding(horizontal = horizontalMargin),
+        verticalArrangement = Arrangement.spacedBy(5.dp),
+    ) {
+        list?.let {
+            itemsIndexed(it) { index, value ->
+                //第一个是我喜欢的歌单
+                if (index != 0) {
+                    PlaylistItem(userPlaylistBean = value)
                 }
             }
-            item {
-                Spacer(modifier = Modifier.padding(paddingValues))
-            }
+        }
+        item {
+            Spacer(modifier = Modifier.padding(paddingValues))
         }
     }
 }

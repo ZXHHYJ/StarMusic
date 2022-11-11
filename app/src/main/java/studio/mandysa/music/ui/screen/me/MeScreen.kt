@@ -135,7 +135,7 @@ fun MeScreen(
                     userPlaylists?.let { it ->
                         items(it) {
                             PlaylistItem(title = it.name, coverUrl = it.coverImgUrl) {
-                                mainNavController.navigate(ScreenDestination.Playlist(it.id))
+                                mainNavController.navigate(ScreenDestination.PlaylistCnt(it.id))
                             }
                         }
                     }

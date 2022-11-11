@@ -20,11 +20,8 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.R
-import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.ui.common.AppScaffold
 import studio.mandysa.music.ui.item.ContentColumnItem
 import studio.mandysa.music.ui.item.ItemSubTitle
-import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
@@ -41,11 +38,7 @@ fun SingerScreen(
     })
 ) {
     val singerInfo by singerViewModel.singerInfo.observeAsState()
-
     val songs by singerViewModel.songs.observeAsState()
-    AppScaffold(topBar = {}) {
-
-    }
     Column {
         TopAppBar(
             modifier = Modifier.fillMaxWidth(),

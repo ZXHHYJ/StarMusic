@@ -187,7 +187,7 @@ fun BrowseScreen(
                     recommendPlaylist?.let {
                         items(it) { model ->
                             PlaylistItem(title = model.name, coverUrl = model.picUrl) {
-                                mainNavController.navigate(ScreenDestination.Playlist(model.id))
+                                mainNavController.navigate(ScreenDestination.PlaylistCnt(model.id))
                             }
                         }
                     }
@@ -204,7 +204,7 @@ fun BrowseScreen(
                     playlistSquare?.let {
                         items(it) { model ->
                             PlaylistItem(title = model.name, coverUrl = model.picUrl) {
-                                mainNavController.navigate(ScreenDestination.Playlist(model.id))
+                                mainNavController.navigate(ScreenDestination.PlaylistCnt(model.id))
                             }
                         }
                     }

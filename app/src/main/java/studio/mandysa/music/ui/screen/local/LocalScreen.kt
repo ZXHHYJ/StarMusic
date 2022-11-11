@@ -21,6 +21,7 @@ import studio.mandysa.music.ui.common.SearchBar
 import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
+import studio.mandysa.music.ui.theme.*
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -37,14 +38,15 @@ fun LocalScreen(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .statusBarsPadding()
+                    .statusBarsPadding(),
+                contentPadding = paddingValues
             ) {
                 item {
                     SearchBar(click = { mainNavController.navigate(ScreenDestination.Search) }) {
                         Text(text = stringResource(id = R.string.search_hint))
                     }
                 }
-                itemsIndexed(localMusicBeans) { index, item->
+                itemsIndexed(localMusicBeans) { index, item ->
                     SongItem(dialogNavController = dialogNavController, song = item) {
                         PlayManager.play(localMusicBeans, index)
                     }
