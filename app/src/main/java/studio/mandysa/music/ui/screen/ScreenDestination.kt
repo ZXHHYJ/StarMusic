@@ -30,24 +30,6 @@ sealed class ScreenDestination : Parcelable {
     data class Singer(val id: String) : ScreenDestination()
 
     /**
-     * 单曲
-     */
-    @Parcelize
-    object Single : ScreenDestination()
-
-    /**
-     * 专辑
-     */
-    @Parcelize
-    object Album : ScreenDestination()
-
-    /**
-     * 播放列表
-     */
-    @Parcelize
-    object PlayList : ScreenDestination()
-
-    /**
      * 专辑内容
      */
     @Parcelize

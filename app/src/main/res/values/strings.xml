@@ -65,4 +65,5 @@
     <string name="toplist">排行榜</string>
     <string name="fm">FM</string>
     <string name="playlist">歌单</string>
+    <string name="play_list">播放列表</string>
 </resources>

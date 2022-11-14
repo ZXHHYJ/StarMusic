@@ -8,10 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Album
-import androidx.compose.material.icons.rounded.Contactless
-import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material.icons.rounded.Source
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -31,6 +28,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.R
 import studio.mandysa.music.logic.repository.SettingRepository
+import studio.mandysa.music.logic.repository.UserRepository
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.AppNavigationBarItem
 import studio.mandysa.music.ui.common.AppNavigationRailItem
@@ -38,11 +36,10 @@ import studio.mandysa.music.ui.common.PanelState
 import studio.mandysa.music.ui.common.SlidingPanel
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
-import studio.mandysa.music.ui.screen.album.AlbumScreen
 import studio.mandysa.music.ui.screen.albumcnt.AlbumCntScreen
+import studio.mandysa.music.ui.screen.browse.BrowseScreen
 import studio.mandysa.music.ui.screen.controller.ControllerScreen
 import studio.mandysa.music.ui.screen.fm.FmScreen
-import studio.mandysa.music.ui.screen.home.HomeScreen
 import studio.mandysa.music.ui.screen.me.MeMenu
 import studio.mandysa.music.ui.screen.me.MeScreen
 import studio.mandysa.music.ui.screen.me.about.AboutScreen
@@ -51,7 +48,6 @@ import studio.mandysa.music.ui.screen.me.meplaylist.MePlaylistScreen
 import studio.mandysa.music.ui.screen.me.meplaylist.playlistmenu.PlaylistMenu
 import studio.mandysa.music.ui.screen.message.Message
 import studio.mandysa.music.ui.screen.play.PlayScreen
-import studio.mandysa.music.ui.screen.playlist.PlayListScreen
 import studio.mandysa.music.ui.screen.playlistcnt.PlaylistCntScreen
 import studio.mandysa.music.ui.screen.search.SearchScreen
 import studio.mandysa.music.ui.screen.setting.SettingScreen
@@ -65,20 +61,26 @@ import studio.mandysa.music.ui.theme.*
  * Happy 22nd Birthday Shuangshengzi
  */
 enum class HomeBottomNavigationDestination {
-    NeteaseCloud,
-    Local,
+    Browse,
+    Single,
+    Album,
+    PlayList,
 }
 
 val HomeBottomNavigationDestination.tabIcon
     get() = when (this) {
-        HomeBottomNavigationDestination.NeteaseCloud -> Icons.Rounded.Contactless
-        HomeBottomNavigationDestination.Local -> Icons.Rounded.Source
+        HomeBottomNavigationDestination.Browse -> Icons.Rounded.Contactless
+        HomeBottomNavigationDestination.Single -> Icons.Rounded.Source
+        HomeBottomNavigationDestination.Album -> Icons.Rounded.Album
+        HomeBottomNavigationDestination.PlayList -> Icons.Rounded.PlaylistPlay
     }
 
 val HomeBottomNavigationDestination.tabName
     @Composable get() = when (this) {
-        HomeBottomNavigationDestination.NeteaseCloud -> stringResource(id = R.string.browse)
-        HomeBottomNavigationDestination.Local -> stringResource(id = R.string.source)
+        HomeBottomNavigationDestination.Browse -> stringResource(id = R.string.browse)
+        HomeBottomNavigationDestination.Single -> stringResource(id = R.string.source)
+        HomeBottomNavigationDestination.Album -> stringResource(id = R.string.album)
+        HomeBottomNavigationDestination.PlayList -> stringResource(id = R.string.play_list)
     }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -148,7 +150,7 @@ fun MainScreen() {
         rememberNavController<ScreenDestination>(startDestination = ScreenDestination.Main)
 
     val homeNavController =
-        rememberNavController(startDestination = HomeBottomNavigationDestination.NeteaseCloud)
+        rememberNavController(startDestination = HomeBottomNavigationDestination.Browse)
 
     val dialogNavController = rememberNavController<DialogDestination>(
         initialBackstack = emptyList()
@@ -312,24 +314,38 @@ fun MainScreen() {
                         ) {
                             val bottomLastDestination =
                                 homeNavController.backstack.entries.last().destination
-                            HomeBottomNavigationDestination.values().forEach { screen ->
-                                AppNavigationBarItem(
-                                    icon = {
-                                        Icon(
-                                            screen.tabIcon,
-                                            contentDescription = null
-                                        )
-                                    }, label = {
-                                        Text(text = screen.tabName)
-                                    },
-                                    selected = screen == bottomLastDestination,
-                                    onClick = {
-                                        if (!homeNavController.moveToTop { it == screen }) {
-                                            homeNavController.navigate(screen)
-                                        }
+                            /*AppNavigationBarItem(
+                                icon = {
+                                    Icon(
+                                        screen.tabIcon,
+                                        contentDescription = null
+                                    )
+                                }, label = {
+                                    Text(text = screen.tabName)
+                                },
+                                selected = screen == bottomLastDestination,
+                                onClick = {
+                                    if (!homeNavController.moveToTop { it == screen }) {
+                                        homeNavController.navigate(screen)
                                     }
-                                )
-                            }
+                                }
+                            )
+                            AppNavigationBarItem(
+                                icon = {
+                                    Icon(
+                                        screen.tabIcon,
+                                        contentDescription = null
+                                    )
+                                }, label = {
+                                    Text(text = screen.tabName)
+                                },
+                                selected = screen == bottomLastDestination,
+                                onClick = {
+                                    if (!homeNavController.moveToTop { it == screen }) {
+                                        homeNavController.navigate(screen)
+                                    }
+                                }
+                            )*/
                         }
                     }
                 }
@@ -339,7 +355,7 @@ fun MainScreen() {
                     //面板展开时返回事件不再分发到这里
                 }
                 //避免导航时面板处于展开状态
-                LaunchedEffect(key1 = mainNavController.backstack) {
+                LaunchedEffect(mainNavController.backstack) {
                     if (panelState == PanelState.EXPANDED) {
                         it.invoke(PanelState.COLLAPSED)
                     }
@@ -347,12 +363,39 @@ fun MainScreen() {
                 NavHost(mainNavController) { screenDestination ->
                     when (screenDestination) {
                         ScreenDestination.Main -> {
-                            HomeScreen(
-                                bottomNavController = homeNavController,
-                                mainNavController = mainNavController,
-                                dialogNavController = dialogNavController,
-                                paddingValues = padding
-                            )
+                            val enableNeteaseCloud by UserRepository.isLoginLiveData.observeAsState()
+                            if (enableNeteaseCloud == true) {
+                                NavHost(homeNavController) {
+                                    when (it) {
+                                        HomeBottomNavigationDestination.Browse -> {
+                                            BrowseScreen(
+                                                mainNavController,
+                                                dialogNavController,
+                                                padding
+                                            )
+                                        }
+                                        HomeBottomNavigationDestination.Single -> {
+                                            SingleScreen(
+                                                mainNavController,
+                                                dialogNavController,
+                                                padding
+                                            )
+                                        }
+                                        HomeBottomNavigationDestination.Album -> {
+
+                                        }
+                                        HomeBottomNavigationDestination.PlayList -> {
+
+                                        }
+                                    }
+                                }
+                            } else {
+                                SingleScreen(
+                                    mainNavController,
+                                    dialogNavController,
+                                    padding
+                                )
+                            }
                         }
 
                         ScreenDestination.Search -> {
@@ -435,15 +478,6 @@ fun MainScreen() {
                                 dialogNavController,
                                 padding
                             )
-                        }
-                        ScreenDestination.Album -> {
-                            AlbumScreen()
-                        }
-                        ScreenDestination.PlayList -> {
-                            PlayListScreen()
-                        }
-                        ScreenDestination.Single -> {
-                            SingleScreen()
                         }
                     }
                 }
