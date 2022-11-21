@@ -1,6 +1,6 @@
 package studio.mandysa.music.logic.bean
 
-import studio.mandysa.music.service.playmanager.bean.Song
+import studio.mandysa.music.service.playmanager.bean.SongBean
 
 /**
  * @author 黄浩
@@ -11,7 +11,7 @@ data class SearchSongBean(
     override val coverUrl: String,
     val ar: Array<Artist>,
     val al: Album
-) : Song.NetworkBean(
+) : SongBean.Network(
     id,
     name,
     al.coverUrl,

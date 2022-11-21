@@ -7,7 +7,7 @@
 # 忽略警告
 -ignorewarnings
 
--keep class studio.mandysa.music.logic.model**{*;}
+-keep class studio.mandysa.music.logic.bean**{*;}
 
 -optimizationpasses 7
 

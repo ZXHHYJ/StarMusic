@@ -30,12 +30,12 @@ import studio.mandysa.music.R
 import studio.mandysa.music.logic.repository.SettingRepository
 import studio.mandysa.music.logic.repository.UserRepository
 import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.ui.common.AppNavigationBarItem
 import studio.mandysa.music.ui.common.AppNavigationRailItem
 import studio.mandysa.music.ui.common.PanelState
 import studio.mandysa.music.ui.common.SlidingPanel
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
+import studio.mandysa.music.ui.screen.album.AlbumScreen
 import studio.mandysa.music.ui.screen.albumcnt.AlbumCntScreen
 import studio.mandysa.music.ui.screen.browse.BrowseScreen
 import studio.mandysa.music.ui.screen.controller.ControllerScreen
@@ -48,6 +48,7 @@ import studio.mandysa.music.ui.screen.me.meplaylist.MePlaylistScreen
 import studio.mandysa.music.ui.screen.me.meplaylist.playlistmenu.PlaylistMenu
 import studio.mandysa.music.ui.screen.message.Message
 import studio.mandysa.music.ui.screen.play.PlayScreen
+import studio.mandysa.music.ui.screen.playlist.PlayListScreen
 import studio.mandysa.music.ui.screen.playlistcnt.PlaylistCntScreen
 import studio.mandysa.music.ui.screen.search.SearchScreen
 import studio.mandysa.music.ui.screen.setting.SettingScreen
@@ -72,7 +73,7 @@ val HomeBottomNavigationDestination.tabIcon
         HomeBottomNavigationDestination.Browse -> Icons.Rounded.Contactless
         HomeBottomNavigationDestination.Single -> Icons.Rounded.Source
         HomeBottomNavigationDestination.Album -> Icons.Rounded.Album
-        HomeBottomNavigationDestination.PlayList -> Icons.Rounded.PlaylistPlay
+        HomeBottomNavigationDestination.PlayList -> Icons.Rounded.List
     }
 
 val HomeBottomNavigationDestination.tabName
@@ -87,6 +88,7 @@ val HomeBottomNavigationDestination.tabName
 @Composable
 private fun AppNavigationDrawer(
     modifier: Modifier = Modifier,
+    drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
     drawerContent: @Composable () -> Unit,
     controllerBar: @Composable () -> Unit,
     bottomBar: @Composable () -> Unit,
@@ -106,7 +108,7 @@ private fun AppNavigationDrawer(
                     size = it
                 }) {
                 controllerBar.invoke()
-                if (!padMode && enableNeteaseCloud == true) {
+                if (!isMatePad && enableNeteaseCloud == true) {
                     bottomBar.invoke()
                 }
                 Box(
@@ -122,7 +124,7 @@ private fun AppNavigationDrawer(
             }
         }
     }
-    when (padMode) {
+    when (isMatePad) {
         true -> {
             PermanentNavigationDrawer(
                 modifier = modifier,
@@ -131,30 +133,34 @@ private fun AppNavigationDrawer(
             )
         }
         false -> {
-            val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
             ModalNavigationDrawer(
                 modifier = modifier,
                 drawerState = drawerState,
-                drawerContent = drawerContent, content = contentBox
+                drawerContent = drawerContent,
+                content = contentBox
             )
         }
     }
 
 }
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
+
+    val enableNeteaseCloud by UserRepository.isLoginLiveData.observeAsState()
 
     val mainNavController =
         rememberNavController<ScreenDestination>(startDestination = ScreenDestination.Main)
 
     val homeNavController =
-        rememberNavController(startDestination = HomeBottomNavigationDestination.Browse)
+        rememberNavController(startDestination = if (enableNeteaseCloud == true) HomeBottomNavigationDestination.Browse else HomeBottomNavigationDestination.Single)
 
     val dialogNavController = rememberNavController<DialogDestination>(
         initialBackstack = emptyList()
     )
+
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
 
     var panelState by rememberSaveable {
         mutableStateOf<PanelState?>(null)
@@ -201,6 +207,7 @@ fun MainScreen() {
         content = {
             AppNavigationDrawer(
                 modifier = Modifier.fillMaxSize(),
+                drawerState = drawerState,
                 drawerContent = {
                     NavigationRail(
                         modifier = Modifier
@@ -235,22 +242,6 @@ fun MainScreen() {
                                 }
                             )
                         }
-
-                        AppNavigationRailItem(
-                            label = {
-                                Text(text = stringResource(id = R.string.album))
-                            },
-                            icon = {
-                                Icon(
-                                    Icons.Rounded.Album,
-                                    contentDescription = null
-                                )
-                            },
-                            selected = navLastDestination is ScreenDestination.AlbumCnt,
-                            onClick = {
-
-                            }
-                        )
 
                         @Composable
                         fun BottomRailItem(
@@ -363,38 +354,40 @@ fun MainScreen() {
                 NavHost(mainNavController) { screenDestination ->
                     when (screenDestination) {
                         ScreenDestination.Main -> {
-                            val enableNeteaseCloud by UserRepository.isLoginLiveData.observeAsState()
-                            if (enableNeteaseCloud == true) {
-                                NavHost(homeNavController) {
-                                    when (it) {
-                                        HomeBottomNavigationDestination.Browse -> {
-                                            BrowseScreen(
-                                                mainNavController,
-                                                dialogNavController,
-                                                padding
-                                            )
-                                        }
-                                        HomeBottomNavigationDestination.Single -> {
-                                            SingleScreen(
-                                                mainNavController,
-                                                dialogNavController,
-                                                padding
-                                            )
-                                        }
-                                        HomeBottomNavigationDestination.Album -> {
-
-                                        }
-                                        HomeBottomNavigationDestination.PlayList -> {
-
-                                        }
+                            NavHost(homeNavController) {
+                                when (it) {
+                                    HomeBottomNavigationDestination.Browse -> {
+                                        BrowseScreen(
+                                            mainNavController,
+                                            dialogNavController,
+                                            padding
+                                        )
+                                    }
+                                    HomeBottomNavigationDestination.Single -> {
+                                        SingleScreen(
+                                            mainNavController,
+                                            dialogNavController,
+                                            drawerState,
+                                            padding
+                                        )
+                                    }
+                                    HomeBottomNavigationDestination.Album -> {
+                                        AlbumScreen(
+                                            mainNavController,
+                                            dialogNavController,
+                                            drawerState,
+                                            padding
+                                        )
+                                    }
+                                    HomeBottomNavigationDestination.PlayList -> {
+                                        PlayListScreen(
+                                            mainNavController,
+                                            dialogNavController,
+                                            drawerState,
+                                            padding
+                                        )
                                     }
                                 }
-                            } else {
-                                SingleScreen(
-                                    mainNavController,
-                                    dialogNavController,
-                                    padding
-                                )
                             }
                         }
 

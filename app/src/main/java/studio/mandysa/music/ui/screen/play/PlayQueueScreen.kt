@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.olshevski.navigation.reimagined.NavController
 import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.service.playmanager.bean.Song
+import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.service.playmanager.ktx.artist
 import studio.mandysa.music.service.playmanager.ktx.title
@@ -48,7 +48,7 @@ fun PlayQueueScreen(dialogNavController: NavController<DialogDestination>) {
 private fun SongItem(
     dialogNavController: NavController<DialogDestination>,
     position: Int,
-    song: Song,
+    song: SongBean,
     onClick: () -> Unit
 ) {
     Row(

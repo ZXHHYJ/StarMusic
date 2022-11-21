@@ -12,7 +12,7 @@ import org.jaudiotagger.audio.AudioFileIO
 import org.jaudiotagger.tag.FieldKey
 import studio.mandysa.music.logic.config.api
 import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.service.playmanager.bean.Song
+import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.ui.common.Lyric
 import java.io.File
 
@@ -23,9 +23,9 @@ fun LyricScreen() {
     val song by PlayManager.changeMusicLiveData().observeAsState()
     LaunchedEffect(song) {
         when (song) {
-            is Song.LocalBean -> {
+            is SongBean.Local -> {
                 launch(Dispatchers.IO) {
-                    val model = (song as Song.LocalBean)
+                    val model = (song as SongBean.Local)
                     try {
                         val audioFile = AudioFileIO.read(File(model.data))
                         lyric = audioFile.tag.getFirst(FieldKey.LYRICS)
@@ -34,8 +34,8 @@ fun LyricScreen() {
                     }
                 }
             }
-            is Song.NetworkBean -> {
-                val model = (song as Song.NetworkBean)
+            is SongBean.Network -> {
+                val model = (song as SongBean.Network)
                 try {
                     lyric = api.longCache().getLyric(model.id)
                 } catch (e: NoCacheException) {

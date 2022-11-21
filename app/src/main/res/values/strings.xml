@@ -13,7 +13,7 @@
 
     <string name="me_playlist">我的歌单</string>
 
-    <string name="search_hint">输入歌曲或歌手名称</string>
+    <string name="search_hint">在媒体库中搜索</string>
 
     <string name="phone">手机号</string>
     <string name="captcha">验证码</string>

@@ -1,15 +1,39 @@
 package studio.mandysa.music.logic.repository
 
-import android.media.MediaMetadataRetriever
 import android.provider.MediaStore
 import studio.mandysa.music.logic.config.mainApplication
-import studio.mandysa.music.service.playmanager.bean.Song
+import studio.mandysa.music.service.playmanager.bean.SongBean
 
-
+/**
+ * @author 黄浩
+ */
 object LocalMusicRepository {
 
-    fun getAudioFiles(): List<Song.LocalBean> {
-        MediaMetadataRetriever.METADATA_KEY_WRITER
+    fun getLocalArtists(): List<SongBean.Local.Artist> {
+        TODO()
+    }
+
+    fun getLocalAlbums(): List<SongBean.Local.Album> {
+        val albumKVHashMap = LinkedHashMap<Long, SongBean.Local.Album>()
+        val localSongs = getLocalSongs()
+        for (song in localSongs) {
+            if (albumKVHashMap.containsKey(song.albumId)) {
+                (albumKVHashMap[song.albumId]!!.songs as ArrayList).add(song)
+                continue
+            }
+            albumKVHashMap[song.albumId] = SongBean.Local.Album(
+                song.albumId, song.album, song.artistId, song.artist,
+                arrayListOf(song)
+            )
+        }
+        val list = arrayListOf<SongBean.Local.Album>()
+        for (entry in albumKVHashMap) {
+            list.add(entry.value)
+        }
+        return list
+    }
+
+    fun getLocalSongs(): List<SongBean.Local> {
         val query = mainApplication.contentResolver.query(
             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
             arrayOf(
@@ -18,15 +42,14 @@ object LocalMusicRepository {
                 MediaStore.Audio.AudioColumns.ARTIST,
                 MediaStore.Audio.AudioColumns.ARTIST_ID,
                 MediaStore.Audio.AudioColumns.DURATION,
-                MediaStore.Audio.AudioColumns.IS_MUSIC,
                 MediaStore.Audio.AudioColumns.DATA,
                 MediaStore.Audio.AudioColumns.TITLE
             ),
-            MediaStore.Audio.AudioColumns.IS_MUSIC + "!=0",
+            MediaStore.Audio.AudioColumns.DURATION + ">300",
             null,
             null
         )
-        val list = ArrayList<Song.LocalBean>()
+        val list = arrayListOf<SongBean.Local>()
         while (query != null && query.moveToNext()) {
             val album =
                 query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.ALBUM))
@@ -42,7 +65,7 @@ object LocalMusicRepository {
                 query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.DATA))
             val songName =
                 query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.TITLE))
-            list.add(Song.LocalBean(album, albumId, artist, artistId, duration, data, songName))
+            list.add(SongBean.Local(album, albumId, artist, artistId, duration, data, songName))
         }
         query?.close()
         return list

@@ -9,7 +9,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Equalizer
 import androidx.compose.material.icons.rounded.QueueMusic
 import androidx.compose.material.icons.rounded.Radio
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -92,6 +94,11 @@ fun BrowseScreen(
         ) {
             item {
                 SearchBar(click = { mainNavController.navigate(ScreenDestination.Search) }) {
+                    Icon(
+                        imageVector = Icons.Rounded.Search,
+                        contentDescription = null,
+                        tint = onBackground
+                    )
                     Text(
                         text = stringResource(id = R.string.search_hint),
                         modifier = Modifier.weight(1.0f)
@@ -107,7 +114,7 @@ fun BrowseScreen(
                 }
             }
             item {
-                if (padMode) {
+                if (isMatePad) {
                     LazyRow(
                         modifier = Modifier.fillMaxWidth(),
                         contentPadding = PaddingValues(horizontal = horizontalMargin),

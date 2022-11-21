@@ -11,7 +11,7 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
 import studio.mandysa.music.logic.config.MUSIC_URL
-import studio.mandysa.music.service.playmanager.bean.Song
+import studio.mandysa.music.service.playmanager.bean.SongBean
 
 
 /**
@@ -83,12 +83,12 @@ object PlayManager {
     /**
      * 当前播放的歌曲
      */
-    private val mChangeMusic = MutableLiveData<Song>()
+    private val mChangeMusic = MutableLiveData<SongBean>()
 
     /**
      * 播放列表
      */
-    private val mPlayList = MutableLiveData<List<Song>>()
+    private val mPlayList = MutableLiveData<List<SongBean>>()
 
     /**
      * 播放状态
@@ -110,7 +110,7 @@ object PlayManager {
      */
     private val mDuration = MutableLiveData<Int>()
 
-    fun changePlayListLiveData(): LiveData<List<Song>> {
+    fun changePlayListLiveData(): LiveData<List<SongBean>> {
         return mPlayList
     }
 
@@ -122,7 +122,7 @@ object PlayManager {
         return mDuration
     }
 
-    fun changeMusicLiveData(): LiveData<Song> {
+    fun changeMusicLiveData(): LiveData<SongBean> {
         return mChangeMusic
     }
 
@@ -135,8 +135,8 @@ object PlayManager {
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun addNextPlay(song: Song) {
-        val list = mPlayList.value as ArrayList<Song>?
+    fun addNextPlay(song: SongBean) {
+        val list = mPlayList.value as ArrayList<SongBean>?
         list?.let {
             list.add(mIndex.value!! + 1, song)
             mPlayList.value = it
@@ -144,7 +144,7 @@ object PlayManager {
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun play(list: List<Song>, index: Int) {
+    fun play(list: List<SongBean>, index: Int) {
         mPlayList.value = list
         updateIndex(index)
     }
@@ -152,7 +152,7 @@ object PlayManager {
     /**
      * 随机播放
      */
-    fun shufflePlay(list: List<Song>, index: Int) {
+    fun shufflePlay(list: List<SongBean>, index: Int) {
         val mutableList = list.toMutableList()
         mutableList.shuffle()
         play(mutableList, index)
@@ -193,17 +193,17 @@ object PlayManager {
         mMediaPlayer!!.pause()
     }
 
-    private fun playMusic(song: Song) {
+    private fun playMusic(song: SongBean) {
         mProgress.value = 0
         mChangeMusic.value = song
         mMediaPlayer?.run {
             when (song) {
-                is Song.LocalBean -> {
+                is SongBean.Local -> {
                     setMediaItem(MediaItem.fromUri(song.data))
                     prepare()
                     // TODO: 未测试
                 }
-                is Song.NetworkBean -> {
+                is SongBean.Network -> {
                     val url = MUSIC_URL + song.id
                     setMediaItem(MediaItem.fromUri(url))
                     prepare()

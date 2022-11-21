@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -23,6 +26,7 @@ import dev.olshevski.navigation.reimagined.NavController
 import studio.mandysa.music.ui.common.SearchBar
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
+import studio.mandysa.music.ui.theme.onBackground
 import studio.mandysa.music.ui.theme.textColor
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -50,6 +54,11 @@ fun SearchScreen(
             .statusBarsPadding()
     ) {
         SearchBar {
+            Icon(
+                imageVector = Icons.Rounded.Search,
+                contentDescription = null,
+                tint = onBackground
+            )
             BasicTextField(
                 modifier = Modifier
                     .weight(1f)

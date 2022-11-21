@@ -20,7 +20,7 @@ import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.popAll
 import kotlinx.parcelize.RawValue
 import studio.mandysa.music.R
-import studio.mandysa.music.service.playmanager.bean.Song
+import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.service.playmanager.ktx.*
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.AppDialog
@@ -37,7 +37,7 @@ import studio.mandysa.music.ui.theme.verticalMargin
 fun SongMenu(
     mainNavController: NavController<ScreenDestination>,
     dialogNavController: NavController<DialogDestination>,
-    song: @RawValue Song,
+    song: @RawValue SongBean,
     songMenuViewModel: SongMenuViewModel = viewModel()
 ) {
     val isLike by songMenuViewModel.likedLiveData.observeAsState()

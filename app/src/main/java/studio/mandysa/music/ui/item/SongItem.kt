@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
-import studio.mandysa.music.service.playmanager.bean.Song
+import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.service.playmanager.ktx.artist
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
@@ -27,7 +27,7 @@ import studio.mandysa.music.ui.theme.*
 @Composable
 fun SongItem(
     dialogNavController: NavController<DialogDestination>,
-    song: Song,
+    song: SongBean,
     onClick: () -> Unit
 ) {
     Row(

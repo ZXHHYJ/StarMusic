@@ -152,14 +152,14 @@ private fun MusicProgressBar() {
 
 @Composable
 private fun MusicControlBar() {
-    val smallButtonSize = if (padMode) 55.dp else 65.dp
-    val middleButtonSize = if (padMode) 65.dp else 85.dp
+    val smallButtonSize = if (isMatePad) 55.dp else 65.dp
+    val middleButtonSize = if (isMatePad) 65.dp else 85.dp
 
     Row(
         modifier = Modifier
             .widthIn(max = maxWidth)
             .fillMaxWidth()
-            .padding(vertical = if (padMode) 15.dp else 50.dp),
+            .padding(vertical = if (isMatePad) 15.dp else 50.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {

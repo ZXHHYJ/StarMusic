@@ -1,20 +1,27 @@
 package studio.mandysa.music.ui.item
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import studio.mandysa.music.service.playmanager.bean.MetaAlbum
+import studio.mandysa.music.service.playmanager.bean.SongBean
+import studio.mandysa.music.service.playmanager.ktx.coverUrl
 import studio.mandysa.music.ui.common.AppAsyncImage
-import studio.mandysa.music.ui.theme.textColor
-import studio.mandysa.music.ui.theme.textColorLight
+import studio.mandysa.music.ui.theme.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,39 +32,95 @@ private fun stampToDate(s: String): String {
 
 @Composable
 fun AlbumItem(mateAlbum: MetaAlbum, onClick: () -> Unit) {
-    val size = 120.dp
-    Column(
-        modifier = Modifier.width(size)
+    AlbumItem(
+        coverUrl = mateAlbum.coverUrl,
+        name = mateAlbum.name,
+        publishTime = stampToDate(mateAlbum.publishTime)
     ) {
-        Box(modifier = Modifier.size(size)) {
+        onClick.invoke()
+    }
+}
+
+@Composable
+fun AlbumItem(album: SongBean.Local.Album, onClick: () -> Unit) {
+    AlbumItem(
+        coverUrl = album.coverUrl,
+        name = album.album,
+        publishTime = album.artist,
+        onClick = onClick
+    )
+}
+
+@Composable
+private fun AlbumItem(coverUrl: String, name: String, publishTime: String, onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(70.dp)
+            .clickable(onClick = onClick),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        val coverSize = 50.dp
+        Box(
+            modifier = Modifier
+                .padding(horizontal = horizontalMargin, vertical = verticalMargin)
+                .size(coverSize),
+            contentAlignment = Alignment.Center
+        ) {
             Card(
                 modifier = Modifier
                     .fillMaxSize()
                     .offset(x = 5.dp),
                 colors = CardDefaults.cardColors(Color.LightGray),
-                shape = RoundedCornerShape(size)
-            ) {}
-            AppAsyncImage(
-                modifier = Modifier.size(size),
-                url = mateAlbum.coverUrl,
-                onClick = onClick
+                shape = RoundedCornerShape(coverSize)
+            ) {
+                //半个专辑的背景
+            }
+            AppAsyncImage(modifier = Modifier.size(coverSize), url = coverUrl)
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .weight(1.0f)
+                .padding(vertical = verticalMargin),
+        ) {
+            Text(
+                text = name,
+                color = textColor,
+                fontSize = 15.sp,
+                maxLines = 1,
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.weight(1.0f))
+            Text(
+                text = publishTime,
+                color = textColorLight,
+                fontSize = 13.sp,
+                maxLines = 1,
+                textAlign = TextAlign.Center
             )
         }
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = mateAlbum.name,
-            color = textColor,
-            fontSize = 13.sp,
-            maxLines = 1,
-            textAlign = TextAlign.Center
+        Icon(
+            imageVector = Icons.Rounded.MoreVert,
+            tint = onBackground,
+            contentDescription = null,
+            modifier = Modifier
+                .clickable {
+
+                }
         )
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = stampToDate(mateAlbum.publishTime),
-            color = textColorLight,
-            fontSize = 13.sp,
-            maxLines = 1,
-            textAlign = TextAlign.Center
-        )
+        Spacer(modifier = Modifier.padding(end = horizontalMargin))
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewAlbumItem() {
+    AlbumItem(
+        coverUrl = "https://imgo.114shouji.com/img2021/1/27/9/2021012768987162.jpg",
+        name = "东方镜",
+        publishTime = "2022/11/19"
+    ) {
+
     }
 }

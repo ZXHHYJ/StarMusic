@@ -1,34 +1,34 @@
 package studio.mandysa.music.service.playmanager.ktx
 
-import studio.mandysa.music.service.playmanager.bean.Song
+import studio.mandysa.music.service.playmanager.bean.SongBean
 
 private const val EMPTY_STRING = ""
 
-val Song.coverUrl: String
+val SongBean.coverUrl: String
     get() = when (this) {
-        is Song.LocalBean -> "content://media/external/audio/albumart/${this.albumId}"
-        is Song.NetworkBean -> this.coverUrl
+        is SongBean.Local -> "content://media/external/audio/albumart/${this.albumId}"
+        is SongBean.Network -> this.coverUrl
     }
 
-val Song.title: String
+val SongBean.title: String
     get() = when (this) {
-        is Song.LocalBean -> this.songName
-        is Song.NetworkBean -> this.title
+        is SongBean.Local -> this.songName
+        is SongBean.Network -> this.title
     }
 
-val Song.artist: Array<Song.NetworkBean.Artist>
+val SongBean.artist: Array<SongBean.Network.Artist>
     get() = when (this) {
-        is Song.LocalBean -> arrayOf(Song.NetworkBean.Artist(this.artistId.toString(), this.artist))
-        is Song.NetworkBean -> this.artist
+        is SongBean.Local -> arrayOf(SongBean.Network.Artist(this.artistId.toString(), this.artist))
+        is SongBean.Network -> this.artist
     }
 
-val Song.album: Song.NetworkBean.Album
+val SongBean.album: SongBean.Network.Album
     get() = when (this) {
-        is Song.LocalBean -> Song.NetworkBean.Album(
+        is SongBean.Local -> SongBean.Network.Album(
             this.albumId.toString(),
             this.coverUrl,
             this.album,
             EMPTY_STRING
         )
-        is Song.NetworkBean -> this.album
+        is SongBean.Network -> this.album
     }
