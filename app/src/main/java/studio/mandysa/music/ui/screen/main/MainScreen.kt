@@ -35,27 +35,27 @@ import studio.mandysa.music.ui.common.PanelState
 import studio.mandysa.music.ui.common.SlidingPanel
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
-import studio.mandysa.music.ui.screen.album.AlbumScreen
-import studio.mandysa.music.ui.screen.albumcnt.AlbumCntScreen
-import studio.mandysa.music.ui.screen.browse.BrowseScreen
-import studio.mandysa.music.ui.screen.controller.ControllerScreen
-import studio.mandysa.music.ui.screen.fm.FmScreen
+import studio.mandysa.music.ui.screen.netease.albumcnt.AlbumCntScreen
+import studio.mandysa.music.ui.screen.netease.browse.BrowseScreen
+import studio.mandysa.music.ui.common.MediaController
+import studio.mandysa.music.ui.screen.netease.fm.FmScreen
+import studio.mandysa.music.ui.screen.local.album.AlbumScreen
+import studio.mandysa.music.ui.screen.local.single.SingleScreen
 import studio.mandysa.music.ui.screen.me.MeMenu
 import studio.mandysa.music.ui.screen.me.MeScreen
 import studio.mandysa.music.ui.screen.me.about.AboutScreen
 import studio.mandysa.music.ui.screen.me.artistsub.ArtistSubScreen
 import studio.mandysa.music.ui.screen.me.meplaylist.MePlaylistScreen
 import studio.mandysa.music.ui.screen.me.meplaylist.playlistmenu.PlaylistMenu
-import studio.mandysa.music.ui.screen.message.Message
+import studio.mandysa.music.ui.common.Message
 import studio.mandysa.music.ui.screen.play.PlayScreen
-import studio.mandysa.music.ui.screen.playlist.PlayListScreen
-import studio.mandysa.music.ui.screen.playlistcnt.PlaylistCntScreen
+import studio.mandysa.music.ui.screen.local.playlist.PlayListScreen
+import studio.mandysa.music.ui.screen.netease.playlistcnt.PlaylistCntScreen
 import studio.mandysa.music.ui.screen.search.SearchScreen
 import studio.mandysa.music.ui.screen.setting.SettingScreen
-import studio.mandysa.music.ui.screen.singer.SingerScreen
-import studio.mandysa.music.ui.screen.single.SingleScreen
+import studio.mandysa.music.ui.screen.netease.singer.SingerScreen
 import studio.mandysa.music.ui.screen.songmenu.SongMenu
-import studio.mandysa.music.ui.screen.toplist.ToplistScreen
+import studio.mandysa.music.ui.screen.netease.toplist.ToplistScreen
 import studio.mandysa.music.ui.theme.*
 
 /**
@@ -65,6 +65,7 @@ enum class HomeBottomNavigationDestination {
     Browse,
     Single,
     Album,
+    Singer,
     PlayList,
 }
 
@@ -73,6 +74,7 @@ val HomeBottomNavigationDestination.tabIcon
         HomeBottomNavigationDestination.Browse -> Icons.Rounded.Contactless
         HomeBottomNavigationDestination.Single -> Icons.Rounded.Source
         HomeBottomNavigationDestination.Album -> Icons.Rounded.Album
+        HomeBottomNavigationDestination.Singer -> Icons.Rounded.Mic
         HomeBottomNavigationDestination.PlayList -> Icons.Rounded.List
     }
 
@@ -81,6 +83,7 @@ val HomeBottomNavigationDestination.tabName
         HomeBottomNavigationDestination.Browse -> stringResource(id = R.string.browse)
         HomeBottomNavigationDestination.Single -> stringResource(id = R.string.source)
         HomeBottomNavigationDestination.Album -> stringResource(id = R.string.album)
+        HomeBottomNavigationDestination.Singer -> stringResource(id = R.string.singer)
         HomeBottomNavigationDestination.PlayList -> stringResource(id = R.string.play_list)
     }
 
@@ -267,13 +270,15 @@ fun MainScreen() {
                                 }
                             )
                         }
-                        Spacer(modifier = Modifier.weight(1.0f))
-                        //下部分
-                        BottomRailItem(
-                            stringResource(id = R.string.search),
-                            Icons.Rounded.Search,
-                            ScreenDestination.Search
-                        )
+
+                        if (isMatePad) {
+                            Spacer(modifier = Modifier.weight(1.0f))
+                            BottomRailItem(
+                                stringResource(id = R.string.search),
+                                Icons.Rounded.Search,
+                                ScreenDestination.Search
+                            )
+                        }
                     }
                 },
                 controllerBar = {
@@ -285,7 +290,7 @@ fun MainScreen() {
                         enter = expandVertically(),
                         exit = shrinkVertically()
                     ) {
-                        ControllerScreen(panelState) {
+                        MediaController(panelState) {
                             it.invoke(PanelState.EXPANDED)
                         }
                     }
@@ -378,6 +383,9 @@ fun MainScreen() {
                                             drawerState,
                                             padding
                                         )
+                                    }
+                                    HomeBottomNavigationDestination.Singer -> {
+
                                     }
                                     HomeBottomNavigationDestination.PlayList -> {
                                         PlayListScreen(
