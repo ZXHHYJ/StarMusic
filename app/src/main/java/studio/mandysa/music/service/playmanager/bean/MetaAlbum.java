@@ -8,4 +8,5 @@ public interface MetaAlbum {
     String getName();
 
     String getPublishTime();
+    
 }

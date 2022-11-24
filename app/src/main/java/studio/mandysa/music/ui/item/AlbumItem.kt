@@ -46,7 +46,7 @@ fun AlbumItem(album: SongBean.Local.Album, onClick: () -> Unit) {
     AlbumItem(
         coverUrl = album.coverUrl,
         name = album.album,
-        publishTime = album.artist,
+        publishTime = "${album.artist} 共${album.songs.size}首",
         onClick = onClick
     )
 }

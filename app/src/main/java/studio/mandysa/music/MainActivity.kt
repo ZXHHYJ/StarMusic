@@ -8,7 +8,7 @@ import studio.mandysa.music.ui.common.POPWindows
 import studio.mandysa.music.ui.screen.main.MainScreen
 import studio.mandysa.music.ui.theme.MandySaMusicTheme
 
-class MainActivity : ComponentActivity() {
+class MainActivity  : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
