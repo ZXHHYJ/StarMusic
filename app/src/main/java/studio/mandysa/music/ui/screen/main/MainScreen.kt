@@ -30,16 +30,11 @@ import studio.mandysa.music.R
 import studio.mandysa.music.logic.repository.SettingRepository
 import studio.mandysa.music.logic.repository.UserRepository
 import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.ui.common.AppNavigationRailItem
-import studio.mandysa.music.ui.common.PanelState
-import studio.mandysa.music.ui.common.SlidingPanel
+import studio.mandysa.music.ui.common.*
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
-import studio.mandysa.music.ui.screen.netease.albumcnt.AlbumCntScreen
-import studio.mandysa.music.ui.screen.netease.browse.BrowseScreen
-import studio.mandysa.music.ui.common.MediaController
-import studio.mandysa.music.ui.screen.netease.fm.FmScreen
 import studio.mandysa.music.ui.screen.local.album.AlbumScreen
+import studio.mandysa.music.ui.screen.local.playlist.PlayListScreen
 import studio.mandysa.music.ui.screen.local.single.SingleScreen
 import studio.mandysa.music.ui.screen.me.MeMenu
 import studio.mandysa.music.ui.screen.me.MeScreen
@@ -47,15 +42,16 @@ import studio.mandysa.music.ui.screen.me.about.AboutScreen
 import studio.mandysa.music.ui.screen.me.artistsub.ArtistSubScreen
 import studio.mandysa.music.ui.screen.me.meplaylist.MePlaylistScreen
 import studio.mandysa.music.ui.screen.me.meplaylist.playlistmenu.PlaylistMenu
-import studio.mandysa.music.ui.common.Message
-import studio.mandysa.music.ui.screen.play.PlayScreen
-import studio.mandysa.music.ui.screen.local.playlist.PlayListScreen
+import studio.mandysa.music.ui.screen.netease.albumcnt.AlbumCntScreen
+import studio.mandysa.music.ui.screen.netease.browse.BrowseScreen
+import studio.mandysa.music.ui.screen.netease.fm.FmScreen
 import studio.mandysa.music.ui.screen.netease.playlistcnt.PlaylistCntScreen
+import studio.mandysa.music.ui.screen.netease.singer.SingerScreen
+import studio.mandysa.music.ui.screen.netease.toplist.ToplistScreen
+import studio.mandysa.music.ui.screen.play.PlayScreen
 import studio.mandysa.music.ui.screen.search.SearchScreen
 import studio.mandysa.music.ui.screen.setting.SettingScreen
-import studio.mandysa.music.ui.screen.netease.singer.SingerScreen
 import studio.mandysa.music.ui.screen.songmenu.SongMenu
-import studio.mandysa.music.ui.screen.netease.toplist.ToplistScreen
 import studio.mandysa.music.ui.theme.*
 
 /**
@@ -144,7 +140,6 @@ private fun AppNavigationDrawer(
             )
         }
     }
-
 }
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
@@ -223,6 +218,9 @@ fun MainScreen() {
                         val bottomLastDestination =
                             homeNavController.backstack.entries.last().destination
                         HomeBottomNavigationDestination.values().forEach { screen ->
+                            if (screen == HomeBottomNavigationDestination.Browse && !isMatePad) {
+                                return@forEach
+                            }
                             AppNavigationRailItem(
                                 label = {
                                     Text(text = screen.tabName)
@@ -233,7 +231,6 @@ fun MainScreen() {
                                         contentDescription = null
                                     )
                                 },
-                                alwaysShowLabel = true,
                                 selected = screen == bottomLastDestination,
                                 onClick = {
                                     mainNavController.popUpTo {
@@ -247,7 +244,7 @@ fun MainScreen() {
                         }
 
                         @Composable
-                        fun BottomRailItem(
+                        fun BottomNavRailItem(
                             text: String,
                             icon: ImageVector,
                             screen: ScreenDestination
@@ -273,7 +270,7 @@ fun MainScreen() {
 
                         if (isMatePad) {
                             Spacer(modifier = Modifier.weight(1.0f))
-                            BottomRailItem(
+                            BottomNavRailItem(
                                 stringResource(id = R.string.search),
                                 Icons.Rounded.Search,
                                 ScreenDestination.Search
