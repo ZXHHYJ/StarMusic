@@ -146,13 +146,11 @@ private fun AppNavigationDrawer(
 @Composable
 fun MainScreen() {
 
-    val enableNeteaseCloud by UserRepository.isLoginLiveData.observeAsState()
-
     val mainNavController =
         rememberNavController<ScreenDestination>(startDestination = ScreenDestination.Main)
 
     val homeNavController =
-        rememberNavController(startDestination = if (enableNeteaseCloud == true) HomeBottomNavigationDestination.Browse else HomeBottomNavigationDestination.Single)
+        rememberNavController(startDestination = if (UserRepository.isLoginState == true) HomeBottomNavigationDestination.Browse else HomeBottomNavigationDestination.Single)
 
     val dialogNavController = rememberNavController<DialogDestination>(
         initialBackstack = emptyList()
@@ -293,52 +291,58 @@ fun MainScreen() {
                     }
                 },
                 bottomBar = {
-                    AnimatedVisibility(
-                        visible = mainNavController.backstack.entries.size <= 1,
-                        enter = expandVertically(),
-                        exit = shrinkVertically()
-                    ) {
-                        NavigationBar(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(barColor),
-                            containerColor = Color.Transparent,
-                            contentColor = Color.White
+                    if (!isMatePad && UserRepository.isLoginState == true) {
+                        AnimatedVisibility(
+                            visible = mainNavController.backstack.entries.size <= 1,
+                            enter = expandVertically(),
+                            exit = shrinkVertically()
                         ) {
-                            val bottomLastDestination =
-                                homeNavController.backstack.entries.last().destination
-                            /*AppNavigationBarItem(
-                                icon = {
-                                    Icon(
-                                        screen.tabIcon,
-                                        contentDescription = null
-                                    )
-                                }, label = {
-                                    Text(text = screen.tabName)
-                                },
-                                selected = screen == bottomLastDestination,
-                                onClick = {
-                                    if (!homeNavController.moveToTop { it == screen }) {
-                                        homeNavController.navigate(screen)
+                            NavigationBar(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(barColor),
+                                containerColor = Color.Transparent,
+                                contentColor = Color.White
+                            ) {
+                                val bottomLastDestination =
+                                    homeNavController.backstack.entries.last().destination
+                                AppNavigationBarItem(
+                                    icon = {
+                                        Icon(
+                                            HomeBottomNavigationDestination.Browse.tabIcon,
+                                            contentDescription = null
+                                        )
+                                    }, label = {
+                                        Text(text = HomeBottomNavigationDestination.Browse.tabName)
+                                    },
+                                    selected = HomeBottomNavigationDestination.Browse == bottomLastDestination,
+                                    onClick = {
+                                        if (!homeNavController.moveToTop { it == HomeBottomNavigationDestination.Browse }) {
+                                            homeNavController.navigate(
+                                                HomeBottomNavigationDestination.Browse
+                                            )
+                                        }
                                     }
-                                }
-                            )
-                            AppNavigationBarItem(
-                                icon = {
-                                    Icon(
-                                        screen.tabIcon,
-                                        contentDescription = null
-                                    )
-                                }, label = {
-                                    Text(text = screen.tabName)
-                                },
-                                selected = screen == bottomLastDestination,
-                                onClick = {
-                                    if (!homeNavController.moveToTop { it == screen }) {
-                                        homeNavController.navigate(screen)
+                                )
+                                AppNavigationBarItem(
+                                    icon = {
+                                        Icon(
+                                            HomeBottomNavigationDestination.Single.tabIcon,
+                                            contentDescription = null
+                                        )
+                                    }, label = {
+                                        Text(text = HomeBottomNavigationDestination.Single.tabName)
+                                    },
+                                    selected = HomeBottomNavigationDestination.Browse != bottomLastDestination,
+                                    onClick = {
+                                        if (!homeNavController.moveToTop { it == HomeBottomNavigationDestination.Single }) {
+                                            homeNavController.navigate(
+                                                HomeBottomNavigationDestination.Single
+                                            )
+                                        }
                                     }
-                                }
-                            )*/
+                                )
+                            }
                         }
                     }
                 }
