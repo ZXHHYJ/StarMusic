@@ -35,8 +35,8 @@ import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.screen.local.album.AlbumScreen
 import studio.mandysa.music.ui.screen.local.playlist.PlayListScreen
-import studio.mandysa.music.ui.screen.local.single.SingleScreen
 import studio.mandysa.music.ui.screen.local.singer.SingerScreen
+import studio.mandysa.music.ui.screen.local.single.SingleScreen
 import studio.mandysa.music.ui.screen.me.MeMenu
 import studio.mandysa.music.ui.screen.me.MeScreen
 import studio.mandysa.music.ui.screen.me.about.AboutScreen
@@ -45,9 +45,9 @@ import studio.mandysa.music.ui.screen.me.meplaylist.MePlaylistScreen
 import studio.mandysa.music.ui.screen.me.meplaylist.playlistmenu.PlaylistMenu
 import studio.mandysa.music.ui.screen.netease.albumcnt.AlbumCntScreen
 import studio.mandysa.music.ui.screen.netease.browse.BrowseScreen
-import studio.mandysa.music.ui.screen.netease.singer.SingerScreen
 import studio.mandysa.music.ui.screen.netease.fm.FmScreen
 import studio.mandysa.music.ui.screen.netease.playlistcnt.PlaylistCntScreen
+import studio.mandysa.music.ui.screen.netease.singer.SingerScreen
 import studio.mandysa.music.ui.screen.netease.toplist.ToplistScreen
 import studio.mandysa.music.ui.screen.play.PlayScreen
 import studio.mandysa.music.ui.screen.search.SearchScreen
@@ -104,24 +104,24 @@ private fun AppNavigationDrawer(
                 size.height.toDp()
             }))
             Column(modifier = Modifier
-              .fillMaxWidth()
-              .align(Alignment.BottomCenter)
-              .onSizeChanged {
-                size = it
-              }) {
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .onSizeChanged {
+                    size = it
+                }) {
                 controllerBar.invoke()
                 if (!isMatePad && enableNeteaseCloud == true) {
                     bottomBar.invoke()
                 }
                 Box(
                     modifier = Modifier
-                      .height(LocalDensity.current.run {
-                        WindowInsets.navigationBars
-                          .getBottom(this)
-                          .toDp()
-                      })
-                      .fillMaxWidth()
-                      .background(barColor)
+                        .height(LocalDensity.current.run {
+                            WindowInsets.navigationBars
+                                .getBottom(this)
+                                .toDp()
+                        })
+                        .fillMaxWidth()
+                        .background(barColor)
                 )
             }
         }
@@ -139,9 +139,11 @@ private fun AppNavigationDrawer(
                 modifier = modifier,
                 drawerState = drawerState,
                 drawerContent = {
-                    Box(modifier = Modifier
-                      .fillMaxSize()
-                      .padding(end = 50.dp)) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(end = 50.dp)
+                    ) {
                         drawerContent.invoke()
                     }
                 },
@@ -314,8 +316,8 @@ fun MainScreen() {
                         ) {
                             NavigationBar(
                                 modifier = Modifier
-                                  .fillMaxWidth()
-                                  .background(barColor),
+                                    .fillMaxWidth()
+                                    .background(barColor),
                                 containerColor = Color.Transparent,
                                 contentColor = Color.White
                             ) {
@@ -409,7 +411,8 @@ fun MainScreen() {
                                             mainNavController,
                                             dialogNavController,
                                             drawerState,
-                                            padding)
+                                            padding
+                                        )
                                     }
                                     HomeBottomNavigationDestination.PlayList -> {
                                         PlayListScreen(

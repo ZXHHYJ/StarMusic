@@ -2,10 +2,10 @@ package studio.mandysa.music.ui.item
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,7 +42,7 @@ fun SongItem(
                 .padding(horizontal = horizontalMargin, vertical = verticalMargin)
                 .size(50.dp), contentAlignment = Alignment.Center
         ) {
-            AppAsyncImage(modifier =Modifier.size(50.dp), url = song.coverUrl)
+            AppAsyncImage(modifier = Modifier.size(50.dp), url = song.coverUrl)
         }
         Column(
             modifier = Modifier
