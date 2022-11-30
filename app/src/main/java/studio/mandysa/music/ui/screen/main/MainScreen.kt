@@ -36,6 +36,7 @@ import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.screen.local.album.AlbumScreen
 import studio.mandysa.music.ui.screen.local.playlist.PlayListScreen
 import studio.mandysa.music.ui.screen.local.single.SingleScreen
+import studio.mandysa.music.ui.screen.local.singer.SingerScreen
 import studio.mandysa.music.ui.screen.me.MeMenu
 import studio.mandysa.music.ui.screen.me.MeScreen
 import studio.mandysa.music.ui.screen.me.about.AboutScreen
@@ -44,9 +45,9 @@ import studio.mandysa.music.ui.screen.me.meplaylist.MePlaylistScreen
 import studio.mandysa.music.ui.screen.me.meplaylist.playlistmenu.PlaylistMenu
 import studio.mandysa.music.ui.screen.netease.albumcnt.AlbumCntScreen
 import studio.mandysa.music.ui.screen.netease.browse.BrowseScreen
+import studio.mandysa.music.ui.screen.netease.singer.SingerScreen
 import studio.mandysa.music.ui.screen.netease.fm.FmScreen
 import studio.mandysa.music.ui.screen.netease.playlistcnt.PlaylistCntScreen
-import studio.mandysa.music.ui.screen.netease.singer.SingerScreen
 import studio.mandysa.music.ui.screen.netease.toplist.ToplistScreen
 import studio.mandysa.music.ui.screen.play.PlayScreen
 import studio.mandysa.music.ui.screen.search.SearchScreen
@@ -404,7 +405,11 @@ fun MainScreen() {
                                         )
                                     }
                                     HomeBottomNavigationDestination.Singer -> {
-
+                                        SingerScreen(
+                                            mainNavController,
+                                            dialogNavController,
+                                            drawerState,
+                                            padding)
                                     }
                                     HomeBottomNavigationDestination.PlayList -> {
                                         PlayListScreen(
