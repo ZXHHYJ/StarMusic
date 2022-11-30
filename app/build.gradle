@@ -101,10 +101,16 @@ dependencies {
     implementation composeBom
     androidTestImplementation composeBom
 
-    implementation "androidx.compose.ui:ui"
-    implementation "androidx.compose.ui:ui-tooling-preview"
     implementation "androidx.compose.runtime:runtime-livedata"
     implementation "androidx.compose.material:material-icons-extended"
     implementation "androidx.compose.material:material"
     implementation "androidx.compose.material3:material3"
+    implementation "androidx.compose.ui:ui"
+    implementation 'androidx.compose.ui:ui-tooling-preview'
+
+    debugImplementation 'androidx.compose.ui:ui-tooling'
+
+    // UI Tests
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
+    debugImplementation 'androidx.compose.ui:ui-test-manifest'
 }

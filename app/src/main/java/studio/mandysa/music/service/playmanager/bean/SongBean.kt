@@ -10,7 +10,11 @@ sealed interface SongBean {
         val data: String,
         val songName: String
     ) : SongBean {
-        data class Artist(val id: Long, val name: String)
+        data class Artist(val id: Long, val name: String, val songs: List<Local>) {
+            override fun toString(): String {
+                return id.toString()
+            }
+        }
 
         data class Album(
             val albumId: Long,

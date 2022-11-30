@@ -10,7 +10,23 @@ import studio.mandysa.music.service.playmanager.bean.SongBean
 object LocalMusicRepository {
 
     fun getLocalArtists(): List<SongBean.Local.Artist> {
-        TODO()
+        val artistKVHashMap = LinkedHashMap<Long, SongBean.Local.Artist>()
+        val localSongs = getLocalSongs()
+        for (song in localSongs) {
+            if (artistKVHashMap.containsKey(song.artistId)) {
+                (artistKVHashMap[song.artistId]!!.songs as ArrayList).add(song)
+                continue
+            }
+            artistKVHashMap[song.artistId] = SongBean.Local.Artist(
+                song.artistId, song.artist,
+                arrayListOf(song)
+            )
+        }
+        val list = arrayListOf<SongBean.Local.Artist>()
+        for (entry in artistKVHashMap) {
+            list.add(entry.value)
+        }
+        return list
     }
 
     fun getLocalAlbums(): List<SongBean.Local.Album> {
