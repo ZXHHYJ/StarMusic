@@ -2,6 +2,8 @@ package studio.mandysa.music.ui.screen
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
+import studio.mandysa.music.service.playmanager.bean.SongBean
 
 sealed class ScreenDestination : Parcelable {
 
@@ -27,7 +29,7 @@ sealed class ScreenDestination : Parcelable {
      * 歌手
      */
     @Parcelize
-    data class Singer(val id: String) : ScreenDestination()
+    data class Singer(val song: @RawValue SongBean) : ScreenDestination()
 
     /**
      * 专辑内容

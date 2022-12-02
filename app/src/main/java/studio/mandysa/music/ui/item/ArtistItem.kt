@@ -6,19 +6,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.bean.SongBean
-import studio.mandysa.music.ui.common.AppAsyncImage
+import studio.mandysa.music.ui.common.AppRoundAsyncImage
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.textColor
 import studio.mandysa.music.ui.theme.textColorLight
 import studio.mandysa.music.ui.theme.verticalMargin
 
 @Composable
-fun ArtistItem(index: Int, artist: SongBean.Local.Artist, onClick: () -> Unit) {
+fun ArtistItem(artist: SongBean.Local.Artist, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -31,7 +33,7 @@ fun ArtistItem(index: Int, artist: SongBean.Local.Artist, onClick: () -> Unit) {
                 .padding(horizontal = horizontalMargin, vertical = verticalMargin)
                 .size(50.dp), contentAlignment = Alignment.Center
         ) {
-            AppAsyncImage(modifier = Modifier.size(50.dp), url = "")
+            AppRoundAsyncImage(modifier = Modifier.size(50.dp), url = "")
             // TODO: 歌手封面
         }
         Column(
@@ -49,7 +51,7 @@ fun ArtistItem(index: Int, artist: SongBean.Local.Artist, onClick: () -> Unit) {
             )
             Spacer(modifier = Modifier.weight(1.0f))
             Text(
-                text = "共${artist.songs.size}首",
+                text = stringResource(id = R.string.total_n_songs, artist.songs.size),
                 color = textColorLight,
                 fontSize = 13.sp,
                 maxLines = 1,
@@ -63,7 +65,7 @@ fun ArtistItem(index: Int, artist: SongBean.Local.Artist, onClick: () -> Unit) {
 @Preview
 @Composable
 private fun PreviewArtistItem() {
-    ArtistItem(index = 1, artist = SongBean.Local.Artist(0, "啦啦啦", arrayListOf())) {
+    ArtistItem(artist = SongBean.Local.Artist(0, "啦啦啦", arrayListOf())) {
 
     }
 }

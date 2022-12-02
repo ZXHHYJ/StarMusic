@@ -20,12 +20,23 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.R
+import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.ui.item.ContentColumnItem
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.onBackground
+
+@Composable
+fun SingerScreen(
+    mainNavController: NavController<ScreenDestination>,
+    dialogNavController: NavController<DialogDestination>,
+    paddingValues: PaddingValues,
+    song: SongBean
+) {
+
+}
 
 @Composable
 fun SingerScreen(

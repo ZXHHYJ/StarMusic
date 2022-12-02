@@ -28,7 +28,8 @@ fun SearchSingerScreen(
     LazyColumn(modifier = Modifier.padding(paddingValues)) {
         items(singers) {
             ItemSinger(model = it) {
-                mainNavController.navigate(ScreenDestination.Singer(it.id))
+                // TODO:
+                //mainNavController.navigate(ScreenDestination.Singer(it.id))
             }
         }
     }

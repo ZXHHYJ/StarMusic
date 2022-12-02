@@ -69,7 +69,7 @@ fun SingerScreen(
                 }
             }
             itemsIndexed(artists) { index, item ->
-                ArtistItem(index, item) {
+                ArtistItem(item) {
 
                 }
             }

@@ -1,43 +1,28 @@
 <resources>
-
     <string name="channel_name">媒体控制器</string>
     <string name="channel_description">播放控制</string>
-
     <string name="app_name">MandySa Music</string>
-
     <string name="source">资料库</string>
-
     <string name="recommend_playlist">推荐歌单</string>
-
     <string name="recommend_song">推荐歌曲</string>
-
     <string name="me_playlist">我的歌单</string>
-
     <string name="search_hint">在媒体库中搜索</string>
-
     <string name="phone">手机号</string>
     <string name="captcha">验证码</string>
     <string name="send_captcha">发送验证码</string>
-
     <string name="login">登录</string>
-
     <string name="playlist_square">歌单广场</string>
-
     <string name="browse">浏览</string>
-
     <string name="singer">歌手</string>
     <string name="clear">清除</string>
     <string name="play_queue">播放队列</string>
     <string name="search">搜索</string>
-
     <string name="setting">设置</string>
     <string name="i_like">我喜欢</string>
     <string name="recently_played">最近播放</string>
-
     <string name="about">关于</string>
     <string name="more">更多</string>
     <string name="album">专辑</string>
-
     <string name="next_play">下一首播放</string>
     <string name="add_like">添加到我喜欢</string>
     <string name="remove_like">从我喜欢中移除</string>
@@ -47,16 +32,12 @@
     <string name="remove_playlist">删除歌单</string>
     <string name="popular_song">热门歌曲</string>
     <string name="singer_album">歌手专辑</string>
-
     <string name="copy">复制</string>
     <string name="issued">发行</string>
     <string name="single">单曲</string>
-
     <string name="enable_android_auto_ui">启用 Android Auto UI</string>
-
     <string name="singers_i_follow">我关注的歌手</string>
     <string name="sign_out">退出登录</string>
-
     <string name="network_error">网络异常</string>
     <string name="retry">重试</string>
     <string name="view_all">查看全部</string>
@@ -66,4 +47,5 @@
     <string name="fm">FM</string>
     <string name="playlist">歌单</string>
     <string name="play_list">播放列表</string>
+    <string name="total_n_songs">共%1$d首</string>
 </resources>

@@ -448,7 +448,7 @@ fun MainScreen() {
                                 mainNavController = mainNavController,
                                 dialogNavController = dialogNavController,
                                 paddingValues = padding,
-                                id = screenDestination.id
+                                song = screenDestination.song
                             )
                         }
 

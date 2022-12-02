@@ -20,6 +20,7 @@ import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.popAll
 import kotlinx.parcelize.RawValue
 import studio.mandysa.music.R
+import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.service.playmanager.ktx.*
 import studio.mandysa.music.ui.common.AppAsyncImage
@@ -100,17 +101,34 @@ fun SongMenu(
                     imageVector = Icons.Rounded.Add
                 ) {
                     dialogNavController.popAll()
-                    //PlayManager.addNextPlay(model)
+                    PlayManager.addNextPlay(song)
                 }
             }
-            items(song.artist) {
-                MenuItem(
-                    modifier = Modifier.padding(horizontal = horizontalMargin),
-                    title = "${stringResource(id = R.string.singer)}:${it.name}",
-                    imageVector = Icons.Rounded.Person
-                ) {
-                    dialogNavController.popAll()
-                    mainNavController.navigate(ScreenDestination.Singer(it.id))
+            when (song) {
+                is SongBean.Local -> {
+                    item {
+                        MenuItem(
+                            modifier = Modifier.padding(horizontal = horizontalMargin),
+                            title = "${stringResource(id = R.string.singer)}:${song.artist}",
+                            imageVector = Icons.Rounded.Person
+                        ) {
+                            dialogNavController.popAll()
+                            mainNavController.navigate(ScreenDestination.Singer(song))
+                        }
+                    }
+                }
+                is SongBean.Network -> {
+                    items(song.artist) {
+                        MenuItem(
+                            modifier = Modifier.padding(horizontal = horizontalMargin),
+                            title = "${stringResource(id = R.string.singer)}:${it.name}",
+                            imageVector = Icons.Rounded.Person
+                        ) {
+                            dialogNavController.popAll()
+                            // TODO:
+                            //mainNavController.navigate(ScreenDestination.Singer(it.id))
+                        }
+                    }
                 }
             }
         }

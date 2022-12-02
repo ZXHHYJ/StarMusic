@@ -43,7 +43,8 @@ fun ArtistSubScreen(
         LazyColumn {
             items(follows) {
                 ItemSinger(model = it) {
-                    mainNavController.navigate(ScreenDestination.Singer(it.id))
+                    // TODO:
+                    //mainNavController.navigate(ScreenDestination.Singer(it.id))
                 }
             }
             item {
