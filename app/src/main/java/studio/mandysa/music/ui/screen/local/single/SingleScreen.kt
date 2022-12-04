@@ -21,7 +21,7 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import kotlinx.coroutines.launch
 import studio.mandysa.music.R
-import studio.mandysa.music.logic.repository.LocalMusicRepository
+import studio.mandysa.music.logic.repository.LocalMediaRepository
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.MediaPermission
 import studio.mandysa.music.ui.common.SearchBar
@@ -45,7 +45,7 @@ fun SingleScreen(
             .fillMaxSize()
             .statusBarsPadding()
     ) {
-        val localBeans = LocalMusicRepository.getLocalSongs()
+        val localBeans = LocalMediaRepository.getLocalSongs()
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()

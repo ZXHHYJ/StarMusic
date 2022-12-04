@@ -26,10 +26,16 @@ sealed class ScreenDestination : Parcelable {
     data class PlaylistCnt(val id: String) : ScreenDestination()
 
     /**
-     * 歌手
+     * 歌手内容
      */
     @Parcelize
-    data class Singer(val song: @RawValue SongBean) : ScreenDestination()
+    data class SingerCnt(val artistId: Long) : ScreenDestination()
+
+    /**
+     * 网易云的歌手内容
+     */
+    @Parcelize
+    data class NeteaseSingerCnt(val artist: @RawValue SongBean.Network.Artist) : ScreenDestination()
 
     /**
      * 专辑内容

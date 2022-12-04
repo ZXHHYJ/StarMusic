@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Search
@@ -21,7 +21,8 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import kotlinx.coroutines.launch
 import studio.mandysa.music.R
-import studio.mandysa.music.logic.repository.LocalMusicRepository
+import studio.mandysa.music.logic.repository.LocalMediaRepository
+import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.ui.common.MediaPermission
 import studio.mandysa.music.ui.common.SearchBar
 import studio.mandysa.music.ui.item.ArtistItem
@@ -44,7 +45,7 @@ fun SingerScreen(
             .fillMaxSize()
             .statusBarsPadding()
     ) {
-        val artists = LocalMusicRepository.getLocalArtists()
+        val artists = getLocalArtists()
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -68,11 +69,37 @@ fun SingerScreen(
                     Text(text = stringResource(id = R.string.search_hint))
                 }
             }
-            itemsIndexed(artists) { index, item ->
-                ArtistItem(item) {
-
+            items(artists) {
+                ArtistItem(artistName = it.name, songSize = it.songs.size) {
+                    mainNavController.navigate(ScreenDestination.SingerCnt(it.id))
                 }
             }
         }
+    }
+}
+
+private fun getLocalArtists(): List<ArtistInfo> {
+    val artistKVHashMap = LinkedHashMap<Long, ArtistInfo>()
+    val localSongs = LocalMediaRepository.getLocalSongs()
+    for (song in localSongs) {
+        if (artistKVHashMap.containsKey(song.artistId)) {
+            (artistKVHashMap[song.artistId]!!.songs as ArrayList).add(song)
+            continue
+        }
+        artistKVHashMap[song.artistId] = ArtistInfo(
+            song.artistId, song.artist,
+            arrayListOf(song)
+        )
+    }
+    val list = arrayListOf<ArtistInfo>()
+    for (entry in artistKVHashMap) {
+        list.add(entry.value)
+    }
+    return list
+}
+
+private data class ArtistInfo(val id: Long, val name: String, val songs: List<SongBean.Local>) {
+    override fun toString(): String {
+        return id.toString()
     }
 }

@@ -12,7 +12,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import studio.mandysa.music.R
-import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.ui.common.AppRoundAsyncImage
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.textColor
@@ -20,7 +19,17 @@ import studio.mandysa.music.ui.theme.textColorLight
 import studio.mandysa.music.ui.theme.verticalMargin
 
 @Composable
-fun ArtistItem(artist: SongBean.Local.Artist, onClick: () -> Unit) {
+fun ArtistItem(artistName: String, songSize: Int, onClick: () -> Unit) {
+    ArtistItem(
+        title = artistName,
+        subTitle = stringResource(id = R.string.total_n_songs, songSize)
+    ) {
+        onClick.invoke()
+    }
+}
+
+@Composable
+fun ArtistItem(title: String, subTitle: String, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -43,7 +52,7 @@ fun ArtistItem(artist: SongBean.Local.Artist, onClick: () -> Unit) {
                 .padding(vertical = verticalMargin),
         ) {
             Text(
-                text = artist.name,
+                text = title,
                 color = textColor,
                 fontSize = 15.sp,
                 maxLines = 1,
@@ -51,7 +60,7 @@ fun ArtistItem(artist: SongBean.Local.Artist, onClick: () -> Unit) {
             )
             Spacer(modifier = Modifier.weight(1.0f))
             Text(
-                text = stringResource(id = R.string.total_n_songs, artist.songs.size),
+                text = subTitle,
                 color = textColorLight,
                 fontSize = 13.sp,
                 maxLines = 1,
@@ -65,7 +74,7 @@ fun ArtistItem(artist: SongBean.Local.Artist, onClick: () -> Unit) {
 @Preview
 @Composable
 private fun PreviewArtistItem() {
-    ArtistItem(artist = SongBean.Local.Artist(0, "啦啦啦", arrayListOf())) {
+    ArtistItem(artistName = "Chen Yuan Xi", songSize = 1) {
 
     }
 }

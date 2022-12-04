@@ -7,27 +7,7 @@ import studio.mandysa.music.service.playmanager.bean.SongBean
 /**
  * @author 黄浩
  */
-object LocalMusicRepository {
-
-    fun getLocalArtists(): List<SongBean.Local.Artist> {
-        val artistKVHashMap = LinkedHashMap<Long, SongBean.Local.Artist>()
-        val localSongs = getLocalSongs()
-        for (song in localSongs) {
-            if (artistKVHashMap.containsKey(song.artistId)) {
-                (artistKVHashMap[song.artistId]!!.songs as ArrayList).add(song)
-                continue
-            }
-            artistKVHashMap[song.artistId] = SongBean.Local.Artist(
-                song.artistId, song.artist,
-                arrayListOf(song)
-            )
-        }
-        val list = arrayListOf<SongBean.Local.Artist>()
-        for (entry in artistKVHashMap) {
-            list.add(entry.value)
-        }
-        return list
-    }
+object LocalMediaRepository {
 
     fun getLocalAlbums(): List<SongBean.Local.Album> {
         val albumKVHashMap = LinkedHashMap<Long, SongBean.Local.Album>()

@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.screen.netease.singer
+package studio.mandysa.music.ui.screen.netease.singercnt
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,7 +20,6 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.R
-import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.ui.item.ContentColumnItem
 import studio.mandysa.music.ui.item.ItemSubTitle
 import studio.mandysa.music.ui.screen.DialogDestination
@@ -29,27 +28,17 @@ import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.onBackground
 
 @Composable
-fun SingerScreen(
-    mainNavController: NavController<ScreenDestination>,
-    dialogNavController: NavController<DialogDestination>,
-    paddingValues: PaddingValues,
-    song: SongBean
-) {
-
-}
-
-@Composable
-fun SingerScreen(
+fun NeteaseSingerCntScreen(
     mainNavController: NavController<ScreenDestination>,
     dialogNavController: NavController<DialogDestination>,
     paddingValues: PaddingValues,
     id: String,
-    singerViewModel: SingerViewModel = viewModel(factory = viewModelFactory {
-        addInitializer(SingerViewModel::class) { SingerViewModel(id) }
+    singerCntViewModel: SingerCntViewModel = viewModel(factory = viewModelFactory {
+        addInitializer(SingerCntViewModel::class) { SingerCntViewModel(id) }
     })
 ) {
-    val singerInfo by singerViewModel.singerInfo.observeAsState()
-    val songs by singerViewModel.songs.observeAsState()
+    val singerInfo by singerCntViewModel.singerInfo.observeAsState()
+    val songs by singerCntViewModel.songs.observeAsState()
     Column {
         TopAppBar(
             modifier = Modifier.fillMaxWidth(),

@@ -21,7 +21,7 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import kotlinx.coroutines.launch
 import studio.mandysa.music.R
-import studio.mandysa.music.logic.repository.LocalMusicRepository
+import studio.mandysa.music.logic.repository.LocalMediaRepository
 import studio.mandysa.music.ui.common.MediaPermission
 import studio.mandysa.music.ui.common.SearchBar
 import studio.mandysa.music.ui.item.AlbumItem
@@ -44,7 +44,7 @@ fun AlbumScreen(
             .fillMaxSize()
             .statusBarsPadding()
     ) {
-        val albums = LocalMusicRepository.getLocalAlbums()
+        val albums = LocalMediaRepository.getLocalAlbums()
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
