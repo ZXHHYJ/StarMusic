@@ -45,7 +45,7 @@ fun SingleScreen(
             .fillMaxSize()
             .statusBarsPadding()
     ) {
-        val localBeans = LocalMediaRepository.getLocalSongs()
+        val localBeans = LocalMediaRepository.getSongs()
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()

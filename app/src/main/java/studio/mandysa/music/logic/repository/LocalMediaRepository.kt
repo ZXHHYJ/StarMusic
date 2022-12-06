@@ -9,27 +9,38 @@ import studio.mandysa.music.service.playmanager.bean.SongBean
  */
 object LocalMediaRepository {
 
-    fun getLocalAlbums(): List<SongBean.Local.Album> {
-        val albumKVHashMap = LinkedHashMap<Long, SongBean.Local.Album>()
-        val localSongs = getLocalSongs()
-        for (song in localSongs) {
-            if (albumKVHashMap.containsKey(song.albumId)) {
-                (albumKVHashMap[song.albumId]!!.songs as ArrayList).add(song)
+    fun getArtists(): List<SongBean.Local.Artist> {
+        val artistKVHashMap = LinkedHashMap<String, SongBean.Local.Artist>()
+        for (song in getSongs()) {
+            if (artistKVHashMap.containsKey(song.artist.id)) {
                 continue
             }
-            albumKVHashMap[song.albumId] = SongBean.Local.Album(
-                song.albumId, song.album, song.artistId, song.artist,
-                arrayListOf(song)
-            )
+            artistKVHashMap[song.artist.id] = song.artist
         }
-        val list = arrayListOf<SongBean.Local.Album>()
-        for (entry in albumKVHashMap) {
+        val list = arrayListOf<SongBean.Local.Artist>()
+        for (entry in artistKVHashMap) {
             list.add(entry.value)
         }
         return list
     }
 
-    fun getLocalSongs(): List<SongBean.Local> {
+    fun getAlbums(): List<SongBean.Local.Album> {
+        val hashMap = LinkedHashMap<String, SongBean.Local.Album>()
+        val localSongs = getSongs()
+        for (song in localSongs) {
+            if (hashMap.containsKey(song.album.id)) {
+                continue
+            }
+            hashMap[song.album.id] = song.album
+        }
+        val list = arrayListOf<SongBean.Local.Album>()
+        for (entry in hashMap) {
+            list.add(entry.value)
+        }
+        return list
+    }
+
+    fun getSongs(): List<SongBean.Local> {
         val query = mainApplication.contentResolver.query(
             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
             arrayOf(
@@ -61,9 +72,48 @@ object LocalMediaRepository {
                 query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.DATA))
             val songName =
                 query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.TITLE))
-            list.add(SongBean.Local(album, albumId, artist, artistId, duration, data, songName))
+            list.add(
+                SongBean.Local(
+                    SongBean.Local.Album(albumId.toString(), album),
+                    SongBean.Local.Artist(artistId.toString(), artist),
+                    duration,
+                    data,
+                    songName
+                )
+            )
         }
         query?.close()
         return list
     }
+
+    val SongBean.Local.Album.artist: SongBean.Local.Artist
+        get() {
+            for (song in getSongs()) {
+                if (song.album.id == this.id)
+                    return song.artist
+            }
+            throw java.lang.NullPointerException("")
+        }
+
+    val SongBean.Local.Album.songs: List<SongBean.Local>
+        get() {
+            val list = arrayListOf<SongBean.Local>()
+            for (song in getSongs()) {
+                if (song.album.id == this.id) {
+                    list.add(song)
+                }
+            }
+            return list
+        }
+
+    val SongBean.Local.Artist.songs: List<SongBean.Local>
+        get() {
+            val list = arrayListOf<SongBean.Local>()
+            for (song in getSongs()) {
+                if (song.artist.id == this.id) {
+                    list.add(song)
+                }
+            }
+            return list
+        }
 }

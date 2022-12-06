@@ -19,6 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import studio.mandysa.music.R
+import studio.mandysa.music.logic.repository.LocalMediaRepository.artist
+import studio.mandysa.music.logic.repository.LocalMediaRepository.songs
 import studio.mandysa.music.service.playmanager.bean.MetaAlbum
 import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
@@ -36,8 +38,8 @@ private fun stampToDate(s: String): String {
 fun AlbumItem(mateAlbum: MetaAlbum, onClick: () -> Unit) {
     AlbumItem(
         coverUrl = mateAlbum.coverUrl,
-        name = mateAlbum.name,
-        publishTime = stampToDate(mateAlbum.publishTime)
+        title = mateAlbum.name,
+        subTitle = stampToDate(mateAlbum.publishTime)
     ) {
         onClick.invoke()
     }
@@ -47,19 +49,19 @@ fun AlbumItem(mateAlbum: MetaAlbum, onClick: () -> Unit) {
 fun AlbumItem(album: SongBean.Local.Album, onClick: () -> Unit) {
     AlbumItem(
         coverUrl = album.coverUrl,
-        name = album.album,
-        publishTime = "${album.artist} ${
+        title = album.name,
+        subTitle = "${album.artist.name} ${
             stringResource(
                 id = R.string.total_n_songs,
                 album.songs.size
-            )                                                                                                                                                                                                                                                                                                                                     
+            )
         }",
         onClick = onClick
     )
 }
 
 @Composable
-private fun AlbumItem(coverUrl: String, name: String, publishTime: String, onClick: () -> Unit) {
+private fun AlbumItem(coverUrl: String, title: String, subTitle: String, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -92,7 +94,7 @@ private fun AlbumItem(coverUrl: String, name: String, publishTime: String, onCli
                 .padding(vertical = verticalMargin),
         ) {
             Text(
-                text = name,
+                text = title,
                 color = textColor,
                 fontSize = 15.sp,
                 maxLines = 1,
@@ -100,7 +102,7 @@ private fun AlbumItem(coverUrl: String, name: String, publishTime: String, onCli
             )
             Spacer(modifier = Modifier.weight(1.0f))
             Text(
-                text = publishTime,
+                text = subTitle,
                 color = textColorLight,
                 fontSize = 13.sp,
                 maxLines = 1,
@@ -125,8 +127,8 @@ private fun AlbumItem(coverUrl: String, name: String, publishTime: String, onCli
 private fun PreviewAlbumItem() {
     AlbumItem(
         coverUrl = "https://imgo.114shouji.com/img2021/1/27/9/2021012768987162.jpg",
-        name = "东方镜",
-        publishTime = "2022/11/19"
+        title = "东方镜",
+        subTitle = "2022/11/19"
     ) {
 
     }

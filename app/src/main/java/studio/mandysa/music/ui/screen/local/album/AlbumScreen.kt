@@ -44,7 +44,7 @@ fun AlbumScreen(
             .fillMaxSize()
             .statusBarsPadding()
     ) {
-        val albums = LocalMediaRepository.getLocalAlbums()
+        val albums = LocalMediaRepository.getAlbums()
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()

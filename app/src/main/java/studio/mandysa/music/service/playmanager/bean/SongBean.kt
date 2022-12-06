@@ -2,26 +2,16 @@ package studio.mandysa.music.service.playmanager.bean
 
 sealed interface SongBean {
     data class Local(
-        val album: String,
-        val albumId: Long,
-        val artist: String,
-        val artistId: Long,
+        val album: Album,
+        val artist: Artist,
         val duration: Long,
         val data: String,
         val songName: String
     ) : SongBean {
 
-        data class Album(
-            val albumId: Long,
-            val album: String,
-            val artistId: Long,
-            val artist: String,
-            val songs: List<Local>
-        ) {
-            override fun toString(): String {
-                return albumId.toString()
-            }
-        }
+        data class Artist(val id: String, val name: String)
+
+        data class Album(val id: String, val name: String)
     }
 
     open class Network(

@@ -22,7 +22,7 @@ import dev.olshevski.navigation.reimagined.navigate
 import kotlinx.coroutines.launch
 import studio.mandysa.music.R
 import studio.mandysa.music.logic.repository.LocalMediaRepository
-import studio.mandysa.music.service.playmanager.bean.SongBean
+import studio.mandysa.music.logic.repository.LocalMediaRepository.songs
 import studio.mandysa.music.ui.common.MediaPermission
 import studio.mandysa.music.ui.common.SearchBar
 import studio.mandysa.music.ui.item.ArtistItem
@@ -45,7 +45,7 @@ fun SingerScreen(
             .fillMaxSize()
             .statusBarsPadding()
     ) {
-        val artists = getLocalArtists()
+        val artists = LocalMediaRepository.getArtists()
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -71,35 +71,9 @@ fun SingerScreen(
             }
             items(artists) {
                 ArtistItem(artistName = it.name, songSize = it.songs.size) {
-                    mainNavController.navigate(ScreenDestination.SingerCnt(it.id))
+                    //mainNavController.navigate(ScreenDestination.SingerCnt(it.id))
                 }
             }
         }
-    }
-}
-
-private fun getLocalArtists(): List<ArtistInfo> {
-    val artistKVHashMap = LinkedHashMap<Long, ArtistInfo>()
-    val localSongs = LocalMediaRepository.getLocalSongs()
-    for (song in localSongs) {
-        if (artistKVHashMap.containsKey(song.artistId)) {
-            (artistKVHashMap[song.artistId]!!.songs as ArrayList).add(song)
-            continue
-        }
-        artistKVHashMap[song.artistId] = ArtistInfo(
-            song.artistId, song.artist,
-            arrayListOf(song)
-        )
-    }
-    val list = arrayListOf<ArtistInfo>()
-    for (entry in artistKVHashMap) {
-        list.add(entry.value)
-    }
-    return list
-}
-
-private data class ArtistInfo(val id: Long, val name: String, val songs: List<SongBean.Local>) {
-    override fun toString(): String {
-        return id.toString()
     }
 }
