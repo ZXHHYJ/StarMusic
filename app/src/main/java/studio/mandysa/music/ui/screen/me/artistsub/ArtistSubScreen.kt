@@ -16,9 +16,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.olshevski.navigation.reimagined.NavController
-import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop
-import studio.mandysa.music.ui.item.ItemSinger
+import studio.mandysa.music.ui.item.SingerItem
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.onBackground
 
@@ -42,7 +41,7 @@ fun ArtistSubScreen(
         }
         LazyColumn {
             items(follows) {
-                ItemSinger(model = it) {
+                SingerItem(model = it) {
                     // TODO:
                     //mainNavController.navigate(ScreenDestination.Singer(it.id))
                 }

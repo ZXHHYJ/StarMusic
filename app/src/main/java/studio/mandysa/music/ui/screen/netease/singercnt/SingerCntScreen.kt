@@ -21,7 +21,7 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.R
 import studio.mandysa.music.ui.item.ContentColumnItem
-import studio.mandysa.music.ui.item.ItemSubTitle
+import studio.mandysa.music.ui.item.SubTitleItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.horizontalMargin
@@ -62,7 +62,7 @@ fun NeteaseSingerCntScreen(
                 }
             }
             item {
-                ItemSubTitle(stringResource(id = R.string.album))
+                SubTitleItem(stringResource(id = R.string.album))
             }
             item {
                 LazyRow(
@@ -78,7 +78,7 @@ fun NeteaseSingerCntScreen(
                 }
             }
             item {
-                ItemSubTitle(stringResource(id = R.string.popular_song))
+                SubTitleItem(stringResource(id = R.string.popular_song))
             }
             songs?.let { list ->
                 items(list.size) {

@@ -23,7 +23,7 @@ import studio.mandysa.music.ui.common.AppCard
 import studio.mandysa.music.ui.common.AppRoundAsyncImage
 import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.common.Preview
-import studio.mandysa.music.ui.item.ItemSubTitle
+import studio.mandysa.music.ui.item.SubTitleItem
 import studio.mandysa.music.ui.item.PlaylistItem
 import studio.mandysa.music.ui.item.RoundIconItem
 import studio.mandysa.music.ui.screen.DialogDestination
@@ -116,7 +116,7 @@ fun MeScreen(
                 }
             }
             item {
-                ItemSubTitle(
+                SubTitleItem(
                     stringResource(R.string.me_playlist),
                 )
             }
@@ -142,7 +142,7 @@ fun MeScreen(
                 }
             }
             item {
-                ItemSubTitle(stringResource(R.string.recently_played))
+                SubTitleItem(stringResource(R.string.recently_played))
             }
             item {
                 LazyRow(
@@ -184,7 +184,7 @@ fun MeScreen(
                 }
             }*/
             item {
-                ItemSubTitle(stringResource(R.string.more))
+                SubTitleItem(stringResource(R.string.more))
             }
             item {
                 MenuItem(

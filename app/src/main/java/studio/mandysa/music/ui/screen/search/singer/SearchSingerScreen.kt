@@ -11,8 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.viewModelFactory
 import dev.olshevski.navigation.reimagined.NavController
-import dev.olshevski.navigation.reimagined.navigate
-import studio.mandysa.music.ui.item.ItemSinger
+import studio.mandysa.music.ui.item.SingerItem
 import studio.mandysa.music.ui.screen.ScreenDestination
 
 @Composable
@@ -27,7 +26,7 @@ fun SearchSingerScreen(
     val singers by singerViewModel.singers.observeAsState(listOf())
     LazyColumn(modifier = Modifier.padding(paddingValues)) {
         items(singers) {
-            ItemSinger(model = it) {
+            SingerItem(model = it) {
                 // TODO:
                 //mainNavController.navigate(ScreenDestination.Singer(it.id))
             }

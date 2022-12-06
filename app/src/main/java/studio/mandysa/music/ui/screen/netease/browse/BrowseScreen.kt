@@ -33,7 +33,7 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
 import studio.mandysa.music.ui.common.*
-import studio.mandysa.music.ui.item.ItemSubTitle
+import studio.mandysa.music.ui.item.SubTitleItem
 import studio.mandysa.music.ui.item.PlaylistItem
 import studio.mandysa.music.ui.item.RoundIconItem
 import studio.mandysa.music.ui.screen.DialogDestination
@@ -184,7 +184,7 @@ fun BrowseScreen(
                 }
             }
             item {
-                ItemSubTitle(stringResource(R.string.recommend_playlist))
+                SubTitleItem(stringResource(R.string.recommend_playlist))
             }
             item {
                 LazyRow(
@@ -201,7 +201,7 @@ fun BrowseScreen(
                 }
             }
             item {
-                ItemSubTitle(stringResource(R.string.playlist_square))
+                SubTitleItem(stringResource(R.string.playlist_square))
             }
             item {
                 LazyRow(
@@ -235,7 +235,7 @@ fun BrowseScreen(
                 }
             }*/
             item {
-                ItemSubTitle(stringResource(R.string.recommend_song))
+                SubTitleItem(stringResource(R.string.recommend_song))
             }
             recommendSongs?.let {
                 items(it.size) { index ->

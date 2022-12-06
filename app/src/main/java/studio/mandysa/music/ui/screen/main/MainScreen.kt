@@ -449,7 +449,7 @@ fun MainScreen() {
                                 mainNavController = mainNavController,
                                 dialogNavController = dialogNavController,
                                 paddingValues = padding,
-                                artistId = screenDestination.artistId
+                                artist = screenDestination.artist
                             )
                         }
 

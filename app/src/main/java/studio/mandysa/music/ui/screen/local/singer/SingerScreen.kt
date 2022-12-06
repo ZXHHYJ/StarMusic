@@ -71,7 +71,7 @@ fun SingerScreen(
             }
             items(artists) {
                 ArtistItem(artistName = it.name, songSize = it.songs.size) {
-                    //mainNavController.navigate(ScreenDestination.SingerCnt(it.id))
+                    mainNavController.navigate(ScreenDestination.SingerCnt(it))
                 }
             }
         }

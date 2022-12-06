@@ -20,8 +20,8 @@ import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.theme.*
 
 @Composable
-fun ItemSinger(model: SearchSingerBean, onClick: () -> Unit) {
-    ItemSinger(
+fun SingerItem(model: SearchSingerBean, onClick: () -> Unit) {
+    SingerItem(
         picUrl = model.picUrl,
         name = model.name,
         hint = "${stringResource(id = R.string.album)}:${model.albumSize}"
@@ -31,8 +31,8 @@ fun ItemSinger(model: SearchSingerBean, onClick: () -> Unit) {
 }
 
 @Composable
-fun ItemSinger(model: ArtistSubBean, onClick: () -> Unit) {
-    ItemSinger(
+fun SingerItem(model: ArtistSubBean, onClick: () -> Unit) {
+    SingerItem(
         picUrl = model.picUrl,
         name = model.nickname,
         hint = "${stringResource(id = R.string.album)}:${model.albumSize}"
@@ -42,7 +42,7 @@ fun ItemSinger(model: ArtistSubBean, onClick: () -> Unit) {
 }
 
 @Composable
-fun ItemSinger(picUrl: String, name: String, hint: String, onClick: () -> Unit) {
+fun SingerItem(picUrl: String, name: String, hint: String, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
