@@ -231,8 +231,13 @@ fun MainScreen() {
                             homeNavController.backstack.entries.last().destination
                         UserRepository.isLoginState.let { loginState ->
                             HomeBottomNavigationDestination.values().forEach { screen ->
-                                if (screen == HomeBottomNavigationDestination.Browse && loginState == false && !isMatePad) {
-                                    return@forEach
+                                if (screen == HomeBottomNavigationDestination.Browse) {
+                                    if (loginState == false) {
+                                        return@forEach
+                                    }
+                                    if (!isMatePad) {
+                                        return@forEach
+                                    }
                                 }
                                 AppNavigationRailItem(
                                     label = {
