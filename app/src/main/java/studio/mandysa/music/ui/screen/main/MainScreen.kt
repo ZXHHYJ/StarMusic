@@ -162,7 +162,7 @@ fun MainScreen() {
         rememberNavController<ScreenDestination>(startDestination = ScreenDestination.Main)
 
     val homeNavController =
-        rememberNavController(startDestination = if (UserRepository.isLoginState == true) HomeBottomNavigationDestination.Browse else HomeBottomNavigationDestination.Single)
+        rememberNavController(startDestination = HomeBottomNavigationDestination.Single)
 
     val dialogNavController = rememberNavController<DialogDestination>(
         initialBackstack = emptyList()
@@ -229,32 +229,34 @@ fun MainScreen() {
                             mainNavController.backstack.entries.last().destination
                         val bottomLastDestination =
                             homeNavController.backstack.entries.last().destination
-                        HomeBottomNavigationDestination.values().forEach { screen ->
-                            if (screen == HomeBottomNavigationDestination.Browse && !isMatePad) {
-                                return@forEach
-                            }
-                            AppNavigationRailItem(
-                                label = {
-                                    Text(text = screen.tabName)
-                                },
-                                icon = {
-                                    Icon(
-                                        screen.tabIcon,
-                                        contentDescription = null
-                                    )
-                                },
-                                selected = screen == bottomLastDestination,
-                                onClick = {
-                                    mainNavController.popUpTo {
-                                        it == ScreenDestination.Main
-                                    }
-                                    if (!homeNavController.moveToTop {
-                                            it == screen
-                                        }) {
-                                        homeNavController.navigate(screen)
-                                    }
+                        UserRepository.isLoginState.let { isLogin ->
+                            HomeBottomNavigationDestination.values().forEach { screen ->
+                                if (screen == HomeBottomNavigationDestination.Browse && isLogin == true && !isMatePad) {
+                                    return@forEach
                                 }
-                            )
+                                AppNavigationRailItem(
+                                    label = {
+                                        Text(text = screen.tabName)
+                                    },
+                                    icon = {
+                                        Icon(
+                                            screen.tabIcon,
+                                            contentDescription = null
+                                        )
+                                    },
+                                    selected = screen == bottomLastDestination,
+                                    onClick = {
+                                        mainNavController.popUpTo {
+                                            it == ScreenDestination.Main
+                                        }
+                                        if (!homeNavController.moveToTop {
+                                                it == screen
+                                            }) {
+                                            homeNavController.navigate(screen)
+                                        }
+                                    }
+                                )
+                            }
                         }
 
                         @Composable
