@@ -22,7 +22,6 @@ import dev.olshevski.navigation.reimagined.navigate
 import kotlinx.coroutines.launch
 import studio.mandysa.music.R
 import studio.mandysa.music.logic.repository.LocalMediaRepository
-import studio.mandysa.music.logic.repository.LocalMediaRepository.songs
 import studio.mandysa.music.ui.common.MediaPermission
 import studio.mandysa.music.ui.common.SearchBar
 import studio.mandysa.music.ui.item.ArtistItem
@@ -70,7 +69,7 @@ fun SingerScreen(
                 }
             }
             items(artists) {
-                ArtistItem(artistName = it.name, songSize = it.songs.size) {
+                ArtistItem(artist = it) {
                     mainNavController.navigate(ScreenDestination.SingerCnt(it))
                 }
             }
