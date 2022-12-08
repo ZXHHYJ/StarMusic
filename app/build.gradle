@@ -113,11 +113,4 @@ dependencies {
     // UI Tests
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
-
-    configurations.all {
-        //all*.exclude group: "androidx.compose.material", module: "material"
-        //用来编译时检查有没有使用material的组件，如text
-        all*.exclude group: "androidx.appcompat"
-    }
-
 }
