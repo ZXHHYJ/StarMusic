@@ -55,7 +55,8 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.*'], dir: 'libs')
-
+    // https://github.com/square/leakcanary
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
     // 媒体播放器 https://exoplayer.dev/
     implementation 'com.google.android.exoplayer:exoplayer-core:2.18.1'
     // 图片加载库 https://github.com/coil-kt/coil/blob/main/README-zh.md
@@ -64,6 +65,7 @@ dependencies {
     implementation 'com.flaviofaria:kenburnsview:1.0.7'
     // 网络请求库 https://gitee.com/ZXHHYJ/anna
     implementation 'com.gitee.ZXHHYJ:anna:3.2.0-beta02'
+    // beanToJson
     implementation 'com.google.code.gson:gson:2.10'
 
     // https://mvnrepository.com/artifact/net.jthink/jaudiotagger
