@@ -11,7 +11,6 @@ import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.pop
@@ -33,6 +32,7 @@ fun SingerCntScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .statusBarsPadding()
             .padding(paddingValues)
     ) {
         TopAppBar(
@@ -57,11 +57,4 @@ fun SingerCntScreen(
             }
         }
     }
-}
-
-
-@Preview
-@Composable
-private fun PreviewHead() {
-
 }

@@ -229,9 +229,9 @@ fun MainScreen() {
                             mainNavController.backstack.entries.last().destination
                         val bottomLastDestination =
                             homeNavController.backstack.entries.last().destination
-                        UserRepository.isLoginState.let { isLogin ->
+                        UserRepository.isLoginState.let { loginState ->
                             HomeBottomNavigationDestination.values().forEach { screen ->
-                                if (screen == HomeBottomNavigationDestination.Browse && isLogin == true && !isMatePad) {
+                                if (screen == HomeBottomNavigationDestination.Browse && loginState == false && !isMatePad) {
                                     return@forEach
                                 }
                                 AppNavigationRailItem(
