@@ -55,8 +55,8 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.*'], dir: 'libs')
-    // https://github.com/square/leakcanary
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
+    // https://github.com/simplepeng/SpiderMan
+    debugImplementation "com.github.simplepeng.SpiderMan:spiderman:v1.1.9"
     // 媒体播放器 https://exoplayer.dev/
     implementation 'com.google.android.exoplayer:exoplayer-core:2.18.1'
     // 图片加载库 https://github.com/coil-kt/coil/blob/main/README-zh.md
@@ -108,9 +108,10 @@ dependencies {
     implementation "androidx.compose.ui:ui"
     implementation 'androidx.compose.ui:ui-tooling-preview'
 
-    debugImplementation 'androidx.compose.ui:ui-tooling'
-
-    // UI Tests
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
+    debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
 }
