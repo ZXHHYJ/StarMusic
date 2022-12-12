@@ -38,7 +38,7 @@ fun SingerScreen(
                 .fillMaxSize()
                 .statusBarsPadding()
         ) {
-            AppTopSearchBar(mainNavController = mainNavController, drawerState = drawerState) {
+            AppTopSearchBar(drawerState = drawerState) {
                 mainNavController.navigate(ScreenDestination.Search)
             }
             val artists = LocalMediaRepository.getArtists()

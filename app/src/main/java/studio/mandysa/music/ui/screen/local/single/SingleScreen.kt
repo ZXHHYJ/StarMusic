@@ -38,7 +38,7 @@ fun SingleScreen(
                 .fillMaxSize()
                 .statusBarsPadding()
         ) {
-            AppTopSearchBar(mainNavController = mainNavController, drawerState = drawerState) {
+            AppTopSearchBar(drawerState = drawerState) {
                 mainNavController.navigate(ScreenDestination.Search)
             }
             val localBeans = LocalMediaRepository.getSongs()
