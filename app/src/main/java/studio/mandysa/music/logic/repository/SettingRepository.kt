@@ -1,18 +1,10 @@
 package studio.mandysa.music.logic.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.map
 import com.drake.serialize.serialize.serialLiveData
 import studio.mandysa.music.logic.bean.SerialUserBean
 
 object SettingRepository {
-    /**
-     * 启用在线音乐
-     */
-    private val mEnableNeteaseCloud by serialLiveData(
-        default = false,
-        name = "enable_netease_cloud"
-    )
 
     /**
      * 设置网易云后端地址
@@ -36,15 +28,7 @@ object SettingRepository {
     val userId
         get() = mNeteaseCloudUserBean.value!!.userId
 
-    val isLoginNeteaseCloud: LiveData<Boolean> = mEnableNeteaseCloud.map { it != null }
-
-    val enableNeteaseCloud: LiveData<Boolean> = mEnableNeteaseCloud
-
     val neteaseCloudPath: LiveData<String> = mNeteaseCloudPath
-
-    fun setEnableNeteaseCloud(enable: Boolean) {
-        mEnableNeteaseCloud.value = enable
-    }
 
     fun setEnableNeteasePath(path: String) {
         mNeteaseCloudPath.value = path

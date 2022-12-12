@@ -27,7 +27,6 @@ import androidx.lifecycle.map
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.R
-import studio.mandysa.music.logic.repository.SettingRepository
 import studio.mandysa.music.logic.repository.UserRepository
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.*
@@ -95,7 +94,6 @@ private fun AppNavigationDrawer(
     bottomBar: @Composable () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
-    val enableNeteaseCloud by SettingRepository.enableNeteaseCloud.observeAsState()
     var size by remember {
         mutableStateOf(IntSize.Zero)
     }
@@ -111,9 +109,7 @@ private fun AppNavigationDrawer(
                     size = it
                 }) {
                 controllerBar.invoke()
-                if (!isMatePad && enableNeteaseCloud == true) {
-                    bottomBar.invoke()
-                }
+                bottomBar.invoke()
                 Box(
                     modifier = Modifier
                         .height(LocalDensity.current.run {
@@ -229,39 +225,37 @@ fun MainScreen() {
                             mainNavController.backstack.entries.last().destination
                         val bottomLastDestination =
                             homeNavController.backstack.entries.last().destination
-                        UserRepository.isLoginState.let { loginState ->
-                            HomeBottomNavigationDestination.values().forEach { screen ->
-                                if (screen == HomeBottomNavigationDestination.Browse) {
-                                    if (loginState == false) {
-                                        return@forEach
+                        HomeBottomNavigationDestination.values().forEach { screen ->
+                            if (screen == HomeBottomNavigationDestination.Browse) {
+                                if (!isMatePad) {
+                                    return@forEach
+                                }
+                                if (UserRepository.isLoginState == false) {
+                                    return@forEach
+                                }
+                            }
+                            AppNavigationRailItem(
+                                label = {
+                                    Text(text = screen.tabName)
+                                },
+                                icon = {
+                                    Icon(
+                                        screen.tabIcon,
+                                        contentDescription = null
+                                    )
+                                },
+                                selected = screen == bottomLastDestination,
+                                onClick = {
+                                    mainNavController.popUpTo {
+                                        it == ScreenDestination.Main
                                     }
-                                    if (!isMatePad) {
-                                        return@forEach
+                                    if (!homeNavController.moveToTop {
+                                            it == screen
+                                        }) {
+                                        homeNavController.navigate(screen)
                                     }
                                 }
-                                AppNavigationRailItem(
-                                    label = {
-                                        Text(text = screen.tabName)
-                                    },
-                                    icon = {
-                                        Icon(
-                                            screen.tabIcon,
-                                            contentDescription = null
-                                        )
-                                    },
-                                    selected = screen == bottomLastDestination,
-                                    onClick = {
-                                        mainNavController.popUpTo {
-                                            it == ScreenDestination.Main
-                                        }
-                                        if (!homeNavController.moveToTop {
-                                                it == screen
-                                            }) {
-                                            homeNavController.navigate(screen)
-                                        }
-                                    }
-                                )
-                            }
+                            )
                         }
 
                         @Composable
@@ -316,7 +310,7 @@ fun MainScreen() {
                     }
                 },
                 bottomBar = {
-                    if (!isMatePad && UserRepository.isLoginState == true) {
+                    if (!isMatePad) {
                         AnimatedVisibility(
                             visible = mainNavController.backstack.entries.size <= 1,
                             enter = expandVertically(),

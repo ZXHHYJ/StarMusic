@@ -42,8 +42,6 @@ fun SearchListScreen(
     paddingValues: PaddingValues,
     keywords: String
 ) {
-    val enableNeteaseCloud by SettingRepository.enableNeteaseCloud.observeAsState()
-
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
     AppTabRow(
@@ -64,7 +62,7 @@ fun SearchListScreen(
         }
     }
     HorizontalPager(pages = SearchListScreenDestination.values(), state = pagerState) { t ->
-        if (enableNeteaseCloud == true) {
+        /*if (enableNeteaseCloud == true) {
             when (t) {
                 SearchListScreenDestination.Single -> {
                     SearchSingleScreen(
@@ -86,6 +84,6 @@ fun SearchListScreen(
                     )
                 }
             }
-        }
+        }*/
     }
 }
