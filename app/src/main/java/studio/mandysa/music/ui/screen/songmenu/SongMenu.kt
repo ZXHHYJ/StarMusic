@@ -125,7 +125,7 @@ fun SongMenu(
                             imageVector = Icons.Rounded.Person
                         ) {
                             dialogNavController.popAll()
-                            mainNavController.navigate(ScreenDestination.NeteaseSingerCnt(it))
+                            mainNavController.navigate(ScreenDestination.CloudSingerCnt(it))
                         }
                     }
                 }

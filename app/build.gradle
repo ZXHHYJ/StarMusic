@@ -55,8 +55,6 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.*'], dir: 'libs')
-    // https://github.com/simplepeng/SpiderMan
-    debugImplementation "com.github.simplepeng.SpiderMan:spiderman:v1.1.9"
     // 媒体播放器 https://exoplayer.dev/
     implementation 'com.google.android.exoplayer:exoplayer-core:2.18.1'
     // 图片加载库 https://github.com/coil-kt/coil/blob/main/README-zh.md
@@ -78,7 +76,6 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.media:media:1.6.0'
 
-    //noinspection GradleDependency
     implementation "com.squareup.okhttp3:okhttp:4.10.0"
 
     implementation "dev.olshevski.navigation:reimagined:1.3.0"

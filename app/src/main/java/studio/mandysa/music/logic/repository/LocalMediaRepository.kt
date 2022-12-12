@@ -1,7 +1,7 @@
 package studio.mandysa.music.logic.repository
 
 import android.provider.MediaStore
-import studio.mandysa.music.logic.config.mainApplication
+import studio.mandysa.music.logic.config.application
 import studio.mandysa.music.service.playmanager.bean.SongBean
 
 /**
@@ -41,7 +41,7 @@ object LocalMediaRepository {
     }
 
     fun getSongs(): List<SongBean.Local> {
-        val query = mainApplication.contentResolver.query(
+        val query = application.contentResolver.query(
             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
             arrayOf(
                 MediaStore.Audio.AudioColumns.ALBUM,

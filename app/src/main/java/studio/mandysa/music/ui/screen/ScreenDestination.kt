@@ -20,28 +20,25 @@ sealed class ScreenDestination : Parcelable {
     object Search : ScreenDestination()
 
     /**
-     * 歌单内容
-     */
-    @Parcelize
-    data class PlaylistCnt(val id: String) : ScreenDestination()
-
-    /**
      * 歌手内容
      */
     @Parcelize
     data class SingerCnt(val artist: SongBean.Local.Artist) : ScreenDestination()
 
+    @Parcelize
+    data class AlbumCnt(val album: SongBean.Local.Album) : ScreenDestination()
+
     /**
      * 网易云的歌手内容
      */
     @Parcelize
-    data class NeteaseSingerCnt(val artist: @RawValue SongBean.Network.Artist) : ScreenDestination()
+    data class CloudSingerCnt(val artist: @RawValue SongBean.Network.Artist) : ScreenDestination()
 
     /**
-     * 专辑内容
+     * 网易云的歌单内容
      */
     @Parcelize
-    data class AlbumCnt(val id: String) : ScreenDestination()
+    data class CloudPlaylistCnt(val id: String) : ScreenDestination()
 
     /**
      * 设置
@@ -59,30 +56,30 @@ sealed class ScreenDestination : Parcelable {
      * 关注的歌手
      */
     @Parcelize
-    object ArtistSub : ScreenDestination()
+    object CloudArtistSub : ScreenDestination()
 
     /**
      * 我的歌单
      */
     @Parcelize
-    object MePlaylist : ScreenDestination()
+    object CloudMePlaylist : ScreenDestination()
 
     /**
      * 电台
      */
     @Parcelize
-    object FmScreen : ScreenDestination()
+    object CloudFmScreen : ScreenDestination()
 
     /**
      * 排行榜
      */
     @Parcelize
-    object ToplistScreen : ScreenDestination()
+    object CloudToplistScreen : ScreenDestination()
 
     /**
      * 我的页面
      */
     @Parcelize
-    object MeScreen : ScreenDestination()
+    object CloudMeScreen : ScreenDestination()
 
 }

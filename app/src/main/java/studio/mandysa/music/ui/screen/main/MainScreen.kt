@@ -37,18 +37,16 @@ import studio.mandysa.music.ui.screen.local.playlist.PlayListScreen
 import studio.mandysa.music.ui.screen.local.singer.SingerScreen
 import studio.mandysa.music.ui.screen.local.singercnt.SingerCntScreen
 import studio.mandysa.music.ui.screen.local.single.SingleScreen
-import studio.mandysa.music.ui.screen.me.MeMenu
-import studio.mandysa.music.ui.screen.me.MeScreen
-import studio.mandysa.music.ui.screen.me.about.AboutScreen
-import studio.mandysa.music.ui.screen.me.artistsub.ArtistSubScreen
-import studio.mandysa.music.ui.screen.me.meplaylist.MePlaylistScreen
-import studio.mandysa.music.ui.screen.me.meplaylist.playlistmenu.PlaylistMenu
-import studio.mandysa.music.ui.screen.netease.albumcnt.AlbumCntScreen
-import studio.mandysa.music.ui.screen.netease.browse.BrowseScreen
-import studio.mandysa.music.ui.screen.netease.fm.FmScreen
-import studio.mandysa.music.ui.screen.netease.playlistcnt.PlaylistCntScreen
-import studio.mandysa.music.ui.screen.netease.singercnt.NeteaseSingerCntScreen
-import studio.mandysa.music.ui.screen.netease.toplist.ToplistScreen
+import studio.mandysa.music.ui.screen.cloud.me.CloudMeMenu
+import studio.mandysa.music.ui.screen.cloud.me.CloudMeScreen
+import studio.mandysa.music.ui.screen.about.AboutScreen
+import studio.mandysa.music.ui.screen.cloud.me.artistsub.CloudArtistSubScreen
+import studio.mandysa.music.ui.screen.cloud.me.meplaylist.CloudMePlaylistScreen
+import studio.mandysa.music.ui.screen.cloud.me.meplaylist.playlistmenu.CloudPlaylistMenu
+import studio.mandysa.music.ui.screen.cloud.browse.CloudMusicScreen
+import studio.mandysa.music.ui.screen.cloud.fm.CloudFmScreen
+import studio.mandysa.music.ui.screen.cloud.playlistcnt.CloudPlaylistCntScreen
+import studio.mandysa.music.ui.screen.cloud.singercnt.CloudSingerCntScreen
 import studio.mandysa.music.ui.screen.play.PlayScreen
 import studio.mandysa.music.ui.screen.search.SearchScreen
 import studio.mandysa.music.ui.screen.setting.SettingScreen
@@ -184,7 +182,7 @@ fun MainScreen() {
                 }
 
                 is DialogDestination.PlaylistMenu -> {
-                    PlaylistMenu(mainNavController, dialogNavController, id = destination.id)
+                    CloudPlaylistMenu(mainNavController, dialogNavController, id = destination.id)
                 }
 
                 is DialogDestination.Message -> {
@@ -192,7 +190,7 @@ fun MainScreen() {
                 }
 
                 is DialogDestination.MeMenu -> {
-                    MeMenu(mainNavController, dialogNavController)
+                    CloudMeMenu(mainNavController, dialogNavController)
                 }
             }
         }
@@ -386,7 +384,7 @@ fun MainScreen() {
                             NavHost(homeNavController) {
                                 when (it) {
                                     HomeBottomNavigationDestination.Browse -> {
-                                        BrowseScreen(
+                                        CloudMusicScreen(
                                             mainNavController,
                                             dialogNavController,
                                             padding
@@ -436,8 +434,8 @@ fun MainScreen() {
                             )
                         }
 
-                        is ScreenDestination.PlaylistCnt -> {
-                            PlaylistCntScreen(
+                        is ScreenDestination.CloudPlaylistCnt -> {
+                            CloudPlaylistCntScreen(
                                 mainNavController = mainNavController,
                                 dialogNavController = dialogNavController,
                                 paddingValues = padding,
@@ -454,8 +452,8 @@ fun MainScreen() {
                             )
                         }
 
-                        is ScreenDestination.NeteaseSingerCnt -> {
-                            NeteaseSingerCntScreen(
+                        is ScreenDestination.CloudSingerCnt -> {
+                            CloudSingerCntScreen(
                                 mainNavController = mainNavController,
                                 dialogNavController = dialogNavController,
                                 paddingValues = padding,
@@ -465,11 +463,11 @@ fun MainScreen() {
                         }
 
                         is ScreenDestination.AlbumCnt -> {
-                            AlbumCntScreen(
+                            studio.mandysa.music.ui.screen.local.albumcnt.AlbumCntScreen(
                                 mainNavController = mainNavController,
                                 dialogNavController = dialogNavController,
                                 paddingValues = padding,
-                                id = screenDestination.id
+                                album = screenDestination.album
                             )
                         }
 
@@ -485,35 +483,35 @@ fun MainScreen() {
                             )
                         }
 
-                        ScreenDestination.ArtistSub -> {
-                            ArtistSubScreen(
+                        ScreenDestination.CloudArtistSub -> {
+                            CloudArtistSubScreen(
                                 mainNavController = mainNavController,
                                 paddingValues = padding
                             )
                         }
 
-                        ScreenDestination.MePlaylist -> {
-                            MePlaylistScreen(
-                                mainNavController = mainNavController,
-                                dialogNavController = dialogNavController,
-                                paddingValues = padding
-                            )
-                        }
-
-                        ScreenDestination.FmScreen -> {
-                            FmScreen(
+                        ScreenDestination.CloudMePlaylist -> {
+                            CloudMePlaylistScreen(
                                 mainNavController = mainNavController,
                                 dialogNavController = dialogNavController,
                                 paddingValues = padding
                             )
                         }
 
-                        ScreenDestination.ToplistScreen -> {
-                            ToplistScreen()
+                        ScreenDestination.CloudFmScreen -> {
+                            CloudFmScreen(
+                                mainNavController = mainNavController,
+                                dialogNavController = dialogNavController,
+                                paddingValues = padding
+                            )
                         }
 
-                        ScreenDestination.MeScreen -> {
-                            MeScreen(
+                        ScreenDestination.CloudToplistScreen -> {
+                            // TODO:
+                        }
+
+                        ScreenDestination.CloudMeScreen -> {
+                            CloudMeScreen(
                                 mainNavController,
                                 dialogNavController,
                                 padding
