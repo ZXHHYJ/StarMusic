@@ -229,7 +229,7 @@ fun MainScreen() {
                             mainNavController.backstack.entries.last().destination
                         val bottomLastDestination =
                             homeNavController.backstack.entries.last().destination
-                        UserRepository.isLoginState.value.let { loginState ->
+                        UserRepository.isLoginState.let { loginState ->
                             HomeBottomNavigationDestination.values().forEach { screen ->
                                 if (screen == HomeBottomNavigationDestination.Browse) {
                                     if (loginState == false) {
@@ -316,7 +316,7 @@ fun MainScreen() {
                     }
                 },
                 bottomBar = {
-                    if (!isMatePad && UserRepository.isLoginState.value == true) {
+                    if (!isMatePad && UserRepository.isLoginState == true) {
                         AnimatedVisibility(
                             visible = mainNavController.backstack.entries.size <= 1,
                             enter = expandVertically(),

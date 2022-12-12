@@ -1,6 +1,7 @@
 package studio.mandysa.music.logic.repository
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.map
 import com.drake.serialize.serialize.serial
@@ -17,7 +18,7 @@ object UserRepository {
      */
     private val isLoginLiveData = mCookieLiveData.map { it != null }
 
-    val isLoginState @Composable get() = isLoginLiveData.observeAsState()
+    val isLoginState @Composable @Stable get() = isLoginLiveData.observeAsState().value
 
     fun login(cookie: String, userId: String) {
         mUserId = userId
