@@ -18,7 +18,7 @@ import studio.mandysa.music.R
 import studio.mandysa.music.logic.config.api
 import studio.mandysa.music.logic.config.mainApplication
 import studio.mandysa.music.logic.repository.UserRepository
-import studio.mandysa.music.ui.common.POPWindows
+import studio.mandysa.music.ui.common.PopWindows
 
 class LoginViewModel : ViewModel() {
 
@@ -51,12 +51,12 @@ class LoginViewModel : ViewModel() {
                         }.start()
                     }
                 } else {
-                    POPWindows.postValue(responseBody.message)
+                    PopWindows.postValue(responseBody.message)
                 }
             } catch (e: HttpFailureException) {
-                POPWindows.postValue(mainApplication.getString(R.string.network_error))
+                PopWindows.postValue(mainApplication.getString(R.string.network_error))
             } catch (e: Exception) {
-                POPWindows.postValue(e.message.toString())
+                PopWindows.postValue(e.message.toString())
             } finally {
                 mDialogState.value = false
             }
@@ -74,10 +74,10 @@ class LoginViewModel : ViewModel() {
                 if (model.cookie.isNotEmpty()) {
                     UserRepository.login(model.cookie, model.id)
                 } else {
-                    POPWindows.postValue(model.message)
+                    PopWindows.postValue(model.message)
                 }
             } catch (e: Exception) {
-                POPWindows.postValue(e.message.toString())
+                PopWindows.postValue(e.message.toString())
             } finally {
                 mDialogState.value = false
             }

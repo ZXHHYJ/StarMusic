@@ -51,7 +51,7 @@ private fun BannerItem(typeTitle: String, bannerUrl: String) {
             modifier = Modifier
                 .height(140.dp)
                 .clickable {
-                    POPWindows.postValue("尚未支持的功能")
+                    PopWindows.postValue("尚未支持的功能")
                 }
         ) {
             AsyncImage(

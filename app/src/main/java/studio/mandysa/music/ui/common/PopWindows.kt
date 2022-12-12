@@ -35,13 +35,13 @@ import java.util.concurrent.locks.ReentrantLock
 @Preview
 fun PreviewPopWin() {
     Box {
-        POPWindows.PopWin()
-        POPWindows.postValue("test")
-        POPWindows.postValue("test2")
+        PopWindows.PopWin()
+        PopWindows.postValue("test")
+        PopWindows.postValue("test2")
     }
 }
 
-object POPWindows {
+object PopWindows {
     private const val TAG = "POPWindows"
 
     private val queue = ConcurrentLinkedQueue<String>()

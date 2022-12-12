@@ -15,7 +15,7 @@ object LocalMediaRepository {
             if (artistKVHashMap.containsKey(song.artist.id)) {
                 continue
             }
-            artistKVHashMap[song.artist.id] = song.artist
+            artistKVHashMap[song.artist.id] = song.artist.copy()
         }
         val list = arrayListOf<SongBean.Local.Artist>()
         for (entry in artistKVHashMap) {
@@ -31,7 +31,7 @@ object LocalMediaRepository {
             if (hashMap.containsKey(song.album.id)) {
                 continue
             }
-            hashMap[song.album.id] = song.album
+            hashMap[song.album.id] = song.album.copy()
         }
         val list = arrayListOf<SongBean.Local.Album>()
         for (entry in hashMap) {
@@ -90,9 +90,9 @@ object LocalMediaRepository {
         get() {
             for (song in getSongs()) {
                 if (song.album.id == this.id)
-                    return song.artist
+                    return song.artist.copy()
             }
-            throw java.lang.NullPointerException("")
+            throw java.lang.NullPointerException("artist is null")
         }
 
     val SongBean.Local.Album.songs: List<SongBean.Local>
@@ -100,7 +100,7 @@ object LocalMediaRepository {
             val list = arrayListOf<SongBean.Local>()
             for (song in getSongs()) {
                 if (song.album.id == this.id) {
-                    list.add(song)
+                    list.add(song.copy())
                 }
             }
             return list
@@ -111,7 +111,7 @@ object LocalMediaRepository {
             val list = arrayListOf<SongBean.Local>()
             for (song in getSongs()) {
                 if (song.artist.id == this.id) {
-                    list.add(song)
+                    list.add(song.copy())
                 }
             }
             return list
