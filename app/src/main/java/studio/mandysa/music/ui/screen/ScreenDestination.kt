@@ -29,7 +29,7 @@ sealed class ScreenDestination : Parcelable {
      * 歌手内容
      */
     @Parcelize
-    data class SingerCnt(val artist: @RawValue SongBean.Local.Artist) : ScreenDestination()
+    data class SingerCnt(val artist: SongBean.Local.Artist) : ScreenDestination()
 
     /**
      * 网易云的歌手内容

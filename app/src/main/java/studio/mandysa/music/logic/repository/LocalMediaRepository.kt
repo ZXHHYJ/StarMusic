@@ -90,7 +90,7 @@ object LocalMediaRepository {
         get() {
             for (song in getSongs()) {
                 if (song.album.id == this.id)
-                    return song.artist.copy()
+                    return song.artist
             }
             throw java.lang.NullPointerException("artist is null")
         }
@@ -100,7 +100,7 @@ object LocalMediaRepository {
             val list = arrayListOf<SongBean.Local>()
             for (song in getSongs()) {
                 if (song.album.id == this.id) {
-                    list.add(song.copy())
+                    list.add(song)
                 }
             }
             return list
@@ -111,7 +111,7 @@ object LocalMediaRepository {
             val list = arrayListOf<SongBean.Local>()
             for (song in getSongs()) {
                 if (song.artist.id == this.id) {
-                    list.add(song.copy())
+                    list.add(song)
                 }
             }
             return list

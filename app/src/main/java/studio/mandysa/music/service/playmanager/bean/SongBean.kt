@@ -1,5 +1,8 @@
 package studio.mandysa.music.service.playmanager.bean
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
 sealed interface SongBean {
     data class Local(
         val album: Album,
@@ -8,8 +11,8 @@ sealed interface SongBean {
         val data: String,
         val songName: String
     ) : SongBean {
-
-        data class Artist(val id: String, val name: String)
+        @Parcelize
+        data class Artist(val id: String, val name: String) : Parcelable
 
         data class Album(val id: String, val name: String)
     }
