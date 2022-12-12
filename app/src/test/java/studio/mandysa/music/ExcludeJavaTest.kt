@@ -26,7 +26,7 @@ class DisablePackageImport {
                 while (sc.hasNextLine()) {
                     val line = sc.nextLine()
                     if (line.matches(regex)) {
-                        println("${f}存在${key}")
+                        throw RuntimeException("${f}存在${key}")
                     }
                 }
             }
