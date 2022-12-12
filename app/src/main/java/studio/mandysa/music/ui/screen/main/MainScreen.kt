@@ -109,7 +109,9 @@ private fun AppNavigationDrawer(
                     size = it
                 }) {
                 controllerBar.invoke()
-                bottomBar.invoke()
+                if (!isMatePad) {
+                    bottomBar.invoke()
+                }
                 Box(
                     modifier = Modifier
                         .height(LocalDensity.current.run {
@@ -220,7 +222,6 @@ fun MainScreen() {
                             .fillMaxHeight(),
                         containerColor = background
                     ) {
-                        //上部分
                         val navLastDestination =
                             mainNavController.backstack.entries.last().destination
                         val bottomLastDestination =
@@ -310,62 +311,61 @@ fun MainScreen() {
                     }
                 },
                 bottomBar = {
-                    if (!isMatePad) {
-                        AnimatedVisibility(
-                            visible = mainNavController.backstack.entries.size <= 1,
-                            enter = expandVertically(),
-                            exit = shrinkVertically()
+                    AnimatedVisibility(
+                        visible = mainNavController.backstack.entries.size <= 1,
+                        enter = expandVertically(),
+                        exit = shrinkVertically()
+                    ) {
+                        NavigationBar(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(barColor),
+                            containerColor = Color.Transparent,
+                            contentColor = Color.White,
+                            windowInsets = WindowInsets(0, 0, 0, 0)
                         ) {
-                            NavigationBar(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(barColor),
-                                containerColor = Color.Transparent,
-                                contentColor = Color.White
-                            ) {
-                                val bottomLastDestination =
-                                    homeNavController.backstack.entries.last().destination
-                                AppNavigationBarItem(
-                                    icon = {
-                                        Icon(
-                                            HomeBottomNavigationDestination.Browse.tabIcon,
-                                            contentDescription = null
+                            val bottomLastDestination =
+                                homeNavController.backstack.entries.last().destination
+                            AppNavigationBarItem(
+                                icon = {
+                                    Icon(
+                                        HomeBottomNavigationDestination.Browse.tabIcon,
+                                        contentDescription = null
+                                    )
+                                }, label = {
+                                    Text(text = HomeBottomNavigationDestination.Browse.tabName)
+                                },
+                                selected = HomeBottomNavigationDestination.Browse == bottomLastDestination,
+                                onClick = {
+                                    if (!homeNavController.moveToTop {
+                                            it == HomeBottomNavigationDestination.Browse
+                                        }) {
+                                        homeNavController.navigate(
+                                            HomeBottomNavigationDestination.Browse
                                         )
-                                    }, label = {
-                                        Text(text = HomeBottomNavigationDestination.Browse.tabName)
-                                    },
-                                    selected = HomeBottomNavigationDestination.Browse == bottomLastDestination,
-                                    onClick = {
-                                        if (!homeNavController.moveToTop {
-                                                it == HomeBottomNavigationDestination.Browse
-                                            }) {
-                                            homeNavController.navigate(
-                                                HomeBottomNavigationDestination.Browse
-                                            )
-                                        }
                                     }
-                                )
-                                AppNavigationBarItem(
-                                    icon = {
-                                        Icon(
-                                            HomeBottomNavigationDestination.Single.tabIcon,
-                                            contentDescription = null
+                                }
+                            )
+                            AppNavigationBarItem(
+                                icon = {
+                                    Icon(
+                                        HomeBottomNavigationDestination.Single.tabIcon,
+                                        contentDescription = null
+                                    )
+                                }, label = {
+                                    Text(text = HomeBottomNavigationDestination.Single.tabName)
+                                },
+                                selected = HomeBottomNavigationDestination.Browse != bottomLastDestination,
+                                onClick = {
+                                    if (!homeNavController.moveToTop {
+                                            it == HomeBottomNavigationDestination.Single
+                                        }) {
+                                        homeNavController.navigate(
+                                            HomeBottomNavigationDestination.Single
                                         )
-                                    }, label = {
-                                        Text(text = HomeBottomNavigationDestination.Single.tabName)
-                                    },
-                                    selected = HomeBottomNavigationDestination.Browse != bottomLastDestination,
-                                    onClick = {
-                                        if (!homeNavController.moveToTop {
-                                                it == HomeBottomNavigationDestination.Single
-                                            }) {
-                                            homeNavController.navigate(
-                                                HomeBottomNavigationDestination.Single
-                                            )
-                                        }
                                     }
-                                )
-                            }
+                                }
+                            )
                         }
                     }
                 }
