@@ -5,7 +5,6 @@
     <!-- Required only if your app needs to access images or photos
        that other apps created. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
     <!-- Required only if your app needs to access audio files
          that other apps created. -->

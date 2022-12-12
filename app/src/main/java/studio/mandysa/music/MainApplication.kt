@@ -16,16 +16,13 @@ import studio.mandysa.music.service.playmanager.PlayManager
 class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-
         mainApplication = this
-
         NetConfig.initialize(BASE_URL, this) {
             cache(Cache(cacheDir, 1024 * 1024 * 128))
             // 缓存设置, 当超过maxSize最大值会根据最近最少使用算法清除缓存来限制缓存大小
         }
         PlayManager.init(this)
         //初始化播放管理器
-
         PlayManager.pauseLiveData()
             .observeForever {
                 if (it == false)

@@ -15,9 +15,9 @@ object UserRepository {
     /**
      * 通过有无cookie判断是否登录
      */
-    val isLoginLiveData = mCookieLiveData.map { it != null }
+    private val isLoginLiveData = mCookieLiveData.map { it != null }
 
-    inline val isLoginState @Composable get() = isLoginLiveData.observeAsState().value
+    val isLoginState @Composable get() = isLoginLiveData.observeAsState()
 
     fun login(cookie: String, userId: String) {
         mUserId = userId
