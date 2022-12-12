@@ -4,9 +4,9 @@ package studio.mandysa.music.ui.screen.songmenu
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -18,7 +18,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.popAll
-import kotlinx.parcelize.RawValue
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.bean.SongBean
@@ -33,12 +32,11 @@ import studio.mandysa.music.ui.theme.textColor
 import studio.mandysa.music.ui.theme.textColorLight
 import studio.mandysa.music.ui.theme.verticalMargin
 
-
 @Composable
 fun SongMenu(
     mainNavController: NavController<ScreenDestination>,
     dialogNavController: NavController<DialogDestination>,
-    song: @RawValue SongBean,
+    song: SongBean,
     songMenuViewModel: SongMenuViewModel = viewModel()
 ) {
     val isLike by songMenuViewModel.likedLiveData.observeAsState()
