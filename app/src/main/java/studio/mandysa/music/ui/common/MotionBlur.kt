@@ -2,7 +2,6 @@ package studio.mandysa.music.ui.common
 
 import android.annotation.SuppressLint
 import android.webkit.WebView
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -12,11 +11,10 @@ import androidx.compose.ui.viewinterop.AndroidView
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun MotionBlur(modifier: Modifier) {
-    Box(modifier = modifier) {
-        AndroidView(factory = { WebView(it) }, modifier = Modifier.fillMaxSize()) {
-            it.settings.javaScriptEnabled = true
-            it.loadUrl("file:android_asset/motion_blur/index.html")
-        }
+    AndroidView(factory = { WebView(it) }, modifier = modifier) {
+        it.settings.javaScriptEnabled = true
+        it.settings.domStorageEnabled = true
+        it.loadUrl("file:android_asset/motion_blur/index.html")
     }
 }
 
