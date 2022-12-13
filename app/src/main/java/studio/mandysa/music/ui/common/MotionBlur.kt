@@ -13,7 +13,14 @@ import androidx.compose.ui.viewinterop.AndroidView
 fun MotionBlur(modifier: Modifier) {
     AndroidView(factory = { WebView(it) }, modifier = modifier) {
         it.settings.javaScriptEnabled = true
+        it.settings.javaScriptCanOpenWindowsAutomatically = false
+        it.settings.useWideViewPort = true
         it.settings.domStorageEnabled = true
+        it.settings.databaseEnabled = true
+        it.settings.loadWithOverviewMode = false
+        it.settings.loadsImagesAutomatically = true
+        it.settings.defaultTextEncodingName = "utf-8"
+        it.settings.setSupportMultipleWindows(false)
         it.loadUrl("file:android_asset/motion_blur/index.html")
     }
 }
