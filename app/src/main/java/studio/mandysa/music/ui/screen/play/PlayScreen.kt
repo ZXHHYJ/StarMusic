@@ -24,7 +24,7 @@ import androidx.lifecycle.map
 import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
-import studio.mandysa.music.ui.common.KenBurns
+import studio.mandysa.music.ui.common.MotionBlur
 import studio.mandysa.music.ui.common.PanelState
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
@@ -59,12 +59,17 @@ fun PlayScreen(
         val coverUrl by PlayManager.changeMusicLiveData().map {
             it.coverUrl
         }.observeAsState("")
-        KenBurns(
+        /*KenBurns(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.Gray),
             imageUrl = coverUrl,
             paused = panelState == PanelState.COLLAPSED
+        )*/
+        MotionBlur(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Gray)
         )
         Column(
             modifier = Modifier

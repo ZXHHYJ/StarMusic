@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.screen.cloud.browse
+package studio.mandysa.music.ui.screen.cloud.music
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

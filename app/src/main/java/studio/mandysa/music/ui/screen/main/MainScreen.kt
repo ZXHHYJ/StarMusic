@@ -43,7 +43,7 @@ import studio.mandysa.music.ui.screen.about.AboutScreen
 import studio.mandysa.music.ui.screen.cloud.me.artistsub.CloudArtistSubScreen
 import studio.mandysa.music.ui.screen.cloud.me.meplaylist.CloudMePlaylistScreen
 import studio.mandysa.music.ui.screen.cloud.me.meplaylist.playlistmenu.CloudPlaylistMenu
-import studio.mandysa.music.ui.screen.cloud.browse.CloudMusicScreen
+import studio.mandysa.music.ui.screen.cloud.music.CloudMusicScreen
 import studio.mandysa.music.ui.screen.cloud.fm.CloudFmScreen
 import studio.mandysa.music.ui.screen.cloud.playlistcnt.CloudPlaylistCntScreen
 import studio.mandysa.music.ui.screen.cloud.singercnt.CloudSingerCntScreen
@@ -56,30 +56,30 @@ import studio.mandysa.music.ui.theme.*
 /**
  * Happy 22nd Birthday Shuangshengzi
  */
-enum class HomeBottomNavigationDestination {
-    Browse,
+enum class HomeNavigationDestination {
+    CloudMusic,
     Single,
     Album,
     Singer,
     PlayList,
 }
 
-val HomeBottomNavigationDestination.tabIcon
+val HomeNavigationDestination.tabIcon
     get() = when (this) {
-        HomeBottomNavigationDestination.Browse -> Icons.Rounded.Contactless
-        HomeBottomNavigationDestination.Single -> Icons.Rounded.Source
-        HomeBottomNavigationDestination.Album -> Icons.Rounded.Album
-        HomeBottomNavigationDestination.Singer -> Icons.Rounded.Mic
-        HomeBottomNavigationDestination.PlayList -> Icons.Rounded.List
+        HomeNavigationDestination.CloudMusic -> Icons.Rounded.Contactless
+        HomeNavigationDestination.Single -> Icons.Rounded.Source
+        HomeNavigationDestination.Album -> Icons.Rounded.Album
+        HomeNavigationDestination.Singer -> Icons.Rounded.Mic
+        HomeNavigationDestination.PlayList -> Icons.Rounded.List
     }
 
-val HomeBottomNavigationDestination.tabName
+val HomeNavigationDestination.tabName
     @Composable get() = when (this) {
-        HomeBottomNavigationDestination.Browse -> stringResource(id = R.string.browse)
-        HomeBottomNavigationDestination.Single -> stringResource(id = R.string.source)
-        HomeBottomNavigationDestination.Album -> stringResource(id = R.string.album)
-        HomeBottomNavigationDestination.Singer -> stringResource(id = R.string.singer)
-        HomeBottomNavigationDestination.PlayList -> stringResource(id = R.string.play_list)
+        HomeNavigationDestination.CloudMusic -> stringResource(id = R.string.cloud_music)
+        HomeNavigationDestination.Single -> stringResource(id = R.string.source)
+        HomeNavigationDestination.Album -> stringResource(id = R.string.album)
+        HomeNavigationDestination.Singer -> stringResource(id = R.string.singer)
+        HomeNavigationDestination.PlayList -> stringResource(id = R.string.play_list)
     }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -158,7 +158,7 @@ fun MainScreen() {
         rememberNavController<ScreenDestination>(startDestination = ScreenDestination.Main)
 
     val homeNavController =
-        rememberNavController(startDestination = HomeBottomNavigationDestination.Single)
+        rememberNavController(startDestination = HomeNavigationDestination.Single)
 
     val dialogNavController = rememberNavController<DialogDestination>(
         initialBackstack = emptyList()
@@ -224,8 +224,8 @@ fun MainScreen() {
                             mainNavController.backstack.entries.last().destination
                         val bottomLastDestination =
                             homeNavController.backstack.entries.last().destination
-                        HomeBottomNavigationDestination.values().forEach { screen ->
-                            if (screen == HomeBottomNavigationDestination.Browse) {
+                        HomeNavigationDestination.values().forEach { screen ->
+                            if (screen == HomeNavigationDestination.CloudMusic) {
                                 if (!isMatePad) {
                                     return@forEach
                                 }
@@ -327,19 +327,19 @@ fun MainScreen() {
                             AppNavigationBarItem(
                                 icon = {
                                     Icon(
-                                        HomeBottomNavigationDestination.Browse.tabIcon,
+                                        HomeNavigationDestination.CloudMusic.tabIcon,
                                         contentDescription = null
                                     )
                                 }, label = {
-                                    Text(text = HomeBottomNavigationDestination.Browse.tabName)
+                                    Text(text = HomeNavigationDestination.CloudMusic.tabName)
                                 },
-                                selected = HomeBottomNavigationDestination.Browse == bottomLastDestination,
+                                selected = HomeNavigationDestination.CloudMusic == bottomLastDestination,
                                 onClick = {
                                     if (!homeNavController.moveToTop {
-                                            it == HomeBottomNavigationDestination.Browse
+                                            it == HomeNavigationDestination.CloudMusic
                                         }) {
                                         homeNavController.navigate(
-                                            HomeBottomNavigationDestination.Browse
+                                            HomeNavigationDestination.CloudMusic
                                         )
                                     }
                                 }
@@ -347,19 +347,19 @@ fun MainScreen() {
                             AppNavigationBarItem(
                                 icon = {
                                     Icon(
-                                        HomeBottomNavigationDestination.Single.tabIcon,
+                                        HomeNavigationDestination.Single.tabIcon,
                                         contentDescription = null
                                     )
                                 }, label = {
-                                    Text(text = HomeBottomNavigationDestination.Single.tabName)
+                                    Text(text = HomeNavigationDestination.Single.tabName)
                                 },
-                                selected = HomeBottomNavigationDestination.Browse != bottomLastDestination,
+                                selected = HomeNavigationDestination.CloudMusic != bottomLastDestination,
                                 onClick = {
                                     if (!homeNavController.moveToTop {
-                                            it == HomeBottomNavigationDestination.Single
+                                            it == HomeNavigationDestination.Single
                                         }) {
                                         homeNavController.navigate(
-                                            HomeBottomNavigationDestination.Single
+                                            HomeNavigationDestination.Single
                                         )
                                     }
                                 }
@@ -383,14 +383,14 @@ fun MainScreen() {
                         ScreenDestination.Main -> {
                             NavHost(homeNavController) {
                                 when (it) {
-                                    HomeBottomNavigationDestination.Browse -> {
+                                    HomeNavigationDestination.CloudMusic -> {
                                         CloudMusicScreen(
                                             mainNavController,
                                             dialogNavController,
                                             padding
                                         )
                                     }
-                                    HomeBottomNavigationDestination.Single -> {
+                                    HomeNavigationDestination.Single -> {
                                         SingleScreen(
                                             mainNavController,
                                             dialogNavController,
@@ -398,7 +398,7 @@ fun MainScreen() {
                                             padding
                                         )
                                     }
-                                    HomeBottomNavigationDestination.Album -> {
+                                    HomeNavigationDestination.Album -> {
                                         AlbumScreen(
                                             mainNavController,
                                             dialogNavController,
@@ -406,7 +406,7 @@ fun MainScreen() {
                                             padding
                                         )
                                     }
-                                    HomeBottomNavigationDestination.Singer -> {
+                                    HomeNavigationDestination.Singer -> {
                                         SingerScreen(
                                             mainNavController,
                                             dialogNavController,
@@ -414,7 +414,7 @@ fun MainScreen() {
                                             padding
                                         )
                                     }
-                                    HomeBottomNavigationDestination.PlayList -> {
+                                    HomeNavigationDestination.PlayList -> {
                                         PlayListScreen(
                                             mainNavController,
                                             dialogNavController,
