@@ -69,7 +69,8 @@ fun PlayScreen(
         MotionBlur(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Gray)
+                .background(Color.Gray),
+            url = coverUrl
         )
         Column(
             modifier = Modifier
