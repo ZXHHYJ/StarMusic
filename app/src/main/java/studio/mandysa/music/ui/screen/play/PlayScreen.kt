@@ -69,12 +69,8 @@ fun PlayScreen(
         MotionBlur(
             modifier = Modifier
                 .fillMaxSize()
-<<<<<<< HEAD
-                .background(Color.Gray),url = coverUrl
-=======
                 .background(Color.Gray),
             url = coverUrl
->>>>>>> branch 'master' of https://gitee.com/ZXHHYJ/mandysa_music.git
         )
         Column(
             modifier = Modifier
