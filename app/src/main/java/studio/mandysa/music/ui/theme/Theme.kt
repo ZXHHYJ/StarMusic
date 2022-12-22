@@ -9,6 +9,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
@@ -19,10 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import com.kyant.monet.LocalTonalPalettes
-import com.kyant.monet.PaletteStyle
-import com.kyant.monet.TonalPalettes.Companion.toTonalPalettes
-import com.kyant.monet.dynamicColorScheme
+import com.kyant.monet.*
 
 @Composable
 fun MandySaMusicTheme(
@@ -60,13 +58,11 @@ fun MandySaMusicTheme(
             }
         }
     }
-    // Generate tonal palettes with TonalSpot (default) style
-    val palettes = (wallpaperColor ?: defaultColor).toTonalPalettes(style = PaletteStyle.TonalSpot)
+    val palettes = TonalPalettes(keyColor = wallpaperColor ?: defaultColor , style = PaletteStyle.TonalSpot)
     // In your Theme.kt
     CompositionLocalProvider(LocalTonalPalettes provides palettes) {
-        // Map TonalPalettes to Compose Material3 ColorScheme
-        val colorScheme = dynamicColorScheme()
-        MaterialTheme(colorScheme = colorScheme) {
+        CompositionLocalProvider(LocalContentColor provides 0.n1..100.n1) {
+            MaterialTheme(colorScheme = dynamicColorScheme()) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -74,6 +70,7 @@ fun MandySaMusicTheme(
             ) {
                 content.invoke()
             }
+          }
         }
     }
 }

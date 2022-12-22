@@ -17,6 +17,8 @@ class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         application = this
+        System.loadLibrary("monet")
+        //loading lib monet 
         NetConfig.initialize(BASE_URL, this) {
             cache(Cache(cacheDir, 1024 * 1024 * 128))
             // 缓存设置, 当超过maxSize最大值会根据最近最少使用算法清除缓存来限制缓存大小
