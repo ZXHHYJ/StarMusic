@@ -108,7 +108,7 @@ fun SongMenu(
                     item {
                         MenuItem(
                             modifier = Modifier.padding(horizontal = horizontalMargin),
-                            title = "${stringResource(id = R.string.singer)}:${song.artist}",
+                            title = "${stringResource(id = R.string.singer)}:${song.artist.name}",
                             imageVector = Icons.Rounded.Person
                         ) {
                             dialogNavController.popAll()

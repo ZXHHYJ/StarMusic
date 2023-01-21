@@ -47,7 +47,7 @@ fun AlbumScreen(
             ) {
                 itemsIndexed(albums) { _, item ->
                     AlbumItem(album = item) {
-
+                       mainNavController.navigate(ScreenDestination.AlbumCnt(item))
                     }
                 }
             }

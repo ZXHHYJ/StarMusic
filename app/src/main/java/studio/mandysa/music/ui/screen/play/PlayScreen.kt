@@ -70,7 +70,8 @@ fun PlayScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.Gray),
-            url = coverUrl
+            url = coverUrl,
+            paused = panelState == PanelState.COLLAPSED
         )
         Column(
             modifier = Modifier

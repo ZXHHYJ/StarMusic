@@ -42,8 +42,7 @@ import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop
 import dev.olshevski.navigation.reimagined.rememberNavController
 import studio.mandysa.music.R
-import studio.mandysa.music.ui.common.AppDialog
-import studio.mandysa.music.ui.common.KenBurns
+import studio.mandysa.music.ui.common.*
 import studio.mandysa.music.ui.theme.*
 
 
@@ -107,9 +106,9 @@ fun LoginScreen(cloudLoginViewModel: CloudLoginViewModel = viewModel()) {
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        KenBurns(
+        MotionBlur(
             modifier = Modifier.fillMaxSize(),
-            imageUrl = "https://i.hexuexiao.cn/up/b1/c3/29/cc0ec73b1b1d8d4cbbfed2297d29c3b1.jpg",
+            url = "https://i.hexuexiao.cn/up/b1/c3/29/cc0ec73b1b1d8d4cbbfed2297d29c3b1.jpg",
             paused = false
         )
         Column(

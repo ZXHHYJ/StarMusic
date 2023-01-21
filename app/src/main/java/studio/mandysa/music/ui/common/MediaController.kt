@@ -23,9 +23,7 @@ import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
 import studio.mandysa.music.service.playmanager.ktx.title
-import studio.mandysa.music.ui.common.AppAsyncImage
-import studio.mandysa.music.ui.common.KenBurns
-import studio.mandysa.music.ui.common.PanelState
+import studio.mandysa.music.ui.common.*
 import studio.mandysa.music.ui.theme.barColor
 import studio.mandysa.music.ui.theme.horizontalMargin
 import studio.mandysa.music.ui.theme.roundedCornerShape
@@ -61,14 +59,14 @@ fun MediaController(panelState: PanelState?, onClick: () -> Unit) {
                     )
                 ) {
                     Box {
-                        KenBurns(
+                        MotionBlur(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .align(Alignment.BottomCenter)
                                 .height(controlBarHeight)
                                 .clickable(onClick = onClick)
                                 .background(Color.Gray),
-                            imageUrl = coverUrl,
+                            url = coverUrl,
                             paused = panelState != PanelState.COLLAPSED
                         )
                         Row(
