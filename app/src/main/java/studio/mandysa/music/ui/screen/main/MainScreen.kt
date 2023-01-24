@@ -224,14 +224,38 @@ fun MainScreen() {
                             mainNavController.backstack.entries.last().destination
                         val bottomLastDestination =
                             homeNavController.backstack.entries.last().destination
+                        val isLoginState by UserRepository.isLoginLiveData.observeAsState()
+                        if (!isMatePad) {
+                            if (isLoginState == true) {
+                                HomeNavigationDestination.CloudMusic.let { screen ->
+                                    AppNavigationRailItem(
+                                        label = {
+                                            Text(text = screen.tabName)
+                                        },
+                                        icon = {
+                                            Icon(
+                                                screen.tabIcon,
+                                                contentDescription = null
+                                            )
+                                        },
+                                        selected = screen == bottomLastDestination,
+                                        onClick = {
+                                            mainNavController.popUpTo {
+                                                it == ScreenDestination.Main
+                                            }
+                                            if (!homeNavController.moveToTop {
+                                                    it == screen
+                                                }) {
+                                                homeNavController.navigate(screen)
+                                            }
+                                        }
+                                    )
+                                }
+                            }
+                        }
                         HomeNavigationDestination.values().forEach { screen ->
                             if (screen == HomeNavigationDestination.CloudMusic) {
-                                if (!isMatePad) {
-                                    return@forEach
-                                }
-                                if (UserRepository.isLoginState == false) {
-                                    return@forEach
-                                }
+                                return@forEach
                             }
                             AppNavigationRailItem(
                                 label = {

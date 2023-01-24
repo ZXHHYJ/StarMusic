@@ -33,8 +33,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
@@ -50,6 +50,13 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging true
+        }
+    }
+
     namespace 'studio.mandysa.music'
 }
 
@@ -69,14 +76,14 @@ dependencies {
     // https://mvnrepository.com/artifact/net.jthink/jaudiotagger
     implementation 'net.jthink:jaudiotagger:3.0.1'
 
-    implementation 'com.github.liangjingkanji:Serialize:1.3.2'
+    implementation 'com.github.liangjingkanji:Serialize:2.1.1'
 
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.media:media:1.6.0'
 
     implementation "com.squareup.okhttp3:okhttp:4.10.0"
 
-    implementation "dev.olshevski.navigation:reimagined:1.3.0"
+    implementation "dev.olshevski.navigation:reimagined:1.3.1"
 
     implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
