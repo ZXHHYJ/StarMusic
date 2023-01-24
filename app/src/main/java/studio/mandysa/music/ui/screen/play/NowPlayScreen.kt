@@ -74,8 +74,7 @@ private fun TitleAndArtist(dialogNavController: NavController<DialogDestination>
     Row(
         modifier = Modifier
             .widthIn(max = maxWidth)
-            .fillMaxWidth()
-            .padding(vertical = verticalMargin), verticalAlignment = Alignment.CenterVertically
+            .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
             modifier = Modifier
@@ -152,14 +151,14 @@ private fun MusicProgressBar() {
 
 @Composable
 private fun MusicControlBar() {
-    val smallButtonSize = if (isMatePad) 55.dp else 65.dp
-    val middleButtonSize = if (isMatePad) 65.dp else 85.dp
+    val smallButtonSize = 64.dp
+    val middleButtonSize = 84.dp
 
     Row(
         modifier = Modifier
             .widthIn(max = maxWidth)
             .fillMaxWidth()
-            .padding(vertical = if (isMatePad) 15.dp else 50.dp),
+            .padding(vertical = if (isAndroidPad) 15.dp else 50.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {

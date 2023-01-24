@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import studio.mandysa.music.ui.theme.barItemColor
 import studio.mandysa.music.ui.theme.horizontalMargin
-import studio.mandysa.music.ui.theme.isMatePad
+import studio.mandysa.music.ui.theme.isAndroidPad
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -19,7 +19,7 @@ fun AppNavigationRailItem(
     modifier: Modifier = Modifier,
     label: @Composable () -> Unit,
 ) {
-    if (isMatePad) {
+    if (isAndroidPad) {
         NavigationRailItem(
             selected = selected,
             onClick = onClick,
