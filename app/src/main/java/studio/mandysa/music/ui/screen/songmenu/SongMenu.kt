@@ -89,8 +89,10 @@ fun SongMenu(
                     imageVector = Icons.Rounded.Album
                 ) {
                     dialogNavController.popAll()
-                    // TODO:
-                    //mainNavController.navigate(ScreenDestination.AlbumCnt(song.album.id))
+                    mainNavController.navigate(when (song) {
+                        is SongBean.Local -> ScreenDestination.AlbumCnt(song.album)
+                        is SongBean.Network -> TODO()
+                    })
                 }
             }
             item {
@@ -112,7 +114,7 @@ fun SongMenu(
                             imageVector = Icons.Rounded.Person
                         ) {
                             dialogNavController.popAll()
-                            //mainNavController.navigate(ScreenDestination.SingerCnt(song.artist))
+                            mainNavController.navigate(ScreenDestination.SingerCnt(song.artist))
                         }
                     }
                 }
