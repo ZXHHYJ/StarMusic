@@ -59,13 +59,6 @@ fun PlayScreen(
         val coverUrl by PlayManager.changeMusicLiveData().map {
             it.coverUrl
         }.observeAsState("")
-        /*KenBurns(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Gray),
-            imageUrl = coverUrl,
-            paused = panelState == PanelState.COLLAPSED
-        )*/
         MotionBlur(
             modifier = Modifier
                 .fillMaxSize()
