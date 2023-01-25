@@ -1,6 +1,7 @@
 package studio.mandysa.music.ui.screen.play
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -14,6 +15,7 @@ import studio.mandysa.music.logic.config.api
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.ui.common.Lyric
+import studio.mandysa.music.ui.theme.defaultHorizontal
 import java.io.File
 
 
@@ -50,7 +52,7 @@ fun LyricScreen() {
     }
     // TODO: 补充无歌词界面
     val liveTime by PlayManager.playingMusicProgressLiveData().observeAsState(0)
-    Lyric(modifier = Modifier.fillMaxSize(), lyric = lyric, liveTime = liveTime) {
+    Lyric(modifier = Modifier.fillMaxSize().padding(horizontal = playScreenHorizontal- defaultHorizontal/2), lyric = lyric, liveTime = liveTime) {
         PlayManager.seekTo(it)
     }
 }

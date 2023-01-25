@@ -28,9 +28,9 @@ import studio.mandysa.music.ui.item.PlaylistItem
 import studio.mandysa.music.ui.item.RoundIconItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
-import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.defaultHorizontal
 import studio.mandysa.music.ui.theme.textColor
-import studio.mandysa.music.ui.theme.verticalMargin
+import studio.mandysa.music.ui.theme.defaultVertical
 
 @Composable
 fun CloudMeScreen(
@@ -55,8 +55,8 @@ fun CloudMeScreen(
                 userInfo?.let {
                     AppCard(
                         modifier = Modifier
-                            .padding(horizontal = horizontalMargin)
-                            .padding(top = verticalMargin),
+                            .padding(horizontal = defaultHorizontal)
+                            .padding(top = defaultVertical),
                     ) {
                         Row(
                             modifier = Modifier
@@ -85,8 +85,8 @@ fun CloudMeScreen(
             item {
                 LazyRow(
                     modifier = Modifier.padding(top = 10.dp),
-                    contentPadding = PaddingValues(horizontal = horizontalMargin),
-                    horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2)
+                    contentPadding = PaddingValues(horizontal = defaultHorizontal),
+                    horizontalArrangement = Arrangement.spacedBy(defaultHorizontal / 2)
                 ) {
                     item {
                         RoundIconItem(icon = Icons.Rounded.Favorite, title = "我喜欢") {
@@ -122,8 +122,8 @@ fun CloudMeScreen(
             }
             item {
                 LazyRow(
-                    contentPadding = PaddingValues(horizontal = horizontalMargin),
-                    horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2)
+                    contentPadding = PaddingValues(horizontal = defaultHorizontal),
+                    horizontalArrangement = Arrangement.spacedBy(defaultHorizontal / 2)
                 ) {
                     item {
                         PlaylistItem(
@@ -146,8 +146,8 @@ fun CloudMeScreen(
             }
             item {
                 LazyRow(
-                    contentPadding = PaddingValues(horizontal = horizontalMargin),
-                    horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2)
+                    contentPadding = PaddingValues(horizontal = defaultHorizontal),
+                    horizontalArrangement = Arrangement.spacedBy(defaultHorizontal / 2)
                 ) {
                     // TODO: 播放历史
                     item {
@@ -188,7 +188,7 @@ fun CloudMeScreen(
             }
             item {
                 MenuItem(
-                    modifier = Modifier.padding(horizontal = horizontalMargin),
+                    modifier = Modifier.padding(horizontal = defaultHorizontal),
                     title = stringResource(id = R.string.setting),
                     imageVector = Icons.Rounded.Settings
                 ) {
@@ -197,7 +197,7 @@ fun CloudMeScreen(
             }
             item {
                 MenuItem(
-                    modifier = Modifier.padding(horizontal = horizontalMargin),
+                    modifier = Modifier.padding(horizontal = defaultHorizontal),
                     title = stringResource(id = R.string.about),
                     imageVector = Icons.Rounded.Info
                 ) {

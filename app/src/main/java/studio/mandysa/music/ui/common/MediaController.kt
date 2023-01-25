@@ -25,7 +25,7 @@ import studio.mandysa.music.service.playmanager.ktx.coverUrl
 import studio.mandysa.music.service.playmanager.ktx.title
 import studio.mandysa.music.ui.common.*
 import studio.mandysa.music.ui.theme.barColor
-import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.defaultHorizontal
 import studio.mandysa.music.ui.theme.roundedCornerShape
 
 @Composable
@@ -44,7 +44,7 @@ fun MediaController(panelState: PanelState?, onClick: () -> Unit) {
                 .background(barColor)
         ) {
         }
-        Box(modifier = Modifier.padding(horizontal = horizontalMargin)) {
+        Box(modifier = Modifier.padding(horizontal = defaultHorizontal)) {
             Box {
                 val coverUrl by PlayManager.changeMusicLiveData().map {
                     it.coverUrl

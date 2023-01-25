@@ -30,8 +30,8 @@ import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.*
 
-val maxWidth
-    @Composable get() = 340.dp
+val playScreenHorizontal
+@Composable get() = 25.dp
 
 enum class PlayScreenDestination {
     Main,
@@ -75,7 +75,7 @@ fun PlayScreen(
         ) {
             Box(
                 modifier = Modifier
-                    .padding(vertical = verticalMargin)
+                    .padding(vertical = defaultVertical)
                     .align(Alignment.CenterHorizontally)
             ) {
                 Spacer(
@@ -133,9 +133,9 @@ fun PlayScreen(
             BottomNavigation(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .widthIn(max = maxWidth)
+                    .widthIn(max = 340.dp)
                     .fillMaxWidth()
-                    .padding(horizontal = horizontalMargin),
+                    .padding(horizontal = defaultHorizontal),
                 elevation = 0.dp,
                 backgroundColor = Color.Transparent
             ) {

@@ -24,9 +24,8 @@ import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.service.playmanager.ktx.artist
 import studio.mandysa.music.service.playmanager.ktx.title
 import studio.mandysa.music.ui.screen.DialogDestination
-import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.defaultVertical
 import studio.mandysa.music.ui.theme.translucentWhite
-import studio.mandysa.music.ui.theme.verticalMargin
 
 @Composable
 fun PlayQueueScreen(dialogNavController: NavController<DialogDestination>) {
@@ -60,7 +59,7 @@ private fun SongItem(
     ) {
         Box(
             modifier = Modifier
-                .padding(verticalMargin)
+                .padding(start = playScreenHorizontal, end = defaultVertical)
                 .size(50.dp), contentAlignment = Alignment.Center
         ) {
             Text(
@@ -74,7 +73,7 @@ private fun SongItem(
             modifier = Modifier
                 .fillMaxSize()
                 .weight(1.0f)
-                .padding(vertical = verticalMargin),
+                .padding(vertical = defaultVertical),
         ) {
             Text(
                 text = song.title,
@@ -99,6 +98,6 @@ private fun SongItem(
                 },
             tint = translucentWhite
         )
-        Spacer(modifier = Modifier.padding(end = horizontalMargin))
+        Spacer(modifier = Modifier.padding(end = playScreenHorizontal))
     }
 }

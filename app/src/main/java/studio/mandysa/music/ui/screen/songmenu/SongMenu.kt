@@ -27,10 +27,10 @@ import studio.mandysa.music.ui.common.AppDialog
 import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
-import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.defaultHorizontal
 import studio.mandysa.music.ui.theme.textColor
 import studio.mandysa.music.ui.theme.textColorLight
-import studio.mandysa.music.ui.theme.verticalMargin
+import studio.mandysa.music.ui.theme.defaultVertical
 
 @Composable
 fun SongMenu(
@@ -45,8 +45,8 @@ fun SongMenu(
             item {
                 Box(
                     modifier = Modifier.padding(
-                        horizontal = horizontalMargin,
-                        vertical = verticalMargin
+                        horizontal = defaultHorizontal,
+                        vertical = defaultVertical
                     )
                 ) {
                     Row(
@@ -54,7 +54,7 @@ fun SongMenu(
                             .height(80.dp)
                     ) {
                         AppAsyncImage(modifier = Modifier.size(80.dp), url = song.coverUrl)
-                        Column(modifier = Modifier.padding(verticalMargin)) {
+                        Column(modifier = Modifier.padding(defaultVertical)) {
                             Text(
                                 text = song.title,
                                 color = textColor,
@@ -74,7 +74,7 @@ fun SongMenu(
             }
             item {
                 MenuItem(
-                    modifier = Modifier.padding(horizontal = horizontalMargin),
+                    modifier = Modifier.padding(horizontal = defaultHorizontal),
                     title = stringResource(id = if (isLike == true) R.string.remove_like else R.string.add_like),
                     imageVector = if (isLike == true) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
                     enabled = isLike != null
@@ -84,7 +84,7 @@ fun SongMenu(
             }
             item {
                 MenuItem(
-                    modifier = Modifier.padding(horizontal = horizontalMargin),
+                    modifier = Modifier.padding(horizontal = defaultHorizontal),
                     title = "${stringResource(id = R.string.album)}:${song.album.name}",
                     imageVector = Icons.Rounded.Album
                 ) {
@@ -97,7 +97,7 @@ fun SongMenu(
             }
             item {
                 MenuItem(
-                    modifier = Modifier.padding(horizontal = horizontalMargin),
+                    modifier = Modifier.padding(horizontal = defaultHorizontal),
                     title = stringResource(id = R.string.next_play),
                     imageVector = Icons.Rounded.Add
                 ) {
@@ -109,7 +109,7 @@ fun SongMenu(
                 is SongBean.Local -> {
                     item {
                         MenuItem(
-                            modifier = Modifier.padding(horizontal = horizontalMargin),
+                            modifier = Modifier.padding(horizontal = defaultHorizontal),
                             title = "${stringResource(id = R.string.singer)}:${song.artist.name}",
                             imageVector = Icons.Rounded.Person
                         ) {
@@ -121,7 +121,7 @@ fun SongMenu(
                 is SongBean.Network -> {
                     items(song.artist) {
                         MenuItem(
-                            modifier = Modifier.padding(horizontal = horizontalMargin),
+                            modifier = Modifier.padding(horizontal = defaultHorizontal),
                             title = "${stringResource(id = R.string.singer)}:${it.name}",
                             imageVector = Icons.Rounded.Person
                         ) {

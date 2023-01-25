@@ -39,7 +39,7 @@ fun SongItem(
     ) {
         Box(
             modifier = Modifier
-                .padding(horizontal = horizontalMargin, vertical = verticalMargin)
+                .padding(horizontal = defaultHorizontal, vertical = defaultVertical)
                 .size(50.dp), contentAlignment = Alignment.Center
         ) {
             AppAsyncImage(modifier = Modifier.size(50.dp), url = song.coverUrl)
@@ -48,7 +48,7 @@ fun SongItem(
             modifier = Modifier
                 .fillMaxSize()
                 .weight(1.0f)
-                .padding(vertical = verticalMargin),
+                .padding(vertical = defaultVertical),
         ) {
             Text(
                 text = song.title,
@@ -75,6 +75,6 @@ fun SongItem(
                     dialogNavController.navigate(DialogDestination.SongMenu(song))
                 }
         )
-        Spacer(modifier = Modifier.padding(end = horizontalMargin))
+        Spacer(modifier = Modifier.padding(end = defaultHorizontal))
     }
 }

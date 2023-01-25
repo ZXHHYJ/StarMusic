@@ -8,9 +8,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.defaultHorizontal
 import studio.mandysa.music.ui.theme.textColor
-import studio.mandysa.music.ui.theme.verticalMargin
+import studio.mandysa.music.ui.theme.defaultVertical
 
 @Composable
 @Preview
@@ -21,7 +21,7 @@ fun SubTitleItem(title: String = "默认标题") {
         fontSize = 16.sp,
         fontWeight = FontWeight.Bold,
         modifier = Modifier
-            .padding(horizontal = horizontalMargin)
-            .padding(top = 10.dp, bottom = verticalMargin)
+            .padding(horizontal = defaultHorizontal)
+            .padding(top = 10.dp, bottom = defaultVertical)
     )
 }

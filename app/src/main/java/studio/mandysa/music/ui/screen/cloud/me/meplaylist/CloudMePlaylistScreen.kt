@@ -21,7 +21,7 @@ import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.AppCard
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
-import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.defaultHorizontal
 import studio.mandysa.music.ui.theme.textColor
 
 @Composable
@@ -72,7 +72,7 @@ fun CloudMePlaylistScreen(
     val list by cloudMePlaylistViewModel.meAllPlaylist.observeAsState()
     LazyColumn(
         modifier = Modifier
-            .padding(horizontal = horizontalMargin),
+            .padding(horizontal = defaultHorizontal),
         verticalArrangement = Arrangement.spacedBy(5.dp),
     ) {
         list?.let {

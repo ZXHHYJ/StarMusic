@@ -24,7 +24,7 @@ import studio.mandysa.music.ui.item.ContentColumnItem
 import studio.mandysa.music.ui.item.SubTitleItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
-import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.defaultHorizontal
 import studio.mandysa.music.ui.theme.onBackground
 
 @Composable
@@ -67,8 +67,8 @@ fun CloudSingerCntScreen(
             item {
                 LazyRow(
                     modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(horizontal = horizontalMargin),
-                    horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2)
+                    contentPadding = PaddingValues(horizontal = defaultHorizontal),
+                    horizontalArrangement = Arrangement.spacedBy(defaultHorizontal / 2)
                 ) {
                     /*  items(albums) {
                           AlbumItem(mateAlbum = it!!) {

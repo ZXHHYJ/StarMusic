@@ -18,7 +18,7 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.theme.roundedCornerShape
-import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.defaultHorizontal
 import studio.mandysa.music.ui.theme.isAndroidPad
 import studio.mandysa.music.ui.theme.textColor
 
@@ -51,7 +51,7 @@ fun ContentColumnItem(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = horizontalMargin),
+                .padding(horizontal = defaultHorizontal),
             text = title ?: "",
             fontSize = 17.sp,
             fontWeight = FontWeight.Bold,
@@ -62,7 +62,7 @@ fun ContentColumnItem(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = horizontalMargin)
+                .padding(horizontal = defaultHorizontal)
                 .clickable {
                     message?.let {
                         dialogNavController.navigate(DialogDestination.Message(it))
@@ -84,7 +84,7 @@ fun ContentColumnItem(
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Spacer(modifier = Modifier.width(horizontalMargin))
+                Spacer(modifier = Modifier.width(defaultHorizontal))
                 CoverItem()
                 Column(
                     modifier = Modifier

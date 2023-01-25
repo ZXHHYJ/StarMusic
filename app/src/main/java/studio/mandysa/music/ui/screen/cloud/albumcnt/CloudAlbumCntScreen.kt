@@ -28,7 +28,7 @@ import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.item.ContentColumnItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
-import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.defaultHorizontal
 import studio.mandysa.music.ui.theme.onBackground
 import studio.mandysa.music.ui.theme.textColorLight
 
@@ -64,7 +64,7 @@ fun CloudAlbumCntScreen(
                 ) {
                     Row(
                         modifier = Modifier
-                            .padding(horizontal = horizontalMargin)
+                            .padding(horizontal = defaultHorizontal)
                             .padding(bottom = 5.dp)
                     ) {
                         MenuItem(
@@ -96,7 +96,7 @@ fun CloudAlbumCntScreen(
             albumInfo?.company?.let {
                 item {
                     Text(
-                        modifier = Modifier.padding(horizontal = horizontalMargin),
+                        modifier = Modifier.padding(horizontal = defaultHorizontal),
                         text = stringResource(id = R.string.issued) + ":" + it,
                         color = textColorLight,
                         fontSize = 14.sp

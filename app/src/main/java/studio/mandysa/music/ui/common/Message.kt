@@ -15,7 +15,7 @@ import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.R
 import studio.mandysa.music.logic.utils.copyText
 import studio.mandysa.music.ui.screen.DialogDestination
-import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.defaultHorizontal
 import studio.mandysa.music.ui.theme.textColor
 
 @Composable
@@ -23,7 +23,7 @@ fun Message(dialogNavController: NavController<DialogDestination>, message: Stri
     AppDialog {
         Column(
             modifier = Modifier
-                .padding(horizontal = horizontalMargin)
+                .padding(horizontal = defaultHorizontal)
         ) {
             Text(
                 modifier = Modifier

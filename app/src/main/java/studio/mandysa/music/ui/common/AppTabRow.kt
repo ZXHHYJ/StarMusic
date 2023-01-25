@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
-import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.defaultHorizontal
 import studio.mandysa.music.ui.theme.tabSelectColor
 import studio.mandysa.music.ui.theme.tabUnSelectColor
 import studio.mandysa.music.ui.theme.textColor
@@ -35,7 +35,7 @@ fun AppTabRow(modifier: Modifier = Modifier, pagerState: PagerState, tabs: @Comp
                 .fillMaxWidth()
         )
         ScrollableTabRow(
-            modifier = modifier, edgePadding = horizontalMargin,
+            modifier = modifier, edgePadding = defaultHorizontal,
             selectedTabIndex = pagerState.currentPage,
             containerColor = Color.Transparent,
             contentColor = textColor,

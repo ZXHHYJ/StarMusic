@@ -18,7 +18,7 @@ import studio.mandysa.music.ui.common.AppDialog
 import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
-import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.defaultHorizontal
 
 @Composable
 fun CloudPlaylistMenu(
@@ -27,7 +27,7 @@ fun CloudPlaylistMenu(
     id: String
 ) {
     AppDialog {
-        LazyColumn(modifier = Modifier.padding(horizontal = horizontalMargin)) {
+        LazyColumn(modifier = Modifier.padding(horizontal = defaultHorizontal)) {
             item {
                 Spacer(modifier = Modifier.height(10.dp))
             }

@@ -117,8 +117,8 @@ fun CloudMusicScreen(
                 if (isAndroidPad) {
                     LazyRow(
                         modifier = Modifier.fillMaxWidth(),
-                        contentPadding = PaddingValues(horizontal = horizontalMargin),
-                        horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2)
+                        contentPadding = PaddingValues(horizontal = defaultHorizontal),
+                        horizontalArrangement = Arrangement.spacedBy(defaultHorizontal / 2)
                     ) {
                         bannerItems?.let { it ->
                             items(it) {
@@ -132,8 +132,8 @@ fun CloudMusicScreen(
                         bannerItems?.let {
                             HorizontalPager(
                                 count = it.size,
-                                itemSpacing = horizontalMargin,
-                                contentPadding = PaddingValues(horizontal = horizontalMargin),
+                                itemSpacing = defaultHorizontal,
+                                contentPadding = PaddingValues(horizontal = defaultHorizontal),
                                 state = pagerState
                             ) { index ->
                                 val model = it[index]
@@ -145,7 +145,7 @@ fun CloudMusicScreen(
                                 activeColor = onBackground,
                                 modifier = Modifier
                                     .align(Alignment.CenterHorizontally)
-                                    .padding(horizontal = horizontalMargin),
+                                    .padding(horizontal = defaultHorizontal),
                             )
                         }
                     }
@@ -154,8 +154,8 @@ fun CloudMusicScreen(
             item {
                 LazyRow(
                     modifier = Modifier.padding(top = 10.dp),
-                    contentPadding = PaddingValues(horizontal = horizontalMargin),
-                    horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2)
+                    contentPadding = PaddingValues(horizontal = defaultHorizontal),
+                    horizontalArrangement = Arrangement.spacedBy(defaultHorizontal / 2)
                 ) {
                     item {
                         RoundIconItem(
@@ -188,8 +188,8 @@ fun CloudMusicScreen(
             }
             item {
                 LazyRow(
-                    contentPadding = PaddingValues(horizontal = horizontalMargin),
-                    horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2),
+                    contentPadding = PaddingValues(horizontal = defaultHorizontal),
+                    horizontalArrangement = Arrangement.spacedBy(defaultHorizontal / 2),
                 ) {
                     recommendPlaylist?.let {
                         items(it) { model ->
@@ -205,8 +205,8 @@ fun CloudMusicScreen(
             }
             item {
                 LazyRow(
-                    contentPadding = PaddingValues(horizontal = horizontalMargin),
-                    horizontalArrangement = Arrangement.spacedBy(horizontalMargin / 2),
+                    contentPadding = PaddingValues(horizontal = defaultHorizontal),
+                    horizontalArrangement = Arrangement.spacedBy(defaultHorizontal / 2),
                 ) {
                     playlistSquare?.let {
                         items(it) { model ->

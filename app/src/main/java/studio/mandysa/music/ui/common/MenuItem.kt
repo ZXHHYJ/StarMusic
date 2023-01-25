@@ -13,7 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import studio.mandysa.music.ui.theme.containerColor
-import studio.mandysa.music.ui.theme.verticalMargin
+import studio.mandysa.music.ui.theme.defaultVertical
 
 @Composable
 fun MenuItem(
@@ -37,5 +37,5 @@ fun MenuItem(
         )
         Icon(imageVector = imageVector, contentDescription = null)
     }
-    Spacer(modifier = Modifier.height(verticalMargin))
+    Spacer(modifier = Modifier.height(defaultVertical))
 }

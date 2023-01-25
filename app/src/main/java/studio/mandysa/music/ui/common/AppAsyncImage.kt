@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import studio.mandysa.music.ui.theme.emptyImageBackground
-import studio.mandysa.music.ui.theme.round
+import studio.mandysa.music.ui.theme.defaultRound
 
 @Composable
 fun AppRoundAsyncImage(
@@ -44,7 +44,7 @@ fun AppRoundAsyncImage(
 fun AppAsyncImage(
     modifier: Modifier = Modifier,
     emptyBackground: Color = emptyImageBackground,
-    cornerSize: Dp = round,
+    cornerSize: Dp = defaultRound,
     url: String,
     onClick: (() -> Unit)? = null
 ) {

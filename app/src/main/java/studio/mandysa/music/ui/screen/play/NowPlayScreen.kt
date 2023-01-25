@@ -9,16 +9,18 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.Icon
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
@@ -39,7 +41,8 @@ fun NowPlayScreen(dialogNavController: NavController<DialogDestination>) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .systemBarsPadding(),
+            .systemBarsPadding()
+            .padding(horizontal = playScreenHorizontal),
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -53,18 +56,27 @@ fun NowPlayScreen(dialogNavController: NavController<DialogDestination>) {
 
 @Composable
 private fun AlbumCover() {
+    var size by remember {
+        mutableStateOf(IntSize.Zero)
+    }
     Card(
         modifier = Modifier
-            .padding(bottom = 5.dp)
-            .widthIn(max = maxWidth)
-            .heightIn(max = maxWidth),
+            .padding(bottom = 8.dp)
+            .fillMaxWidth()
+            .height(
+                with(LocalDensity.current) {
+                    size.width.toDp()
+                })
+            .onSizeChanged {
+                size = it
+            },
         elevation = 10.dp,
         shape = roundedCornerShape
     ) {
         val coverUrl by PlayManager.changeMusicLiveData().map { return@map it.coverUrl }
             .observeAsState()
         coverUrl?.let {
-            AppAsyncImage(modifier = Modifier.size(maxWidth), url = it)
+            AppAsyncImage(modifier = Modifier.fillMaxSize(), url = it)
         }
     }
 }
@@ -73,7 +85,6 @@ private fun AlbumCover() {
 private fun TitleAndArtist(dialogNavController: NavController<DialogDestination>) {
     Row(
         modifier = Modifier
-            .widthIn(max = maxWidth)
             .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
@@ -132,7 +143,6 @@ private fun MusicProgressBar() {
 
     SeekBar(
         modifier = Modifier
-            .widthIn(max = maxWidth)
             .fillMaxWidth(),
         value = musicPlaybackProgress,
         maxValue = musicDuration,
@@ -140,7 +150,6 @@ private fun MusicProgressBar() {
     )
     Row(
         modifier = Modifier
-            .widthIn(max = maxWidth)
             .fillMaxWidth()
     ) {
         Text(text = musicPlaybackProgress.toTime(), color = translucentWhite)
@@ -151,12 +160,11 @@ private fun MusicProgressBar() {
 
 @Composable
 private fun MusicControlBar() {
-    val smallButtonSize = 64.dp
-    val middleButtonSize = 84.dp
+    val smallButtonSize = 60.dp
+    val middleButtonSize = 80.dp
 
     Row(
         modifier = Modifier
-            .widthIn(max = maxWidth)
             .fillMaxWidth()
             .padding(vertical = if (isAndroidPad) 15.dp else 50.dp),
         horizontalArrangement = Arrangement.Center,

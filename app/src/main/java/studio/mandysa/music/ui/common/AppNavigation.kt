@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import studio.mandysa.music.ui.theme.barItemColor
-import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.defaultHorizontal
 import studio.mandysa.music.ui.theme.isAndroidPad
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,7 +35,7 @@ fun AppNavigationRailItem(
             label = label,
             selected = selected,
             onClick = onClick,
-            modifier = modifier.padding(horizontal = horizontalMargin),
+            modifier = modifier.padding(horizontal = defaultHorizontal),
             colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
         )
     }

@@ -14,18 +14,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.Density
 import com.kyant.monet.*
 
 @Composable
 fun MandySaMusicTheme(
     content: @Composable () -> Unit
 ) {
-    val fontScale = LocalDensity.current.fontScale
-    val displayMetrics = LocalContext.current.resources.displayMetrics
-    val widthPixels = displayMetrics.widthPixels
-
     val defaultColor = Color.White
     //获取壁纸管理器
     val wallpaperManager = WallpaperManager.getInstance(LocalContext.current)
@@ -63,20 +57,13 @@ fun MandySaMusicTheme(
     // In your Theme.kt
     CompositionLocalProvider(LocalTonalPalettes provides palettes) {
         CompositionLocalProvider(LocalContentColor provides 0.n1..100.n1) {
-            CompositionLocalProvider(
-                LocalDensity provides Density(
-                    density = widthPixels / 360.0f,
-                    fontScale = fontScale
-                )
-            ) {
-                MaterialTheme(colorScheme = dynamicColorScheme()) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(background)
-                    ) {
-                        content.invoke()
-                    }
+            MaterialTheme(colorScheme = dynamicColorScheme()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(background)
+                ) {
+                    content.invoke()
                 }
             }
         }

@@ -115,7 +115,7 @@ fun LoginScreen(cloudLoginViewModel: CloudLoginViewModel = viewModel()) {
             modifier = Modifier
                 .widthIn(max = 600.dp)
                 .fillMaxWidth()
-                .padding(vertical = verticalMargin, horizontal = horizontalMargin),
+                .padding(vertical = defaultVertical, horizontal = defaultHorizontal),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
@@ -136,7 +136,7 @@ fun LoginScreen(cloudLoginViewModel: CloudLoginViewModel = viewModel()) {
                                 placeholder = { Text(stringResource(R.string.phone)) },
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(vertical = verticalMargin),
+                                    .padding(vertical = defaultVertical),
                                 onValueChange = {
                                     if (it.length <= 11) {
                                         phone = it

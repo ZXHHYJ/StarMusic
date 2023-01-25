@@ -32,21 +32,21 @@ import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.*
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
+import studio.mandysa.music.ui.screen.about.AboutScreen
+import studio.mandysa.music.ui.screen.cloud.fm.CloudFmScreen
+import studio.mandysa.music.ui.screen.cloud.me.CloudMeMenu
+import studio.mandysa.music.ui.screen.cloud.me.CloudMeScreen
+import studio.mandysa.music.ui.screen.cloud.me.artistsub.CloudArtistSubScreen
+import studio.mandysa.music.ui.screen.cloud.me.meplaylist.CloudMePlaylistScreen
+import studio.mandysa.music.ui.screen.cloud.me.meplaylist.playlistmenu.CloudPlaylistMenu
+import studio.mandysa.music.ui.screen.cloud.music.CloudMusicScreen
+import studio.mandysa.music.ui.screen.cloud.playlistcnt.CloudPlaylistCntScreen
+import studio.mandysa.music.ui.screen.cloud.singercnt.CloudSingerCntScreen
 import studio.mandysa.music.ui.screen.local.album.AlbumScreen
 import studio.mandysa.music.ui.screen.local.playlist.PlayListScreen
 import studio.mandysa.music.ui.screen.local.singer.SingerScreen
 import studio.mandysa.music.ui.screen.local.singercnt.SingerCntScreen
 import studio.mandysa.music.ui.screen.local.single.SingleScreen
-import studio.mandysa.music.ui.screen.cloud.me.CloudMeMenu
-import studio.mandysa.music.ui.screen.cloud.me.CloudMeScreen
-import studio.mandysa.music.ui.screen.about.AboutScreen
-import studio.mandysa.music.ui.screen.cloud.me.artistsub.CloudArtistSubScreen
-import studio.mandysa.music.ui.screen.cloud.me.meplaylist.CloudMePlaylistScreen
-import studio.mandysa.music.ui.screen.cloud.me.meplaylist.playlistmenu.CloudPlaylistMenu
-import studio.mandysa.music.ui.screen.cloud.music.CloudMusicScreen
-import studio.mandysa.music.ui.screen.cloud.fm.CloudFmScreen
-import studio.mandysa.music.ui.screen.cloud.playlistcnt.CloudPlaylistCntScreen
-import studio.mandysa.music.ui.screen.cloud.singercnt.CloudSingerCntScreen
 import studio.mandysa.music.ui.screen.play.PlayScreen
 import studio.mandysa.music.ui.screen.search.SearchScreen
 import studio.mandysa.music.ui.screen.setting.SettingScreen
@@ -333,8 +333,9 @@ fun MainScreen() {
                     }
                 },
                 bottomBar = {
+                    val isLoginState by UserRepository.isLoginLiveData.observeAsState()
                     AnimatedVisibility(
-                        visible = mainNavController.backstack.entries.size <= 1,
+                        visible = mainNavController.backstack.entries.size <= 1 && isLoginState == true,
                         enter = expandVertically(),
                         exit = shrinkVertically()
                     ) {

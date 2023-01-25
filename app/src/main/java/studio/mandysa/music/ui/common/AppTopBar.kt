@@ -16,14 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import kotlinx.coroutines.launch
 import studio.mandysa.music.R
-import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.defaultHorizontal
 import studio.mandysa.music.ui.theme.isAndroidPad
 import studio.mandysa.music.ui.theme.onBackground
 
 
 @Composable
 fun AppTopBar(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
-    Row(modifier = modifier.padding(horizontal = horizontalMargin)) {
+    Row(modifier = modifier.padding(horizontal = defaultHorizontal)) {
         content.invoke()
     }
 }

@@ -20,7 +20,7 @@ import studio.mandysa.music.ui.common.Preview
 import studio.mandysa.music.ui.item.ContentColumnItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
-import studio.mandysa.music.ui.theme.horizontalMargin
+import studio.mandysa.music.ui.theme.defaultHorizontal
 
 @Composable
 fun CloudPlaylistCntScreen(
@@ -48,7 +48,7 @@ fun CloudPlaylistCntScreen(
                 ) {
                     Row(
                         modifier = Modifier
-                            .padding(horizontal = horizontalMargin)
+                            .padding(horizontal = defaultHorizontal)
                             .padding(bottom = 5.dp)
                     ) {
                         MenuItem(
