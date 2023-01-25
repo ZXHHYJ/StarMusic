@@ -30,7 +30,7 @@ import studio.mandysa.music.ui.theme.translucentWhite
 @Composable
 fun PlayQueueScreen(dialogNavController: NavController<DialogDestination>) {
     val playlist by PlayManager.changePlayListLiveData().observeAsState(listOf())
-    LazyColumn {
+    LazyColumn(modifier = Modifier.widthIn(max = playScreenMaxWidth).fillMaxSize()) {
         itemsIndexed(playlist) { index, model ->
             SongItem(
                 dialogNavController,

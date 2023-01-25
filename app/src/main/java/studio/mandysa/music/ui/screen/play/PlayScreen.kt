@@ -30,8 +30,9 @@ import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.*
 
-val playScreenHorizontal
-@Composable get() = 25.dp
+val playScreenHorizontal = 25.dp
+
+val playScreenMaxWidth = 400.dp
 
 enum class PlayScreenDestination {
     Main,
@@ -93,15 +94,13 @@ fun PlayScreen(
                     .fillMaxSize()
                     .weight(1.0f)
             ) {
-                val maxWidth = 360.dp
                 BackHandler(panelState == PanelState.EXPANDED) {
                     function.invoke(PanelState.COLLAPSED)
                 }
                 if (isAndroidPad) {
                     Box(
                         modifier = Modifier
-                            .weight(1.0f)
-                            .widthIn(max = maxWidth), contentAlignment = Alignment.Center
+                            .weight(1.0f), contentAlignment = Alignment.Center
                     ) {
                         NowPlayScreen(dialogNavController)
                     }
@@ -115,8 +114,7 @@ fun PlayScreen(
                 }
                 Box(
                     modifier = Modifier
-                        .weight(1.0f)
-                        .widthIn(max = maxWidth), contentAlignment = Alignment.Center
+                        .weight(1.0f), contentAlignment = Alignment.Center
                 ) {
                     AnimatedNavHost(navController) {
                         when (it) {

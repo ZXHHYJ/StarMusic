@@ -40,6 +40,7 @@ import studio.mandysa.music.ui.theme.*
 fun NowPlayScreen(dialogNavController: NavController<DialogDestination>) {
     Column(
         modifier = Modifier
+            .widthIn(max = playScreenMaxWidth)
             .fillMaxSize()
             .systemBarsPadding()
             .padding(horizontal = playScreenHorizontal),
