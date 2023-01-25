@@ -93,13 +93,15 @@ fun PlayScreen(
                     .fillMaxSize()
                     .weight(1.0f)
             ) {
+                val maxWidth = 360.dp
                 BackHandler(panelState == PanelState.EXPANDED) {
                     function.invoke(PanelState.COLLAPSED)
                 }
                 if (isAndroidPad) {
                     Box(
                         modifier = Modifier
-                            .weight(1.0f), contentAlignment = Alignment.Center
+                            .weight(1.0f)
+                            .widthIn(max = maxWidth), contentAlignment = Alignment.Center
                     ) {
                         NowPlayScreen(dialogNavController)
                     }
@@ -113,7 +115,8 @@ fun PlayScreen(
                 }
                 Box(
                     modifier = Modifier
-                        .weight(1.0f), contentAlignment = Alignment.Center
+                        .weight(1.0f)
+                        .widthIn(max = maxWidth), contentAlignment = Alignment.Center
                 ) {
                     AnimatedNavHost(navController) {
                         when (it) {
