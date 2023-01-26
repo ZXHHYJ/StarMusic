@@ -61,7 +61,7 @@ fun PlayScreen(
     fun BottomNavigation() {
         BottomNavigation(
             modifier = Modifier
-                .widthIn(max = 340.dp)
+                .widthIn(max = playScreenMaxWidth)
                 .fillMaxWidth()
                 .padding(horizontal = defaultHorizontal),
             elevation = 0.dp,
@@ -144,7 +144,12 @@ fun PlayScreen(
                         modifier = Modifier
                             .weight(1.0f), horizontalAlignment = Alignment.CenterHorizontally
                     ) {
+                        Box(
+                             modifier = Modifier
+                            .weight(1.0f)
+                        ) {
                         NowPlayScreen(dialogNavController)
+                        }
                         BottomNavigation()
                     }
                     val lastDestination = navController.backstack.entries.last().destination

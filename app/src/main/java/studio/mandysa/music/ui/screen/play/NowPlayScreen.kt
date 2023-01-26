@@ -167,9 +167,7 @@ private fun MusicControlBar() {
     val middleButtonSize = 80.dp
 
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 50.dp),
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
