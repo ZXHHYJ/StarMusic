@@ -32,7 +32,7 @@ import studio.mandysa.music.ui.theme.*
 
 val playScreenHorizontal = 25.dp
 
-val playScreenMaxWidth = 400.dp
+val playScreenMaxWidth = 380.dp
 
 enum class PlayScreenDestination {
     Main,
@@ -56,6 +56,49 @@ fun PlayScreen(
     function: (PanelState) -> Unit
 ) {
     val navController = rememberNavController(startDestination = PlayScreenDestination.Main)
+
+    @Composable
+    fun BottomNavigation() {
+        BottomNavigation(
+            modifier = Modifier
+                .widthIn(max = 340.dp)
+                .fillMaxWidth()
+                .padding(horizontal = defaultHorizontal),
+            elevation = 0.dp,
+            backgroundColor = Color.Transparent
+        ) {
+            val lastDestination = navController.backstack.entries.last().destination
+            listOf(
+                PlayScreenDestination.Lyric,
+                PlayScreenDestination.PlayQueue
+            ).forEach { screen ->
+                val selected = screen == lastDestination
+                BottomNavigationItem(modifier = Modifier.clip(roundedCornerShape),
+                    icon = {
+                        Icon(
+                            screen.tabIcon,
+                            contentDescription = null
+                        )
+                    },
+                    selectedContentColor = Color.White,
+                    unselectedContentColor = translucentWhite,
+                    selected = selected,
+                    onClick = {
+                        if (selected) {
+                            navController.popUpTo {
+                                it == PlayScreenDestination.Main
+                            }
+                            return@BottomNavigationItem
+                        }
+                        if (!navController.moveToTop { it == screen }) {
+                            navController.navigate(screen)
+                        }
+                    }
+                )
+            }
+        }
+    }
+
     Box(modifier = Modifier.clipToBounds()) {
         val coverUrl by PlayManager.changeMusicLiveData().map {
             it.coverUrl
@@ -69,10 +112,9 @@ fun PlayScreen(
         )
         Column(
             modifier = Modifier
-                .align(Alignment.Center)
                 .fillMaxSize()
                 .statusBarsPadding()
-                .navigationBarsPadding()
+                .navigationBarsPadding(), horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(
                 modifier = Modifier
@@ -98,11 +140,12 @@ fun PlayScreen(
                     function.invoke(PanelState.COLLAPSED)
                 }
                 if (isAndroidPad) {
-                    Box(
+                    Column(
                         modifier = Modifier
-                            .weight(1.0f), contentAlignment = Alignment.Center
+                            .weight(1.0f), horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         NowPlayScreen(dialogNavController)
+                        BottomNavigation()
                     }
                     val lastDestination = navController.backstack.entries.last().destination
                     if (lastDestination == PlayScreenDestination.Main) {
@@ -131,45 +174,11 @@ fun PlayScreen(
                     }
                 }
             }
-            BottomNavigation(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .widthIn(max = 340.dp)
-                    .fillMaxWidth()
-                    .padding(horizontal = defaultHorizontal),
-                elevation = 0.dp,
-                backgroundColor = Color.Transparent
-            ) {
-                val lastDestination = navController.backstack.entries.last().destination
-                listOf(
-                    PlayScreenDestination.Lyric,
-                    PlayScreenDestination.PlayQueue
-                ).forEach { screen ->
-                    val selected = screen == lastDestination
-                    BottomNavigationItem(modifier = Modifier.clip(roundedCornerShape),
-                        icon = {
-                            Icon(
-                                screen.tabIcon,
-                                contentDescription = null
-                            )
-                        },
-                        selectedContentColor = Color.White,
-                        unselectedContentColor = translucentWhite,
-                        selected = selected,
-                        onClick = {
-                            if (selected) {
-                                navController.popUpTo {
-                                    it == PlayScreenDestination.Main
-                                }
-                                return@BottomNavigationItem
-                            }
-                            if (!navController.moveToTop { it == screen }) {
-                                navController.navigate(screen)
-                            }
-                        }
-                    )
-                }
+            if (!isAndroidPad) {
+                BottomNavigation()
             }
         }
     }
+
+
 }

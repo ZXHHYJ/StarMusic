@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.service.playmanager.ktx.allArtist
@@ -94,7 +95,7 @@ private fun SongItem(
             contentDescription = null,
             modifier = Modifier
                 .clickable {
-                    //dialogNavController.navigate(DialogDestination.SongMenu(model))
+                    dialogNavController.navigate(DialogDestination.SongMenu(song))
                 },
             tint = translucentWhite
         )

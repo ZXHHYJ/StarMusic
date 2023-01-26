@@ -34,7 +34,9 @@ import studio.mandysa.music.service.playmanager.ktx.title
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.SeekBar
 import studio.mandysa.music.ui.screen.DialogDestination
-import studio.mandysa.music.ui.theme.*
+import studio.mandysa.music.ui.theme.roundedCornerShape
+import studio.mandysa.music.ui.theme.translucentWhite
+import studio.mandysa.music.ui.theme.translucentWhiteFixBug
 
 @Composable
 fun NowPlayScreen(dialogNavController: NavController<DialogDestination>) {
@@ -161,13 +163,13 @@ private fun MusicProgressBar() {
 
 @Composable
 private fun MusicControlBar() {
-    val smallButtonSize = 60.dp
+    val smallButtonPadding = 10.dp
     val middleButtonSize = 80.dp
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = if (isAndroidPad) 15.dp else 50.dp),
+            .padding(vertical = 50.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -177,14 +179,15 @@ private fun MusicControlBar() {
         Icon(
             ImageVector.vectorResource(id = R.drawable.ic_skip_previous), null,
             Modifier
-                .size(smallButtonSize)
-                .clip(RoundedCornerShape(smallButtonSize))
+                .size(middleButtonSize)
+                .padding(smallButtonPadding)
+                .clip(RoundedCornerShape(middleButtonSize))
                 .clickable {
                     PlayManager.skipToPrevious()
                 },
             tint = Color.White
         )
-        Box(modifier = Modifier.padding(horizontal = 35.dp)) {
+        Box(modifier = Modifier.padding(horizontal = 18.dp)) {
             Icon(
                 ImageVector.vectorResource(id = playPauseState), null,
                 Modifier
@@ -201,8 +204,9 @@ private fun MusicControlBar() {
         Icon(
             ImageVector.vectorResource(id = R.drawable.ic_skip_next), null,
             Modifier
-                .size(smallButtonSize)
-                .clip(RoundedCornerShape(smallButtonSize))
+                .size(middleButtonSize)
+                .padding(smallButtonPadding)
+                .clip(RoundedCornerShape(middleButtonSize))
                 .clickable {
                     PlayManager.skipToNext()
                 },

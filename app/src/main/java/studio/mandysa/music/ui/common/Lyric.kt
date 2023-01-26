@@ -111,7 +111,7 @@ fun Lyric(
                     },
                 text = model.first,
                 color = if (position == index) Color.White else translucentWhite,
-                fontSize = 34.sp,
+                fontSize = 30.sp,
                 fontWeight = FontWeight.Bold
             )
         }
