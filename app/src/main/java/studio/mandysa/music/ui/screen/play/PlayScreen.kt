@@ -26,6 +26,8 @@ import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
 import studio.mandysa.music.ui.common.MotionBlur
 import studio.mandysa.music.ui.common.PanelState
+import studio.mandysa.music.ui.common.ScreenLayout
+import studio.mandysa.music.ui.common.ScreenMode
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.*
@@ -99,7 +101,7 @@ fun PlayScreen(
         }
     }
 
-    Box(modifier = Modifier.clipToBounds()) {
+    ScreenLayout(modifier = Modifier.fillMaxSize().clipToBounds()) {
         val coverUrl by PlayManager.changeMusicLiveData().map {
             it.coverUrl
         }.observeAsState("")
@@ -139,7 +141,7 @@ fun PlayScreen(
                 BackHandler(panelState == PanelState.EXPANDED) {
                     function.invoke(PanelState.COLLAPSED)
                 }
-                if (tabletMode) {
+                if (screenMode is ScreenMode.TabletPort) {
                     Column(
                         modifier = Modifier
                             .weight(1.0f), horizontalAlignment = Alignment.CenterHorizontally
@@ -179,7 +181,7 @@ fun PlayScreen(
                     }
                 }
             }
-            if (!tabletMode) {
+            if (screenMode !is ScreenMode.TabletPort) {
                 BottomNavigation()
             }
         }

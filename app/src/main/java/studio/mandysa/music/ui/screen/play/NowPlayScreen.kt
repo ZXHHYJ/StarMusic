@@ -50,11 +50,9 @@ fun NowPlayScreen(dialogNavController: NavController<DialogDestination>) {
         Column(
             modifier = Modifier
                 .fillMaxSize(),
+            verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (!tabletMode) {
-                Spacer(modifier = Modifier.height(20.hpp))
-            }
             if (100.hpp > 100.wpp) {
                 Card(
                     modifier = Modifier
@@ -148,7 +146,7 @@ fun NowPlayScreen(dialogNavController: NavController<DialogDestination>) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1.0f),
+                    .height(24.hpp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
