@@ -19,7 +19,7 @@ import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.theme.roundedCornerShape
 import studio.mandysa.music.ui.theme.defaultHorizontal
-import studio.mandysa.music.ui.theme.isAndroidPad
+import studio.mandysa.music.ui.theme.tabletMode
 import studio.mandysa.music.ui.theme.textColor
 
 @Composable
@@ -79,7 +79,7 @@ fun ContentColumnItem(
     }
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(modifier = Modifier.height(10.dp))
-        if (isAndroidPad) {
+        if (tabletMode) {
             Spacer(modifier = Modifier.height(10.dp))
             Row(
                 modifier = Modifier.fillMaxWidth()

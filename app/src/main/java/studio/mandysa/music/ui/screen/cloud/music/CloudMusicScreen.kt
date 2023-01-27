@@ -114,7 +114,7 @@ fun CloudMusicScreen(
                 }
             }
             item {
-                if (isAndroidPad) {
+                if (tabletMode) {
                     LazyRow(
                         modifier = Modifier.fillMaxWidth(),
                         contentPadding = PaddingValues(horizontal = defaultHorizontal),

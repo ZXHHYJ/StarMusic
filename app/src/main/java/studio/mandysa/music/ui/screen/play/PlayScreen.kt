@@ -139,7 +139,7 @@ fun PlayScreen(
                 BackHandler(panelState == PanelState.EXPANDED) {
                     function.invoke(PanelState.COLLAPSED)
                 }
-                if (isAndroidPad) {
+                if (tabletMode) {
                     Column(
                         modifier = Modifier
                             .weight(1.0f), horizontalAlignment = Alignment.CenterHorizontally
@@ -179,7 +179,7 @@ fun PlayScreen(
                     }
                 }
             }
-            if (!isAndroidPad) {
+            if (!tabletMode) {
                 BottomNavigation()
             }
         }

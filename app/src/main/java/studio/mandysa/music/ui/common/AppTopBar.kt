@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import kotlinx.coroutines.launch
 import studio.mandysa.music.R
 import studio.mandysa.music.ui.theme.defaultHorizontal
-import studio.mandysa.music.ui.theme.isAndroidPad
+import studio.mandysa.music.ui.theme.tabletMode
 import studio.mandysa.music.ui.theme.onBackground
 
 
@@ -39,9 +39,9 @@ fun AppTopSearchBar(
     val coroutineScope = rememberCoroutineScope()
     SearchBar(modifier = modifier, click = onClick) {
         Icon(
-            imageVector = if (isAndroidPad) Icons.Rounded.Search else Icons.Rounded.Menu,
+            imageVector = if (tabletMode) Icons.Rounded.Search else Icons.Rounded.Menu,
             contentDescription = null,
-            modifier = Modifier.clickable(enabled = !isAndroidPad) {
+            modifier = Modifier.clickable(enabled = !tabletMode) {
                 coroutineScope.launch {
                     if (drawerState.isClosed) {
                         drawerState.open()

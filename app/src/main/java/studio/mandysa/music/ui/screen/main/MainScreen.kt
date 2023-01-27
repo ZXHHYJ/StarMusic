@@ -107,7 +107,7 @@ private fun AppNavigationDrawer(
                     size = it
                 }) {
                 controllerBar.invoke()
-                if (!isAndroidPad) {
+                if (!tabletMode) {
                     bottomBar.invoke()
                 }
                 Box(
@@ -123,7 +123,7 @@ private fun AppNavigationDrawer(
             }
         }
     }
-    when (isAndroidPad) {
+    when (tabletMode) {
         true -> {
             PermanentNavigationDrawer(
                 modifier = modifier,
@@ -225,7 +225,7 @@ fun MainScreen() {
                         val bottomLastDestination =
                             homeNavController.backstack.entries.last().destination
                         val isLoginState by UserRepository.isLoginLiveData.observeAsState()
-                        if (!isAndroidPad) {
+                        if (!tabletMode) {
                             if (isLoginState == true) {
                                 HomeNavigationDestination.CloudMusic.let { screen ->
                                     AppNavigationRailItem(
@@ -308,7 +308,7 @@ fun MainScreen() {
                             )
                         }
 
-                        if (isAndroidPad) {
+                        if (tabletMode) {
                             Spacer(modifier = Modifier.weight(1.0f))
                             BottomNavRailItem(
                                 stringResource(id = R.string.search),
