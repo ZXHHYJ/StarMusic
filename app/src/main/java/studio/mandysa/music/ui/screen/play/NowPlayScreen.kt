@@ -34,7 +34,6 @@ import studio.mandysa.music.ui.common.ScreenLayout
 import studio.mandysa.music.ui.common.SeekBar
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.theme.roundedCornerShape
-import studio.mandysa.music.ui.theme.tabletMode
 import studio.mandysa.music.ui.theme.translucentWhite
 import studio.mandysa.music.ui.theme.translucentWhiteFixBug
 

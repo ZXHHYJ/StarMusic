@@ -9,7 +9,7 @@ import androidx.core.app.NotificationCompat
 import androidx.media.session.MediaButtonReceiver
 import studio.mandysa.music.R
 
-class MediaNotification(val context: Context, mediaSessionCompat: MediaSessionCompat, channelId: String) :
+class MediaNotification(private val context: Context, mediaSessionCompat: MediaSessionCompat, channelId: String) :
     NotificationCompat.Builder(context, channelId) {
 
     fun setAction(playing: Boolean): MediaNotification {

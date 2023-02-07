@@ -27,7 +27,6 @@ import studio.mandysa.music.service.playmanager.ktx.coverUrl
 import studio.mandysa.music.ui.common.MotionBlur
 import studio.mandysa.music.ui.common.PanelState
 import studio.mandysa.music.ui.common.ScreenLayout
-import studio.mandysa.music.ui.common.ScreenMode
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.*
@@ -60,11 +59,9 @@ fun PlayScreen(
     val navController = rememberNavController(startDestination = PlayScreenDestination.Main)
 
     @Composable
-    fun BottomNavigation() {
+    fun BottomNavigation(modifier: Modifier) {
         BottomNavigation(
-            modifier = Modifier
-                .widthIn(max = playScreenMaxWidth)
-                .fillMaxWidth()
+            modifier = modifier
                 .padding(horizontal = defaultHorizontal),
             elevation = 0.dp,
             backgroundColor = Color.Transparent
@@ -101,7 +98,30 @@ fun PlayScreen(
         }
     }
 
-    ScreenLayout(modifier = Modifier.fillMaxSize().clipToBounds()) {
+    @Composable
+    fun RightNavHost(modifier: Modifier) {
+        Box(modifier = modifier, contentAlignment = Alignment.Center) {
+            AnimatedNavHost(navController) {
+                when (it) {
+                    PlayScreenDestination.Main -> {
+                        NowPlayScreen(dialogNavController)
+                    }
+                    PlayScreenDestination.Lyric -> {
+                        LyricScreen()
+                    }
+                    PlayScreenDestination.PlayQueue -> {
+                        PlayQueueScreen(dialogNavController)
+                    }
+                }
+            }
+        }
+    }
+
+    ScreenLayout(
+        modifier = Modifier
+            .fillMaxSize()
+            .clipToBounds()
+    ) {
         val coverUrl by PlayManager.changeMusicLiveData().map {
             it.coverUrl
         }.observeAsState("")
@@ -133,56 +153,62 @@ fun PlayScreen(
                         )
                 )
             }
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1.0f)
-            ) {
-                BackHandler(panelState == PanelState.EXPANDED) {
-                    function.invoke(PanelState.COLLAPSED)
-                }
-                if (screenMode is ScreenMode.TabletPort) {
-                    Column(
+            // TODO: 屏幕适配
+            when {
+                maxWidth >= maxHeight -> {
+                    Row(
                         modifier = Modifier
-                            .weight(1.0f), horizontalAlignment = Alignment.CenterHorizontally
+                            .fillMaxSize()
                     ) {
-                        Box(
-                             modifier = Modifier
-                            .weight(1.0f)
-                        ) {
-                        NowPlayScreen(dialogNavController)
+                        BackHandler(panelState == PanelState.EXPANDED) {
+                            function.invoke(PanelState.COLLAPSED)
                         }
-                        BottomNavigation()
-                    }
-                    val lastDestination = navController.backstack.entries.last().destination
-                    if (lastDestination == PlayScreenDestination.Main) {
-                        navController.navigate(PlayScreenDestination.Lyric)
-                    }
-                } else {
-                    NavBackHandler(navController)
-                    //处理返回逻辑
-                }
-                Box(
-                    modifier = Modifier
-                        .weight(1.0f), contentAlignment = Alignment.Center
-                ) {
-                    AnimatedNavHost(navController) {
-                        when (it) {
-                            PlayScreenDestination.Main -> {
+                        Spacer(modifier = Modifier.width(12.wpp))
+                        Column(
+                            modifier = Modifier
+                                .width(35.wpp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .weight(1.0f)
+                            ) {
                                 NowPlayScreen(dialogNavController)
                             }
-                            PlayScreenDestination.Lyric -> {
-                                LyricScreen()
-                            }
-                            PlayScreenDestination.PlayQueue -> {
-                                PlayQueueScreen(dialogNavController)
-                            }
+                            BottomNavigation(
+                                modifier = Modifier
+                                    .widthIn(max = playScreenMaxWidth)
+                                    .fillMaxWidth()
+                            )
                         }
+                        Spacer(modifier = Modifier.width(6.wpp))
+                        val lastDestination = navController.backstack.entries.last().destination
+                        if (lastDestination == PlayScreenDestination.Main) {
+                            navController.navigate(PlayScreenDestination.Lyric)
+                        }
+                        RightNavHost(modifier = Modifier.width(35.wpp))
+                        Spacer(modifier = Modifier.width(12.wpp))
                     }
                 }
-            }
-            if (screenMode !is ScreenMode.TabletPort) {
-                BottomNavigation()
+                else -> {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .weight(1.0f)
+                    ) {
+                        BackHandler(panelState == PanelState.EXPANDED) {
+                            function.invoke(PanelState.COLLAPSED)
+                        }
+                        NavBackHandler(navController)
+                        //处理返回逻辑
+                        RightNavHost(modifier = Modifier.weight(1.0f))
+                    }
+                    BottomNavigation(
+                        modifier = Modifier
+                            .widthIn(max = playScreenMaxWidth)
+                            .fillMaxWidth()
+                    )
+                }
             }
         }
     }
