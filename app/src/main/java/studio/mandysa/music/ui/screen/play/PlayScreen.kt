@@ -153,7 +153,6 @@ fun PlayScreen(
                         )
                 )
             }
-            // TODO: 屏幕适配
             when {
                 maxWidth >= maxHeight -> {
                     Row(

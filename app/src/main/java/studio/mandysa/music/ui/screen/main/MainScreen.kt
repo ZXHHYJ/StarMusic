@@ -484,7 +484,6 @@ fun MainScreen() {
                                 paddingValues = padding,
                                 id = screenDestination.artist.id
                             )
-                            // TODO: 需要优化
                         }
 
                         is ScreenDestination.AlbumCnt -> {
@@ -532,7 +531,7 @@ fun MainScreen() {
                         }
 
                         ScreenDestination.CloudToplistScreen -> {
-                            // TODO:
+                            // TODO:排行榜页面（待补充
                         }
 
                         ScreenDestination.CloudMeScreen -> {

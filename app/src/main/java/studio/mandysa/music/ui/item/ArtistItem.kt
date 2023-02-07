@@ -47,7 +47,6 @@ fun ArtistItem(coverUrl: String, title: String, subTitle: String, onClick: () ->
                 .size(50.dp), contentAlignment = Alignment.Center
         ) {
             AppRoundAsyncImage(modifier = Modifier.size(50.dp), url = coverUrl)
-            // TODO: 歌手封面
         }
         Column(
             modifier = Modifier

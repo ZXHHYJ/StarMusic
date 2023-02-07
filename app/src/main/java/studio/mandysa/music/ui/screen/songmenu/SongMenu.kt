@@ -91,7 +91,7 @@ fun SongMenu(
                     dialogNavController.popAll()
                     mainNavController.navigate(when (song) {
                         is SongBean.Local -> ScreenDestination.AlbumCnt(song.album)
-                        is SongBean.Network -> TODO()
+                        is SongBean.Network -> TODO("待补充")
                     })
                 }
             }
