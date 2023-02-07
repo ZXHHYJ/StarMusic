@@ -14,7 +14,7 @@
 </p>
 
 <br>
-<p align="center"><strong>基于compose实现的在线音乐播放器</strong></p>
+<p align="center"><strong>基于compose实现的音乐播放器</strong></p>
 <br>
 
 <br>
@@ -23,9 +23,10 @@
 
 ## Screen
 
-|![](https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/screen1.jpg)主页面|![](https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/screen2.jpg)个人页|
+|![](https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/手机-主页.png)|![](https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/手机-播放页.png)|
 |--|--|
-|![](https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/screen3.jpg)歌单页|
+|![](https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/手机-歌词.png)|
+|![](https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/平板-主页.png)|![](https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/平板-播放页和歌词.png)|
 
 
 ## License
