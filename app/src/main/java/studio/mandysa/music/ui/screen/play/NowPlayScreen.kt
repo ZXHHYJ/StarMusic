@@ -139,8 +139,8 @@ fun NowPlayScreen(dialogNavController: NavController<DialogDestination>) {
                 Text(text = musicDuration.toTime(), color = translucentWhite)
             }
             //-----
-            val smallButtonPadding = 10.dp
-            val middleButtonSize = 80.dp
+            val smallButtonPadding = 2.wpp
+            val middleButtonSize = 24.wpp
 
             Row(
                 modifier = Modifier
@@ -163,7 +163,7 @@ fun NowPlayScreen(dialogNavController: NavController<DialogDestination>) {
                         },
                     tint = Color.White
                 )
-                Box(modifier = Modifier.padding(horizontal = 18.dp)) {
+                Box(modifier = Modifier.padding(horizontal = 6.wpp)) {
                     Icon(
                         ImageVector.vectorResource(id = playPauseState), null,
                         Modifier
