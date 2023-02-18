@@ -54,7 +54,7 @@ object PlayManager {
     }
 
 
-    private val mRunnable = object : Runnable {
+    private val mUpdateCurrentPositionFun = object : Runnable {
         override fun run() {
             mProgress.value = mMediaPlayer?.currentPosition?.toInt() ?: return
             mHandler.postDelayed(this, 1000)
@@ -63,21 +63,21 @@ object PlayManager {
 
     private val mHandler = Handler(Looper.myLooper()!!)
 
-    private lateinit var mContext: Application
+    private lateinit var mApplication: Application
 
     @Volatile
     @JvmStatic
     private var mMediaPlayer: ExoPlayer? = null
         get() {
             if (field == null) {
-                field = createExoPlayer(mContext)
+                field = createExoPlayer(mApplication)
             }
             return field
         }
 
     @JvmStatic
     fun init(application: Application) {
-        mContext = application
+        mApplication = application
     }
 
     /**
@@ -182,14 +182,14 @@ object PlayManager {
     fun play() {
         if (mMediaPlayer!!.isPlaying)
             return
-        mHandler.post(mRunnable)
+        mHandler.post(mUpdateCurrentPositionFun)
         mMediaPlayer!!.play()
     }
 
     fun pause() {
         if (!mMediaPlayer!!.isPlaying)
             return
-        mHandler.removeCallbacks(mRunnable)
+        mHandler.removeCallbacks(mUpdateCurrentPositionFun)
         mMediaPlayer!!.pause()
     }
 
@@ -212,9 +212,9 @@ object PlayManager {
     }
 
     init {
-        mIndex.observeForever { p1: Int ->
+        mIndex.observeForever {
             if (mPlayList.value != null) {
-                val song = mPlayList.value!![p1]
+                val song = mPlayList.value!![it]
                 playMusic(song)
             }
         }

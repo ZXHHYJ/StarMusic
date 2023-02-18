@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.kyant.monet.a1
 import com.kyant.monet.a2
-import com.kyant.monet.*
+import com.kyant.monet.rangeTo
 
 //字体颜色
 val textColor: Color

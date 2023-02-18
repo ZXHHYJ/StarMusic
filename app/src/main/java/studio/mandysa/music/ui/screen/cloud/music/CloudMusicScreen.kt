@@ -93,7 +93,7 @@ fun CloudMusicScreen(
                 .statusBarsPadding()
         ) {
             item {
-                SearchBar(click = { mainNavController.navigate(ScreenDestination.Search) }) {
+                /*SearchBar(click = { mainNavController.navigate(ScreenDestination.Search) }) {
                     Icon(
                         imageVector = Icons.Rounded.Search,
                         contentDescription = null,
@@ -111,7 +111,7 @@ fun CloudMusicScreen(
                             mainNavController.navigate(ScreenDestination.CloudMeScreen)
                         }
                     }
-                }
+                }*/
             }
             item {
                 if (tabletMode) {

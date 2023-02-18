@@ -43,6 +43,7 @@ import studio.mandysa.music.ui.screen.cloud.music.CloudMusicScreen
 import studio.mandysa.music.ui.screen.cloud.playlistcnt.CloudPlaylistCntScreen
 import studio.mandysa.music.ui.screen.cloud.singercnt.CloudSingerCntScreen
 import studio.mandysa.music.ui.screen.local.album.AlbumScreen
+import studio.mandysa.music.ui.screen.local.albumcnt.AlbumCntScreen
 import studio.mandysa.music.ui.screen.local.playlist.PlayListScreen
 import studio.mandysa.music.ui.screen.local.singer.SingerScreen
 import studio.mandysa.music.ui.screen.local.singercnt.SingerCntScreen
@@ -76,7 +77,7 @@ val HomeNavigationDestination.tabIcon
 val HomeNavigationDestination.tabName
     @Composable get() = when (this) {
         HomeNavigationDestination.CloudMusic -> stringResource(id = R.string.cloud_music)
-        HomeNavigationDestination.Single -> stringResource(id = R.string.source)
+        HomeNavigationDestination.Single -> stringResource(id = R.string.media_lib)
         HomeNavigationDestination.Album -> stringResource(id = R.string.album)
         HomeNavigationDestination.Singer -> stringResource(id = R.string.singer)
         HomeNavigationDestination.PlayList -> stringResource(id = R.string.play_list)
@@ -487,7 +488,7 @@ fun MainScreen() {
                         }
 
                         is ScreenDestination.AlbumCnt -> {
-                            studio.mandysa.music.ui.screen.local.albumcnt.AlbumCntScreen(
+                            AlbumCntScreen(
                                 mainNavController = mainNavController,
                                 dialogNavController = dialogNavController,
                                 paddingValues = padding,

@@ -7,13 +7,13 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 
 @Composable
-fun ScreenLayout(modifier: Modifier, content: @Composable ScreenLayoutScope.() -> Unit) {
+fun BoxWithPercentages(modifier: Modifier, content: @Composable BoxWithPercentagesScope.() -> Unit) {
     BoxWithConstraints(modifier = modifier) {
-        content.invoke(ScreenLayoutScope(constraints, maxHeight, maxWidth, minHeight, minWidth))
+        content.invoke(BoxWithPercentagesScope(constraints, maxHeight, maxWidth, minHeight, minWidth))
     }
 }
 
-class ScreenLayoutScope(
+class BoxWithPercentagesScope(
     val constraints: Constraints,
     val maxHeight: Dp,
     val maxWidth: Dp,
@@ -21,18 +21,11 @@ class ScreenLayoutScope(
     val minWidth: Dp
 ) {
 
-    val Int.wpp: Dp
+    val Int.wp: Dp
         get() = maxWidth * this / 100
 
-    val Int.hpp: Dp
+    val Int.hp: Dp
         get() = maxHeight * this / 100
 
-}
-
-sealed class ScreenMode {
-    object PhoneLand : ScreenMode()
-    object PhonePort : ScreenMode()
-    object TabletLand : ScreenMode()
-    object TabletPort : ScreenMode()
 }
 

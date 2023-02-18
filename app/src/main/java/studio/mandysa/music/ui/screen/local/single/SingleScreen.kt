@@ -14,7 +14,7 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.logic.repository.LocalMediaRepository
 import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.ui.common.AppTopSearchBar
+import studio.mandysa.music.ui.common.MenuSearchBar
 import studio.mandysa.music.ui.common.MediaPermission
 import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.screen.DialogDestination
@@ -38,7 +38,7 @@ fun SingleScreen(
                 .fillMaxSize()
                 .statusBarsPadding()
         ) {
-            AppTopSearchBar(drawerState = drawerState) {
+            MenuSearchBar(drawerState = drawerState) {
                 mainNavController.navigate(ScreenDestination.Search)
             }
             val localBeans = LocalMediaRepository.getSongs()

@@ -30,7 +30,7 @@ import studio.mandysa.music.service.playmanager.ktx.artist
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
 import studio.mandysa.music.service.playmanager.ktx.title
 import studio.mandysa.music.ui.common.AppAsyncImage
-import studio.mandysa.music.ui.common.ScreenLayout
+import studio.mandysa.music.ui.common.BoxWithPercentages
 import studio.mandysa.music.ui.common.SeekBar
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.theme.roundedCornerShape
@@ -39,7 +39,7 @@ import studio.mandysa.music.ui.theme.translucentWhiteFixBug
 
 @Composable
 fun NowPlayScreen(dialogNavController: NavController<DialogDestination>) {
-    ScreenLayout(
+    BoxWithPercentages(
         modifier = Modifier
             .widthIn(max = playScreenMaxWidth)
             .fillMaxSize()
@@ -52,11 +52,11 @@ fun NowPlayScreen(dialogNavController: NavController<DialogDestination>) {
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (100.hpp > 100.wpp) {
+            if (100.hp > 100.wp) {
                 Card(
                     modifier = Modifier
                         .padding(bottom = 8.dp)
-                        .size(100.wpp),
+                        .size(100.wp),
                     elevation = 10.dp,
                     shape = roundedCornerShape
                 ) {
@@ -139,13 +139,13 @@ fun NowPlayScreen(dialogNavController: NavController<DialogDestination>) {
                 Text(text = musicDuration.toTime(), color = translucentWhite)
             }
             //-----
-            val smallButtonPadding = 2.wpp
-            val middleButtonSize = 24.wpp
+            val smallButtonPadding = 2.wp
+            val middleButtonSize = 24.wp
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(24.hpp),
+                    .height(24.hp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -163,7 +163,7 @@ fun NowPlayScreen(dialogNavController: NavController<DialogDestination>) {
                         },
                     tint = Color.White
                 )
-                Box(modifier = Modifier.padding(horizontal = 6.wpp)) {
+                Box(modifier = Modifier.padding(horizontal = 6.wp)) {
                     Icon(
                         ImageVector.vectorResource(id = playPauseState), null,
                         Modifier

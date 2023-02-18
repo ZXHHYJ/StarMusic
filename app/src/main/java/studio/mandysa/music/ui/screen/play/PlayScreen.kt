@@ -26,7 +26,7 @@ import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
 import studio.mandysa.music.ui.common.MotionBlur
 import studio.mandysa.music.ui.common.PanelState
-import studio.mandysa.music.ui.common.ScreenLayout
+import studio.mandysa.music.ui.common.BoxWithPercentages
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.*
@@ -117,7 +117,7 @@ fun PlayScreen(
         }
     }
 
-    ScreenLayout(
+    BoxWithPercentages(
         modifier = Modifier
             .fillMaxSize()
             .clipToBounds()
@@ -162,10 +162,10 @@ fun PlayScreen(
                         BackHandler(panelState == PanelState.EXPANDED) {
                             function.invoke(PanelState.COLLAPSED)
                         }
-                        Spacer(modifier = Modifier.width(12.wpp))
+                        Spacer(modifier = Modifier.width(12.wp))
                         Column(
                             modifier = Modifier
-                                .width(35.wpp),
+                                .width(35.wp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Box(
@@ -180,13 +180,13 @@ fun PlayScreen(
                                     .fillMaxWidth()
                             )
                         }
-                        Spacer(modifier = Modifier.width(6.wpp))
+                        Spacer(modifier = Modifier.width(6.wp))
                         val lastDestination = navController.backstack.entries.last().destination
                         if (lastDestination == PlayScreenDestination.Main) {
                             navController.navigate(PlayScreenDestination.Lyric)
                         }
-                        RightNavHost(modifier = Modifier.width(35.wpp))
-                        Spacer(modifier = Modifier.width(12.wpp))
+                        RightNavHost(modifier = Modifier.width(35.wp))
+                        Spacer(modifier = Modifier.width(12.wp))
                     }
                 }
                 else -> {

@@ -9,7 +9,11 @@ import androidx.core.app.NotificationCompat
 import androidx.media.session.MediaButtonReceiver
 import studio.mandysa.music.R
 
-class MediaNotification(private val context: Context, mediaSessionCompat: MediaSessionCompat, channelId: String) :
+class MediaNotification(
+    private val context: Context,
+    mediaSessionCompat: MediaSessionCompat,
+    channelId: String
+) :
     NotificationCompat.Builder(context, channelId) {
 
     fun setAction(playing: Boolean): MediaNotification {
@@ -17,7 +21,7 @@ class MediaNotification(private val context: Context, mediaSessionCompat: MediaS
         addAction(
             NotificationCompat.Action(
                 R.drawable.ic_skip_previous,
-                "test",
+                "上一首",
                 MediaButtonReceiver.buildMediaButtonPendingIntent(
                     context,
                     PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
@@ -27,7 +31,7 @@ class MediaNotification(private val context: Context, mediaSessionCompat: MediaS
         addAction(
             NotificationCompat.Action(
                 if (playing) R.drawable.ic_pause else R.drawable.ic_play,
-                "test",
+                "播放或暂停",
                 MediaButtonReceiver.buildMediaButtonPendingIntent(
                     context,
                     PlaybackStateCompat.ACTION_PLAY_PAUSE
@@ -37,7 +41,7 @@ class MediaNotification(private val context: Context, mediaSessionCompat: MediaS
         addAction(
             NotificationCompat.Action(
                 R.drawable.ic_skip_next,
-                "test",
+                "下一首",
                 MediaButtonReceiver.buildMediaButtonPendingIntent(
                     context,
                     PlaybackStateCompat.ACTION_SKIP_TO_NEXT
@@ -48,7 +52,7 @@ class MediaNotification(private val context: Context, mediaSessionCompat: MediaS
             addAction(
                 NotificationCompat.Action(
                     R.drawable.ic_round_clear_24,
-                    "test",
+                    "关闭媒体通知",
                     MediaButtonReceiver.buildMediaButtonPendingIntent(
                         context,
                         PlaybackStateCompat.ACTION_STOP

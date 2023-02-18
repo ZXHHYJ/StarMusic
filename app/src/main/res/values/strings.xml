@@ -2,11 +2,10 @@
     <string name="channel_name">媒体控制器</string>
     <string name="channel_description">播放控制</string>
     <string name="app_name">MandySa Music</string>
-    <string name="source">资料库</string>
+    <string name="media_lib">媒体库</string>
     <string name="recommend_playlist">推荐歌单</string>
     <string name="recommend_song">推荐歌曲</string>
     <string name="me_playlist">我的歌单</string>
-    <string name="search_hint">在媒体库中搜索</string>
     <string name="phone">手机号</string>
     <string name="captcha">验证码</string>
     <string name="send_captcha">发送验证码</string>
@@ -38,4 +37,7 @@
     <string name="playlist">歌单</string>
     <string name="play_list">播放列表</string>
     <string name="total_n_songs">共%1$d首</string>
+    <string name="in_n_search">在%1$s中搜索</string>
+    <string name="singer_list">歌手列表</string>
+    <string name="album_list">专辑列表</string>
 </resources>
