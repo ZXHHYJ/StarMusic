@@ -6,13 +6,10 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import com.drake.net.exception.HttpFailureException
-import com.drake.net.exception.NoCacheException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.jaudiotagger.audio.AudioFileIO
 import org.jaudiotagger.tag.FieldKey
-import studio.mandysa.music.logic.config.api
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.ui.common.Lyric
@@ -38,7 +35,8 @@ fun LyricScreen() {
                 }
             }
             is SongBean.Network -> {
-                val model = (song as SongBean.Network)
+                // TODO: 在线歌词
+                /*val model = (song as SongBean.Network)
                 try {
                     lyric = api.longCache().getLyric(model.id)
                 } catch (e: NoCacheException) {
@@ -46,14 +44,21 @@ fun LyricScreen() {
                 } catch (e: HttpFailureException) {
                     lyric = ""
                 } catch (_: Exception) {
-                }
+                }*/
             }
             null -> {}
         }
     }
     // TODO: 补充无歌词界面
     val liveTime by PlayManager.playingMusicProgressLiveData().observeAsState(0)
-    Lyric(modifier = Modifier.widthIn(max = playScreenMaxWidth).fillMaxSize().padding(horizontal = playScreenHorizontal- defaultHorizontal/2), lyric = lyric, liveTime = liveTime) {
+    Lyric(
+        modifier = Modifier
+            .widthIn(max = playScreenMaxWidth)
+            .fillMaxSize()
+            .padding(horizontal = playScreenHorizontal - defaultHorizontal / 2),
+        lyric = lyric,
+        liveTime = liveTime
+    ) {
         PlayManager.seekTo(it)
     }
 }

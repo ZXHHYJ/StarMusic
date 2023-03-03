@@ -28,9 +28,9 @@ import studio.mandysa.music.ui.common.MenuItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.defaultHorizontal
+import studio.mandysa.music.ui.theme.defaultVertical
 import studio.mandysa.music.ui.theme.textColor
 import studio.mandysa.music.ui.theme.textColorLight
-import studio.mandysa.music.ui.theme.defaultVertical
 
 @Composable
 fun SongMenu(
@@ -89,10 +89,12 @@ fun SongMenu(
                     imageVector = Icons.Rounded.Album
                 ) {
                     dialogNavController.popAll()
-                    mainNavController.navigate(when (song) {
-                        is SongBean.Local -> ScreenDestination.AlbumCnt(song.album)
-                        is SongBean.Network -> TODO("待补充")
-                    })
+                    mainNavController.navigate(
+                        when (song) {
+                            is SongBean.Local -> ScreenDestination.AlbumCnt(song.album)
+                            is SongBean.Network -> TODO("待补充")
+                        }
+                    )
                 }
             }
             item {

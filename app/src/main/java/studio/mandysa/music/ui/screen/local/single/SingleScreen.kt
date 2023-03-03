@@ -1,31 +1,26 @@
 package studio.mandysa.music.ui.screen.local.single
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.DrawerState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import dev.olshevski.navigation.reimagined.NavController
-import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.logic.repository.LocalMediaRepository
 import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.ui.common.MenuSearchBar
 import studio.mandysa.music.ui.common.MediaPermission
+import studio.mandysa.music.ui.common.TopAppBar
+import studio.mandysa.music.ui.common.bindTopAppBarState
+import studio.mandysa.music.ui.common.rememberTopAppBarState
 import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SingleScreen(
     mainNavController: NavController<ScreenDestination>,
     dialogNavController: NavController<DialogDestination>,
-    drawerState: DrawerState,
     padding: PaddingValues
 ) {
     MediaPermission(
@@ -33,17 +28,15 @@ fun SingleScreen(
             .fillMaxSize()
             .statusBarsPadding()
     ) {
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .statusBarsPadding()
         ) {
-            MenuSearchBar(drawerState = drawerState) {
-                mainNavController.navigate(ScreenDestination.Search)
-            }
             val localBeans = LocalMediaRepository.getSongs()
+            val topAppBarState = rememberTopAppBarState()
             LazyColumn(
-                modifier = Modifier.weight(1.0f),
+                modifier = Modifier.bindTopAppBarState(topAppBarState),
                 contentPadding = padding
             ) {
                 itemsIndexed(localBeans) { index, item ->
@@ -51,6 +44,13 @@ fun SingleScreen(
                         PlayManager.play(localBeans, index)
                     }
                 }
+            }
+            TopAppBar(
+                state = topAppBarState,
+                modifier = Modifier.fillMaxWidth(),
+                title = stringResource(id = studio.mandysa.music.R.string.media_lib)
+            ) {
+
             }
         }
     }

@@ -1,46 +1,42 @@
 package studio.mandysa.music.ui.common
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ButtonElevation
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Shape
-import studio.mandysa.music.ui.theme.containerColor
-import studio.mandysa.music.ui.theme.textColor
+import androidx.compose.ui.unit.dp
+import studio.mandysa.music.ui.theme.appButtonBackgroundColor
+import studio.mandysa.music.ui.theme.defaultRoundShape
+import studio.mandysa.music.ui.theme.onTextColor
 
 @Composable
 fun AppButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = ButtonDefaults.shape,
-    colors: ButtonColors = ButtonDefaults.buttonColors(
-        containerColor = containerColor,
-        contentColor = textColor
-    ),
-    elevation: ButtonElevation? = ButtonDefaults.buttonElevation(),
-    border: BorderStroke? = null,
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    content: @Composable RowScope.() -> Unit
+    content: @Composable (RowScope.() -> Unit)
 ) {
     Button(
-        onClick,
-        modifier,
-        enabled,
-        shape,
-        colors,
-        elevation,
-        border,
-        contentPadding,
-        interactionSource,
-        content
+        onClick = onClick,
+        modifier = modifier,
+        enabled = enabled,
+        elevation = ButtonDefaults.elevation(
+            defaultElevation = 0.dp,
+            pressedElevation = 0.dp,
+            disabledElevation = 0.dp,
+            hoveredElevation = 0.dp,
+            focusedElevation = 0.dp
+        ),
+        shape = defaultRoundShape,
+        border = null,
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = appButtonBackgroundColor,
+            contentColor = onTextColor
+        ),
+        contentPadding = contentPadding,
+        content = content
     )
 }

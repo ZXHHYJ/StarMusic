@@ -4,7 +4,6 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -12,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.FontDownload
 import androidx.compose.material.icons.rounded.FormatListBulleted
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -24,9 +24,9 @@ import androidx.lifecycle.map
 import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
+import studio.mandysa.music.ui.common.BoxWithPercentages
 import studio.mandysa.music.ui.common.MotionBlur
 import studio.mandysa.music.ui.common.PanelState
-import studio.mandysa.music.ui.common.BoxWithPercentages
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.*
@@ -57,9 +57,15 @@ fun PlayScreen(
     function: (PanelState) -> Unit
 ) {
     val navController = rememberNavController(startDestination = PlayScreenDestination.Main)
-
+    LaunchedEffect(panelState) {
+        if (panelState == PanelState.COLLAPSED) {
+            navController.popUpTo {
+                it == PlayScreenDestination.Main
+            }
+        }
+    }
     @Composable
-    fun BottomNavigation(modifier: Modifier) {
+    fun BottomNavigationBar(modifier: Modifier) {
         BottomNavigation(
             modifier = modifier
                 .padding(horizontal = defaultHorizontal),
@@ -72,7 +78,7 @@ fun PlayScreen(
                 PlayScreenDestination.PlayQueue
             ).forEach { screen ->
                 val selected = screen == lastDestination
-                BottomNavigationItem(modifier = Modifier.clip(roundedCornerShape),
+                BottomNavigationItem(modifier = Modifier.clip(defaultRoundShape),
                     icon = {
                         Icon(
                             screen.tabIcon,
@@ -138,21 +144,6 @@ fun PlayScreen(
                 .statusBarsPadding()
                 .navigationBarsPadding(), horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box(
-                modifier = Modifier
-                    .padding(vertical = defaultVertical)
-                    .align(Alignment.CenterHorizontally)
-            ) {
-                Spacer(
-                    modifier = Modifier
-                        .width(40.dp)
-                        .height(5.dp)
-                        .background(
-                            shape = RoundedCornerShape(5.dp),
-                            color = translucentWhiteFixBug
-                        )
-                )
-            }
             when {
                 maxWidth >= maxHeight -> {
                     Row(
@@ -174,7 +165,7 @@ fun PlayScreen(
                             ) {
                                 NowPlayScreen(dialogNavController)
                             }
-                            BottomNavigation(
+                            BottomNavigationBar(
                                 modifier = Modifier
                                     .widthIn(max = playScreenMaxWidth)
                                     .fillMaxWidth()
@@ -202,7 +193,7 @@ fun PlayScreen(
                         //处理返回逻辑
                         RightNavHost(modifier = Modifier.weight(1.0f))
                     }
-                    BottomNavigation(
+                    BottomNavigationBar(
                         modifier = Modifier
                             .widthIn(max = playScreenMaxWidth)
                             .fillMaxWidth()

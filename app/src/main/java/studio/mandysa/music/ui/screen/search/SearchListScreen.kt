@@ -1,27 +1,16 @@
 package studio.mandysa.music.ui.screen.search
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import dev.olshevski.navigation.reimagined.NavController
-import kotlinx.coroutines.launch
 import studio.mandysa.music.R
-import studio.mandysa.music.logic.repository.SettingRepository
-import studio.mandysa.music.ui.common.AppTab
-import studio.mandysa.music.ui.common.AppTabRow
 import studio.mandysa.music.ui.common.HorizontalPager
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
-import studio.mandysa.music.ui.screen.search.singer.SearchSingerScreen
-import studio.mandysa.music.ui.screen.search.single.SearchSingleScreen
 
 enum class SearchListScreenDestination {
     Single, Album, Singer
@@ -44,7 +33,7 @@ fun SearchListScreen(
 ) {
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
-    AppTabRow(
+    /*AppTabRow(
         modifier = Modifier.fillMaxWidth(),
         pagerState = pagerState
     ) {
@@ -60,7 +49,7 @@ fun SearchListScreen(
                     }
                 })
         }
-    }
+    }*/
     HorizontalPager(pages = SearchListScreenDestination.values(), state = pagerState) { t ->
         /*if (enableNeteaseCloud == true) {
             when (t) {

@@ -3,9 +3,6 @@ package studio.mandysa.music
 import android.app.Application
 import android.content.Intent
 import android.os.Build
-import com.drake.net.NetConfig
-import okhttp3.Cache
-import studio.mandysa.music.logic.config.BASE_URL
 import studio.mandysa.music.logic.config.application
 import studio.mandysa.music.service.MediaPlayService
 import studio.mandysa.music.service.playmanager.PlayManager
@@ -18,11 +15,7 @@ class MainApplication : Application() {
         super.onCreate()
         application = this
         System.loadLibrary("monet")
-        //loading lib monet 
-        NetConfig.initialize(BASE_URL, this) {
-            cache(Cache(cacheDir, 1024 * 1024 * 128))
-            // 缓存设置, 当超过maxSize最大值会根据最近最少使用算法清除缓存来限制缓存大小
-        }
+        //loading lib monet
         PlayManager.init(this)
         //初始化播放管理器
         PlayManager.pauseLiveData()

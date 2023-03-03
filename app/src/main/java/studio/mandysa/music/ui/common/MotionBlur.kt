@@ -1,6 +1,5 @@
 package studio.mandysa.music.ui.common
 
-import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
@@ -20,8 +19,6 @@ import com.flaviofaria.kenburnsview.KenBurnsView
 import com.flaviofaria.kenburnsview.RandomTransitionGenerator
 import com.google.android.renderscript.Toolkit
 
-
-@SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun MotionBlur(modifier: Modifier, url: String, paused: Boolean) {
     val context = LocalContext.current
@@ -48,7 +45,7 @@ fun MotionBlur(modifier: Modifier, url: String, paused: Boolean) {
             )
         }
     }, modifier = modifier) {
-        if (drawable != null && it.drawable != drawable) {
+        if (drawable != null && drawable!! != it.drawable) {
             it.setImageDrawable(drawable!!)
         }
         if (paused) {

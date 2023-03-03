@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
-import studio.mandysa.music.ui.common.PopWindows
 import studio.mandysa.music.ui.screen.main.MainScreen
 import studio.mandysa.music.ui.theme.MandySaMusicTheme
 
@@ -16,7 +15,6 @@ class MainActivity : ComponentActivity() {
             WindowCompat.setDecorFitsSystemWindows(window, false)
             MandySaMusicTheme {
                 MainScreen()
-                PopWindows.PopWin()
             }
         }
     }

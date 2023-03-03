@@ -1,38 +1,53 @@
 package studio.mandysa.music.ui.common
 
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material.Card
+import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
-import studio.mandysa.music.ui.theme.containerColor
-import studio.mandysa.music.ui.theme.roundedCornerShape
+import androidx.compose.ui.unit.dp
+import studio.mandysa.music.ui.theme.defaultRoundShape
 
 @Composable
 fun AppCard(
     modifier: Modifier = Modifier,
-    content: @Composable (ColumnScope.() -> Unit)
+    shape: Shape = defaultRoundShape,
+    backgroundColor: Color,
+    contentColor: Color = contentColorFor(backgroundColor = backgroundColor),
+    elevation: Dp = 0.dp,
+    content: @Composable () -> Unit
 ) {
     Card(
         modifier = modifier,
-        shape = roundedCornerShape,
-        colors = CardDefaults.cardColors(containerColor = containerColor),
+        shape = shape,
+        backgroundColor = backgroundColor,
+        contentColor = contentColor,
+        border = null,
+        elevation = elevation,
         content = content
     )
 }
 
 @Composable
-fun AppRoundCard(modifier: Modifier = Modifier, content: @Composable (ColumnScope.() -> Unit)) {
+fun AppRoundCard(
+    modifier: Modifier = Modifier,
+    backgroundColor: Color,
+    contentColor: Color = contentColorFor(backgroundColor = backgroundColor),
+    content: @Composable () -> Unit
+) {
     var size by remember { mutableStateOf(IntSize.Zero) }
-    Card(
+    AppCard(
         modifier = modifier.onSizeChanged {
             size = it
         },
         shape = RoundedCornerShape(size.width),
-        colors = CardDefaults.cardColors(containerColor = containerColor),
+        backgroundColor = backgroundColor,
+        contentColor = contentColor,
         content = content
     )
 }

@@ -3,12 +3,13 @@ package studio.mandysa.music.ui.screen.local.singercnt
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -22,7 +23,7 @@ import studio.mandysa.music.ui.common.BoxWithPercentages
 import studio.mandysa.music.ui.item.SongItem
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
-import studio.mandysa.music.ui.theme.background
+import studio.mandysa.music.ui.theme.appBackgroundColor
 import studio.mandysa.music.ui.theme.textColor
 
 @Composable
@@ -66,22 +67,22 @@ private fun SingerNameTitle(modifier: Modifier, singerName: String) {
 
 @Composable
 private fun PlayAllButton(modifier: Modifier) {
-    AppRoundCard(modifier = modifier) {
+    AppRoundCard(modifier = modifier, backgroundColor = Color.Transparent) {
         Icon(
             painter = painterResource(id = R.drawable.ic_play),
             contentDescription = null,
-            tint = background
+            tint = appBackgroundColor
         )
     }
 }
 
 @Composable
 private fun MoreButton(modifier: Modifier) {
-    AppRoundCard(modifier = modifier) {
+    AppRoundCard(modifier = modifier, backgroundColor = Color.Transparent) {
         Icon(
             imageVector = Icons.Rounded.MoreVert,
             contentDescription = null,
-            tint = background
+            tint = appBackgroundColor
         )
     }
 }

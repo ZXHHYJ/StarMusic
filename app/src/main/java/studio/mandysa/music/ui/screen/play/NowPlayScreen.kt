@@ -4,11 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -30,10 +29,10 @@ import studio.mandysa.music.service.playmanager.ktx.artist
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
 import studio.mandysa.music.service.playmanager.ktx.title
 import studio.mandysa.music.ui.common.AppAsyncImage
+import studio.mandysa.music.ui.common.AppCard
 import studio.mandysa.music.ui.common.BoxWithPercentages
 import studio.mandysa.music.ui.common.SeekBar
 import studio.mandysa.music.ui.screen.DialogDestination
-import studio.mandysa.music.ui.theme.roundedCornerShape
 import studio.mandysa.music.ui.theme.translucentWhite
 import studio.mandysa.music.ui.theme.translucentWhiteFixBug
 
@@ -53,12 +52,12 @@ fun NowPlayScreen(dialogNavController: NavController<DialogDestination>) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (100.hp > 100.wp) {
-                Card(
+                AppCard(
                     modifier = Modifier
                         .padding(bottom = 8.dp)
                         .size(100.wp),
+                    backgroundColor = Color.LightGray,
                     elevation = 10.dp,
-                    shape = roundedCornerShape
                 ) {
                     val coverUrl by PlayManager.changeMusicLiveData().map { return@map it.coverUrl }
                         .observeAsState()

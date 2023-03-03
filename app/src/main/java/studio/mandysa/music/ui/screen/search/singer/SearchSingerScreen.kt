@@ -23,7 +23,7 @@ fun SearchSingerScreen(
         addInitializer(SearchSingerViewModel::class) { SearchSingerViewModel(keywords) }
     })
 ) {
-    val singers by singerViewModel.singers.observeAsState(listOf())
+    /*val singers by singerViewModel.singers.observeAsState(listOf())
     LazyColumn(modifier = Modifier.padding(paddingValues)) {
         items(singers) {
             SingerItem(model = it) {
@@ -31,5 +31,5 @@ fun SearchSingerScreen(
                 //mainNavController.navigate(ScreenDestination.Singer(it.id))
             }
         }
-    }
+    }*/
 }

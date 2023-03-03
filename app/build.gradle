@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
-    id 'kotlin-android'
     id 'kotlin-parcelize'
+    id 'org.jetbrains.kotlin.android'
 }
 
 android {
@@ -21,7 +21,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion "1.4.2"
+        kotlinCompilerExtensionVersion "$compose_compiler_version"
     }
 
     buildTypes {
@@ -33,8 +33,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     kotlinOptions {
@@ -68,53 +68,41 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer-core:2.18.1'
     // 图片加载库 https://github.com/coil-kt/coil/blob/main/README-zh.md
     implementation "io.coil-kt:coil-compose:2.2.2"
-    // 网络请求库 https://gitee.com/ZXHHYJ/anna
-    implementation 'com.gitee.ZXHHYJ:anna:3.2.0-beta02'
-    // beanToJson
+    // 网络请求库
+    //implementation "com.squareup.okhttp3:okhttp:4.10.0"
+    // json解析 https://github.com/google/gson
     implementation 'com.google.code.gson:gson:2.10'
-
-    // https://mvnrepository.com/artifact/net.jthink/jaudiotagger
+    // 获取本地歌曲tag信息 https://mvnrepository.com/artifact/net.jthink/jaudiotagger
     implementation 'net.jthink:jaudiotagger:3.0.1'
 
-    implementation 'com.github.liangjingkanji:Serialize:2.1.3'
+    implementation "dev.olshevski.navigation:reimagined:1.3.1"
 
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.media:media:1.6.0'
 
-    implementation "com.squareup.okhttp3:okhttp:4.10.0"
-
-    implementation "dev.olshevski.navigation:reimagined:1.3.1"
-
     implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
-    //implementation "com.google.accompanist:accompanist-flowlayout:$accompanist_version"
     implementation "com.google.accompanist:accompanist-permissions:$accompanist_version"
-    
+
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
 
-    implementation "androidx.activity:activity-compose:1.6.1"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-service:$lifecycle_version"
 
-    def composeBom = platform('androidx.compose:compose-bom:2023.01.00')
-    implementation composeBom
-    androidTestImplementation composeBom
-
-    implementation "androidx.compose.runtime:runtime-livedata"
-    implementation "androidx.compose.material:material-icons-extended"
-    implementation "androidx.compose.material:material"
-    implementation "androidx.compose.material3:material3"
-    implementation "androidx.compose.ui:ui"
-    implementation 'androidx.compose.ui:ui-tooling-preview'
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_ui_version"
+    implementation "androidx.compose.material:material-icons-extended:$compose_ui_version"
+    implementation "androidx.compose.material:material:$compose_ui_version"
+    implementation "androidx.compose.ui:ui:$compose_ui_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
 
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
-    debugImplementation 'androidx.compose.ui:ui-tooling'
-    debugImplementation 'androidx.compose.ui:ui-test-manifest'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
 
     configurations { all*.exclude group: 'androidx.appcompat', module: 'appcompat' }
 }

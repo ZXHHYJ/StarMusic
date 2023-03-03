@@ -8,8 +8,8 @@ import android.os.Looper
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material.LocalContentColor
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,48 +20,46 @@ import com.kyant.monet.*
 fun MandySaMusicTheme(
     content: @Composable () -> Unit
 ) {
-    val defaultColor = Color.White
     //获取壁纸管理器
     val wallpaperManager = WallpaperManager.getInstance(LocalContext.current)
     //壁纸颜色
-    var wallpaperColor: Color? by remember {
-        mutableStateOf(null)
+    var wallpaperColor: Color by remember {
+        mutableStateOf(Color.Red)
     }
+    //判断是否支持获取壁纸颜色
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        wallpaperColor =
-            try {
+        try {
+            wallpaperColor =
                 Color(wallpaperManager.getWallpaperColors(FLAG_SYSTEM)!!.primaryColor.toArgb())
-            } catch (e: Exception) {
-                //windows sub system就会报错
-                MaterialTheme.colorScheme.primary
-            }
-        DisposableEffect(key1 = null) {
-            //判断是否支持获取壁纸颜色
-            val listener = WallpaperManager.OnColorsChangedListener { colors, which ->
+        } catch (e: Exception) {
+            //windows sub system就会报错
+        }
+        DisposableEffect(Unit) {
+            val colorsChangedListener = WallpaperManager.OnColorsChangedListener { colors, which ->
                 if (FLAG_SYSTEM == which && colors != null) {
                     wallpaperColor = Color(colors.primaryColor.toArgb())
                 }
             }
             wallpaperManager.addOnColorsChangedListener(
-                listener,
+                colorsChangedListener,
                 Handler.createAsync(Looper.getMainLooper())
             )
             onDispose {
                 //避免内存泄露
-                wallpaperManager.removeOnColorsChangedListener(listener)
+                wallpaperManager.removeOnColorsChangedListener(colorsChangedListener)
             }
         }
     }
     val palettes =
-        TonalPalettes(keyColor = wallpaperColor ?: defaultColor, style = PaletteStyle.TonalSpot)
+        TonalPalettes(keyColor = wallpaperColor, style = PaletteStyle.Vibrant)
     // In your Theme.kt
     CompositionLocalProvider(LocalTonalPalettes provides palettes) {
         CompositionLocalProvider(LocalContentColor provides 0.n1..100.n1) {
-            MaterialTheme(colorScheme = dynamicColorScheme()) {
+            MaterialTheme {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(background)
+                        .background(appBackgroundColor)
                 ) {
                     content.invoke()
                 }

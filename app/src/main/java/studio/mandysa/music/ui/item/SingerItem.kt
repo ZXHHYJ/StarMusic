@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ChevronRight
-import androidx.compose.material3.Icon
+import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,12 +14,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import studio.mandysa.music.R
-import studio.mandysa.music.logic.bean.ArtistSubBean
-import studio.mandysa.music.logic.bean.SearchSingerBean
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.theme.*
 
-@Composable
+/*@Composable
 fun SingerItem(model: SearchSingerBean, onClick: () -> Unit) {
     SingerItem(
         picUrl = model.picUrl,
@@ -39,7 +37,7 @@ fun SingerItem(model: ArtistSubBean, onClick: () -> Unit) {
     ) {
         onClick.invoke()
     }
-}
+}*/
 
 @Composable
 fun SingerItem(picUrl: String, name: String, hint: String, onClick: () -> Unit) {

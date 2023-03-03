@@ -7,16 +7,17 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -27,21 +28,12 @@ import androidx.lifecycle.map
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.R
-import studio.mandysa.music.logic.repository.UserRepository
+import studio.mandysa.music.logic.repository.SettingRepository
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.*
 import studio.mandysa.music.ui.screen.DialogDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.screen.about.AboutScreen
-import studio.mandysa.music.ui.screen.cloud.fm.CloudFmScreen
-import studio.mandysa.music.ui.screen.cloud.me.CloudMeMenu
-import studio.mandysa.music.ui.screen.cloud.me.CloudMeScreen
-import studio.mandysa.music.ui.screen.cloud.me.artistsub.CloudArtistSubScreen
-import studio.mandysa.music.ui.screen.cloud.me.meplaylist.CloudMePlaylistScreen
-import studio.mandysa.music.ui.screen.cloud.me.meplaylist.playlistmenu.CloudPlaylistMenu
-import studio.mandysa.music.ui.screen.cloud.music.CloudMusicScreen
-import studio.mandysa.music.ui.screen.cloud.playlistcnt.CloudPlaylistCntScreen
-import studio.mandysa.music.ui.screen.cloud.singercnt.CloudSingerCntScreen
 import studio.mandysa.music.ui.screen.local.album.AlbumScreen
 import studio.mandysa.music.ui.screen.local.albumcnt.AlbumCntScreen
 import studio.mandysa.music.ui.screen.local.playlist.PlayListScreen
@@ -52,7 +44,8 @@ import studio.mandysa.music.ui.screen.play.PlayScreen
 import studio.mandysa.music.ui.screen.search.SearchScreen
 import studio.mandysa.music.ui.screen.setting.SettingScreen
 import studio.mandysa.music.ui.screen.songmenu.SongMenu
-import studio.mandysa.music.ui.theme.*
+import studio.mandysa.music.ui.theme.appRightNavBarWidth
+import studio.mandysa.music.ui.theme.barBackgroundColor
 
 /**
  * Happy 22nd Birthday Shuangshengzi
@@ -63,6 +56,7 @@ enum class HomeNavigationDestination {
     Album,
     Singer,
     PlayList,
+    Search,
 }
 
 val HomeNavigationDestination.tabIcon
@@ -72,6 +66,7 @@ val HomeNavigationDestination.tabIcon
         HomeNavigationDestination.Album -> Icons.Rounded.Album
         HomeNavigationDestination.Singer -> Icons.Rounded.Mic
         HomeNavigationDestination.PlayList -> Icons.Rounded.List
+        HomeNavigationDestination.Search -> Icons.Rounded.Search
     }
 
 val HomeNavigationDestination.tabName
@@ -81,77 +76,60 @@ val HomeNavigationDestination.tabName
         HomeNavigationDestination.Album -> stringResource(id = R.string.album)
         HomeNavigationDestination.Singer -> stringResource(id = R.string.singer)
         HomeNavigationDestination.PlayList -> stringResource(id = R.string.play_list)
+        HomeNavigationDestination.Search -> stringResource(id = R.string.search)
     }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AppNavigationDrawer(
+private fun AppScaffold(
     modifier: Modifier = Modifier,
-    drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
-    drawerContent: @Composable () -> Unit,
     controllerBar: @Composable () -> Unit,
-    bottomBar: @Composable () -> Unit,
+    navigationBar: @Composable () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
-    var size by remember {
-        mutableStateOf(IntSize.Zero)
-    }
-    val contentBox: @Composable () -> Unit = {
-        Box(modifier = Modifier.fillMaxSize()) {
+    Row(modifier = modifier) {
+        if (SettingRepository.isTabletMode) {
+            Box(modifier = Modifier.fillMaxHeight()) {
+                navigationBar.invoke()
+            }
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(1.0f)
+        ) {
+            var bottomBarSize by remember {
+                mutableStateOf(IntSize.Zero)
+            }
             content.invoke(PaddingValues(bottom = with(LocalDensity.current) {
-                size.height.toDp()
+                bottomBarSize.height.toDp()
             }))
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
                 .onSizeChanged {
-                    size = it
+                    bottomBarSize = it
                 }) {
                 controllerBar.invoke()
-                if (!tabletMode) {
-                    bottomBar.invoke()
+                if (!SettingRepository.isTabletMode) {
+                    navigationBar.invoke()
                 }
                 Box(
                     modifier = Modifier
-                        .height(LocalDensity.current.run {
-                            WindowInsets.navigationBars
-                                .getBottom(this)
-                                .toDp()
-                        })
+                        .height(
+                            with(LocalDensity.current) {
+                                WindowInsets.navigationBars
+                                    .getBottom(this)
+                                    .toDp()
+                            })
                         .fillMaxWidth()
-                        .background(barColor)
+                        .background(barBackgroundColor)
                 )
             }
         }
     }
-    when (tabletMode) {
-        true -> {
-            PermanentNavigationDrawer(
-                modifier = modifier,
-                drawerContent = drawerContent,
-                content = contentBox
-            )
-        }
-        false -> {
-            ModalNavigationDrawer(
-                modifier = modifier,
-                drawerState = drawerState,
-                drawerContent = {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(end = 50.dp)
-                    ) {
-                        drawerContent.invoke()
-                    }
-                },
-                content = contentBox
-            )
-        }
-    }
 }
 
-@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainScreen() {
 
@@ -164,8 +142,6 @@ fun MainScreen() {
     val dialogNavController = rememberNavController<DialogDestination>(
         initialBackstack = emptyList()
     )
-
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
 
     var panelState by rememberSaveable {
         mutableStateOf<PanelState?>(null)
@@ -183,7 +159,7 @@ fun MainScreen() {
                 }
 
                 is DialogDestination.PlaylistMenu -> {
-                    CloudPlaylistMenu(mainNavController, dialogNavController, id = destination.id)
+
                 }
 
                 is DialogDestination.Message -> {
@@ -191,7 +167,7 @@ fun MainScreen() {
                 }
 
                 is DialogDestination.MeMenu -> {
-                    CloudMeMenu(mainNavController, dialogNavController)
+
                 }
             }
         }
@@ -212,184 +188,80 @@ fun MainScreen() {
             panelState = it
         },
         content = {
-            AppNavigationDrawer(
+            val mediaControllerVisibility by PlayManager.changeMusicLiveData().map {
+                return@map true
+            }.observeAsState(false)
+            AppScaffold(
                 modifier = Modifier.fillMaxSize(),
-                drawerState = drawerState,
-                drawerContent = {
-                    NavigationRail(
-                        modifier = Modifier
-                            .fillMaxHeight(),
-                        containerColor = background
+                controllerBar = {
+                    AnimatedVisibility(
+                        visible = mediaControllerVisibility,
+                        enter = expandVertically(),
+                        exit = shrinkVertically()
                     ) {
-                        val navLastDestination =
-                            mainNavController.backstack.entries.last().destination
-                        val bottomLastDestination =
-                            homeNavController.backstack.entries.last().destination
-                        val isLoginState by UserRepository.isLoginLiveData.observeAsState()
-                        if (!tabletMode) {
-                            if (isLoginState == true) {
-                                HomeNavigationDestination.CloudMusic.let { screen ->
-                                    AppNavigationRailItem(
-                                        label = {
-                                            Text(text = screen.tabName)
-                                        },
+                        MediaController(
+                            modifier = Modifier.fillMaxWidth(),
+                            panelState = panelState
+                        ) {
+                            it.invoke(PanelState.EXPANDED)
+                        }
+                    }
+                },
+                navigationBar = {
+                    if (SettingRepository.isTabletMode) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .width(appRightNavBarWidth)
+                        ) {
+                            TopAppBar(
+                                state = rememberTopAppBarState(),
+                                modifier = Modifier.fillMaxWidth(),
+                                title = stringResource(
+                                    id = R.string.music
+                                )
+                            ) {
+
+                            }
+                        }
+                    } else {
+                        AnimatedVisibility(
+                            visible = mainNavController.backstack.entries.size <= 1,
+                            enter = expandVertically(),
+                            exit = shrinkVertically()
+                        ) {
+                            AppBottomNavigationBar(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(56.dp),
+                            ) {
+                                val bottomLastDestination =
+                                    homeNavController.backstack.entries.last().destination
+                                listOf(
+                                    HomeNavigationDestination.Single,
+                                    HomeNavigationDestination.Search
+                                ).forEach { item ->
+                                    BottomNavigationItem(
                                         icon = {
                                             Icon(
-                                                screen.tabIcon,
+                                                item.tabIcon,
                                                 contentDescription = null
                                             )
+                                        }, label = {
+                                            Text(text = item.tabName)
                                         },
-                                        selected = screen == bottomLastDestination,
+                                        selected = item == bottomLastDestination,
                                         onClick = {
-                                            mainNavController.popUpTo {
-                                                it == ScreenDestination.Main
-                                            }
-                                            if (!homeNavController.moveToTop {
-                                                    it == screen
-                                                }) {
-                                                homeNavController.navigate(screen)
+                                            if (!homeNavController.moveToTop { it == item }) {
+                                                homeNavController.navigate(item)
                                             }
                                         }
                                     )
                                 }
                             }
-                        }
-                        HomeNavigationDestination.values().forEach { screen ->
-                            if (screen == HomeNavigationDestination.CloudMusic) {
-                                return@forEach
+                            if (!mediaControllerVisibility) {
+                                AppDivider(modifier = Modifier.fillMaxWidth())
                             }
-                            AppNavigationRailItem(
-                                label = {
-                                    Text(text = screen.tabName)
-                                },
-                                icon = {
-                                    Icon(
-                                        screen.tabIcon,
-                                        contentDescription = null
-                                    )
-                                },
-                                selected = screen == bottomLastDestination,
-                                onClick = {
-                                    mainNavController.popUpTo {
-                                        it == ScreenDestination.Main
-                                    }
-                                    if (!homeNavController.moveToTop {
-                                            it == screen
-                                        }) {
-                                        homeNavController.navigate(screen)
-                                    }
-                                }
-                            )
-                        }
-
-                        @Composable
-                        fun BottomNavRailItem(
-                            text: String,
-                            icon: ImageVector,
-                            screen: ScreenDestination
-                        ) {
-                            AppNavigationRailItem(
-                                label = {
-                                    Text(text = text)
-                                },
-                                icon = {
-                                    Icon(
-                                        icon,
-                                        contentDescription = null
-                                    )
-                                },
-                                selected = navLastDestination == screen,
-                                onClick = {
-                                    if (!mainNavController.moveToTop {
-                                            it == screen
-                                        }) {
-                                        mainNavController.navigate(screen)
-                                    }
-                                }
-                            )
-                        }
-
-                        if (tabletMode) {
-                            Spacer(modifier = Modifier.weight(1.0f))
-                            BottomNavRailItem(
-                                stringResource(id = R.string.search),
-                                Icons.Rounded.Search,
-                                ScreenDestination.Search
-                            )
-                        }
-                    }
-                },
-                controllerBar = {
-                    val isVisible by PlayManager.changeMusicLiveData().map {
-                        return@map true
-                    }.observeAsState(false)
-                    AnimatedVisibility(
-                        visible = isVisible,
-                        enter = expandVertically(),
-                        exit = shrinkVertically()
-                    ) {
-                        MediaController(panelState) {
-                            it.invoke(PanelState.EXPANDED)
-                        }
-                    }
-                },
-                bottomBar = {
-                    val isLoginState by UserRepository.isLoginLiveData.observeAsState()
-                    AnimatedVisibility(
-                        visible = mainNavController.backstack.entries.size <= 1 && isLoginState == true,
-                        enter = expandVertically(),
-                        exit = shrinkVertically()
-                    ) {
-                        NavigationBar(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(barColor),
-                            containerColor = Color.Transparent,
-                            contentColor = Color.White,
-                            windowInsets = WindowInsets(0, 0, 0, 0)
-                        ) {
-                            val bottomLastDestination =
-                                homeNavController.backstack.entries.last().destination
-                            AppNavigationBarItem(
-                                icon = {
-                                    Icon(
-                                        HomeNavigationDestination.CloudMusic.tabIcon,
-                                        contentDescription = null
-                                    )
-                                }, label = {
-                                    Text(text = HomeNavigationDestination.CloudMusic.tabName)
-                                },
-                                selected = HomeNavigationDestination.CloudMusic == bottomLastDestination,
-                                onClick = {
-                                    if (!homeNavController.moveToTop {
-                                            it == HomeNavigationDestination.CloudMusic
-                                        }) {
-                                        homeNavController.navigate(
-                                            HomeNavigationDestination.CloudMusic
-                                        )
-                                    }
-                                }
-                            )
-                            AppNavigationBarItem(
-                                icon = {
-                                    Icon(
-                                        HomeNavigationDestination.Single.tabIcon,
-                                        contentDescription = null
-                                    )
-                                }, label = {
-                                    Text(text = HomeNavigationDestination.Single.tabName)
-                                },
-                                selected = HomeNavigationDestination.CloudMusic != bottomLastDestination,
-                                onClick = {
-                                    if (!homeNavController.moveToTop {
-                                            it == HomeNavigationDestination.Single
-                                        }) {
-                                        homeNavController.navigate(
-                                            HomeNavigationDestination.Single
-                                        )
-                                    }
-                                }
-                            )
                         }
                     }
                 }
@@ -410,17 +282,12 @@ fun MainScreen() {
                             NavHost(homeNavController) {
                                 when (it) {
                                     HomeNavigationDestination.CloudMusic -> {
-                                        CloudMusicScreen(
-                                            mainNavController,
-                                            dialogNavController,
-                                            padding
-                                        )
+
                                     }
                                     HomeNavigationDestination.Single -> {
                                         SingleScreen(
                                             mainNavController,
                                             dialogNavController,
-                                            drawerState,
                                             padding
                                         )
                                     }
@@ -428,7 +295,6 @@ fun MainScreen() {
                                         AlbumScreen(
                                             mainNavController,
                                             dialogNavController,
-                                            drawerState,
                                             padding
                                         )
                                     }
@@ -436,7 +302,6 @@ fun MainScreen() {
                                         SingerScreen(
                                             mainNavController,
                                             dialogNavController,
-                                            drawerState,
                                             padding
                                         )
                                     }
@@ -444,8 +309,14 @@ fun MainScreen() {
                                         PlayListScreen(
                                             mainNavController,
                                             dialogNavController,
-                                            drawerState,
                                             padding
+                                        )
+                                    }
+                                    HomeNavigationDestination.Search -> {
+                                        SearchScreen(
+                                            mainNavController = mainNavController,
+                                            dialogNavController = dialogNavController,
+                                            paddingValues = padding
                                         )
                                     }
                                 }
@@ -461,12 +332,7 @@ fun MainScreen() {
                         }
 
                         is ScreenDestination.CloudPlaylistCnt -> {
-                            CloudPlaylistCntScreen(
-                                mainNavController = mainNavController,
-                                dialogNavController = dialogNavController,
-                                paddingValues = padding,
-                                id = screenDestination.id
-                            )
+
                         }
 
                         is ScreenDestination.SingerCnt -> {
@@ -479,12 +345,7 @@ fun MainScreen() {
                         }
 
                         is ScreenDestination.CloudSingerCnt -> {
-                            CloudSingerCntScreen(
-                                mainNavController = mainNavController,
-                                dialogNavController = dialogNavController,
-                                paddingValues = padding,
-                                id = screenDestination.artist.id
-                            )
+
                         }
 
                         is ScreenDestination.AlbumCnt -> {
@@ -509,38 +370,23 @@ fun MainScreen() {
                         }
 
                         ScreenDestination.CloudArtistSub -> {
-                            CloudArtistSubScreen(
-                                mainNavController = mainNavController,
-                                paddingValues = padding
-                            )
+
                         }
 
                         ScreenDestination.CloudMePlaylist -> {
-                            CloudMePlaylistScreen(
-                                mainNavController = mainNavController,
-                                dialogNavController = dialogNavController,
-                                paddingValues = padding
-                            )
+
                         }
 
                         ScreenDestination.CloudFmScreen -> {
-                            CloudFmScreen(
-                                mainNavController = mainNavController,
-                                dialogNavController = dialogNavController,
-                                paddingValues = padding
-                            )
+
                         }
 
                         ScreenDestination.CloudToplistScreen -> {
-                            // TODO:排行榜页面（待补充
+
                         }
 
                         ScreenDestination.CloudMeScreen -> {
-                            CloudMeScreen(
-                                mainNavController,
-                                dialogNavController,
-                                padding
-                            )
+
                         }
                     }
                 }

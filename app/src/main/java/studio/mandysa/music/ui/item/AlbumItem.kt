@@ -3,12 +3,11 @@ package studio.mandysa.music.ui.item
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,7 +20,6 @@ import androidx.compose.ui.unit.sp
 import studio.mandysa.music.R
 import studio.mandysa.music.logic.repository.LocalMediaRepository.artist
 import studio.mandysa.music.logic.repository.LocalMediaRepository.songs
-import studio.mandysa.music.service.playmanager.bean.MetaAlbum
 import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
 import studio.mandysa.music.ui.common.AppAsyncImage
@@ -32,17 +30,6 @@ import java.util.*
 private fun stampToDate(s: String): String {
     val date = Date(s.toLong())
     return SimpleDateFormat.getDateInstance().format(date)
-}
-
-@Composable
-fun AlbumItem(mateAlbum: MetaAlbum, onClick: () -> Unit) {
-    AlbumItem(
-        coverUrl = mateAlbum.coverUrl,
-        title = mateAlbum.name,
-        subTitle = stampToDate(mateAlbum.publishTime)
-    ) {
-        onClick.invoke()
-    }
 }
 
 @Composable
@@ -80,7 +67,7 @@ private fun AlbumItem(coverUrl: String, title: String, subTitle: String, onClick
                 modifier = Modifier
                     .fillMaxSize()
                     .offset(x = 5.dp),
-                colors = CardDefaults.cardColors(Color.LightGray),
+                contentColor = Color.LightGray,
                 shape = RoundedCornerShape(coverSize)
             ) {
                 //半个专辑的背景

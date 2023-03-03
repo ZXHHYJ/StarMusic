@@ -1,41 +1,10 @@
 package studio.mandysa.music.logic.repository
 
-import androidx.lifecycle.LiveData
-import com.drake.serialize.serialize.serialLiveData
-import studio.mandysa.music.logic.bean.SerialUserBean
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 
 object SettingRepository {
-
-    /**
-     * 设置网易云后端地址
-     */
-    private val mNeteaseCloudPath by serialLiveData<String>(
-        default = null,
-        name = "netease_cloud_path"
-    )
-
-    /**
-     * 网易云账号登录信息
-     */
-    private val mNeteaseCloudUserBean by serialLiveData<SerialUserBean>(
-        default = null,
-        name = "netease_cloud_user_bean"
-    )
-
-    val userCookie
-        get() = mNeteaseCloudUserBean.value!!.cookie
-
-    val userId
-        get() = mNeteaseCloudUserBean.value!!.userId
-
-    val neteaseCloudPath: LiveData<String> = mNeteaseCloudPath
-
-    fun setEnableNeteasePath(path: String) {
-        mNeteaseCloudPath.value = path
-    }
-
-    fun setNeteaseCloudUserBean(userid: String, cookie: String) {
-        mNeteaseCloudUserBean.value = SerialUserBean(userId, cookie)
-    }
-
+    /*大屏幕模式/平板模式*/
+    val isTabletMode
+        @Composable get() = LocalContext.current.resources.displayMetrics.widthPixels >= LocalContext.current.resources.displayMetrics.heightPixels
 }
