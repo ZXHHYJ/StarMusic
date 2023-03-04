@@ -3,69 +3,111 @@ package studio.mandysa.music.ui.common
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
-import android.graphics.drawable.Drawable
-import android.view.animation.LinearInterpolator
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.animateOffsetAsState
+import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.drawscope.scale
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.unit.IntSize
 import androidx.core.graphics.drawable.toBitmap
-import androidx.core.graphics.drawable.toDrawable
 import coil.ImageLoader
 import coil.request.ImageRequest
-import com.flaviofaria.kenburnsview.KenBurnsView
-import com.flaviofaria.kenburnsview.RandomTransitionGenerator
 import com.google.android.renderscript.Toolkit
+import kotlin.math.abs
 
 @Composable
 fun MotionBlur(modifier: Modifier, url: String, paused: Boolean) {
     val context = LocalContext.current
-    var drawable by remember {
-        mutableStateOf<Drawable?>(null)
+    var imageBitmap by remember {
+        mutableStateOf<ImageBitmap?>(null)
     }
-    LaunchedEffect(key1 = url) {
+    LaunchedEffect(url, url.isNotEmpty()) {
         val imageLoader = ImageLoader(context)
         val request = ImageRequest.Builder(context)
             .data(url)
             .build()
         val bitmap = imageLoader.execute(request).drawable?.toBitmap()
         if (bitmap != null) {
-            drawable = handleImageBlur(bitmap).toDrawable(context.resources)
+            imageBitmap = handleImageBlur(bitmap).asImageBitmap()
         }
     }
-    AndroidView(factory = {
-        KenBurnsView(it).apply {
-            setTransitionGenerator(
-                RandomTransitionGenerator(
-                    2000,
-                    LinearInterpolator()
-                )
-            )
-        }
-    }, modifier = modifier) {
-        if (drawable != null && drawable!! != it.drawable) {
-            it.setImageDrawable(drawable!!)
-        }
-        if (paused) {
-            it.pause()
-        } else {
-            it.resume()
-        }
-    }
-}
 
-@Preview
-@Composable
-fun PreviewMotionBlur() {
-    MotionBlur(modifier = Modifier.fillMaxSize(), "", true)
+    var dstSize by remember {
+        mutableStateOf(IntSize.Zero)
+    }
+
+    var canvasSize by remember {
+        mutableStateOf(IntSize.Zero)
+    }
+
+    var scale by remember {
+        mutableStateOf(1f)
+    }
+
+    fun updateScale() {
+        val newScale = (100..300).random().toFloat() / 100
+        if (newScale == scale) {
+            updateScale()
+            return
+        }
+        scale = newScale
+    }
+
+    val durationMillis = 2000
+
+    val scaleAnim by animateFloatAsState(
+        targetValue = scale,
+        animationSpec = TweenSpec(durationMillis = durationMillis)
+    ) {
+        updateScale()
+    }
+
+    var pivotOffset by remember {
+        mutableStateOf(Offset(0f, 0f))
+    }
+
+    fun updateOffset() {
+        val widthDiff = abs(dstSize.width - canvasSize.width * scaleAnim).toInt()
+        val heightDiff = abs(dstSize.height - canvasSize.height * scaleAnim).toInt()
+        val x = (0..widthDiff).random().toFloat()
+        val y = (0..heightDiff).random().toFloat()
+        pivotOffset = Offset(x, y)
+    }
+
+    val pivotOffsetAnim by animateOffsetAsState(
+        targetValue = pivotOffset,
+        animationSpec = TweenSpec(durationMillis = durationMillis)
+    ) {
+        updateOffset()
+    }
+
+    LaunchedEffect(imageBitmap, !paused) {
+        updateScale()
+        updateOffset()
+    }
+    Canvas(
+        modifier = modifier.onSizeChanged {
+            val max = listOf(it.width, it.height).maxOrNull() ?: return@onSizeChanged
+            dstSize = IntSize(max, max)
+            canvasSize = it
+        }) {
+        imageBitmap?.let {
+            scale(scale = scaleAnim, pivot = pivotOffsetAnim) {
+                drawImage(image = it, dstSize = dstSize)
+            }
+        }
+    }
 }
 
 private fun handleImageBlur(image: Bitmap): Bitmap {
     var blurBitmap = image.copy(Bitmap.Config.ARGB_8888, true)
-    val canvas = Canvas(blurBitmap)
-    canvas.drawColor(0x40000000)
     blurBitmap = scaleBitmap(blurBitmap, blurBitmap.height * 150 / blurBitmap.width)
     blurBitmap = meshBitmap(blurBitmap)
     blurBitmap = Toolkit.blur(blurBitmap, 25)

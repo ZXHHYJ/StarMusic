@@ -140,6 +140,7 @@ fun TopAppBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(alignment = Alignment.BottomCenter)
+                    .padding(horizontal = defaultHorizontal)
                     .offset {
                         return@offset IntOffset(
                             x = 0,

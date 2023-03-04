@@ -62,8 +62,6 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.*'], dir: 'libs')
-    // 随机放大图片 https://github.com/flavioarfaria/KenBurnsView
-    implementation 'com.flaviofaria:kenburnsview:1.0.7'
     // 媒体播放器 https://exoplayer.dev/
     implementation 'com.google.android.exoplayer:exoplayer-core:2.18.1'
     // 图片加载库 https://github.com/coil-kt/coil/blob/main/README-zh.md

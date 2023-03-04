@@ -1,6 +1,9 @@
 package studio.mandysa.music.ui.screen.local.single
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
@@ -28,30 +31,24 @@ fun SingleScreen(
             .fillMaxSize()
             .statusBarsPadding()
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .statusBarsPadding()
+        val localBeans = LocalMediaRepository.getSongs()
+        val topAppBarState = rememberTopAppBarState()
+        LazyColumn(
+            modifier = Modifier.bindTopAppBarState(topAppBarState),
+            contentPadding = padding
         ) {
-            val localBeans = LocalMediaRepository.getSongs()
-            val topAppBarState = rememberTopAppBarState()
-            LazyColumn(
-                modifier = Modifier.bindTopAppBarState(topAppBarState),
-                contentPadding = padding
-            ) {
-                itemsIndexed(localBeans) { index, item ->
-                    SongItem(dialogNavController = dialogNavController, song = item) {
-                        PlayManager.play(localBeans, index)
-                    }
+            itemsIndexed(localBeans) { index, item ->
+                SongItem(dialogNavController = dialogNavController, song = item) {
+                    PlayManager.play(localBeans, index)
                 }
             }
-            TopAppBar(
-                state = topAppBarState,
-                modifier = Modifier.fillMaxWidth(),
-                title = stringResource(id = studio.mandysa.music.R.string.media_lib)
-            ) {
+        }
+        TopAppBar(
+            state = topAppBarState,
+            modifier = Modifier.fillMaxWidth(),
+            title = stringResource(id = studio.mandysa.music.R.string.media_lib)
+        ) {
 
-            }
         }
     }
 }
