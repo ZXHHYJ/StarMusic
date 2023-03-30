@@ -25,12 +25,14 @@ import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.service.playmanager.ktx.artist
 import studio.mandysa.music.service.playmanager.ktx.title
 import studio.mandysa.music.ui.common.AppCard
-import studio.mandysa.music.ui.screen.DialogDestination
-import studio.mandysa.music.ui.theme.defaultVertical
+import studio.mandysa.music.ui.screen.BottomSheetDestination
+import studio.mandysa.music.ui.theme.smallVertical
+import studio.mandysa.music.ui.theme.playScreenHorizontal
+import studio.mandysa.music.ui.theme.playScreenMaxWidth
 import studio.mandysa.music.ui.theme.translucentWhite
 
 @Composable
-fun PlayQueueScreen(dialogNavController: NavController<DialogDestination>) {
+fun PlayQueueScreen(dialogNavController: NavController<BottomSheetDestination>) {
     val playlist by PlayManager.changePlayListLiveData().observeAsState(listOf())
     LazyColumn(
         modifier = Modifier
@@ -51,7 +53,7 @@ fun PlayQueueScreen(dialogNavController: NavController<DialogDestination>) {
 
 @Composable
 private fun SongItem(
-    dialogNavController: NavController<DialogDestination>,
+    dialogNavController: NavController<BottomSheetDestination>,
     position: Int,
     song: SongBean,
     onClick: () -> Unit
@@ -66,7 +68,7 @@ private fun SongItem(
         ) {
             Box(
                 modifier = Modifier
-                    .padding(start = playScreenHorizontal, end = defaultVertical)
+                    .padding(start = playScreenHorizontal, end = smallVertical)
                     .size(50.dp),
                 contentAlignment = Alignment.Center
             ) {
@@ -81,7 +83,7 @@ private fun SongItem(
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(1.0f)
-                    .padding(vertical = defaultVertical),
+                    .padding(vertical = smallVertical),
             ) {
                 Text(
                     text = song.title,
@@ -102,7 +104,7 @@ private fun SongItem(
                 contentDescription = null,
                 modifier = Modifier
                     .clickable {
-                        dialogNavController.navigate(DialogDestination.SongMenu(song))
+                        dialogNavController.navigate(BottomSheetDestination.SongMenu(song))
                     },
                 tint = translucentWhite
             )

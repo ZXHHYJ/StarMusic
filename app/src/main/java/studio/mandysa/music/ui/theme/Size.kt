@@ -4,14 +4,14 @@ import androidx.compose.ui.unit.dp
 
 val appRightNavBarWidth = 220.dp
 
-val defaultVertical = 10.dp
+val smallVertical = 10.dp
 
-val defaultHorizontal = 16.dp
+val smallHorizontal = 16.dp
 
-val defaultRound = 8.dp
+val smallRound = 8.dp
 
-/*
-val tabletMode
-    @Composable get() = LocalContext.current.resources.displayMetrics.widthPixels >= LocalContext.current.resources.displayMetrics.heightPixels
-*/
+val playScreenHorizontal = 25.dp
 
+val playScreenMaxWidth = 380.dp
+
+val mediumItemHeight = 70.dp

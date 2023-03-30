@@ -1,6 +1,5 @@
 package studio.mandysa.music.ui.common
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
@@ -8,6 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -22,8 +22,9 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import studio.mandysa.music.ui.theme.appBackgroundColor
-import studio.mandysa.music.ui.theme.defaultHorizontal
+import studio.mandysa.music.ui.theme.smallHorizontal
 import studio.mandysa.music.ui.theme.textColor
+import kotlin.math.abs
 import kotlin.math.roundToInt
 
 @Stable
@@ -38,12 +39,13 @@ class TopAppBarState {
 
             val maxUpPx = topAppBarHeight.height.toFloat()
 
+            var downOffset = 0f
+
             override fun onPreScroll(
                 available: Offset,
                 source: NestedScrollSource
             ): Offset {
-                val delta = available.y
-                val newOffset = topAppBarOffsetHeightPx + delta
+                val newOffset = topAppBarOffsetHeightPx + available.y
                 topAppBarOffsetHeightPx = newOffset.coerceIn(-maxUpPx, 0f)
                 return Offset.Zero
             }
@@ -53,16 +55,15 @@ class TopAppBarState {
 @Composable
 fun rememberTopAppBarState() = remember { TopAppBarState() }
 
-@SuppressLint("ComposableModifierFactory")
-@Composable
-fun Modifier.bindTopAppBarState(state: TopAppBarState) = this
-    .nestedScroll(connection = state.connection)
-    .offset {
-        return@offset IntOffset(
-            x = 0,
-            y = state.topAppBarHeight.height + state.topAppBarOffsetHeightPx.roundToInt()
-        )
-    }
+fun Modifier.bindTopAppBarState(state: TopAppBarState) = composed {
+    nestedScroll(connection = state.connection)
+        .offset {
+            return@offset IntOffset(
+                x = 0,
+                y = state.topAppBarHeight.height + state.topAppBarOffsetHeightPx.roundToInt()
+            )
+        }
+}
 
 private val toolbarHeight = 56.dp
 
@@ -94,7 +95,7 @@ fun TopAppBar(
                         .height(toolbarHeight)
                         .clipToBounds()
                         .background(appBackgroundColor)
-                        .padding(horizontal = defaultHorizontal),
+                        .padding(horizontal = smallHorizontal),
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically,
                     content = {
@@ -118,7 +119,7 @@ fun TopAppBar(
                 Column(modifier = Modifier
                     .height(toolbarHeight)
                     .clipToBounds()
-                    .padding(horizontal = defaultHorizontal)
+                    .padding(horizontal = smallHorizontal)
                     .offset {
                         return@offset IntOffset(
                             x = 0,
@@ -140,7 +141,7 @@ fun TopAppBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(alignment = Alignment.BottomCenter)
-                    .padding(horizontal = defaultHorizontal)
+                    .padding(horizontal = smallHorizontal)
                     .offset {
                         return@offset IntOffset(
                             x = 0,

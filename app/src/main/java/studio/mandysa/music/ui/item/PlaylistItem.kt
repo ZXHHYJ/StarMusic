@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.sp
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.theme.cardBackgroundColor
 import studio.mandysa.music.ui.theme.onBackground
-import studio.mandysa.music.ui.theme.defaultRoundShape
+import studio.mandysa.music.ui.theme.smallRoundShape
 import studio.mandysa.music.ui.theme.textColor
 
 @Composable
@@ -25,7 +25,7 @@ fun PlaylistItem(icon: ImageVector, onClick: () -> Unit) {
         Box(
             modifier = Modifier
                 .size(120.dp)
-                .clip(defaultRoundShape)
+                .clip(smallRoundShape)
                 .background(cardBackgroundColor)
                 .clickable(onClick = onClick)
         ) {

@@ -7,9 +7,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
+import studio.mandysa.music.R
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -29,9 +31,9 @@ fun MediaPermission(modifier: Modifier = Modifier, content: @Composable BoxScope
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("授权访问手机媒体以扫描媒体库中的音乐")
+                Text(text = stringResource(id = R.string.permission_media_lib))
                 AppButton(onClick = { permissionState.launchPermissionRequest() }) {
-                    Text("前往授权")
+                    Text(text = stringResource(id = R.string.go_permission))
                 }
             }
         }

@@ -27,13 +27,9 @@ import studio.mandysa.music.service.playmanager.ktx.coverUrl
 import studio.mandysa.music.ui.common.BoxWithPercentages
 import studio.mandysa.music.ui.common.MotionBlur
 import studio.mandysa.music.ui.common.PanelState
-import studio.mandysa.music.ui.screen.DialogDestination
+import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.*
-
-val playScreenHorizontal = 25.dp
-
-val playScreenMaxWidth = 380.dp
 
 enum class PlayScreenDestination {
     Main,
@@ -52,7 +48,7 @@ val PlayScreenDestination.tabIcon
 @Composable
 fun PlayScreen(
     mainNavController: NavController<ScreenDestination>,
-    dialogNavController: NavController<DialogDestination>,
+    dialogNavController: NavController<BottomSheetDestination>,
     panelState: PanelState?,
     function: (PanelState) -> Unit
 ) {
@@ -68,7 +64,7 @@ fun PlayScreen(
     fun BottomNavigationBar(modifier: Modifier) {
         BottomNavigation(
             modifier = modifier
-                .padding(horizontal = defaultHorizontal),
+                .padding(horizontal = smallHorizontal),
             elevation = 0.dp,
             backgroundColor = Color.Transparent
         ) {
@@ -78,7 +74,7 @@ fun PlayScreen(
                 PlayScreenDestination.PlayQueue
             ).forEach { screen ->
                 val selected = screen == lastDestination
-                BottomNavigationItem(modifier = Modifier.clip(defaultRoundShape),
+                BottomNavigationItem(modifier = Modifier.clip(smallRoundShape),
                     icon = {
                         Icon(
                             screen.tabIcon,

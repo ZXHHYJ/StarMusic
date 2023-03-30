@@ -7,9 +7,7 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
@@ -23,27 +21,28 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.map
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.olshevski.navigation.reimagined.*
+import dev.olshevski.navigation.reimagined.material.BottomSheetNavHost
 import studio.mandysa.music.R
 import studio.mandysa.music.logic.repository.SettingRepository
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.*
-import studio.mandysa.music.ui.screen.DialogDestination
+import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.screen.about.AboutScreen
-import studio.mandysa.music.ui.screen.local.album.AlbumScreen
-import studio.mandysa.music.ui.screen.local.albumcnt.AlbumCntScreen
-import studio.mandysa.music.ui.screen.local.playlist.PlayListScreen
-import studio.mandysa.music.ui.screen.local.singer.SingerScreen
-import studio.mandysa.music.ui.screen.local.singercnt.SingerCntScreen
-import studio.mandysa.music.ui.screen.local.single.SingleScreen
+import studio.mandysa.music.ui.screen.album.AlbumScreen
+import studio.mandysa.music.ui.screen.albumcnt.AlbumCntScreen
 import studio.mandysa.music.ui.screen.play.PlayScreen
+import studio.mandysa.music.ui.screen.playlist.PlayListScreen
 import studio.mandysa.music.ui.screen.search.SearchScreen
 import studio.mandysa.music.ui.screen.setting.SettingScreen
-import studio.mandysa.music.ui.screen.songmenu.SongMenu
+import studio.mandysa.music.ui.screen.singer.SingerScreen
+import studio.mandysa.music.ui.screen.singercnt.SingerCntScreen
+import studio.mandysa.music.ui.screen.single.SingleScreen
+import studio.mandysa.music.ui.screen.songmenu.SongMenuDialog
+import studio.mandysa.music.ui.theme.appBackgroundColor
 import studio.mandysa.music.ui.theme.appRightNavBarWidth
 import studio.mandysa.music.ui.theme.barBackgroundColor
 
@@ -51,7 +50,6 @@ import studio.mandysa.music.ui.theme.barBackgroundColor
  * Happy 22nd Birthday Shuangshengzi
  */
 enum class HomeNavigationDestination {
-    CloudMusic,
     Single,
     Album,
     Singer,
@@ -61,7 +59,6 @@ enum class HomeNavigationDestination {
 
 val HomeNavigationDestination.tabIcon
     get() = when (this) {
-        HomeNavigationDestination.CloudMusic -> Icons.Rounded.Contactless
         HomeNavigationDestination.Single -> Icons.Rounded.Source
         HomeNavigationDestination.Album -> Icons.Rounded.Album
         HomeNavigationDestination.Singer -> Icons.Rounded.Mic
@@ -71,7 +68,6 @@ val HomeNavigationDestination.tabIcon
 
 val HomeNavigationDestination.tabName
     @Composable get() = when (this) {
-        HomeNavigationDestination.CloudMusic -> stringResource(id = R.string.cloud_music)
         HomeNavigationDestination.Single -> stringResource(id = R.string.media_lib)
         HomeNavigationDestination.Album -> stringResource(id = R.string.album)
         HomeNavigationDestination.Singer -> stringResource(id = R.string.singer)
@@ -139,7 +135,7 @@ fun MainScreen() {
     val homeNavController =
         rememberNavController(startDestination = HomeNavigationDestination.Single)
 
-    val dialogNavController = rememberNavController<DialogDestination>(
+    val sheetController = rememberNavController<BottomSheetDestination>(
         initialBackstack = emptyList()
     )
 
@@ -147,31 +143,6 @@ fun MainScreen() {
         mutableStateOf<PanelState?>(null)
     }
 
-    DialogNavHost(dialogNavController) { destination ->
-        Dialog(
-            onDismissRequest = {
-                dialogNavController.pop()
-            },
-        ) {
-            when (destination) {
-                is DialogDestination.SongMenu -> {
-                    SongMenu(mainNavController, dialogNavController, song = destination.song)
-                }
-
-                is DialogDestination.PlaylistMenu -> {
-
-                }
-
-                is DialogDestination.Message -> {
-                    Message(dialogNavController, message = destination.message)
-                }
-
-                is DialogDestination.MeMenu -> {
-
-                }
-            }
-        }
-    }
 
     val systemUiController = rememberSystemUiController()
 
@@ -281,41 +252,38 @@ fun MainScreen() {
                         ScreenDestination.Main -> {
                             NavHost(homeNavController) {
                                 when (it) {
-                                    HomeNavigationDestination.CloudMusic -> {
-
-                                    }
                                     HomeNavigationDestination.Single -> {
                                         SingleScreen(
                                             mainNavController,
-                                            dialogNavController,
+                                            sheetController,
                                             padding
                                         )
                                     }
                                     HomeNavigationDestination.Album -> {
                                         AlbumScreen(
                                             mainNavController,
-                                            dialogNavController,
+                                            sheetController,
                                             padding
                                         )
                                     }
                                     HomeNavigationDestination.Singer -> {
                                         SingerScreen(
                                             mainNavController,
-                                            dialogNavController,
+                                            sheetController,
                                             padding
                                         )
                                     }
                                     HomeNavigationDestination.PlayList -> {
                                         PlayListScreen(
                                             mainNavController,
-                                            dialogNavController,
+                                            sheetController,
                                             padding
                                         )
                                     }
                                     HomeNavigationDestination.Search -> {
                                         SearchScreen(
                                             mainNavController = mainNavController,
-                                            dialogNavController = dialogNavController,
+                                            dialogNavController = sheetController,
                                             paddingValues = padding
                                         )
                                     }
@@ -326,32 +294,25 @@ fun MainScreen() {
                         ScreenDestination.Search -> {
                             SearchScreen(
                                 mainNavController = mainNavController,
-                                dialogNavController = dialogNavController,
+                                dialogNavController = sheetController,
                                 paddingValues = padding
                             )
                         }
 
-                        is ScreenDestination.CloudPlaylistCnt -> {
-
-                        }
 
                         is ScreenDestination.SingerCnt -> {
                             SingerCntScreen(
                                 mainNavController = mainNavController,
-                                dialogNavController = dialogNavController,
+                                dialogNavController = sheetController,
                                 paddingValues = padding,
                                 artist = screenDestination.artist
                             )
                         }
 
-                        is ScreenDestination.CloudSingerCnt -> {
-
-                        }
-
                         is ScreenDestination.AlbumCnt -> {
                             AlbumCntScreen(
                                 mainNavController = mainNavController,
-                                dialogNavController = dialogNavController,
+                                dialogNavController = sheetController,
                                 paddingValues = padding,
                                 album = screenDestination.album
                             )
@@ -364,39 +325,48 @@ fun MainScreen() {
                         ScreenDestination.Setting -> {
                             SettingScreen(
                                 mainNavController = mainNavController,
-                                dialogNavController = dialogNavController,
+                                dialogNavController = sheetController,
                                 paddingValues = padding
                             )
                         }
 
-                        ScreenDestination.CloudArtistSub -> {
-
-                        }
-
-                        ScreenDestination.CloudMePlaylist -> {
-
-                        }
-
-                        ScreenDestination.CloudFmScreen -> {
-
-                        }
-
-                        ScreenDestination.CloudToplistScreen -> {
-
-                        }
-
-                        ScreenDestination.CloudMeScreen -> {
-
-                        }
                     }
                 }
             }
         }) {
         PlayScreen(
             mainNavController = mainNavController,
-            dialogNavController = dialogNavController,
+            dialogNavController = sheetController,
             panelState = panelState,
             it
         )
+    }
+
+    BottomSheetNavHost(
+        controller = sheetController,
+        onDismissRequest = { sheetController.pop() }
+    ) { destination ->
+        Surface(
+            modifier = Modifier.background(color = appBackgroundColor),
+            elevation = ModalBottomSheetDefaults.Elevation
+        ) {
+            when (destination) {
+                is BottomSheetDestination.SongMenu -> {
+                    SongMenuDialog(mainNavController, sheetController, song = destination.song)
+                }
+
+                is BottomSheetDestination.PlaylistMenu -> {
+
+                }
+
+                is BottomSheetDestination.Message -> {
+                    MessageDialog(sheetController, message = destination.message)
+                }
+
+                is BottomSheetDestination.MeMenu -> {
+
+                }
+            }
+        }
     }
 }

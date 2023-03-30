@@ -13,7 +13,9 @@ import org.jaudiotagger.tag.FieldKey
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.ui.common.Lyric
-import studio.mandysa.music.ui.theme.defaultHorizontal
+import studio.mandysa.music.ui.theme.smallHorizontal
+import studio.mandysa.music.ui.theme.playScreenHorizontal
+import studio.mandysa.music.ui.theme.playScreenMaxWidth
 import java.io.File
 
 
@@ -55,7 +57,7 @@ fun LyricScreen() {
         modifier = Modifier
             .widthIn(max = playScreenMaxWidth)
             .fillMaxSize()
-            .padding(horizontal = playScreenHorizontal - defaultHorizontal / 2),
+            .padding(horizontal = playScreenHorizontal - smallHorizontal / 2),
         lyric = lyric,
         liveTime = liveTime
     ) {

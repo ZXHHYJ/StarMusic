@@ -9,11 +9,9 @@ import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import studio.mandysa.music.R
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.theme.*
 
@@ -50,7 +48,7 @@ fun SingerItem(picUrl: String, name: String, hint: String, onClick: () -> Unit) 
     ) {
         Box(
             modifier = Modifier
-                .padding(horizontal = defaultHorizontal, vertical = defaultVertical)
+                .padding(horizontal = smallHorizontal, vertical = smallVertical)
                 .size(50.dp), contentAlignment = Alignment.Center
         ) {
             AppAsyncImage(modifier = Modifier.size(50.dp), cornerSize = 25.dp, url = picUrl)
@@ -59,7 +57,7 @@ fun SingerItem(picUrl: String, name: String, hint: String, onClick: () -> Unit) 
             modifier = Modifier
                 .fillMaxSize()
                 .weight(1.0f)
-                .padding(vertical = defaultVertical),
+                .padding(vertical = smallVertical),
         ) {
             Text(
                 text = name,
@@ -80,6 +78,6 @@ fun SingerItem(picUrl: String, name: String, hint: String, onClick: () -> Unit) 
             tint = onBackground,
             contentDescription = null,
         )
-        Spacer(modifier = Modifier.padding(end = defaultHorizontal))
+        Spacer(modifier = Modifier.padding(end = smallHorizontal))
     }
 }

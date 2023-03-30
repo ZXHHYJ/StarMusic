@@ -62,23 +62,23 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.*'], dir: 'libs')
-    // 媒体播放器 https://exoplayer.dev/
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.18.1'
-    // 图片加载库 https://github.com/coil-kt/coil/blob/main/README-zh.md
-    implementation "io.coil-kt:coil-compose:2.2.2"
-    // 网络请求库
-    //implementation "com.squareup.okhttp3:okhttp:4.10.0"
-    // json解析 https://github.com/google/gson
+    // https://github.com/flavioarfaria/KenBurnsView
+    implementation 'com.flaviofaria:kenburnsview:1.0.7'
+    // https://exoplayer.dev/
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.18.5'
+    // https://github.com/coil-kt/coil/blob/main/README-zh.md
+    implementation "io.coil-kt:coil-compose:2.3.0"
+    // https://github.com/google/gson
     implementation 'com.google.code.gson:gson:2.10'
-    // 获取本地歌曲tag信息 https://mvnrepository.com/artifact/net.jthink/jaudiotagger
+    // https://mvnrepository.com/artifact/net.jthink/jaudiotagger
     implementation 'net.jthink:jaudiotagger:3.0.1'
-
-    implementation "dev.olshevski.navigation:reimagined:1.3.1"
+    // https://github.com/olshevski/compose-navigation-reimagined
+    implementation "dev.olshevski.navigation:reimagined:1.4.0"
+    implementation "dev.olshevski.navigation:reimagined-material:1.4.0"
 
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.media:media:1.6.0'
 
-    implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
     implementation "com.google.accompanist:accompanist-permissions:$accompanist_version"
 
@@ -97,7 +97,7 @@ dependencies {
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"

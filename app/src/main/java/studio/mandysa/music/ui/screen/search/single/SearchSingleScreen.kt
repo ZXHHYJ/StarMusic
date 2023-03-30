@@ -4,11 +4,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import dev.olshevski.navigation.reimagined.NavController
-import studio.mandysa.music.ui.screen.DialogDestination
+import studio.mandysa.music.ui.screen.BottomSheetDestination
 
 @Composable
 fun SearchSingleScreen(
-    dialogNavController: NavController<DialogDestination>,
+    dialogNavController: NavController<BottomSheetDestination>,
     paddingValues: PaddingValues,
     keywords: String
 ) {

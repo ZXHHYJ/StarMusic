@@ -11,12 +11,12 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import studio.mandysa.music.ui.theme.defaultRoundShape
+import studio.mandysa.music.ui.theme.smallRoundShape
 
 @Composable
 fun AppCard(
     modifier: Modifier = Modifier,
-    shape: Shape = defaultRoundShape,
+    shape: Shape = smallRoundShape,
     backgroundColor: Color,
     contentColor: Color = contentColorFor(backgroundColor = backgroundColor),
     elevation: Dp = 0.dp,

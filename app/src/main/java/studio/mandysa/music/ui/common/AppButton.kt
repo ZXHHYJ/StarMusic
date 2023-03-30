@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import studio.mandysa.music.ui.theme.appButtonBackgroundColor
-import studio.mandysa.music.ui.theme.defaultRoundShape
+import studio.mandysa.music.ui.theme.smallRoundShape
 import studio.mandysa.music.ui.theme.onTextColor
 
 @Composable
@@ -30,7 +30,7 @@ fun AppButton(
             hoveredElevation = 0.dp,
             focusedElevation = 0.dp
         ),
-        shape = defaultRoundShape,
+        shape = smallRoundShape,
         border = null,
         colors = ButtonDefaults.buttonColors(
             backgroundColor = appButtonBackgroundColor,

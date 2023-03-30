@@ -22,8 +22,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import studio.mandysa.music.ui.theme.defaultHorizontal
-import studio.mandysa.music.ui.theme.defaultRoundShape
+import studio.mandysa.music.ui.theme.smallHorizontal
+import studio.mandysa.music.ui.theme.smallRoundShape
 import studio.mandysa.music.ui.theme.translucentWhite
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
@@ -95,13 +95,13 @@ fun Lyric(
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(defaultRoundShape)
+                    .clip(smallRoundShape)
                     .clickable {
                         onClick.invoke(model.second)
                     }
                     .padding(
                         vertical = 20.dp,
-                        horizontal = defaultHorizontal/2
+                        horizontal = smallHorizontal/2
                     )
                     .animateItemPlacement()
                     .onSizeChanged {

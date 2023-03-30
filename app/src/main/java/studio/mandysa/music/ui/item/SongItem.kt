@@ -22,13 +22,13 @@ import studio.mandysa.music.service.playmanager.ktx.coverUrl
 import studio.mandysa.music.service.playmanager.ktx.title
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.AppCard
-import studio.mandysa.music.ui.screen.DialogDestination
+import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.theme.*
 
 
 @Composable
 fun SongItem(
-    dialogNavController: NavController<DialogDestination>,
+    dialogNavController: NavController<BottomSheetDestination>,
     song: SongBean,
     onClick: () -> Unit
 ) {
@@ -42,7 +42,7 @@ fun SongItem(
         ) {
             Box(
                 modifier = Modifier
-                    .padding(horizontal = defaultHorizontal, vertical = defaultVertical)
+                    .padding(horizontal = smallHorizontal, vertical = smallVertical)
                     .size(50.dp),
                 contentAlignment = Alignment.Center
             ) {
@@ -52,7 +52,7 @@ fun SongItem(
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(1.0f)
-                    .padding(vertical = defaultVertical),
+                    .padding(vertical = smallVertical),
             ) {
                 Text(
                     text = song.title,
@@ -76,10 +76,10 @@ fun SongItem(
                 contentDescription = null,
                 modifier = Modifier
                     .clickable {
-                        dialogNavController.navigate(DialogDestination.SongMenu(song))
+                        dialogNavController.navigate(BottomSheetDestination.SongMenu(song))
                     }
             )
-            Spacer(modifier = Modifier.padding(end = defaultHorizontal))
+            Spacer(modifier = Modifier.padding(end = smallHorizontal))
         }
     }
 }

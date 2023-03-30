@@ -41,4 +41,6 @@
     <string name="singer_list">歌手列表</string>
     <string name="album_list">专辑列表</string>
     <string name="music">音乐</string>
+    <string name="permission_media_lib">授权访问手机媒体以扫描媒体库中的音乐</string>
+    <string name="go_permission">前往授权</string>
 </resources>

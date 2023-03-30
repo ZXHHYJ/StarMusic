@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.screen.local.single
+package studio.mandysa.music.ui.screen.single
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,13 +17,13 @@ import studio.mandysa.music.ui.common.TopAppBar
 import studio.mandysa.music.ui.common.bindTopAppBarState
 import studio.mandysa.music.ui.common.rememberTopAppBarState
 import studio.mandysa.music.ui.item.SongItem
-import studio.mandysa.music.ui.screen.DialogDestination
+import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 
 @Composable
 fun SingleScreen(
     mainNavController: NavController<ScreenDestination>,
-    dialogNavController: NavController<DialogDestination>,
+    dialogNavController: NavController<BottomSheetDestination>,
     padding: PaddingValues
 ) {
     MediaPermission(

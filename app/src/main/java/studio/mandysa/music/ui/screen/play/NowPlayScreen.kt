@@ -32,12 +32,14 @@ import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.AppCard
 import studio.mandysa.music.ui.common.BoxWithPercentages
 import studio.mandysa.music.ui.common.SeekBar
-import studio.mandysa.music.ui.screen.DialogDestination
+import studio.mandysa.music.ui.screen.BottomSheetDestination
+import studio.mandysa.music.ui.theme.playScreenHorizontal
+import studio.mandysa.music.ui.theme.playScreenMaxWidth
 import studio.mandysa.music.ui.theme.translucentWhite
 import studio.mandysa.music.ui.theme.translucentWhiteFixBug
 
 @Composable
-fun NowPlayScreen(dialogNavController: NavController<DialogDestination>) {
+fun NowPlayScreen(dialogNavController: NavController<BottomSheetDestination>) {
     BoxWithPercentages(
         modifier = Modifier
             .widthIn(max = playScreenMaxWidth)
@@ -104,7 +106,7 @@ fun NowPlayScreen(dialogNavController: NavController<DialogDestination>) {
                         .clip(RoundedCornerShape(32.dp))
                         .background(translucentWhiteFixBug)
                         .clickable {
-                            dialogNavController.navigate(DialogDestination.SongMenu(song!!))
+                            dialogNavController.navigate(BottomSheetDestination.SongMenu(song!!))
                         },
                     tint = Color.White
                 )

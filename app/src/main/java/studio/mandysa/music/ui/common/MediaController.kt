@@ -22,8 +22,8 @@ import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
 import studio.mandysa.music.service.playmanager.ktx.title
 import studio.mandysa.music.ui.theme.barBackgroundColor
-import studio.mandysa.music.ui.theme.defaultHorizontal
-import studio.mandysa.music.ui.theme.defaultRoundShape
+import studio.mandysa.music.ui.theme.smallHorizontal
+import studio.mandysa.music.ui.theme.smallRoundShape
 
 @Composable
 fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> Unit) {
@@ -39,7 +39,7 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
         ) {
             AppDivider(modifier = Modifier.fillMaxWidth())
         }
-        Box(modifier = Modifier.padding(horizontal = defaultHorizontal)) {
+        Box(modifier = Modifier.padding(horizontal = smallHorizontal)) {
             Box {
                 val coverUrl by PlayManager.changeMusicLiveData().map {
                     it.coverUrl
@@ -73,7 +73,7 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
                             .observeAsState("")
                         Text(
                             modifier = Modifier
-                                .padding(start = defaultHorizontal)
+                                .padding(start = smallHorizontal)
                                 .weight(1.0f),
                             text = title,
                             fontSize = 16.sp,
@@ -91,7 +91,7 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
                             modifier = Modifier
                                 .size(controlBarHeight)
                                 .padding(8.dp)
-                                .clip(defaultRoundShape)
+                                .clip(smallRoundShape)
                                 .clickable {
                                     if (PlayManager.isPaused()) {
                                         PlayManager.play()
@@ -107,7 +107,7 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
                             modifier = Modifier
                                 .size(controlBarHeight)
                                 .padding(8.dp)
-                                .clip(defaultRoundShape)
+                                .clip(smallRoundShape)
                                 .clickable {
                                     PlayManager.skipToNext()
                                 }

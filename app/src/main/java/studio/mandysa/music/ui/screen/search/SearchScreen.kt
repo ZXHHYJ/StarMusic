@@ -25,7 +25,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.sp
 import dev.olshevski.navigation.reimagined.NavController
 import studio.mandysa.music.ui.common.AppCard
-import studio.mandysa.music.ui.screen.DialogDestination
+import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.onBackground
 import studio.mandysa.music.ui.theme.textColor
@@ -34,7 +34,7 @@ import studio.mandysa.music.ui.theme.textColor
 @Composable
 fun SearchScreen(
     mainNavController: NavController<ScreenDestination>,
-    dialogNavController: NavController<DialogDestination>,
+    dialogNavController: NavController<BottomSheetDestination>,
     paddingValues: PaddingValues,
 ) {
     //键盘控制器

@@ -59,7 +59,7 @@ private fun AlbumItem(coverUrl: String, title: String, subTitle: String, onClick
         val coverSize = 50.dp
         Box(
             modifier = Modifier
-                .padding(horizontal = defaultHorizontal, vertical = defaultVertical)
+                .padding(horizontal = smallHorizontal, vertical = smallVertical)
                 .size(coverSize),
             contentAlignment = Alignment.Center
         ) {
@@ -78,7 +78,7 @@ private fun AlbumItem(coverUrl: String, title: String, subTitle: String, onClick
             modifier = Modifier
                 .fillMaxSize()
                 .weight(1.0f)
-                .padding(vertical = defaultVertical),
+                .padding(vertical = smallVertical),
         ) {
             Text(
                 text = title,
@@ -105,7 +105,7 @@ private fun AlbumItem(coverUrl: String, title: String, subTitle: String, onClick
 
                 }
         )
-        Spacer(modifier = Modifier.padding(end = defaultHorizontal))
+        Spacer(modifier = Modifier.padding(end = smallHorizontal))
     }
 }
 
