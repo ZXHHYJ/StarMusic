@@ -8,14 +8,14 @@ import studio.mandysa.music.ui.screen.BottomSheetDestination
 
 @Composable
 fun SearchSingleScreen(
-    dialogNavController: NavController<BottomSheetDestination>,
+    sheetNavController: NavController<BottomSheetDestination>,
     paddingValues: PaddingValues,
     keywords: String
 ) {
 
     LazyColumn {
         /*itemsIndexed(songs) { index, item ->
-            SongItem(dialogNavController = dialogNavController, song = item!!) {
+            SongItem(sheetNavController = sheetNavController, song = item!!) {
                 PlayManager.play(songs.itemSnapshotList, index)
             }
         }*/

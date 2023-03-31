@@ -4,7 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
@@ -22,6 +21,7 @@ import studio.mandysa.music.logic.repository.LocalMediaRepository.artist
 import studio.mandysa.music.logic.repository.LocalMediaRepository.songs
 import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
+import studio.mandysa.music.ui.common.AppIcon
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.theme.*
 
@@ -89,7 +89,7 @@ private fun AlbumItem(coverUrl: String, title: String, subTitle: String, onClick
                 textAlign = TextAlign.Center
             )
         }
-        Icon(
+        AppIcon(
             imageVector = Icons.Rounded.MoreVert,
             tint = onBackground,
             contentDescription = null,

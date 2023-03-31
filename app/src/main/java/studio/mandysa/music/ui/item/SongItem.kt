@@ -2,7 +2,6 @@ package studio.mandysa.music.ui.item
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
@@ -20,6 +19,7 @@ import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.service.playmanager.ktx.artist
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
 import studio.mandysa.music.service.playmanager.ktx.title
+import studio.mandysa.music.ui.common.AppIcon
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.AppCard
 import studio.mandysa.music.ui.screen.BottomSheetDestination
@@ -28,7 +28,7 @@ import studio.mandysa.music.ui.theme.*
 
 @Composable
 fun SongItem(
-    dialogNavController: NavController<BottomSheetDestination>,
+    sheetNavController: NavController<BottomSheetDestination>,
     song: SongBean,
     onClick: () -> Unit
 ) {
@@ -70,13 +70,13 @@ fun SongItem(
                     textAlign = TextAlign.Center
                 )
             }
-            Icon(
+            AppIcon(
                 imageVector = Icons.Rounded.MoreVert,
                 tint = onBackground,
                 contentDescription = null,
                 modifier = Modifier
                     .clickable {
-                        dialogNavController.navigate(BottomSheetDestination.SongMenu(song))
+                        sheetNavController.navigate(BottomSheetDestination.SongMenu(song))
                     }
             )
             Spacer(modifier = Modifier.padding(end = horizontal))

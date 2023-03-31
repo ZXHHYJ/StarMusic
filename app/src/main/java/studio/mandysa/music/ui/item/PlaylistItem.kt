@@ -4,13 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
-import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import studio.mandysa.music.ui.common.AppIcon
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.theme.cardBackgroundColor
 import studio.mandysa.music.ui.theme.onBackground
@@ -18,7 +18,7 @@ import studio.mandysa.music.ui.theme.roundShape
 import studio.mandysa.music.ui.theme.textColor
 
 @Composable
-fun PlaylistItem(icon: ImageVector, onClick: () -> Unit) {
+fun PlaylistItem(imageVector: ImageVector, onClick: () -> Unit) {
     Column(
         modifier = Modifier.width(120.dp)
     ) {
@@ -29,8 +29,8 @@ fun PlaylistItem(icon: ImageVector, onClick: () -> Unit) {
                 .background(cardBackgroundColor)
                 .clickable(onClick = onClick)
         ) {
-            Icon(
-                imageVector = icon,
+            AppIcon(
+                imageVector = imageVector,
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()

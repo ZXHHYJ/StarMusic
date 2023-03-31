@@ -1,7 +1,7 @@
 package studio.mandysa.music.ui.screen.main
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
@@ -43,8 +43,8 @@ import studio.mandysa.music.ui.screen.singercnt.SingerCntScreen
 import studio.mandysa.music.ui.screen.single.SingleScreen
 import studio.mandysa.music.ui.screen.songmenu.SongMenuDialog
 import studio.mandysa.music.ui.theme.appBackgroundColor
-import studio.mandysa.music.ui.theme.rightNavBarWidth
 import studio.mandysa.music.ui.theme.barBackgroundColor
+import studio.mandysa.music.ui.theme.rightNavBarWidth
 
 /**
  * Happy 22nd Birthday Shuangshengzi
@@ -125,7 +125,6 @@ private fun AppScaffold(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainScreen() {
 
@@ -142,7 +141,6 @@ fun MainScreen() {
     var panelState by rememberSaveable {
         mutableStateOf<PanelState?>(null)
     }
-
 
     val systemUiController = rememberSystemUiController()
 
@@ -238,7 +236,7 @@ fun MainScreen() {
                 }
             ) { padding ->
                 if (panelState != PanelState.EXPANDED) {
-                    NavBackHandler(mainNavController)
+                    NavBackHandler(controller = mainNavController)
                     //面板展开时返回事件不再分发到这里
                 }
                 //避免导航时面板处于展开状态
@@ -342,7 +340,7 @@ fun MainScreen() {
         }) {
         PlayScreen(
             mainNavController = mainNavController,
-            dialogNavController = sheetController,
+            sheetNavController = sheetController,
             panelState = panelState,
             it
         )
@@ -352,6 +350,9 @@ fun MainScreen() {
         controller = sheetController,
         onDismissRequest = { sheetController.pop() }
     ) { destination ->
+        BackHandler {
+            sheetController.pop()
+        }
         Surface(
             modifier = Modifier.background(color = appBackgroundColor),
             elevation = ModalBottomSheetDefaults.Elevation
@@ -366,7 +367,7 @@ fun MainScreen() {
                 }
 
                 is BottomSheetDestination.Message -> {
-                    MessageDialog(sheetController, message = destination.message)
+                    Message(sheetController, message = destination.message)
                 }
 
                 is BottomSheetDestination.MeMenu -> {

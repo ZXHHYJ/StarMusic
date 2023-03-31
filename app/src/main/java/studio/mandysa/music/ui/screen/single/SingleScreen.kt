@@ -15,17 +15,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
+import studio.mandysa.music.R
 import studio.mandysa.music.logic.repository.LocalMediaRepository
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.*
 import studio.mandysa.music.ui.item.SongItem
+import studio.mandysa.music.ui.item.SubTitleItem
 import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 
 @Composable
 fun SingleScreen(
     mainNavController: NavController<ScreenDestination>,
-    dialogNavController: NavController<BottomSheetDestination>,
+    sheetNavController: NavController<BottomSheetDestination>,
     padding: PaddingValues
 ) {
     MediaPermission(
@@ -62,8 +64,11 @@ fun SingleScreen(
                     text = stringResource(id = studio.mandysa.music.R.string.singer)
                 )
             }
+            item { 
+                SubTitleItem(title = stringResource(id = R.string.single))
+            }
             itemsIndexed(localBeans) { index, item ->
-                SongItem(dialogNavController = dialogNavController, song = item) {
+                SongItem(sheetNavController = sheetNavController, song = item) {
                     PlayManager.play(localBeans, index)
                 }
             }

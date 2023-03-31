@@ -19,7 +19,7 @@ import studio.mandysa.music.ui.screen.ScreenDestination
 @Composable
 fun SingerScreen(
     mainNavController: NavController<ScreenDestination>,
-    dialogNavController: NavController<BottomSheetDestination>,
+    sheetNavController: NavController<BottomSheetDestination>,
     padding: PaddingValues
 ) {
     MediaPermission(

@@ -10,7 +10,7 @@ import studio.mandysa.music.ui.screen.ScreenDestination
 @Composable
 fun PlayListScreen(
     mainNavController: NavController<ScreenDestination>,
-    dialogNavController: NavController<BottomSheetDestination>,
+    sheetNavController: NavController<BottomSheetDestination>,
     padding: PaddingValues
 ) {
 }

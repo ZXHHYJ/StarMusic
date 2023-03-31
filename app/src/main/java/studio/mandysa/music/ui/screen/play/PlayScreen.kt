@@ -48,7 +48,7 @@ val PlayScreenDestination.tabIcon
 @Composable
 fun PlayScreen(
     mainNavController: NavController<ScreenDestination>,
-    dialogNavController: NavController<BottomSheetDestination>,
+    sheetNavController: NavController<BottomSheetDestination>,
     panelState: PanelState?,
     function: (PanelState) -> Unit
 ) {
@@ -106,13 +106,13 @@ fun PlayScreen(
             AnimatedNavHost(navController) {
                 when (it) {
                     PlayScreenDestination.Main -> {
-                        NowPlayScreen(dialogNavController)
+                        NowPlayScreen(sheetNavController)
                     }
                     PlayScreenDestination.Lyric -> {
                         LyricScreen()
                     }
                     PlayScreenDestination.PlayQueue -> {
-                        PlayQueueScreen(dialogNavController)
+                        PlayQueueScreen(sheetNavController)
                     }
                 }
             }
@@ -159,7 +159,7 @@ fun PlayScreen(
                                 modifier = Modifier
                                     .weight(1.0f)
                             ) {
-                                NowPlayScreen(dialogNavController)
+                                NowPlayScreen(sheetNavController)
                             }
                             BottomNavigationBar(
                                 modifier = Modifier

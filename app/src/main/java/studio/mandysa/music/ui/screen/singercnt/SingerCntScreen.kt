@@ -10,7 +10,8 @@ import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import dev.olshevski.navigation.reimagined.NavController
@@ -51,7 +52,7 @@ fun SingerCntScreen(
                     .weight(1.0f)
             ) {
                 itemsIndexed(artist.songs) { index, item ->
-                    SongItem(dialogNavController = sheetController, song = item) {
+                    SongItem(sheetNavController = sheetController, song = item) {
                         PlayManager.play(artist.songs, index)
                     }
                 }
@@ -69,7 +70,7 @@ private fun SingerNameTitle(modifier: Modifier, singerName: String) {
 private fun PlayAllButton(modifier: Modifier) {
     AppRoundCard(modifier = modifier, backgroundColor = Color.Transparent) {
         Icon(
-            painter = painterResource(id = R.drawable.ic_play),
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_play),
             contentDescription = null,
             tint = appBackgroundColor
         )

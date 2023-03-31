@@ -55,7 +55,7 @@ fun AppListButton(
                     .fillMaxWidth()
                     .padding(horizontal = horizontal, vertical = vertical)
             ) {
-                Icon(imageVector = imageVector, contentDescription = text)
+                AppIcon(imageVector = imageVector, contentDescription = text)
                 Spacer(modifier = Modifier.width(vertical))
                 Text(text = text)
             }

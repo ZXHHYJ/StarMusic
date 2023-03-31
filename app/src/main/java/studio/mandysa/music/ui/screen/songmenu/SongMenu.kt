@@ -34,11 +34,9 @@ import studio.mandysa.music.ui.theme.textColorLight
 @Composable
 fun SongMenuDialog(
     mainNavController: NavController<ScreenDestination>,
-    dialogNavController: NavController<BottomSheetDestination>,
+    sheetNavController: NavController<BottomSheetDestination>,
     song: SongBean,
-    songMenuViewModel: SongMenuViewModel = viewModel()
 ) {
-    val isLike by songMenuViewModel.likedLiveData.observeAsState()
     LazyColumn {
         item {
             Box(
@@ -71,13 +69,14 @@ fun SongMenuDialog(
             }
         }
         item {
+            val isLike = false
             MenuItem(
                 modifier = Modifier.padding(horizontal = horizontal),
                 title = stringResource(id = if (isLike == true) R.string.remove_like else R.string.add_like),
                 imageVector = if (isLike == true) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
                 enabled = isLike != null
             ) {
-                songMenuViewModel.likeMusic(isLike == false)
+                //songMenuViewModel.likeMusic(isLike == false)
             }
         }
         item {
@@ -86,7 +85,7 @@ fun SongMenuDialog(
                 title = "${stringResource(id = R.string.album)}:${song.album.name}",
                 imageVector = Icons.Rounded.Album
             ) {
-                dialogNavController.popAll()
+                sheetNavController.popAll()
                 mainNavController.navigate(
                     when (song) {
                         is SongBean.Local -> ScreenDestination.AlbumCnt(song.album)
@@ -101,7 +100,7 @@ fun SongMenuDialog(
                 title = stringResource(id = R.string.next_play),
                 imageVector = Icons.Rounded.Add
             ) {
-                dialogNavController.popAll()
+                sheetNavController.popAll()
                 PlayManager.addNextPlay(song)
             }
         }
@@ -113,7 +112,7 @@ fun SongMenuDialog(
                         title = "${stringResource(id = R.string.singer)}:${song.artist.name}",
                         imageVector = Icons.Rounded.Person
                     ) {
-                        dialogNavController.popAll()
+                        sheetNavController.popAll()
                         mainNavController.navigate(ScreenDestination.SingerCnt(song.artist))
                     }
                 }
@@ -125,7 +124,7 @@ fun SongMenuDialog(
                         title = "${stringResource(id = R.string.singer)}:${it.name}",
                         imageVector = Icons.Rounded.Person
                     ) {
-                        dialogNavController.popAll()
+                        sheetNavController.popAll()
                         //mainNavController.navigate(ScreenDestination.CloudSingerCnt(it))
                     }
                 }

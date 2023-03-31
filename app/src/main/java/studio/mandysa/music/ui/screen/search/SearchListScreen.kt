@@ -22,7 +22,7 @@ val SearchListScreenDestination.tabName: String
 @Composable
 fun SearchListScreen(
     mainNavController: NavController<ScreenDestination>,
-    dialogNavController: NavController<BottomSheetDestination>,
+    sheetNavController: NavController<BottomSheetDestination>,
     paddingValues: PaddingValues,
     keywords: String
 ) {

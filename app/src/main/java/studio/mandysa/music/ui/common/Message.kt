@@ -19,7 +19,7 @@ import studio.mandysa.music.ui.theme.horizontal
 import studio.mandysa.music.ui.theme.textColor
 
 @Composable
-fun MessageDialog(dialogNavController: NavController<BottomSheetDestination>, message: String) {
+fun Message(sheetNavController: NavController<BottomSheetDestination>, message: String) {
     Column(
         modifier = Modifier
             .padding(horizontal = horizontal)
@@ -40,8 +40,7 @@ fun MessageDialog(dialogNavController: NavController<BottomSheetDestination>, me
             imageVector = Icons.Rounded.ContentCopy
         ) {
             copyText(message)
-            dialogNavController.pop()
+            sheetNavController.pop()
         }
     }
-
 }

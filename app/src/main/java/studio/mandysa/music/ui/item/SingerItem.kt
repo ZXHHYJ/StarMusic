@@ -5,13 +5,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ChevronRight
-import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import studio.mandysa.music.ui.common.AppIcon
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.theme.*
 
@@ -73,7 +73,7 @@ fun SingerItem(picUrl: String, name: String, hint: String, onClick: () -> Unit) 
                 textAlign = TextAlign.Center
             )
         }
-        Icon(
+        AppIcon(
             imageVector = Icons.Rounded.ChevronRight,
             tint = onBackground,
             contentDescription = null,

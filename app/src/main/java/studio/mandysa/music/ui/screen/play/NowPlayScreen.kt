@@ -28,10 +28,7 @@ import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.artist
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
 import studio.mandysa.music.service.playmanager.ktx.title
-import studio.mandysa.music.ui.common.AppAsyncImage
-import studio.mandysa.music.ui.common.AppCard
-import studio.mandysa.music.ui.common.BoxWithPercentages
-import studio.mandysa.music.ui.common.SeekBar
+import studio.mandysa.music.ui.common.*
 import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.theme.playScreenHorizontal
 import studio.mandysa.music.ui.theme.playScreenMaxWidth
@@ -39,7 +36,7 @@ import studio.mandysa.music.ui.theme.translucentWhite
 import studio.mandysa.music.ui.theme.translucentWhiteFixBug
 
 @Composable
-fun NowPlayScreen(dialogNavController: NavController<BottomSheetDestination>) {
+fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
     BoxWithPercentages(
         modifier = Modifier
             .widthIn(max = playScreenMaxWidth)
@@ -99,14 +96,14 @@ fun NowPlayScreen(dialogNavController: NavController<BottomSheetDestination>) {
                     )
                 }
                 val song by PlayManager.changeMusicLiveData().observeAsState()
-                Icon(
+                AppIcon(
                     Icons.Rounded.MoreVert, null,
                     Modifier
                         .size(32.dp)
                         .clip(RoundedCornerShape(32.dp))
                         .background(translucentWhiteFixBug)
                         .clickable {
-                            dialogNavController.navigate(BottomSheetDestination.SongMenu(song!!))
+                            sheetNavController.navigate(BottomSheetDestination.SongMenu(song!!))
                         },
                     tint = Color.White
                 )
@@ -150,12 +147,14 @@ fun NowPlayScreen(dialogNavController: NavController<BottomSheetDestination>) {
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                // TODO: 不知道为什么这里用AppIcon会闪退
                 val playPauseState by PlayManager.pauseLiveData().map {
                     if (it) R.drawable.ic_play else R.drawable.ic_pause
                 }.observeAsState(R.drawable.ic_play)
                 Icon(
-                    ImageVector.vectorResource(id = R.drawable.ic_skip_previous), null,
-                    Modifier
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_previous),
+                    contentDescription = null,
+                    modifier = Modifier
                         .size(middleButtonSize)
                         .padding(smallButtonPadding)
                         .clip(RoundedCornerShape(middleButtonSize))
@@ -166,8 +165,9 @@ fun NowPlayScreen(dialogNavController: NavController<BottomSheetDestination>) {
                 )
                 Box(modifier = Modifier.padding(horizontal = 6.wp)) {
                     Icon(
-                        ImageVector.vectorResource(id = playPauseState), null,
-                        Modifier
+                        imageVector = ImageVector.vectorResource(id = playPauseState),
+                        contentDescription = null,
+                        modifier = Modifier
                             .size(middleButtonSize)
                             .clip(RoundedCornerShape(middleButtonSize))
                             .clickable {
@@ -179,8 +179,9 @@ fun NowPlayScreen(dialogNavController: NavController<BottomSheetDestination>) {
                     )
                 }
                 Icon(
-                    ImageVector.vectorResource(id = R.drawable.ic_skip_next), null,
-                    Modifier
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_next),
+                    contentDescription = null,
+                    modifier = Modifier
                         .size(middleButtonSize)
                         .padding(smallButtonPadding)
                         .clip(RoundedCornerShape(middleButtonSize))

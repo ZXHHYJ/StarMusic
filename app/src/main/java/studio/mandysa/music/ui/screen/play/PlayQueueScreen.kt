@@ -4,7 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
@@ -24,6 +23,7 @@ import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.service.playmanager.ktx.artist
 import studio.mandysa.music.service.playmanager.ktx.title
+import studio.mandysa.music.ui.common.AppIcon
 import studio.mandysa.music.ui.common.AppCard
 import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.theme.vertical
@@ -32,7 +32,7 @@ import studio.mandysa.music.ui.theme.playScreenMaxWidth
 import studio.mandysa.music.ui.theme.translucentWhite
 
 @Composable
-fun PlayQueueScreen(dialogNavController: NavController<BottomSheetDestination>) {
+fun PlayQueueScreen(sheetNavController: NavController<BottomSheetDestination>) {
     val playlist by PlayManager.changePlayListLiveData().observeAsState(listOf())
     LazyColumn(
         modifier = Modifier
@@ -41,7 +41,7 @@ fun PlayQueueScreen(dialogNavController: NavController<BottomSheetDestination>) 
     ) {
         itemsIndexed(playlist) { index, model ->
             SongItem(
-                dialogNavController,
+                sheetNavController,
                 index,
                 model
             ) {
@@ -53,7 +53,7 @@ fun PlayQueueScreen(dialogNavController: NavController<BottomSheetDestination>) 
 
 @Composable
 private fun SongItem(
-    dialogNavController: NavController<BottomSheetDestination>,
+    sheetNavController: NavController<BottomSheetDestination>,
     position: Int,
     song: SongBean,
     onClick: () -> Unit
@@ -99,12 +99,12 @@ private fun SongItem(
                     textAlign = TextAlign.Center
                 )
             }
-            Icon(
+            AppIcon(
                 imageVector = Icons.Rounded.MoreVert,
                 contentDescription = null,
                 modifier = Modifier
                     .clickable {
-                        dialogNavController.navigate(BottomSheetDestination.SongMenu(song))
+                        sheetNavController.navigate(BottomSheetDestination.SongMenu(song))
                     },
                 tint = translucentWhite
             )
