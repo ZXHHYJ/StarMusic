@@ -1,15 +1,13 @@
 package studio.mandysa.music.ui.common
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import studio.mandysa.music.ui.theme.appButtonBackgroundColor
-import studio.mandysa.music.ui.theme.smallRoundShape
-import studio.mandysa.music.ui.theme.onTextColor
+import studio.mandysa.music.ui.theme.*
 
 @Composable
 fun AppButton(
@@ -30,7 +28,7 @@ fun AppButton(
             hoveredElevation = 0.dp,
             focusedElevation = 0.dp
         ),
-        shape = smallRoundShape,
+        shape = roundShape,
         border = null,
         colors = ButtonDefaults.buttonColors(
             backgroundColor = appButtonBackgroundColor,
@@ -39,4 +37,33 @@ fun AppButton(
         contentPadding = contentPadding,
         content = content
     )
+}
+
+@Composable
+fun AppListButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    imageVector: ImageVector,
+    text: String
+) {
+    Surface(contentColor = appListButtonBackgroundColor, shape = roundShape) {
+        Column(modifier = modifier.clickable {
+            onClick.invoke()
+        }) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = horizontal, vertical = vertical)
+            ) {
+                Icon(imageVector = imageVector, contentDescription = text)
+                Spacer(modifier = Modifier.width(vertical))
+                Text(text = text)
+            }
+            AppDivider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = horizontal)
+            )
+        }
+    }
 }

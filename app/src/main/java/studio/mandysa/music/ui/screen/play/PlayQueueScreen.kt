@@ -26,7 +26,7 @@ import studio.mandysa.music.service.playmanager.ktx.artist
 import studio.mandysa.music.service.playmanager.ktx.title
 import studio.mandysa.music.ui.common.AppCard
 import studio.mandysa.music.ui.screen.BottomSheetDestination
-import studio.mandysa.music.ui.theme.smallVertical
+import studio.mandysa.music.ui.theme.vertical
 import studio.mandysa.music.ui.theme.playScreenHorizontal
 import studio.mandysa.music.ui.theme.playScreenMaxWidth
 import studio.mandysa.music.ui.theme.translucentWhite
@@ -68,7 +68,7 @@ private fun SongItem(
         ) {
             Box(
                 modifier = Modifier
-                    .padding(start = playScreenHorizontal, end = smallVertical)
+                    .padding(start = playScreenHorizontal, end = vertical)
                     .size(50.dp),
                 contentAlignment = Alignment.Center
             ) {
@@ -83,7 +83,7 @@ private fun SongItem(
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(1.0f)
-                    .padding(vertical = smallVertical),
+                    .padding(vertical = vertical),
             ) {
                 Text(
                     text = song.title,

@@ -10,7 +10,6 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
-import studio.mandysa.music.logic.config.MUSIC_URL
 import studio.mandysa.music.service.playmanager.bean.SongBean
 
 
@@ -203,9 +202,9 @@ object PlayManager {
                     prepare()
                 }
                 is SongBean.Network -> {
-                    val url = MUSIC_URL + song.id
+                    /*val url = MUSIC_URL + song.id
                     setMediaItem(MediaItem.fromUri(url))
-                    prepare()
+                    prepare()*/
                 }
             }
         }

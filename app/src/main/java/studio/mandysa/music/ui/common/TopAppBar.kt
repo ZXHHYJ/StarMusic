@@ -1,10 +1,15 @@
 package studio.mandysa.music.ui.common
 
+import android.os.Parcelable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -21,25 +26,26 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 import studio.mandysa.music.ui.theme.appBackgroundColor
-import studio.mandysa.music.ui.theme.smallHorizontal
+import studio.mandysa.music.ui.theme.horizontal
 import studio.mandysa.music.ui.theme.textColor
-import kotlin.math.abs
 import kotlin.math.roundToInt
 
-@Stable
-class TopAppBarState {
+@Parcelize
+class TopAppBarState : Parcelable {
 
+    @IgnoredOnParcel
     var topAppBarHeight by mutableStateOf(IntSize.Zero)
 
+    @IgnoredOnParcel
     var topAppBarOffsetHeightPx by mutableStateOf(0f)
 
     val connection
         @Composable get() = object : NestedScrollConnection {
 
             val maxUpPx = topAppBarHeight.height.toFloat()
-
-            var downOffset = 0f
 
             override fun onPreScroll(
                 available: Offset,
@@ -53,7 +59,7 @@ class TopAppBarState {
 }
 
 @Composable
-fun rememberTopAppBarState() = remember { TopAppBarState() }
+fun rememberTopAppBarState() = rememberSaveable { TopAppBarState() }
 
 fun Modifier.bindTopAppBarState(state: TopAppBarState) = composed {
     nestedScroll(connection = state.connection)
@@ -72,7 +78,7 @@ fun TopAppBar(
     state: TopAppBarState,
     modifier: Modifier,
     title: String,
-    actions: @Composable (RowScope.() -> Unit)
+    actions: @Composable (RowScope.() -> Unit) = {}
 ) {
     val topAppBarHeightPx =
         with(LocalDensity.current) { toolbarHeight.toPx() }
@@ -95,7 +101,7 @@ fun TopAppBar(
                         .height(toolbarHeight)
                         .clipToBounds()
                         .background(appBackgroundColor)
-                        .padding(horizontal = smallHorizontal),
+                        .padding(horizontal = horizontal),
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically,
                     content = {
@@ -119,7 +125,7 @@ fun TopAppBar(
                 Column(modifier = Modifier
                     .height(toolbarHeight)
                     .clipToBounds()
-                    .padding(horizontal = smallHorizontal)
+                    .padding(horizontal = horizontal)
                     .offset {
                         return@offset IntOffset(
                             x = 0,
@@ -141,7 +147,7 @@ fun TopAppBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(alignment = Alignment.BottomCenter)
-                    .padding(horizontal = smallHorizontal)
+                    .padding(horizontal = horizontal)
                     .offset {
                         return@offset IntOffset(
                             x = 0,

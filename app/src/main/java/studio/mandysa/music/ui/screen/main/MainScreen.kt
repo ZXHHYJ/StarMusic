@@ -43,7 +43,7 @@ import studio.mandysa.music.ui.screen.singercnt.SingerCntScreen
 import studio.mandysa.music.ui.screen.single.SingleScreen
 import studio.mandysa.music.ui.screen.songmenu.SongMenuDialog
 import studio.mandysa.music.ui.theme.appBackgroundColor
-import studio.mandysa.music.ui.theme.appRightNavBarWidth
+import studio.mandysa.music.ui.theme.rightNavBarWidth
 import studio.mandysa.music.ui.theme.barBackgroundColor
 
 /**
@@ -183,7 +183,7 @@ fun MainScreen() {
                         Column(
                             modifier = Modifier
                                 .fillMaxHeight()
-                                .width(appRightNavBarWidth)
+                                .width(rightNavBarWidth)
                         ) {
                             TopAppBar(
                                 state = rememberTopAppBarState(),
@@ -283,7 +283,7 @@ fun MainScreen() {
                                     HomeNavigationDestination.Search -> {
                                         SearchScreen(
                                             mainNavController = mainNavController,
-                                            dialogNavController = sheetController,
+                                            sheetController = sheetController,
                                             paddingValues = padding
                                         )
                                     }
@@ -294,7 +294,7 @@ fun MainScreen() {
                         ScreenDestination.Search -> {
                             SearchScreen(
                                 mainNavController = mainNavController,
-                                dialogNavController = sheetController,
+                                sheetController = sheetController,
                                 paddingValues = padding
                             )
                         }
@@ -303,7 +303,7 @@ fun MainScreen() {
                         is ScreenDestination.SingerCnt -> {
                             SingerCntScreen(
                                 mainNavController = mainNavController,
-                                dialogNavController = sheetController,
+                                sheetController = sheetController,
                                 paddingValues = padding,
                                 artist = screenDestination.artist
                             )
@@ -312,7 +312,7 @@ fun MainScreen() {
                         is ScreenDestination.AlbumCnt -> {
                             AlbumCntScreen(
                                 mainNavController = mainNavController,
-                                dialogNavController = sheetController,
+                                sheetController = sheetController,
                                 paddingValues = padding,
                                 album = screenDestination.album
                             )
@@ -325,11 +325,17 @@ fun MainScreen() {
                         ScreenDestination.Setting -> {
                             SettingScreen(
                                 mainNavController = mainNavController,
-                                dialogNavController = sheetController,
+                                sheetController = sheetController,
                                 paddingValues = padding
                             )
                         }
-
+                        ScreenDestination.Album -> {
+                            AlbumScreen(
+                                mainNavController = mainNavController,
+                                sheetController = sheetController,
+                                padding = padding
+                            )
+                        }
                     }
                 }
             }

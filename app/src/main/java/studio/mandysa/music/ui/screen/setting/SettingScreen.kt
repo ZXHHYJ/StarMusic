@@ -9,7 +9,7 @@ import studio.mandysa.music.ui.screen.ScreenDestination
 @Composable
 fun SettingScreen(
     mainNavController: NavController<ScreenDestination>,
-    dialogNavController: NavController<BottomSheetDestination>,
+    sheetController: NavController<BottomSheetDestination>,
     paddingValues: PaddingValues,
 ) {
 

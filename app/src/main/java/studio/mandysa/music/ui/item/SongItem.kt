@@ -42,7 +42,7 @@ fun SongItem(
         ) {
             Box(
                 modifier = Modifier
-                    .padding(horizontal = smallHorizontal, vertical = smallVertical)
+                    .padding(horizontal = horizontal, vertical = vertical)
                     .size(50.dp),
                 contentAlignment = Alignment.Center
             ) {
@@ -52,7 +52,7 @@ fun SongItem(
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(1.0f)
-                    .padding(vertical = smallVertical),
+                    .padding(vertical = vertical),
             ) {
                 Text(
                     text = song.title,
@@ -79,7 +79,7 @@ fun SongItem(
                         dialogNavController.navigate(BottomSheetDestination.SongMenu(song))
                     }
             )
-            Spacer(modifier = Modifier.padding(end = smallHorizontal))
+            Spacer(modifier = Modifier.padding(end = horizontal))
         }
     }
 }

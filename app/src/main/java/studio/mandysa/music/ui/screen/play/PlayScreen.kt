@@ -64,7 +64,7 @@ fun PlayScreen(
     fun BottomNavigationBar(modifier: Modifier) {
         BottomNavigation(
             modifier = modifier
-                .padding(horizontal = smallHorizontal),
+                .padding(horizontal = horizontal),
             elevation = 0.dp,
             backgroundColor = Color.Transparent
         ) {
@@ -74,7 +74,7 @@ fun PlayScreen(
                 PlayScreenDestination.PlayQueue
             ).forEach { screen ->
                 val selected = screen == lastDestination
-                BottomNavigationItem(modifier = Modifier.clip(smallRoundShape),
+                BottomNavigationItem(modifier = Modifier.clip(roundShape),
                     icon = {
                         Icon(
                             screen.tabIcon,

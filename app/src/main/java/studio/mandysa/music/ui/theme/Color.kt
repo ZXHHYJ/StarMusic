@@ -3,10 +3,16 @@ package studio.mandysa.music.ui.theme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import com.kyant.monet.*
+import com.kyant.monet.a1
+import com.kyant.monet.a2
+import com.kyant.monet.n1
+import com.kyant.monet.rangeTo
 
 val appButtonBackgroundColor
     @Composable get() = 60.a1
+
+val appListButtonBackgroundColor
+    @Composable get() = 45.a1..25.a1
 
 //字体颜色
 val textColor: Color

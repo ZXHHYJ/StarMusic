@@ -24,13 +24,6 @@ import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.theme.*
-import java.text.SimpleDateFormat
-import java.util.*
-
-private fun stampToDate(s: String): String {
-    val date = Date(s.toLong())
-    return SimpleDateFormat.getDateInstance().format(date)
-}
 
 @Composable
 fun AlbumItem(album: SongBean.Local.Album, onClick: () -> Unit) {
@@ -59,7 +52,7 @@ private fun AlbumItem(coverUrl: String, title: String, subTitle: String, onClick
         val coverSize = 50.dp
         Box(
             modifier = Modifier
-                .padding(horizontal = smallHorizontal, vertical = smallVertical)
+                .padding(horizontal = horizontal, vertical = vertical)
                 .size(coverSize),
             contentAlignment = Alignment.Center
         ) {
@@ -78,7 +71,7 @@ private fun AlbumItem(coverUrl: String, title: String, subTitle: String, onClick
             modifier = Modifier
                 .fillMaxSize()
                 .weight(1.0f)
-                .padding(vertical = smallVertical),
+                .padding(vertical = vertical),
         ) {
             Text(
                 text = title,
@@ -105,7 +98,7 @@ private fun AlbumItem(coverUrl: String, title: String, subTitle: String, onClick
 
                 }
         )
-        Spacer(modifier = Modifier.padding(end = smallHorizontal))
+        Spacer(modifier = Modifier.padding(end = horizontal))
     }
 }
 

@@ -16,10 +16,10 @@ import studio.mandysa.music.logic.repository.LocalMediaRepository.songs
 import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
 import studio.mandysa.music.ui.common.AppRoundAsyncImage
-import studio.mandysa.music.ui.theme.smallHorizontal
+import studio.mandysa.music.ui.theme.horizontal
 import studio.mandysa.music.ui.theme.textColor
 import studio.mandysa.music.ui.theme.textColorLight
-import studio.mandysa.music.ui.theme.smallVertical
+import studio.mandysa.music.ui.theme.vertical
 
 @Composable
 fun ArtistItem(artist: SongBean.Local.Artist, onClick: () -> Unit) {
@@ -43,7 +43,7 @@ fun ArtistItem(coverUrl: String, title: String, subTitle: String, onClick: () ->
     ) {
         Box(
             modifier = Modifier
-                .padding(horizontal = smallHorizontal, vertical = smallVertical)
+                .padding(horizontal = horizontal, vertical = vertical)
                 .size(50.dp), contentAlignment = Alignment.Center
         ) {
             AppRoundAsyncImage(modifier = Modifier.size(50.dp), url = coverUrl)
@@ -52,7 +52,7 @@ fun ArtistItem(coverUrl: String, title: String, subTitle: String, onClick: () ->
             modifier = Modifier
                 .fillMaxSize()
                 .weight(1.0f)
-                .padding(vertical = smallVertical),
+                .padding(vertical = vertical),
         ) {
             Text(
                 text = title,

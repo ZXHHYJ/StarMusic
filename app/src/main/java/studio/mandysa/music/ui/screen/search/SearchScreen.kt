@@ -34,7 +34,7 @@ import studio.mandysa.music.ui.theme.textColor
 @Composable
 fun SearchScreen(
     mainNavController: NavController<ScreenDestination>,
-    dialogNavController: NavController<BottomSheetDestination>,
+    sheetController: NavController<BottomSheetDestination>,
     paddingValues: PaddingValues,
 ) {
     //键盘控制器
@@ -100,7 +100,7 @@ fun SearchScreen(
         } else {
             SearchListScreen(
                 mainNavController = mainNavController,
-                dialogNavController = dialogNavController,
+                dialogNavController = sheetController,
                 paddingValues = paddingValues,
                 keywords = keywords
             )

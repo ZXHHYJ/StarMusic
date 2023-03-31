@@ -10,7 +10,7 @@ import studio.mandysa.music.ui.screen.ScreenDestination
 @Composable
 fun AlbumCntScreen(
     mainNavController: NavController<ScreenDestination>,
-    dialogNavController: NavController<BottomSheetDestination>,
+    sheetController: NavController<BottomSheetDestination>,
     paddingValues: PaddingValues,
     album: SongBean.Local.Album
 ) {

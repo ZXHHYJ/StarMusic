@@ -29,7 +29,7 @@ import studio.mandysa.music.ui.theme.textColor
 @Composable
 fun SingerCntScreen(
     mainNavController: NavController<ScreenDestination>,
-    dialogNavController: NavController<BottomSheetDestination>,
+    sheetController: NavController<BottomSheetDestination>,
     paddingValues: PaddingValues,
     artist: SongBean.Local.Artist
 ) {
@@ -51,7 +51,7 @@ fun SingerCntScreen(
                     .weight(1.0f)
             ) {
                 itemsIndexed(artist.songs) { index, item ->
-                    SongItem(dialogNavController = dialogNavController, song = item) {
+                    SongItem(dialogNavController = sheetController, song = item) {
                         PlayManager.play(artist.songs, index)
                     }
                 }

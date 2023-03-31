@@ -2,7 +2,6 @@ package studio.mandysa.music.ui.screen
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
 import studio.mandysa.music.service.playmanager.bean.SongBean
 
 sealed class ScreenDestination : Parcelable {
@@ -27,6 +26,12 @@ sealed class ScreenDestination : Parcelable {
 
     @Parcelize
     data class AlbumCnt(val album: SongBean.Local.Album) : ScreenDestination()
+
+    /**
+     * 专辑
+     */
+    @Parcelize
+    object Album : ScreenDestination()
 
     /**
      * 设置

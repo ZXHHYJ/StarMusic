@@ -15,14 +15,14 @@ import dev.olshevski.navigation.reimagined.pop
 import studio.mandysa.music.R
 import studio.mandysa.music.logic.utils.copyText
 import studio.mandysa.music.ui.screen.BottomSheetDestination
-import studio.mandysa.music.ui.theme.smallHorizontal
+import studio.mandysa.music.ui.theme.horizontal
 import studio.mandysa.music.ui.theme.textColor
 
 @Composable
 fun MessageDialog(dialogNavController: NavController<BottomSheetDestination>, message: String) {
     Column(
         modifier = Modifier
-            .padding(horizontal = smallHorizontal)
+            .padding(horizontal = horizontal)
     ) {
         Text(
             modifier = Modifier

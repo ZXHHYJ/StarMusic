@@ -48,7 +48,7 @@ fun SingerItem(picUrl: String, name: String, hint: String, onClick: () -> Unit) 
     ) {
         Box(
             modifier = Modifier
-                .padding(horizontal = smallHorizontal, vertical = smallVertical)
+                .padding(horizontal = horizontal, vertical = vertical)
                 .size(50.dp), contentAlignment = Alignment.Center
         ) {
             AppAsyncImage(modifier = Modifier.size(50.dp), cornerSize = 25.dp, url = picUrl)
@@ -57,7 +57,7 @@ fun SingerItem(picUrl: String, name: String, hint: String, onClick: () -> Unit) 
             modifier = Modifier
                 .fillMaxSize()
                 .weight(1.0f)
-                .padding(vertical = smallVertical),
+                .padding(vertical = vertical),
         ) {
             Text(
                 text = name,
@@ -78,6 +78,6 @@ fun SingerItem(picUrl: String, name: String, hint: String, onClick: () -> Unit) 
             tint = onBackground,
             contentDescription = null,
         )
-        Spacer(modifier = Modifier.padding(end = smallHorizontal))
+        Spacer(modifier = Modifier.padding(end = horizontal))
     }
 }
