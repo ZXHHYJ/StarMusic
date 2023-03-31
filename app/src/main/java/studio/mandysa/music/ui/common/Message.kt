@@ -35,12 +35,12 @@ fun Message(sheetNavController: NavController<BottomSheetDestination>, message: 
             color = textColor
         )
         Spacer(modifier = Modifier.height(5.dp))
-        MenuItem(
+        /*MenuButton(
             title = stringResource(id = R.string.copy),
             imageVector = Icons.Rounded.ContentCopy
         ) {
             copyText(message)
             sheetNavController.pop()
-        }
+        }*/
     }
 }

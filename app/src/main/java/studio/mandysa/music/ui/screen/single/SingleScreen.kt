@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Album
 import androidx.compose.material.icons.rounded.Mic
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.PlaylistPlay
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -64,7 +65,7 @@ fun SingleScreen(
                     text = stringResource(id = studio.mandysa.music.R.string.singer)
                 )
             }
-            item { 
+            item {
                 SubTitleItem(title = stringResource(id = R.string.single))
             }
             itemsIndexed(localBeans) { index, item ->
@@ -77,6 +78,8 @@ fun SingleScreen(
             state = topAppBarState,
             modifier = Modifier.fillMaxWidth(),
             title = stringResource(id = studio.mandysa.music.R.string.media_lib)
-        )
+        ) {
+            AppIcon(imageVector = Icons.Rounded.MoreVert, contentDescription = null)
+        }
     }
 }

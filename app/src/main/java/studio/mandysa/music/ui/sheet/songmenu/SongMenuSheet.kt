@@ -1,20 +1,18 @@
-package studio.mandysa.music.ui.screen.songmenu
+package studio.mandysa.music.ui.sheet.songmenu
 
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Album
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.popAll
@@ -23,16 +21,16 @@ import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.service.playmanager.ktx.*
 import studio.mandysa.music.ui.common.AppAsyncImage
-import studio.mandysa.music.ui.common.MenuItem
+import studio.mandysa.music.ui.common.AppMenuButton
 import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.horizontal
-import studio.mandysa.music.ui.theme.vertical
 import studio.mandysa.music.ui.theme.textColor
 import studio.mandysa.music.ui.theme.textColorLight
+import studio.mandysa.music.ui.theme.vertical
 
 @Composable
-fun SongMenuDialog(
+fun SongMenuSheet(
     mainNavController: NavController<ScreenDestination>,
     sheetNavController: NavController<BottomSheetDestination>,
     song: SongBean,
@@ -69,7 +67,7 @@ fun SongMenuDialog(
             }
         }
         item {
-            val isLike = false
+            /*val isLike = false
             MenuItem(
                 modifier = Modifier.padding(horizontal = horizontal),
                 title = stringResource(id = if (isLike == true) R.string.remove_like else R.string.add_like),
@@ -77,48 +75,48 @@ fun SongMenuDialog(
                 enabled = isLike != null
             ) {
                 //songMenuViewModel.likeMusic(isLike == false)
-            }
+            }*/
         }
         item {
-            MenuItem(
-                modifier = Modifier.padding(horizontal = horizontal),
-                title = "${stringResource(id = R.string.album)}:${song.album.name}",
-                imageVector = Icons.Rounded.Album
-            ) {
-                sheetNavController.popAll()
-                mainNavController.navigate(
-                    when (song) {
-                        is SongBean.Local -> ScreenDestination.AlbumCnt(song.album)
-                        is SongBean.Network -> TODO("待补充")
-                    }
-                )
-            }
+            AppMenuButton(
+                onClick = {
+                    sheetNavController.popAll()
+                    mainNavController.navigate(
+                        when (song) {
+                            is SongBean.Local -> ScreenDestination.AlbumCnt(song.album)
+                            is SongBean.Network -> TODO("待补充")
+                        }
+                    )
+                },
+                imageVector = Icons.Rounded.Album,
+                text = "${stringResource(id = R.string.album)}:${song.album.name}"
+            )
         }
         item {
-            MenuItem(
-                modifier = Modifier.padding(horizontal = horizontal),
-                title = stringResource(id = R.string.next_play),
-                imageVector = Icons.Rounded.Add
-            ) {
-                sheetNavController.popAll()
-                PlayManager.addNextPlay(song)
-            }
+            AppMenuButton(
+                onClick = {
+                    sheetNavController.popAll()
+                    PlayManager.addNextPlay(song)
+                },
+                imageVector = Icons.Rounded.Add,
+                text = stringResource(id = R.string.next_play)
+            )
         }
         when (song) {
             is SongBean.Local -> {
                 item {
-                    MenuItem(
-                        modifier = Modifier.padding(horizontal = horizontal),
-                        title = "${stringResource(id = R.string.singer)}:${song.artist.name}",
-                        imageVector = Icons.Rounded.Person
-                    ) {
-                        sheetNavController.popAll()
-                        mainNavController.navigate(ScreenDestination.SingerCnt(song.artist))
-                    }
+                    AppMenuButton(
+                        onClick = {
+                            sheetNavController.popAll()
+                            mainNavController.navigate(ScreenDestination.SingerCnt(song.artist))
+                        },
+                        imageVector = Icons.Rounded.Person,
+                        text = "${stringResource(id = R.string.singer)}:${song.artist.name}"
+                    )
                 }
             }
             is SongBean.Network -> {
-                items(song.artist) {
+                /*items(song.artist) {
                     MenuItem(
                         modifier = Modifier.padding(horizontal = horizontal),
                         title = "${stringResource(id = R.string.singer)}:${it.name}",
@@ -127,7 +125,7 @@ fun SongMenuDialog(
                         sheetNavController.popAll()
                         //mainNavController.navigate(ScreenDestination.CloudSingerCnt(it))
                     }
-                }
+                }*/
             }
         }
     }

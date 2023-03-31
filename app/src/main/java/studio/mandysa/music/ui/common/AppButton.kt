@@ -2,8 +2,12 @@ package studio.mandysa.music.ui.common
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
@@ -58,6 +62,37 @@ fun AppListButton(
                 AppIcon(imageVector = imageVector, contentDescription = text)
                 Spacer(modifier = Modifier.width(vertical))
                 Text(text = text)
+            }
+            AppDivider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = horizontal)
+            )
+        }
+    }
+}
+
+@Composable
+fun AppMenuButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    imageVector: ImageVector,
+    text: String
+) {
+    Surface(contentColor = appListButtonBackgroundColor, shape = roundShape) {
+        Column(modifier = modifier.clickable {
+            onClick.invoke()
+        }) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+                    .padding(horizontal = horizontal, vertical = vertical),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = text)
+                Spacer(modifier = Modifier.weight(1.0f))
+                AppIcon(imageVector = imageVector, contentDescription = text)
             }
             AppDivider(
                 modifier = Modifier

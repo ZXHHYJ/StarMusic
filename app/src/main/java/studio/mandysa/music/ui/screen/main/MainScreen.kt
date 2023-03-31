@@ -7,7 +7,10 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Icon
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
@@ -41,7 +44,7 @@ import studio.mandysa.music.ui.screen.setting.SettingScreen
 import studio.mandysa.music.ui.screen.singer.SingerScreen
 import studio.mandysa.music.ui.screen.singercnt.SingerCntScreen
 import studio.mandysa.music.ui.screen.single.SingleScreen
-import studio.mandysa.music.ui.screen.songmenu.SongMenuDialog
+import studio.mandysa.music.ui.sheet.songmenu.SongMenuSheet
 import studio.mandysa.music.ui.theme.appBackgroundColor
 import studio.mandysa.music.ui.theme.barBackgroundColor
 import studio.mandysa.music.ui.theme.rightNavBarWidth
@@ -354,12 +357,14 @@ fun MainScreen() {
             sheetController.pop()
         }
         Surface(
-            modifier = Modifier.background(color = appBackgroundColor),
-            elevation = ModalBottomSheetDefaults.Elevation
+            modifier = Modifier
+                .background(color = appBackgroundColor)
+                .navigationBarsPadding(),
+            elevation = 0.dp
         ) {
             when (destination) {
                 is BottomSheetDestination.SongMenu -> {
-                    SongMenuDialog(mainNavController, sheetController, song = destination.song)
+                    SongMenuSheet(mainNavController, sheetController, song = destination.song)
                 }
 
                 is BottomSheetDestination.PlaylistMenu -> {
