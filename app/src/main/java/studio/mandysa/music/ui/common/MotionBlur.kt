@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.drawable.Drawable
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
@@ -42,8 +43,8 @@ fun MotionBlur(modifier: Modifier, url: String, paused: Boolean) {
         KenBurnsView(it).apply {
             setTransitionGenerator(
                 RandomTransitionGenerator(
-                    2000,
-                    LinearInterpolator()
+                    3000,
+                    AccelerateDecelerateInterpolator()
                 )
             )
         }

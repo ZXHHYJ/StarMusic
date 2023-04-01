@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.sheet.songmenu
+package studio.mandysa.music.ui.sheet
 
 
 import androidx.compose.foundation.layout.*
@@ -10,6 +10,7 @@ import androidx.compose.material.icons.rounded.Album
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -21,6 +22,7 @@ import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.service.playmanager.ktx.*
 import studio.mandysa.music.ui.common.AppAsyncImage
+import studio.mandysa.music.ui.common.AppCard
 import studio.mandysa.music.ui.common.AppMenuButton
 import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
@@ -47,7 +49,9 @@ fun SongMenuSheet(
                     modifier = Modifier
                         .height(80.dp)
                 ) {
-                    AppAsyncImage(modifier = Modifier.size(80.dp), url = song.coverUrl)
+                    AppCard(backgroundColor = Color.Transparent, modifier = Modifier.size(80.dp)) {
+                        AppAsyncImage(modifier = Modifier.fillMaxSize(), url = song.coverUrl)
+                    }
                     Column(modifier = Modifier.padding(vertical)) {
                         Text(
                             text = song.title,

@@ -25,6 +25,7 @@ fun Preview(
     var loaded by rememberSaveable {
         mutableStateOf(false)
     }
+
     var progress by rememberSaveable {
         mutableStateOf(0f)
     }

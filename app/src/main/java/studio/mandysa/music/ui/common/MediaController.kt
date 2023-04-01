@@ -27,7 +27,7 @@ import studio.mandysa.music.ui.theme.horizontal
 fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> Unit) {
     val controlBarHeight = 50.dp
     val coverSize = 55.dp
-    Box(modifier = Modifier) {
+    Box(modifier = modifier) {
         Box(
             modifier = Modifier
                 .height(20.dp)
