@@ -32,12 +32,11 @@ fun SingerScreen(
                 .fillMaxSize()
                 .statusBarsPadding()
         ) {
-            val artists = LocalMediaRepository.getArtists()
             LazyColumn(
                 modifier = Modifier.weight(1.0f),
                 contentPadding = padding
             ) {
-                items(artists) {
+                items(LocalMediaRepository.artists) {
                     ArtistItem(artist = it) {
                         mainNavController.navigate(ScreenDestination.SingerCnt(it))
                     }

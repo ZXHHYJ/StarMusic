@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
@@ -45,7 +46,7 @@ fun AppRoundCard(
         modifier = modifier.onSizeChanged {
             size = it
         },
-        shape = RoundedCornerShape(size.width),
+        shape = with(LocalDensity.current) { RoundedCornerShape(size.width.toDp()) },
         backgroundColor = backgroundColor,
         contentColor = contentColor,
         content = content

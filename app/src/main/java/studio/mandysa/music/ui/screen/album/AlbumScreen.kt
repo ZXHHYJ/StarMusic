@@ -33,12 +33,11 @@ fun AlbumScreen(
             .statusBarsPadding()
     ) {
         val topAppBarState = rememberTopAppBarState()
-        val albums = LocalMediaRepository.getAlbums()
         LazyColumn(
             modifier = Modifier.bindTopAppBarState(topAppBarState),
             contentPadding = padding
         ) {
-            itemsIndexed(albums) { _, item ->
+            itemsIndexed(LocalMediaRepository.albums) { _, item ->
                 AlbumItem(album = item) {
                     mainNavController.navigate(ScreenDestination.AlbumCnt(item))
                 }

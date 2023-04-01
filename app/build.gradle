@@ -73,8 +73,14 @@ dependencies {
     // https://mvnrepository.com/artifact/net.jthink/jaudiotagger
     implementation 'net.jthink:jaudiotagger:3.0.1'
     // https://github.com/olshevski/compose-navigation-reimagined
-    implementation "dev.olshevski.navigation:reimagined:1.4.0"
-    implementation "dev.olshevski.navigation:reimagined-material:1.4.0"
+    def reimagined_version = "1.4.0"
+    implementation "dev.olshevski.navigation:reimagined:$reimagined_version"
+    implementation "dev.olshevski.navigation:reimagined-material:$reimagined_version"
+
+    def data_saver_version = "1.1.4"
+    implementation "com.github.FunnySaltyFish.ComposeDataSaver:data-saver:$data_saver_version"
+    implementation "com.github.FunnySaltyFish.ComposeDataSaver:data-saver-mmkv:$data_saver_version"
+    implementation 'com.tencent:mmkv:1.2.14'
 
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.media:media:1.6.0'

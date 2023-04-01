@@ -35,7 +35,6 @@ fun SingleScreen(
             .fillMaxSize()
             .statusBarsPadding()
     ) {
-        val localBeans = LocalMediaRepository.getSongs()
         val topAppBarState = rememberTopAppBarState()
         LazyColumn(
             modifier = Modifier.bindTopAppBarState(topAppBarState),
@@ -67,9 +66,9 @@ fun SingleScreen(
             item {
                 SubTitleItem(title = stringResource(id = R.string.single))
             }
-            itemsIndexed(localBeans) { index, item ->
+            itemsIndexed(LocalMediaRepository.songs) { index, item ->
                 SongItem(sheetNavController = sheetNavController, song = item) {
-                    PlayManager.play(localBeans, index)
+                    PlayManager.play(LocalMediaRepository.songs, index)
                 }
             }
         }

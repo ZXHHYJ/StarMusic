@@ -1,4 +1,4 @@
-package studio.mandysa.music.logic.utils
+package studio.mandysa.music.logic.helper
 
 import android.content.ClipData
 import android.content.ClipboardManager
