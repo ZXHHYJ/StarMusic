@@ -7,6 +7,7 @@ import kotlinx.parcelize.RawValue
 import studio.mandysa.music.service.playmanager.bean.SongBean
 
 sealed class BottomSheetDestination : Parcelable {
+
     @Parcelize
     data class SongMenu(val song: @RawValue SongBean) : BottomSheetDestination()
 

@@ -5,11 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -33,6 +30,7 @@ import studio.mandysa.music.ui.theme.horizontal
 import studio.mandysa.music.ui.theme.textColor
 import kotlin.math.roundToInt
 
+@Stable
 @Parcelize
 class TopAppBarState : Parcelable {
 
@@ -53,6 +51,9 @@ class TopAppBarState : Parcelable {
             ): Offset {
                 val newOffset = topAppBarOffsetHeightPx + available.y
                 topAppBarOffsetHeightPx = newOffset.coerceIn(-maxUpPx, 0f)
+                if (newOffset >= -maxUpPx && newOffset <= 0f) {
+                    return available
+                }
                 return Offset.Zero
             }
         }

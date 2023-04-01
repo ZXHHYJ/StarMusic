@@ -138,7 +138,7 @@ fun MainScreen() {
     val homeNavController =
         rememberNavController(startDestination = HomeNavigationDestination.Single)
 
-    val sheetController = rememberNavController<BottomSheetDestination>(
+    val sheetNavController = rememberNavController<BottomSheetDestination>(
         initialBackstack = emptyList()
     )
 
@@ -257,35 +257,35 @@ fun MainScreen() {
                                     HomeNavigationDestination.Single -> {
                                         SingleScreen(
                                             mainNavController = mainNavController,
-                                            sheetNavController = sheetController,
+                                            sheetNavController = sheetNavController,
                                             padding = padding
                                         )
                                     }
                                     HomeNavigationDestination.Album -> {
                                         AlbumScreen(
                                             mainNavController = mainNavController,
-                                            sheetNavController = sheetController,
+                                            sheetNavController = sheetNavController,
                                             padding = padding
                                         )
                                     }
                                     HomeNavigationDestination.Singer -> {
                                         SingerScreen(
                                             mainNavController = mainNavController,
-                                            sheetNavController = sheetController,
+                                            sheetNavController = sheetNavController,
                                             padding = padding
                                         )
                                     }
                                     HomeNavigationDestination.PlayList -> {
                                         PlayListScreen(
                                             mainNavController = mainNavController,
-                                            sheetNavController = sheetController,
+                                            sheetNavController = sheetNavController,
                                             padding = padding
                                         )
                                     }
                                     HomeNavigationDestination.Search -> {
                                         SearchScreen(
                                             mainNavController = mainNavController,
-                                            sheetNavController = sheetController,
+                                            sheetNavController = sheetNavController,
                                             padding = padding
                                         )
                                     }
@@ -296,7 +296,7 @@ fun MainScreen() {
                         ScreenDestination.Search -> {
                             SearchScreen(
                                 mainNavController = mainNavController,
-                                sheetNavController = sheetController,
+                                sheetNavController = sheetNavController,
                                 padding = padding
                             )
                         }
@@ -305,7 +305,7 @@ fun MainScreen() {
                         is ScreenDestination.SingerCnt -> {
                             SingerCntScreen(
                                 mainNavController = mainNavController,
-                                sheetNavController = sheetController,
+                                sheetNavController = sheetNavController,
                                 padding = padding,
                                 artist = screenDestination.artist
                             )
@@ -314,46 +314,54 @@ fun MainScreen() {
                         is ScreenDestination.AlbumCnt -> {
                             AlbumCntScreen(
                                 mainNavController = mainNavController,
-                                sheetNavController = sheetController,
+                                sheetNavController = sheetNavController,
                                 padding = padding,
                                 album = screenDestination.album
                             )
                         }
 
                         ScreenDestination.About -> {
-                            AboutScreen()
+                            AboutScreen(
+                                mainNavController = mainNavController,
+                                sheetNavController = sheetNavController,
+                                padding = padding
+                            )
                         }
 
                         ScreenDestination.Setting -> {
                             SettingScreen(
                                 mainNavController = mainNavController,
-                                sheetNavController = sheetController,
+                                sheetNavController = sheetNavController,
                                 padding = padding
                             )
                         }
                         ScreenDestination.Album -> {
                             AlbumScreen(
                                 mainNavController = mainNavController,
-                                sheetNavController = sheetController,
+                                sheetNavController = sheetNavController,
                                 padding = padding
                             )
                         }
                         ScreenDestination.ScanMusic -> {
                             ScanMusicScreen(
                                 mainNavController = mainNavController,
-                                sheetNavController = sheetController,
+                                sheetNavController = sheetNavController,
                                 padding = padding
                             )
                         }
                         ScreenDestination.Singer -> {
                             SingerScreen(
                                 mainNavController = mainNavController,
-                                sheetNavController = sheetController,
+                                sheetNavController = sheetNavController,
                                 padding = padding
                             )
                         }
                         ScreenDestination.PlayList -> {
-
+                            PlayListScreen(
+                                mainNavController = mainNavController,
+                                sheetNavController = sheetNavController,
+                                padding = padding
+                            )
                         }
                     }
                 }
@@ -361,18 +369,18 @@ fun MainScreen() {
         }) {
         PlayScreen(
             mainNavController = mainNavController,
-            sheetNavController = sheetController,
+            sheetNavController = sheetNavController,
             panelState = panelState,
             it
         )
     }
 
     BottomSheetNavHost(
-        controller = sheetController,
-        onDismissRequest = { sheetController.pop() }
+        controller = sheetNavController,
+        onDismissRequest = { sheetNavController.pop() }
     ) { destination ->
         BackHandler {
-            sheetController.pop()
+            sheetNavController.pop()
         }
         Surface(
             modifier = Modifier
@@ -382,7 +390,7 @@ fun MainScreen() {
         ) {
             when (destination) {
                 is BottomSheetDestination.SongMenu -> {
-                    SongMenuSheet(mainNavController, sheetController, song = destination.song)
+                    SongMenuSheet(mainNavController, sheetNavController, song = destination.song)
                 }
 
                 is BottomSheetDestination.PlaylistMenu -> {
@@ -390,7 +398,7 @@ fun MainScreen() {
                 }
 
                 is BottomSheetDestination.Message -> {
-                    Message(sheetController, message = destination.message)
+                    Message(sheetNavController, message = destination.message)
                 }
 
                 is BottomSheetDestination.BottomSheet -> {

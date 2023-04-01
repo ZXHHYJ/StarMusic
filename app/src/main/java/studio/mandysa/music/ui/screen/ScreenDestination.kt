@@ -19,11 +19,14 @@ sealed class ScreenDestination : Parcelable {
     object Search : ScreenDestination()
 
     /**
-     * 歌手内容
+     * 歌手详情
      */
     @Parcelize
     data class SingerCnt(val artist: SongBean.Local.Artist) : ScreenDestination()
 
+    /**
+     * 专辑详情
+     */
     @Parcelize
     data class AlbumCnt(val album: SongBean.Local.Album) : ScreenDestination()
 

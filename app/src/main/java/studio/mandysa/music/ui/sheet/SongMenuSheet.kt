@@ -85,12 +85,9 @@ fun SongMenuSheet(
             AppMenuButton(
                 onClick = {
                     sheetNavController.popAll()
-                    mainNavController.navigate(
-                        when (song) {
-                            is SongBean.Local -> ScreenDestination.AlbumCnt(song.album)
-                            is SongBean.Network -> TODO("待补充")
-                        }
-                    )
+                    if (song is SongBean.Local) {
+                        mainNavController.navigate(ScreenDestination.AlbumCnt(song.album))
+                    }
                 },
                 imageVector = Icons.Rounded.Album,
                 text = "${stringResource(id = R.string.album)}:${song.album.name}"
@@ -106,30 +103,16 @@ fun SongMenuSheet(
                 text = stringResource(id = R.string.next_play)
             )
         }
-        when (song) {
-            is SongBean.Local -> {
-                item {
-                    AppMenuButton(
-                        onClick = {
-                            sheetNavController.popAll()
-                            mainNavController.navigate(ScreenDestination.SingerCnt(song.artist))
-                        },
-                        imageVector = Icons.Rounded.Person,
-                        text = "${stringResource(id = R.string.singer)}:${song.artist.name}"
-                    )
-                }
-            }
-            is SongBean.Network -> {
-                /*items(song.artist) {
-                    MenuItem(
-                        modifier = Modifier.padding(horizontal = horizontal),
-                        title = "${stringResource(id = R.string.singer)}:${it.name}",
-                        imageVector = Icons.Rounded.Person
-                    ) {
+        if (song is SongBean.Local) {
+            item {
+                AppMenuButton(
+                    onClick = {
                         sheetNavController.popAll()
-                        //mainNavController.navigate(ScreenDestination.CloudSingerCnt(it))
-                    }
-                }*/
+                        mainNavController.navigate(ScreenDestination.SingerCnt(song.artist))
+                    },
+                    imageVector = Icons.Rounded.Person,
+                    text = "${stringResource(id = R.string.singer)}:${song.artist.name}"
+                )
             }
         }
     }
