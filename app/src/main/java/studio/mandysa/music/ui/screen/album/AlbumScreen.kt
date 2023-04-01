@@ -3,7 +3,6 @@ package studio.mandysa.music.ui.screen.album
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
@@ -27,11 +26,7 @@ fun AlbumScreen(
     sheetNavController: NavController<BottomSheetDestination>,
     padding: PaddingValues
 ) {
-    MediaPermission(
-        modifier = Modifier
-            .fillMaxSize()
-            .statusBarsPadding()
-    ) {
+    MediaPermission(modifier = Modifier.fillMaxSize()) {
         val topAppBarState = rememberTopAppBarState()
         LazyColumn(
             modifier = Modifier.bindTopAppBarState(topAppBarState),

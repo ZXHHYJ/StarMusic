@@ -3,16 +3,13 @@ package studio.mandysa.music.ui.theme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import com.kyant.monet.a1
-import com.kyant.monet.a2
-import com.kyant.monet.n1
-import com.kyant.monet.rangeTo
+import com.kyant.monet.*
 
 val appButtonBackgroundColor
     @Composable get() = 60.a1
 
 val appListButtonBackgroundColor
-    @Composable get() = 45.a1..25.a1
+    @Composable get() = 45.a1
 
 //字体颜色
 val textColor: Color
@@ -34,7 +31,7 @@ val translucentWhiteFixBug = Color(0x33FFFFFF)
 
 //背景色
 val appBackgroundColor
-    @Composable get() = Color.White..Color.Black
+    @Composable get() = Color.White..Color.DarkGray
 
 //背景色的反色
 val onBackground
@@ -54,4 +51,7 @@ val barBackgroundColor
 
 //barItem选中和未选中的颜色
 val barContentColor
-    @Composable get() = 45.a1..25.a1
+    @Composable get() = 45.a1
+
+val appDividerColor
+    @Composable get() = Color(0xd8d8d8d8)

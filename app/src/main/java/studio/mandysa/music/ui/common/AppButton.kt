@@ -9,6 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import studio.mandysa.music.ui.theme.*
@@ -50,7 +51,11 @@ fun AppListButton(
     imageVector: ImageVector,
     text: String
 ) {
-    Surface(contentColor = appListButtonBackgroundColor, shape = roundShape) {
+    Surface(
+        color = Color.Transparent,
+        contentColor = appListButtonBackgroundColor,
+        shape = roundShape
+    ) {
         Column(modifier = modifier.clickable {
             onClick.invoke()
         }) {
@@ -79,7 +84,11 @@ fun AppMenuButton(
     imageVector: ImageVector,
     text: String
 ) {
-    Surface(contentColor = appListButtonBackgroundColor, shape = roundShape) {
+    Surface(
+        color = Color.Transparent,
+        contentColor = appListButtonBackgroundColor,
+        shape = roundShape
+    ) {
         Column(modifier = modifier.clickable {
             onClick.invoke()
         }) {

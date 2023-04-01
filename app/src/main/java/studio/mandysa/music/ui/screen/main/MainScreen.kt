@@ -7,9 +7,9 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
@@ -48,7 +48,7 @@ import studio.mandysa.music.ui.screen.single.SingleScreen
 import studio.mandysa.music.ui.sheet.SongMenuSheet
 import studio.mandysa.music.ui.theme.appBackgroundColor
 import studio.mandysa.music.ui.theme.barBackgroundColor
-import studio.mandysa.music.ui.theme.rightNavBarWidth
+import studio.mandysa.music.ui.theme.round
 
 /**
  * Happy 22nd Birthday Shuangshengzi
@@ -181,60 +181,42 @@ fun MainScreen() {
                     }
                 },
                 navigationBar = {
-                    if (SettingRepository.isTabletMode) {
-                        Column(
+                    AnimatedVisibility(
+                        visible = mainNavController.backstack.entries.size <= 1,
+                        enter = expandVertically(),
+                        exit = shrinkVertically()
+                    ) {
+                        AppBottomNavigationBar(
                             modifier = Modifier
-                                .fillMaxHeight()
-                                .width(rightNavBarWidth)
+                                .fillMaxWidth()
+                                .height(56.dp),
                         ) {
-                            TopAppBar(
-                                state = rememberTopAppBarState(),
-                                modifier = Modifier.fillMaxWidth(),
-                                title = stringResource(
-                                    id = R.string.music
+                            val bottomLastDestination =
+                                homeNavController.backstack.entries.last().destination
+                            listOf(
+                                HomeNavigationDestination.Single,
+                                HomeNavigationDestination.Search
+                            ).forEach { item ->
+                                BottomNavigationItem(
+                                    icon = {
+                                        Icon(
+                                            item.tabIcon,
+                                            contentDescription = null
+                                        )
+                                    }, label = {
+                                        Text(text = item.tabName)
+                                    },
+                                    selected = item == bottomLastDestination,
+                                    onClick = {
+                                        if (!homeNavController.moveToTop { it == item }) {
+                                            homeNavController.navigate(item)
+                                        }
+                                    }
                                 )
-                            ) {
-
                             }
                         }
-                    } else {
-                        AnimatedVisibility(
-                            visible = mainNavController.backstack.entries.size <= 1,
-                            enter = expandVertically(),
-                            exit = shrinkVertically()
-                        ) {
-                            AppBottomNavigationBar(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(56.dp),
-                            ) {
-                                val bottomLastDestination =
-                                    homeNavController.backstack.entries.last().destination
-                                listOf(
-                                    HomeNavigationDestination.Single,
-                                    HomeNavigationDestination.Search
-                                ).forEach { item ->
-                                    BottomNavigationItem(
-                                        icon = {
-                                            Icon(
-                                                item.tabIcon,
-                                                contentDescription = null
-                                            )
-                                        }, label = {
-                                            Text(text = item.tabName)
-                                        },
-                                        selected = item == bottomLastDestination,
-                                        onClick = {
-                                            if (!homeNavController.moveToTop { it == item }) {
-                                                homeNavController.navigate(item)
-                                            }
-                                        }
-                                    )
-                                }
-                            }
-                            if (!mediaControllerVisibility) {
-                                AppDivider(modifier = Modifier.fillMaxWidth())
-                            }
+                        if (!mediaControllerVisibility) {
+                            AppDivider(modifier = Modifier.fillMaxWidth())
                         }
                     }
                 }
@@ -249,119 +231,121 @@ fun MainScreen() {
                         it.invoke(PanelState.COLLAPSED)
                     }
                 }
-                NavHost(mainNavController) { screenDestination ->
-                    when (screenDestination) {
-                        ScreenDestination.Main -> {
-                            NavHost(homeNavController) {
-                                when (it) {
-                                    HomeNavigationDestination.Single -> {
-                                        SingleScreen(
-                                            mainNavController = mainNavController,
-                                            sheetNavController = sheetNavController,
-                                            padding = padding
-                                        )
-                                    }
-                                    HomeNavigationDestination.Album -> {
-                                        AlbumScreen(
-                                            mainNavController = mainNavController,
-                                            sheetNavController = sheetNavController,
-                                            padding = padding
-                                        )
-                                    }
-                                    HomeNavigationDestination.Singer -> {
-                                        SingerScreen(
-                                            mainNavController = mainNavController,
-                                            sheetNavController = sheetNavController,
-                                            padding = padding
-                                        )
-                                    }
-                                    HomeNavigationDestination.PlayList -> {
-                                        PlayListScreen(
-                                            mainNavController = mainNavController,
-                                            sheetNavController = sheetNavController,
-                                            padding = padding
-                                        )
-                                    }
-                                    HomeNavigationDestination.Search -> {
-                                        SearchScreen(
-                                            mainNavController = mainNavController,
-                                            sheetNavController = sheetNavController,
-                                            padding = padding
-                                        )
+                Box(modifier = Modifier.statusBarsPadding()) {
+                    NavHost(mainNavController) { screenDestination ->
+                        when (screenDestination) {
+                            ScreenDestination.Main -> {
+                                NavHost(homeNavController) {
+                                    when (it) {
+                                        HomeNavigationDestination.Single -> {
+                                            SingleScreen(
+                                                mainNavController = mainNavController,
+                                                sheetNavController = sheetNavController,
+                                                padding = padding
+                                            )
+                                        }
+                                        HomeNavigationDestination.Album -> {
+                                            AlbumScreen(
+                                                mainNavController = mainNavController,
+                                                sheetNavController = sheetNavController,
+                                                padding = padding
+                                            )
+                                        }
+                                        HomeNavigationDestination.Singer -> {
+                                            SingerScreen(
+                                                mainNavController = mainNavController,
+                                                sheetNavController = sheetNavController,
+                                                padding = padding
+                                            )
+                                        }
+                                        HomeNavigationDestination.PlayList -> {
+                                            PlayListScreen(
+                                                mainNavController = mainNavController,
+                                                sheetNavController = sheetNavController,
+                                                padding = padding
+                                            )
+                                        }
+                                        HomeNavigationDestination.Search -> {
+                                            SearchScreen(
+                                                mainNavController = mainNavController,
+                                                sheetNavController = sheetNavController,
+                                                padding = padding
+                                            )
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        ScreenDestination.Search -> {
-                            SearchScreen(
-                                mainNavController = mainNavController,
-                                sheetNavController = sheetNavController,
-                                padding = padding
-                            )
-                        }
+                            ScreenDestination.Search -> {
+                                SearchScreen(
+                                    mainNavController = mainNavController,
+                                    sheetNavController = sheetNavController,
+                                    padding = padding
+                                )
+                            }
 
 
-                        is ScreenDestination.SingerCnt -> {
-                            SingerCntScreen(
-                                mainNavController = mainNavController,
-                                sheetNavController = sheetNavController,
-                                padding = padding,
-                                artist = screenDestination.artist
-                            )
-                        }
+                            is ScreenDestination.SingerCnt -> {
+                                SingerCntScreen(
+                                    mainNavController = mainNavController,
+                                    sheetNavController = sheetNavController,
+                                    padding = padding,
+                                    artist = screenDestination.artist
+                                )
+                            }
 
-                        is ScreenDestination.AlbumCnt -> {
-                            AlbumCntScreen(
-                                mainNavController = mainNavController,
-                                sheetNavController = sheetNavController,
-                                padding = padding,
-                                album = screenDestination.album
-                            )
-                        }
+                            is ScreenDestination.AlbumCnt -> {
+                                AlbumCntScreen(
+                                    mainNavController = mainNavController,
+                                    sheetNavController = sheetNavController,
+                                    padding = padding,
+                                    album = screenDestination.album
+                                )
+                            }
 
-                        ScreenDestination.About -> {
-                            AboutScreen(
-                                mainNavController = mainNavController,
-                                sheetNavController = sheetNavController,
-                                padding = padding
-                            )
-                        }
+                            ScreenDestination.About -> {
+                                AboutScreen(
+                                    mainNavController = mainNavController,
+                                    sheetNavController = sheetNavController,
+                                    padding = padding
+                                )
+                            }
 
-                        ScreenDestination.Setting -> {
-                            SettingScreen(
-                                mainNavController = mainNavController,
-                                sheetNavController = sheetNavController,
-                                padding = padding
-                            )
-                        }
-                        ScreenDestination.Album -> {
-                            AlbumScreen(
-                                mainNavController = mainNavController,
-                                sheetNavController = sheetNavController,
-                                padding = padding
-                            )
-                        }
-                        ScreenDestination.ScanMusic -> {
-                            ScanMusicScreen(
-                                mainNavController = mainNavController,
-                                sheetNavController = sheetNavController,
-                                padding = padding
-                            )
-                        }
-                        ScreenDestination.Singer -> {
-                            SingerScreen(
-                                mainNavController = mainNavController,
-                                sheetNavController = sheetNavController,
-                                padding = padding
-                            )
-                        }
-                        ScreenDestination.PlayList -> {
-                            PlayListScreen(
-                                mainNavController = mainNavController,
-                                sheetNavController = sheetNavController,
-                                padding = padding
-                            )
+                            ScreenDestination.Setting -> {
+                                SettingScreen(
+                                    mainNavController = mainNavController,
+                                    sheetNavController = sheetNavController,
+                                    padding = padding
+                                )
+                            }
+                            ScreenDestination.Album -> {
+                                AlbumScreen(
+                                    mainNavController = mainNavController,
+                                    sheetNavController = sheetNavController,
+                                    padding = padding
+                                )
+                            }
+                            ScreenDestination.ScanMusic -> {
+                                ScanMusicScreen(
+                                    mainNavController = mainNavController,
+                                    sheetNavController = sheetNavController,
+                                    padding = padding
+                                )
+                            }
+                            ScreenDestination.Singer -> {
+                                SingerScreen(
+                                    mainNavController = mainNavController,
+                                    sheetNavController = sheetNavController,
+                                    padding = padding
+                                )
+                            }
+                            ScreenDestination.PlayList -> {
+                                PlayListScreen(
+                                    mainNavController = mainNavController,
+                                    sheetNavController = sheetNavController,
+                                    padding = padding
+                                )
+                            }
                         }
                     }
                 }
@@ -382,15 +366,19 @@ fun MainScreen() {
         BackHandler {
             sheetNavController.pop()
         }
-        Surface(
-            modifier = Modifier
-                .background(color = appBackgroundColor)
-                .navigationBarsPadding(),
-            elevation = 0.dp
+        Column(
+            modifier = Modifier.background(
+                appBackgroundColor,
+                shape = RoundedCornerShape(topStart = round, topEnd = round)
+            )
         ) {
             when (destination) {
                 is BottomSheetDestination.SongMenu -> {
-                    SongMenuSheet(mainNavController, sheetNavController, song = destination.song)
+                    SongMenuSheet(
+                        mainNavController,
+                        sheetNavController,
+                        song = destination.song
+                    )
                 }
 
                 is BottomSheetDestination.PlaylistMenu -> {
@@ -405,6 +393,8 @@ fun MainScreen() {
                     destination.content()
                 }
             }
+            Spacer(modifier = Modifier.navigationBarsPadding())
         }
+
     }
 }

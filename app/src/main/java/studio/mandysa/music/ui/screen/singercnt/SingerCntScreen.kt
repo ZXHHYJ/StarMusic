@@ -1,6 +1,8 @@
 package studio.mandysa.music.ui.screen.singercnt
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
@@ -27,14 +29,13 @@ fun SingerCntScreen(
     BoxWithPercentages(
         modifier = Modifier
             .fillMaxSize()
-            .statusBarsPadding()
-            .padding(padding)
     ) {
         val topAppBarState = rememberTopAppBarState()
         LazyColumn(
             modifier = Modifier
                 .bindTopAppBarState(topAppBarState)
-                .fillMaxSize()
+                .fillMaxSize(),
+            contentPadding = padding
         ) {
             itemsIndexed(artist.songs) { index, item ->
                 SongItem(sheetNavController = sheetNavController, song = item) {
