@@ -19,9 +19,9 @@ import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.service.playmanager.ktx.artist
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
 import studio.mandysa.music.service.playmanager.ktx.title
-import studio.mandysa.music.ui.common.AppIcon
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.AppCard
+import studio.mandysa.music.ui.common.AppIcon
 import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.theme.*
 
@@ -40,13 +40,13 @@ fun SongItem(
                 .clickable(onClick = onClick),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
+            AppCard(
+                backgroundColor = Color.Transparent,
                 modifier = Modifier
                     .padding(horizontal = horizontal, vertical = vertical)
                     .size(50.dp),
-                contentAlignment = Alignment.Center
             ) {
-                AppAsyncImage(modifier = Modifier.size(50.dp), url = song.coverUrl)
+                AppAsyncImage(modifier = Modifier.fillMaxSize(), url = song.coverUrl)
             }
             Column(
                 modifier = Modifier

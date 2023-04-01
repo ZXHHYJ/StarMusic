@@ -51,4 +51,16 @@ sealed class ScreenDestination : Parcelable {
     @Parcelize
     object ScanMusic : ScreenDestination()
 
+    /**
+     * 歌手
+     */
+    @Parcelize
+    object Singer : ScreenDestination()
+
+    /**
+     * 播放列表
+     */
+    @Parcelize
+    object PlayList : ScreenDestination()
+
 }

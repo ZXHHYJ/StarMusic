@@ -42,7 +42,9 @@ fun SingleScreen(
         ) {
             item {
                 AppListButton(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+
+                    },
                     imageVector = Icons.Rounded.PlaylistPlay,
                     text = stringResource(id = studio.mandysa.music.R.string.play_list)
                 )
@@ -58,7 +60,9 @@ fun SingleScreen(
             }
             item {
                 AppListButton(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        mainNavController.navigate(ScreenDestination.Singer)
+                    },
                     imageVector = Icons.Rounded.Mic,
                     text = stringResource(id = studio.mandysa.music.R.string.singer)
                 )
@@ -97,6 +101,7 @@ fun SingleScreen(
                                 AppMenuButton(
                                     onClick = {
                                         sheetNavController.popAll()
+                                        mainNavController.navigate(ScreenDestination.Setting)
                                     },
                                     imageVector = Icons.Rounded.Settings,
                                     text = stringResource(id = R.string.setting)

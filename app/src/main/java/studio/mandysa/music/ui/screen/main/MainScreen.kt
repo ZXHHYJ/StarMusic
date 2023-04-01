@@ -256,37 +256,37 @@ fun MainScreen() {
                                 when (it) {
                                     HomeNavigationDestination.Single -> {
                                         SingleScreen(
-                                            mainNavController,
-                                            sheetController,
-                                            padding
+                                            mainNavController = mainNavController,
+                                            sheetNavController = sheetController,
+                                            padding = padding
                                         )
                                     }
                                     HomeNavigationDestination.Album -> {
                                         AlbumScreen(
-                                            mainNavController,
-                                            sheetController,
-                                            padding
+                                            mainNavController = mainNavController,
+                                            sheetNavController = sheetController,
+                                            padding = padding
                                         )
                                     }
                                     HomeNavigationDestination.Singer -> {
                                         SingerScreen(
-                                            mainNavController,
-                                            sheetController,
-                                            padding
+                                            mainNavController = mainNavController,
+                                            sheetNavController = sheetController,
+                                            padding = padding
                                         )
                                     }
                                     HomeNavigationDestination.PlayList -> {
                                         PlayListScreen(
-                                            mainNavController,
-                                            sheetController,
-                                            padding
+                                            mainNavController = mainNavController,
+                                            sheetNavController = sheetController,
+                                            padding = padding
                                         )
                                     }
                                     HomeNavigationDestination.Search -> {
                                         SearchScreen(
                                             mainNavController = mainNavController,
-                                            sheetController = sheetController,
-                                            paddingValues = padding
+                                            sheetNavController = sheetController,
+                                            padding = padding
                                         )
                                     }
                                 }
@@ -296,8 +296,8 @@ fun MainScreen() {
                         ScreenDestination.Search -> {
                             SearchScreen(
                                 mainNavController = mainNavController,
-                                sheetController = sheetController,
-                                paddingValues = padding
+                                sheetNavController = sheetController,
+                                padding = padding
                             )
                         }
 
@@ -305,8 +305,8 @@ fun MainScreen() {
                         is ScreenDestination.SingerCnt -> {
                             SingerCntScreen(
                                 mainNavController = mainNavController,
-                                sheetController = sheetController,
-                                paddingValues = padding,
+                                sheetNavController = sheetController,
+                                padding = padding,
                                 artist = screenDestination.artist
                             )
                         }
@@ -314,8 +314,8 @@ fun MainScreen() {
                         is ScreenDestination.AlbumCnt -> {
                             AlbumCntScreen(
                                 mainNavController = mainNavController,
-                                sheetController = sheetController,
-                                paddingValues = padding,
+                                sheetNavController = sheetController,
+                                padding = padding,
                                 album = screenDestination.album
                             )
                         }
@@ -327,14 +327,14 @@ fun MainScreen() {
                         ScreenDestination.Setting -> {
                             SettingScreen(
                                 mainNavController = mainNavController,
-                                sheetController = sheetController,
-                                paddingValues = padding
+                                sheetNavController = sheetController,
+                                padding = padding
                             )
                         }
                         ScreenDestination.Album -> {
                             AlbumScreen(
                                 mainNavController = mainNavController,
-                                sheetController = sheetController,
+                                sheetNavController = sheetController,
                                 padding = padding
                             )
                         }
@@ -344,6 +344,16 @@ fun MainScreen() {
                                 sheetNavController = sheetController,
                                 padding = padding
                             )
+                        }
+                        ScreenDestination.Singer -> {
+                            SingerScreen(
+                                mainNavController = mainNavController,
+                                sheetNavController = sheetController,
+                                padding = padding
+                            )
+                        }
+                        ScreenDestination.PlayList -> {
+
                         }
                     }
                 }

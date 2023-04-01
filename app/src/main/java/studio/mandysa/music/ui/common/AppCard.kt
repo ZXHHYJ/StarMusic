@@ -3,14 +3,11 @@ package studio.mandysa.music.ui.common
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.contentColorFor
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import studio.mandysa.music.ui.theme.roundShape
 
@@ -41,12 +38,9 @@ fun AppRoundCard(
     contentColor: Color = contentColorFor(backgroundColor = backgroundColor),
     content: @Composable () -> Unit
 ) {
-    var size by remember { mutableStateOf(IntSize.Zero) }
     AppCard(
-        modifier = modifier.onSizeChanged {
-            size = it
-        },
-        shape = with(LocalDensity.current) { RoundedCornerShape(size.width.toDp()) },
+        modifier = modifier,
+        shape = RoundedCornerShape(50),
         backgroundColor = backgroundColor,
         contentColor = contentColor,
         content = content

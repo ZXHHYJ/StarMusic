@@ -3,16 +3,15 @@ package studio.mandysa.music.ui.common
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,7 +22,6 @@ import studio.mandysa.music.service.playmanager.ktx.coverUrl
 import studio.mandysa.music.service.playmanager.ktx.title
 import studio.mandysa.music.ui.theme.barBackgroundColor
 import studio.mandysa.music.ui.theme.horizontal
-import studio.mandysa.music.ui.theme.roundShape
 
 @Composable
 fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> Unit) {
@@ -84,14 +82,13 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
                         val playPauseState by PlayManager.pauseLiveData().map {
                             if (it) R.drawable.ic_play else R.drawable.ic_pause
                         }.observeAsState(R.drawable.ic_play)
-                        Icon(
-                            painter = painterResource(playPauseState),
+                        val buttonSize = 36.dp
+                        AppIcon(
+                            imageVector = ImageVector.vectorResource(playPauseState),
                             tint = Color.White,
                             contentDescription = null,
                             modifier = Modifier
-                                .size(controlBarHeight)
-                                .padding(8.dp)
-                                .clip(roundShape)
+                                .size(buttonSize)
                                 .clickable {
                                     if (PlayManager.isPaused()) {
                                         PlayManager.play()
@@ -100,21 +97,23 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
                                     }
                                 }
                         )
-                        Icon(
-                            painter = painterResource(R.drawable.ic_skip_next),
+                        Spacer(modifier = Modifier.width(8.dp))
+                        AppIcon(
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_skip_next),
                             tint = Color.White,
                             contentDescription = null,
                             modifier = Modifier
-                                .size(controlBarHeight)
-                                .padding(8.dp)
-                                .clip(roundShape)
+                                .size(buttonSize)
                                 .clickable {
                                     PlayManager.skipToNext()
                                 }
                         )
+                        Spacer(modifier = Modifier.width(8.dp))
                     }
                 }
-                AppAsyncImage(modifier = Modifier.size(coverSize), url = coverUrl)
+                AppCard(backgroundColor = Color.Transparent, modifier = Modifier.size(coverSize)) {
+                    AppAsyncImage(modifier = Modifier.fillMaxSize(), url = coverUrl)
+                }
             }
         }
     }

@@ -21,13 +21,13 @@
 <p align="center"><strong>欢迎贡献代码/问题</strong></p>
 <br>
 
-## PhoneScreen
+## 手机界面截图
 
 |![](https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/手机-主页.png)|![](https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/手机-播放页.png)|
 |--|--|
 |![](https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/手机-歌词.png)
 
-## TabletScreen
+## 平板界面截图
 
 ![](https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/平板-主页.png)![](https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/平板-播放页和歌词.png)
 

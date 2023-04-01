@@ -35,7 +35,7 @@ fun ScanMusicScreen(
         item {
             AppRoundCard(backgroundColor = cardBackgroundColor, modifier = Modifier.size(80.dp)) {
                 Text(
-                    text = "1",
+                    text = "${LocalMediaRepository.songs.size}",
                     fontSize = 30.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxSize()

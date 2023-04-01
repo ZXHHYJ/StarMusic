@@ -24,7 +24,7 @@ import studio.mandysa.music.ui.screen.ScreenDestination
 @Composable
 fun AlbumScreen(
     mainNavController: NavController<ScreenDestination>,
-    sheetController: NavController<BottomSheetDestination>,
+    sheetNavController: NavController<BottomSheetDestination>,
     padding: PaddingValues
 ) {
     MediaPermission(
