@@ -39,6 +39,7 @@ import studio.mandysa.music.ui.screen.album.AlbumScreen
 import studio.mandysa.music.ui.screen.albumcnt.AlbumCntScreen
 import studio.mandysa.music.ui.screen.play.PlayScreen
 import studio.mandysa.music.ui.screen.playlist.PlayListScreen
+import studio.mandysa.music.ui.screen.scanmusic.ScanMusicScreen
 import studio.mandysa.music.ui.screen.search.SearchScreen
 import studio.mandysa.music.ui.screen.setting.SettingScreen
 import studio.mandysa.music.ui.screen.singer.SingerScreen
@@ -337,6 +338,13 @@ fun MainScreen() {
                                 padding = padding
                             )
                         }
+                        ScreenDestination.ScanMusic -> {
+                            ScanMusicScreen(
+                                mainNavController = mainNavController,
+                                sheetNavController = sheetController,
+                                padding = padding
+                            )
+                        }
                     }
                 }
             }
@@ -375,8 +383,8 @@ fun MainScreen() {
                     Message(sheetController, message = destination.message)
                 }
 
-                is BottomSheetDestination.MeMenu -> {
-
+                is BottomSheetDestination.BottomSheet -> {
+                    destination.content()
                 }
             }
         }

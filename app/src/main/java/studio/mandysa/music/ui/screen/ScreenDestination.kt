@@ -45,5 +45,10 @@ sealed class ScreenDestination : Parcelable {
     @Parcelize
     object About : ScreenDestination()
 
+    /**
+     * 扫描音乐
+     */
+    @Parcelize
+    object ScanMusic : ScreenDestination()
 
 }

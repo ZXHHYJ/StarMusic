@@ -1,5 +1,6 @@
 package studio.mandysa.music.ui.screen.single
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,15 +8,13 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Album
-import androidx.compose.material.icons.rounded.Mic
-import androidx.compose.material.icons.rounded.MoreVert
-import androidx.compose.material.icons.rounded.PlaylistPlay
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
+import dev.olshevski.navigation.reimagined.popAll
 import studio.mandysa.music.R
 import studio.mandysa.music.logic.repository.LocalMediaRepository
 import studio.mandysa.music.service.playmanager.PlayManager
@@ -79,7 +78,34 @@ fun SingleScreen(
             modifier = Modifier.fillMaxWidth(),
             title = stringResource(id = studio.mandysa.music.R.string.media_lib)
         ) {
-            AppIcon(imageVector = Icons.Rounded.MoreVert, contentDescription = null)
+            AppIcon(
+                imageVector = Icons.Rounded.MoreVert,
+                contentDescription = null,
+                modifier = Modifier.clickable {
+                    sheetNavController.navigate(BottomSheetDestination.BottomSheet {
+                        LazyColumn {
+                            item {
+                                AppMenuButton(
+                                    onClick = {
+                                        sheetNavController.popAll()
+                                        mainNavController.navigate(ScreenDestination.ScanMusic)
+                                    },
+                                    imageVector = Icons.Rounded.Source,
+                                    text = stringResource(id = R.string.scan_music)
+                                )
+                            }
+                            item {
+                                AppMenuButton(
+                                    onClick = {
+                                        sheetNavController.popAll()
+                                    },
+                                    imageVector = Icons.Rounded.Settings,
+                                    text = stringResource(id = R.string.setting)
+                                )
+                            }
+                        }
+                    })
+                })
         }
     }
 }
