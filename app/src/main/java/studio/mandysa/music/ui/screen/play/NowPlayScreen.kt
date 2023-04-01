@@ -146,7 +146,6 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // TODO: 不知道为什么这里用AppIcon会闪退
                 val playPauseState by PlayManager.pauseLiveData().map {
                     if (it) R.drawable.ic_play else R.drawable.ic_pause
                 }.observeAsState(R.drawable.ic_play)

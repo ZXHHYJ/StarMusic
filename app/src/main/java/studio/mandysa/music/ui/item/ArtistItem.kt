@@ -23,6 +23,10 @@ import studio.mandysa.music.ui.theme.textColor
 import studio.mandysa.music.ui.theme.textColorLight
 import studio.mandysa.music.ui.theme.vertical
 
+/**
+ * @author 黄浩
+ */
+
 @Composable
 fun ArtistItem(artist: SongBean.Local.Artist, onClick: () -> Unit) {
     AppCard(backgroundColor = Color.Transparent) {

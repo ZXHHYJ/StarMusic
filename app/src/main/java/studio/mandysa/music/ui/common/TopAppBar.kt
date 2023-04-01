@@ -30,6 +30,10 @@ import studio.mandysa.music.ui.theme.horizontal
 import studio.mandysa.music.ui.theme.textColor
 import kotlin.math.roundToInt
 
+/**
+ * @author 黄浩
+ */
+
 @Stable
 @Parcelize
 class TopAppBarState : Parcelable {

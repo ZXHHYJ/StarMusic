@@ -6,8 +6,9 @@ import android.content.Context
 import studio.mandysa.music.logic.config.application
 
 /**
- * 复制文本
+ * @author 黄浩
  */
+
 fun copyText(content: String) {
     val cm = application.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
     val mClipData = ClipData.newPlainText("Label", content)

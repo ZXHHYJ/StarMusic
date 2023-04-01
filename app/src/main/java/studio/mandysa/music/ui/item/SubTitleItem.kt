@@ -11,6 +11,10 @@ import studio.mandysa.music.ui.theme.horizontal
 import studio.mandysa.music.ui.theme.textColor
 import studio.mandysa.music.ui.theme.vertical
 
+/**
+ * @author 黄浩
+ */
+
 @Composable
 fun SubTitleItem(modifier: Modifier = Modifier, title: String) {
     Text(

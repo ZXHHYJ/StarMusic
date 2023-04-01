@@ -22,6 +22,9 @@ import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.AppCard
 import studio.mandysa.music.ui.theme.*
 
+/**
+ * @author 黄浩
+ */
 @Composable
 fun AlbumItem(
     album: SongBean.Local.Album,

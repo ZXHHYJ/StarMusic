@@ -6,6 +6,10 @@ import dev.olshevski.navigation.reimagined.NavController
 import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 
+/**
+ * @author 黄浩
+ */
+
 @Composable
 fun SettingScreen(
     mainNavController: NavController<ScreenDestination>,

@@ -9,6 +9,9 @@ import androidx.core.app.NotificationCompat
 import androidx.media.session.MediaButtonReceiver
 import studio.mandysa.music.R
 
+/**
+ * @author 黄浩
+ */
 class MediaNotification(
     private val context: Context,
     mediaSessionCompat: MediaSessionCompat,

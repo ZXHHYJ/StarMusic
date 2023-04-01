@@ -10,6 +10,10 @@ import androidx.compose.ui.unit.dp
 import studio.mandysa.music.ui.theme.barBackgroundColor
 import studio.mandysa.music.ui.theme.barContentColor
 
+/**
+ * @author 黄浩
+ */
+
 @Composable
 fun AppBottomNavigationBar(
     modifier: Modifier = Modifier,

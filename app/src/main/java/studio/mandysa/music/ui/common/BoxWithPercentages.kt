@@ -6,6 +6,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 
+/**
+ * @author 黄浩
+ */
+
 @Composable
 fun BoxWithPercentages(modifier: Modifier, content: @Composable BoxWithPercentagesScope.() -> Unit) {
     BoxWithConstraints(modifier = modifier) {

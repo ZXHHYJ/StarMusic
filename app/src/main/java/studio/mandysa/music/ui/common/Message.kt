@@ -12,6 +12,10 @@ import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.theme.horizontal
 import studio.mandysa.music.ui.theme.textColor
 
+/**
+ * @author 黄浩
+ */
+
 @Composable
 fun Message(sheetNavController: NavController<BottomSheetDestination>, message: String) {
     Column(

@@ -20,6 +20,10 @@ import studio.mandysa.music.ui.item.ArtistItem
 import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 
+/**
+ * @author 黄浩
+ */
+
 @Composable
 fun SingerScreen(
     mainNavController: NavController<ScreenDestination>,

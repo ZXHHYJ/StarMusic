@@ -21,6 +21,9 @@ import com.flaviofaria.kenburnsview.KenBurnsView
 import com.flaviofaria.kenburnsview.RandomTransitionGenerator
 import com.google.android.renderscript.Toolkit
 
+/**
+ * @author 黄浩
+ */
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable

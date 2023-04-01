@@ -4,6 +4,9 @@ import studio.mandysa.music.service.playmanager.bean.SongBean
 
 private const val EMPTY_STRING = ""
 
+/**
+ * @author 黄浩
+ */
 val SongBean.coverUrl: String
     get() = when (this) {
         is SongBean.Local -> "content://media/external/audio/albumart/${this.album.id}"

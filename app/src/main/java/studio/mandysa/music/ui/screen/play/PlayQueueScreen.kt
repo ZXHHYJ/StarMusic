@@ -31,6 +31,10 @@ import studio.mandysa.music.ui.theme.playScreenHorizontal
 import studio.mandysa.music.ui.theme.playScreenMaxWidth
 import studio.mandysa.music.ui.theme.translucentWhite
 
+/**
+ * @author 黄浩
+ */
+
 @Composable
 fun PlayQueueScreen(sheetNavController: NavController<BottomSheetDestination>) {
     val playlist by PlayManager.changePlayListLiveData().observeAsState(listOf())

@@ -18,4 +18,5 @@
     <string name="go_permission">前往授权</string>
     <string name="setting">设置</string>
     <string name="scan_music">扫描音乐</string>
+    <string name="not_lyric">无歌词</string>
 </resources>

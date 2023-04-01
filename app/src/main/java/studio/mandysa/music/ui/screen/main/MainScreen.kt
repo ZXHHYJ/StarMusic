@@ -29,7 +29,6 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.olshevski.navigation.reimagined.*
 import dev.olshevski.navigation.reimagined.material.BottomSheetNavHost
 import studio.mandysa.music.R
-import studio.mandysa.music.logic.repository.SettingRepository
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.ui.common.*
 import studio.mandysa.music.ui.screen.BottomSheetDestination
@@ -53,6 +52,11 @@ import studio.mandysa.music.ui.theme.round
 /**
  * Happy 22nd Birthday Shuangshengzi
  */
+
+/**
+ * @author 黄浩
+ */
+
 enum class HomeNavigationDestination {
     Single,
     Album,
@@ -87,11 +91,6 @@ private fun AppScaffold(
     content: @Composable (PaddingValues) -> Unit
 ) {
     Row(modifier = modifier) {
-        if (SettingRepository.isTabletMode) {
-            Box(modifier = Modifier.fillMaxHeight()) {
-                navigationBar.invoke()
-            }
-        }
         Box(
             modifier = Modifier
                 .fillMaxHeight()
@@ -110,9 +109,7 @@ private fun AppScaffold(
                     bottomBarSize = it
                 }) {
                 controllerBar.invoke()
-                if (!SettingRepository.isTabletMode) {
-                    navigationBar.invoke()
-                }
+                navigationBar.invoke()
                 Box(
                     modifier = Modifier
                         .height(

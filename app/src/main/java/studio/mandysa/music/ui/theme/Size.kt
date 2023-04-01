@@ -2,6 +2,10 @@ package studio.mandysa.music.ui.theme
 
 import androidx.compose.ui.unit.dp
 
+/**
+ * @author 黄浩
+ */
+
 val vertical = 10.dp
 
 val horizontal = 16.dp

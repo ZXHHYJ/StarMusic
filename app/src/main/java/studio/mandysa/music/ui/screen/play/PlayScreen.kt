@@ -31,6 +31,10 @@ import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.*
 
+/**
+ * @author 黄浩
+ */
+
 enum class PlayScreenDestination {
     Main,
     Lyric,

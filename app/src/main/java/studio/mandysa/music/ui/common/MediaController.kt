@@ -23,6 +23,10 @@ import studio.mandysa.music.service.playmanager.ktx.title
 import studio.mandysa.music.ui.theme.barBackgroundColor
 import studio.mandysa.music.ui.theme.horizontal
 
+/**
+ * @author 黄浩
+ */
+
 @Composable
 fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> Unit) {
     val controlBarHeight = 50.dp

@@ -7,6 +7,10 @@ import androidx.core.view.WindowCompat
 import studio.mandysa.music.ui.screen.main.MainScreen
 import studio.mandysa.music.ui.theme.MandySaMusicTheme
 
+/**
+ * @author 黄浩
+ */
+
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

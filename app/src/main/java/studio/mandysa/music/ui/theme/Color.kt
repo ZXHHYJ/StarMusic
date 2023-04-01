@@ -1,9 +1,15 @@
 package studio.mandysa.music.ui.theme
 
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import com.kyant.monet.*
+import com.kyant.monet.a1
+import com.kyant.monet.a2
+import com.kyant.monet.n1
+import com.kyant.monet.rangeTo
+
+/**
+ * @author 黄浩
+ */
 
 val appButtonBackgroundColor
     @Composable get() = 60.a1
@@ -31,11 +37,11 @@ val translucentWhiteFixBug = Color(0x33FFFFFF)
 
 //背景色
 val appBackgroundColor
-    @Composable get() = Color.White..Color.DarkGray
+    @Composable get() = Color.White..1.n1
 
 //背景色的反色
 val onBackground
-    @Composable get() = MaterialTheme.colors.onBackground
+    @Composable get() = Color.Black..Color.LightGray
 
 //空图片背景色
 val emptyImageBackground
