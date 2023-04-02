@@ -5,9 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Album
-import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -75,17 +73,6 @@ fun SongMenuSheet(
             }
         }
         item {
-            /*val isLike = false
-            MenuItem(
-                modifier = Modifier.padding(horizontal = horizontal),
-                title = stringResource(id = if (isLike == true) R.string.remove_like else R.string.add_like),
-                imageVector = if (isLike == true) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
-                enabled = isLike != null
-            ) {
-                //songMenuViewModel.likeMusic(isLike == false)
-            }*/
-        }
-        item {
             AppMenuButton(
                 onClick = {
                     sheetNavController.popAll()
@@ -95,16 +82,6 @@ fun SongMenuSheet(
                 },
                 imageVector = Icons.Rounded.Album,
                 text = "${stringResource(id = R.string.album)}:${song.album.name}"
-            )
-        }
-        item {
-            AppMenuButton(
-                onClick = {
-                    sheetNavController.popAll()
-                    PlayManager.addNextPlay(song)
-                },
-                imageVector = Icons.Rounded.Add,
-                text = stringResource(id = R.string.next_play)
             )
         }
         if (song is SongBean.Local) {
@@ -118,6 +95,34 @@ fun SongMenuSheet(
                     text = "${stringResource(id = R.string.singer)}:${song.artist.name}"
                 )
             }
+        }
+        item {
+            AppMenuButton(
+                onClick = {
+                    sheetNavController.popAll()
+                    PlayManager.addNextPlay(song)
+                },
+                imageVector = Icons.Rounded.Add,
+                text = stringResource(id = R.string.next_play)
+            )
+        }
+        item {
+            AppMenuButton(
+                onClick = {
+                    sheetNavController.popAll()
+                },
+                imageVector = Icons.Rounded.Info,
+                text = stringResource(id = R.string.song_info)
+            )
+        }
+        item {
+            AppMenuButton(
+                onClick = {
+                    sheetNavController.popAll()
+                },
+                imageVector = Icons.Rounded.Delete,
+                text = stringResource(id = R.string.delete)
+            )
         }
     }
 }

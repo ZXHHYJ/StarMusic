@@ -42,7 +42,7 @@ fun SingleScreen(
             item {
                 AppListButton(
                     onClick = {
-
+                        mainNavController.navigate(ScreenDestination.PlayList)
                     },
                     imageVector = Icons.Rounded.PlaylistPlay,
                     text = stringResource(id = studio.mandysa.music.R.string.play_list)

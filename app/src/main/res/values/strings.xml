@@ -19,4 +19,6 @@
     <string name="setting">设置</string>
     <string name="scan_music">扫描音乐</string>
     <string name="not_lyric">无歌词</string>
+    <string name="delete">删除</string>
+    <string name="song_info">歌曲信息</string>
 </resources>

@@ -53,7 +53,9 @@ fun LyricScreen() {
     }
     val liveTime by PlayManager.playingMusicProgressLiveData().observeAsState(0)
     if (lyric.isEmpty()) {
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier
+            .widthIn(max = playScreenMaxWidth)
+            .fillMaxSize()) {
             Text(
                 text = stringResource(id = studio.mandysa.music.R.string.not_lyric),
                 color = Color.White,
