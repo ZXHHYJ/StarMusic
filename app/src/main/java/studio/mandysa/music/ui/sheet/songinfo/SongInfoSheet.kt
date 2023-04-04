@@ -1,5 +1,6 @@
 package studio.mandysa.music.ui.sheet.songinfo
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
@@ -10,6 +11,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.navigate
+import dev.olshevski.navigation.reimagined.popAll
 import studio.mandysa.music.logic.helper.toTime
 import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.service.playmanager.ktx.*
@@ -66,12 +69,6 @@ fun SongInfoSheet(
             }
         }
         item {
-            SongInfoItem(
-                title = stringResource(id = studio.mandysa.music.R.string.album),
-                info = song.album.name
-            )
-        }
-        item {
             when (song) {
                 is SongBean.Local -> SongInfoItem(
                     title = stringResource(id = studio.mandysa.music.R.string.duration),
@@ -86,7 +83,18 @@ fun SongInfoSheet(
         item {
             SongInfoItem(
                 title = stringResource(id = studio.mandysa.music.R.string.album),
-                info = song.album.name
+                info = song.album.name,
+                modifier = Modifier.clickable {
+                    when (song) {
+                        is SongBean.Local -> {
+                            sheetNavController.popAll()
+                            mainNavController.navigate(ScreenDestination.AlbumCnt(album = song.album))
+                        }
+                        is SongBean.Network -> {
+
+                        }
+                    }
+                }
             )
         }
         item {
@@ -109,7 +117,7 @@ fun SongInfoSheet(
                     val hz = song.size / (song.duration / 1000)
                     SongInfoItem(
                         title = stringResource(id = studio.mandysa.music.R.string.sample_rate),
-                        info = getClosestValue(hz.toInt()).toString()
+                        info = "${getClosestValue(hz.toInt())} Hz"
                     )
                 }
                 is SongBean.Network -> {
