@@ -44,6 +44,7 @@ import studio.mandysa.music.ui.screen.setting.SettingScreen
 import studio.mandysa.music.ui.screen.singer.SingerScreen
 import studio.mandysa.music.ui.screen.singercnt.SingerCntScreen
 import studio.mandysa.music.ui.screen.single.SingleScreen
+import studio.mandysa.music.ui.sheet.songinfo.SongInfoSheet
 import studio.mandysa.music.ui.sheet.SongMenuSheet
 import studio.mandysa.music.ui.theme.appBackgroundColor
 import studio.mandysa.music.ui.theme.barBackgroundColor
@@ -372,18 +373,22 @@ fun MainScreen() {
             when (destination) {
                 is BottomSheetDestination.SongMenu -> {
                     SongMenuSheet(
-                        mainNavController,
-                        sheetNavController,
+                        mainNavController = mainNavController,
+                        sheetNavController = sheetNavController,
                         song = destination.song
                     )
                 }
 
-                is BottomSheetDestination.PlaylistMenu -> {
-
+                is BottomSheetDestination.SongInfo -> {
+                    SongInfoSheet(
+                        mainNavController = mainNavController,
+                        sheetNavController = sheetNavController,
+                        song = destination.song
+                    )
                 }
 
                 is BottomSheetDestination.Message -> {
-                    Message(sheetNavController, message = destination.message)
+                    Message(sheetNavController = sheetNavController, message = destination.message)
                 }
 
                 is BottomSheetDestination.BottomSheet -> {

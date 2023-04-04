@@ -13,7 +13,8 @@ sealed interface SongBean {
         val artist: Artist,
         val duration: Long,
         val data: String,
-        val songName: String
+        val songName: String,
+        val size: Long
     ) : SongBean, Parcelable {
         @Parcelize
         data class Artist(val id: String, val name: String) : Parcelable

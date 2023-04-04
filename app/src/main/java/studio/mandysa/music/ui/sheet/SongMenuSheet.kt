@@ -49,9 +49,9 @@ fun SongMenuSheet(
             ) {
                 Row(
                     modifier = Modifier
-                        .height(80.dp)
+                        .height(70.dp)
                 ) {
-                    AppCard(backgroundColor = Color.Transparent, modifier = Modifier.size(80.dp)) {
+                    AppCard(backgroundColor = Color.Transparent, modifier = Modifier.size(70.dp)) {
                         AppAsyncImage(modifier = Modifier.fillMaxSize(), url = song.coverUrl)
                     }
                     Column(modifier = Modifier.padding(vertical)) {
@@ -110,6 +110,7 @@ fun SongMenuSheet(
             AppMenuButton(
                 onClick = {
                     sheetNavController.popAll()
+                    sheetNavController.navigate(BottomSheetDestination.SongInfo(song))
                 },
                 imageVector = Icons.Rounded.Info,
                 text = stringResource(id = R.string.song_info)

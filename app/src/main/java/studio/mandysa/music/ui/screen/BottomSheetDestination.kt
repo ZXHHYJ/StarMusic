@@ -13,10 +13,10 @@ import studio.mandysa.music.service.playmanager.bean.SongBean
 sealed class BottomSheetDestination : Parcelable {
 
     @Parcelize
-    data class SongMenu(val song: @RawValue SongBean) : BottomSheetDestination()
+    data class SongInfo(val song: @RawValue SongBean) : BottomSheetDestination()
 
     @Parcelize
-    data class PlaylistMenu(val id: String) : BottomSheetDestination()
+    data class SongMenu(val song: @RawValue SongBean) : BottomSheetDestination()
 
     @Parcelize
     data class Message(val message: String) : BottomSheetDestination()

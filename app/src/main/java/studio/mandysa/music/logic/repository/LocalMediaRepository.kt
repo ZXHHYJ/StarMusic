@@ -79,9 +79,10 @@ object LocalMediaRepository {
                     MediaStore.Audio.AudioColumns.ARTIST_ID,
                     MediaStore.Audio.AudioColumns.DURATION,
                     MediaStore.Audio.AudioColumns.DATA,
-                    MediaStore.Audio.AudioColumns.TITLE
+                    MediaStore.Audio.AudioColumns.TITLE,
+                    MediaStore.Audio.AudioColumns.SIZE,
                 ),
-                "${MediaStore.Audio.AudioColumns.DURATION}>300",
+                null,
                 null,
                 null
             )
@@ -101,13 +102,16 @@ object LocalMediaRepository {
                     query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.DATA))
                 val songName =
                     query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.TITLE))
+                val size =
+                    query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.SIZE))
                 songs.add(
                     SongBean.Local(
-                        SongBean.Local.Album(albumId.toString(), album),
-                        SongBean.Local.Artist(artistId.toString(), artist),
-                        duration,
-                        data,
-                        songName
+                        album = SongBean.Local.Album(albumId.toString(), album),
+                        artist = SongBean.Local.Artist(artistId.toString(), artist),
+                        duration = duration,
+                        data = data,
+                        songName = songName,
+                        size = size
                     )
                 )
             }

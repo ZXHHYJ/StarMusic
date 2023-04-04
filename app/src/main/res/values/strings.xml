@@ -19,6 +19,11 @@
     <string name="setting">设置</string>
     <string name="scan_music">扫描音乐</string>
     <string name="not_lyric">无歌词</string>
-    <string name="delete">删除</string>
+    <string name="delete">从媒体库中移除</string>
     <string name="song_info">歌曲信息</string>
+    <string name="bit_rate">比特率</string>
+    <string name="duration">时长</string>
+    <string name="sample_rate">采样率</string>
+    <string name="file_path">文件位置</string>
+    <string name="file_size">文件大小</string>
 </resources>

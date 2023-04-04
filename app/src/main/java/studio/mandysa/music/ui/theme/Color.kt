@@ -10,6 +10,8 @@ import com.kyant.monet.rangeTo
 /**
  * @author 黄浩
  */
+val textAccentColor
+    @Composable get() = 45.a1
 
 val appButtonBackgroundColor
     @Composable get() = 60.a1
