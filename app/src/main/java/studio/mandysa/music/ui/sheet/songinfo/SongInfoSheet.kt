@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.sp
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.popAll
-import studio.mandysa.music.logic.helper.toTime
+import studio.mandysa.music.logic.ktx.toTime
 import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.service.playmanager.ktx.*
 import studio.mandysa.music.ui.common.AppAsyncImage

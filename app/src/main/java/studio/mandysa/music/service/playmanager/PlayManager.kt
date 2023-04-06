@@ -1,24 +1,26 @@
 package studio.mandysa.music.service.playmanager
 
 import android.app.Application
-import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 import studio.mandysa.music.service.playmanager.bean.SongBean
+import java.util.*
 
 
 /**
  * @author 黄浩
  */
+@OptIn(DelicateCoroutinesApi::class)
 object PlayManager {
 
-    private fun createExoPlayer(context: Context) = ExoPlayer.Builder(context).build().apply {
+    @Synchronized
+    private fun createExoPlayer() = ExoPlayer.Builder(mApplication).build().apply {
         addListener(object : Player.Listener {
             override fun onPlayerError(error: PlaybackException) {
                 super.onPlayerError(error)
@@ -52,24 +54,14 @@ object PlayManager {
         })
     }
 
-
-    private val mUpdateCurrentPositionFun = object : Runnable {
-        override fun run() {
-            mProgress.value = mMediaPlayer?.currentPosition?.toInt() ?: return
-            mHandler.postDelayed(this, 1000)
-        }
-    }
-
-    private val mHandler = Handler(Looper.myLooper()!!)
-
     private lateinit var mApplication: Application
 
-    @Volatile
-    @JvmStatic
+    private var mPositionUpdateJob: Job? = null
+
     private var mMediaPlayer: ExoPlayer? = null
         get() {
             if (field == null) {
-                field = createExoPlayer(mApplication)
+                field = createExoPlayer()
             }
             return field
         }
@@ -181,15 +173,22 @@ object PlayManager {
     fun play() {
         if (mMediaPlayer!!.isPlaying)
             return
-        mHandler.post(mUpdateCurrentPositionFun)
         mMediaPlayer!!.play()
+        if (mPositionUpdateJob == null) {
+            mPositionUpdateJob = GlobalScope.launch(Dispatchers.Main) {
+                while (true) {
+                    mProgress.value = mMediaPlayer?.currentPosition?.toInt() ?: return@launch
+                    delay(1000)
+                }
+            }
+        }
     }
 
     fun pause() {
         if (!mMediaPlayer!!.isPlaying)
             return
-        mHandler.removeCallbacks(mUpdateCurrentPositionFun)
         mMediaPlayer!!.pause()
+        mPositionUpdateJob?.cancel()
     }
 
     private fun playMusic(song: SongBean) {
@@ -220,6 +219,7 @@ object PlayManager {
     }
 
     fun stop() {
+        mPositionUpdateJob?.cancel()
         mMediaPlayer?.run {
             stop()
             release()

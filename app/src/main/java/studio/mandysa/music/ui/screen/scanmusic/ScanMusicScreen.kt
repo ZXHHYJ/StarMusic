@@ -1,9 +1,6 @@
 package studio.mandysa.music.ui.screen.scanmusic
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -34,7 +31,12 @@ fun ScanMusicScreen(
 ) {
     val topAppBarState = rememberTopAppBarState()
     val coroutineScope = rememberCoroutineScope()
-    LazyColumn(modifier = Modifier.bindTopAppBarState(topAppBarState)) {
+    LazyColumn(
+        modifier = Modifier
+            .bindTopAppBarState(topAppBarState)
+            .fillMaxSize()
+            .padding(padding)
+    ) {
         item {
             AppRoundCard(backgroundColor = cardBackgroundColor, modifier = Modifier.size(80.dp)) {
                 Text(
@@ -59,7 +61,5 @@ fun ScanMusicScreen(
         state = topAppBarState,
         modifier = Modifier.fillMaxWidth(),
         title = stringResource(id = R.string.scan_music)
-    ) {
-
-    }
+    )
 }

@@ -4,7 +4,7 @@ import android.provider.MediaStore
 import com.funny.data_saver.core.mutableDataSaverListStateOf
 import kotlinx.coroutines.suspendCancellableCoroutine
 import studio.mandysa.music.logic.config.application
-import studio.mandysa.music.logic.helper.DataSaverUtils
+import studio.mandysa.music.logic.config.DataSaverUtils
 import studio.mandysa.music.service.playmanager.bean.SongBean
 import kotlin.coroutines.resume
 
@@ -69,7 +69,7 @@ object LocalMediaRepository {
      * 扫描媒体
      */
     suspend fun scanMedia() {
-        songs = suspendCancellableCoroutine() {
+        songs = suspendCancellableCoroutine {
             val query = application.contentResolver.query(
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 arrayOf(
@@ -147,5 +147,7 @@ object LocalMediaRepository {
             it.resume(artists)
         }
     }
+
+
 
 }

@@ -29,7 +29,7 @@ val onTextColor: Color
 
 //字体颜色的辅助色
 val textColorLight
-    @Composable get() = 4.n1..Color.White
+    @Composable get() = 40.n1..80.n1
 
 //半透明白色的文字
 val translucentWhite = Color(0x80FFFFFF)

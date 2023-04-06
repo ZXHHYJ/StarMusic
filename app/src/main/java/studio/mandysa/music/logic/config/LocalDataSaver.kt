@@ -1,4 +1,4 @@
-package studio.mandysa.music.logic.helper
+package studio.mandysa.music.logic.config
 
 import com.funny.data_saver.core.DataSaverInterface
 import com.funny.data_saver_mmkv.DefaultDataSaverMMKV

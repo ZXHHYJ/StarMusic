@@ -24,7 +24,7 @@ import androidx.lifecycle.map
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
-import studio.mandysa.music.logic.helper.toTime
+import studio.mandysa.music.logic.ktx.toTime
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.artist
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
