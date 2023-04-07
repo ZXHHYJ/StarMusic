@@ -7,6 +7,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -16,6 +18,7 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.popAll
 import studio.mandysa.music.R
+import studio.mandysa.music.logic.repository.LocalMediaRepository
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.service.playmanager.ktx.*
@@ -29,9 +32,7 @@ import studio.mandysa.music.ui.theme.textColor
 import studio.mandysa.music.ui.theme.textColorLight
 import studio.mandysa.music.ui.theme.vertical
 
-/**
- * @author 黄浩
- */
+
 
 @Composable
 fun SongMenuSheet(
@@ -117,13 +118,23 @@ fun SongMenuSheet(
             )
         }
         item {
-            AppMenuButton(
-                onClick = {
-                    sheetNavController.popAll()
-                },
-                imageVector = Icons.Rounded.Delete,
-                text = stringResource(id = R.string.delete)
-            )
+            val currentSong by PlayManager.changeMusicLiveData().observeAsState()
+            if (currentSong != song) {
+                when (currentSong) {
+                    is SongBean.Local -> {
+                        AppMenuButton(
+                            onClick = {
+                                sheetNavController.popAll()
+                                LocalMediaRepository.delete(currentSong as SongBean.Local)
+                            },
+                            imageVector = Icons.Rounded.Delete,
+                            text = stringResource(id = R.string.delete)
+                        )
+                    }
+                    is SongBean.Network -> {}
+                    null -> {}
+                }
+            }
         }
     }
 }

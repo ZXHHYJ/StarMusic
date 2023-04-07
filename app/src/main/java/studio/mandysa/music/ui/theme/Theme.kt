@@ -16,9 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.kyant.monet.*
 
-/**
- * @author 黄浩
- */
+
 
 @Composable
 fun MandySaMusicTheme(

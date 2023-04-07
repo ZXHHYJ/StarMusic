@@ -1,9 +1,7 @@
 package studio.mandysa.music.ui.screen.main
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -44,8 +42,8 @@ import studio.mandysa.music.ui.screen.setting.SettingScreen
 import studio.mandysa.music.ui.screen.singer.SingerScreen
 import studio.mandysa.music.ui.screen.singercnt.SingerCntScreen
 import studio.mandysa.music.ui.screen.single.SingleScreen
-import studio.mandysa.music.ui.sheet.songinfo.SongInfoSheet
 import studio.mandysa.music.ui.sheet.SongMenuSheet
+import studio.mandysa.music.ui.sheet.songinfo.SongInfoSheet
 import studio.mandysa.music.ui.theme.appBackgroundColor
 import studio.mandysa.music.ui.theme.barBackgroundColor
 import studio.mandysa.music.ui.theme.round
@@ -54,9 +52,7 @@ import studio.mandysa.music.ui.theme.round
  * Happy 22nd Birthday Shuangshengzi
  */
 
-/**
- * @author 黄浩
- */
+
 
 enum class HomeNavigationDestination {
     Single,
@@ -127,6 +123,7 @@ private fun AppScaffold(
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainScreen() {
 
@@ -230,8 +227,19 @@ fun MainScreen() {
                     }
                 }
                 Box(modifier = Modifier.statusBarsPadding()) {
-                    NavHost(mainNavController) { screenDestination ->
-                        when (screenDestination) {
+                    val customTransitionSpec = NavTransitionSpec<Any?> { action, _, _ ->
+                        val direction = if (action == NavAction.Pop) {
+                            AnimatedContentScope.SlideDirection.End
+                        } else {
+                            AnimatedContentScope.SlideDirection.Start
+                        }
+                        slideIntoContainer(direction) with slideOutOfContainer(direction)
+                    }
+                    AnimatedNavHost(
+                        controller = mainNavController,
+                        transitionSpec = customTransitionSpec
+                    ) { destination ->
+                        when (destination) {
                             ScreenDestination.Main -> {
                                 NavHost(homeNavController) {
                                     when (it) {
@@ -288,7 +296,7 @@ fun MainScreen() {
                                     mainNavController = mainNavController,
                                     sheetNavController = sheetNavController,
                                     padding = padding,
-                                    artist = screenDestination.artist
+                                    artist = destination.artist
                                 )
                             }
 
@@ -297,7 +305,7 @@ fun MainScreen() {
                                     mainNavController = mainNavController,
                                     sheetNavController = sheetNavController,
                                     padding = padding,
-                                    album = screenDestination.album
+                                    album = destination.album
                                 )
                             }
 
@@ -381,8 +389,6 @@ fun MainScreen() {
 
                 is BottomSheetDestination.SongInfo -> {
                     SongInfoSheet(
-                        mainNavController = mainNavController,
-                        sheetNavController = sheetNavController,
                         song = destination.song
                     )
                 }

@@ -14,9 +14,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import studio.mandysa.music.ui.theme.*
 
-/**
- * @author 黄浩
- */
+
 
 @Composable
 fun AppButton(

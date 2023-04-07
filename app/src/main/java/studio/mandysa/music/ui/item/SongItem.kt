@@ -25,9 +25,7 @@ import studio.mandysa.music.ui.common.AppIcon
 import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.theme.*
 
-/**
- * @author 黄浩
- */
+
 
 @Composable
 fun SongItem(

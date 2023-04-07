@@ -23,9 +23,7 @@ import studio.mandysa.music.ui.item.SubTitleItem
 import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 
-/**
- * @author 黄浩
- */
+
 
 @Composable
 fun SingleScreen(

@@ -7,9 +7,7 @@ import com.kyant.monet.a2
 import com.kyant.monet.n1
 import com.kyant.monet.rangeTo
 
-/**
- * @author 黄浩
- */
+
 val textAccentColor
     @Composable get() = 45.a1
 

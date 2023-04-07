@@ -3,9 +3,7 @@ package studio.mandysa.music.service.playmanager.bean
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-/**
- * @author 黄浩
- */
+
 sealed interface SongBean {
     @Parcelize
     data class Local(

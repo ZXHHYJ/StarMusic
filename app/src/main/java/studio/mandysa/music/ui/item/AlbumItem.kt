@@ -23,9 +23,7 @@ import studio.mandysa.music.ui.common.BoxWithPercentages
 import studio.mandysa.music.ui.theme.textColor
 import studio.mandysa.music.ui.theme.textColorLight
 
-/**
- * @author 黄浩
- */
+
 @Composable
 fun AlbumItem(
     modifier: Modifier = Modifier,

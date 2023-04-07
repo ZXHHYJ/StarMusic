@@ -7,13 +7,12 @@ import com.funny.data_saver.core.DataSaverConverter.registerTypeConverters
 import com.google.gson.GsonBuilder
 import com.tencent.mmkv.MMKV
 import studio.mandysa.music.logic.config.application
+import studio.mandysa.music.logic.repository.SettingRepository
 import studio.mandysa.music.service.MediaPlayService
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.bean.SongBean
 
-/**
- * @author 黄浩
- */
+
 class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
@@ -34,6 +33,10 @@ class MainApplication : Application() {
         registerTypeConverters<SongBean.Local.Artist>(
             save = { bean -> gson.toJson(bean) },
             restore = { str -> gson.fromJson(str, SongBean.Local.Artist::class.java) }
+        )
+        registerTypeConverters<SettingRepository.MotionBlurSetting>(
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, SettingRepository.MotionBlurSetting::class.java) }
         )
         PlayManager.init(this)
         //初始化播放管理器

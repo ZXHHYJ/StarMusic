@@ -26,9 +26,7 @@ import studio.mandysa.music.ui.theme.playScreenHorizontal
 import studio.mandysa.music.ui.theme.playScreenMaxWidth
 import java.io.File
 
-/**
- * @author 黄浩
- */
+
 
 @Composable
 fun LyricScreen() {

@@ -4,9 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import studio.mandysa.music.service.playmanager.bean.SongBean
 
-/**
- * @author 黄浩
- */
+
 
 sealed class ScreenDestination : Parcelable {
 

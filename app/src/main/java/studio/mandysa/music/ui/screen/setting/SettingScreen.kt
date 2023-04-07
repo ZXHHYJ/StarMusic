@@ -16,9 +16,7 @@ import studio.mandysa.music.ui.common.rememberTopAppBarState
 import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 
-/**
- * @author 黄浩
- */
+
 
 @Composable
 fun SettingScreen(

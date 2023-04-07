@@ -5,9 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import studio.mandysa.music.logic.config.application
 
-/**
- * @author 黄浩
- */
+
 object CopyHelper {
     fun copyText(content: String) {
         val cm = application.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?

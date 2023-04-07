@@ -10,9 +10,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import studio.mandysa.music.ui.theme.emptyImageBackground
 
-/**
- * @author 黄浩
- */
+
 
 @Composable
 fun AppAsyncImage(

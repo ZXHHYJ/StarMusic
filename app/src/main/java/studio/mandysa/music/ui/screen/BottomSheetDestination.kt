@@ -6,9 +6,7 @@ import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 import studio.mandysa.music.service.playmanager.bean.SongBean
 
-/**
- * @author 黄浩
- */
+
 
 sealed class BottomSheetDestination : Parcelable {
 

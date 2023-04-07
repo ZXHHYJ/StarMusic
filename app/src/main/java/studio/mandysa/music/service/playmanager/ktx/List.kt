@@ -2,9 +2,7 @@ package studio.mandysa.music.service.playmanager.ktx
 
 import studio.mandysa.music.service.playmanager.bean.SongBean
 
-/**
- * @author 黄浩
- */
+
 fun Array<SongBean.Network.Artist>.allArtist(): String {
     val builder = StringBuilder()
     for (i in indices) {

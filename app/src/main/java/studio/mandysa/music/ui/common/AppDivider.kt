@@ -7,9 +7,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import studio.mandysa.music.ui.theme.appDividerColor
 
-/**
- * @author 黄浩
- */
+
 
 @Composable
 fun AppDivider(

@@ -13,9 +13,7 @@ import studio.mandysa.music.service.playmanager.bean.SongBean
 import java.util.*
 
 
-/**
- * @author 黄浩
- */
+
 @OptIn(DelicateCoroutinesApi::class)
 object PlayManager {
 
@@ -174,12 +172,11 @@ object PlayManager {
         if (mMediaPlayer!!.isPlaying)
             return
         mMediaPlayer!!.play()
-        if (mPositionUpdateJob == null) {
-            mPositionUpdateJob = GlobalScope.launch(Dispatchers.Main) {
-                while (true) {
-                    mProgress.value = mMediaPlayer?.currentPosition?.toInt() ?: return@launch
-                    delay(1000)
-                }
+
+        mPositionUpdateJob = GlobalScope.launch(Dispatchers.Main) {
+            while (true) {
+                mProgress.value = mMediaPlayer?.currentPosition?.toInt() ?: return@launch
+                delay(1000)
             }
         }
     }
@@ -188,7 +185,6 @@ object PlayManager {
         if (!mMediaPlayer!!.isPlaying)
             return
         mMediaPlayer!!.pause()
-        mPositionUpdateJob?.cancel()
     }
 
     private fun playMusic(song: SongBean) {

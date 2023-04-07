@@ -18,9 +18,7 @@ import androidx.compose.ui.unit.IntOffset
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
-/**
- * @author 黄浩
- */
+
 
 enum class PanelState {
     COLLAPSED, EXPANDED

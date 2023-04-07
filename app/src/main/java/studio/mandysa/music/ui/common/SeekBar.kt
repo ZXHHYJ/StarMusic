@@ -5,9 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 
-/**
- * @author 黄浩
- */
+
 
 @Composable
 fun SeekBar(modifier: Modifier, value: Int, maxValue: Int, onValueChange: (Int) -> Unit) {

@@ -20,9 +20,7 @@ import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.cardBackgroundColor
 
-/**
- * @author 黄浩
- */
+
 @Composable
 fun ScanMusicScreen(
     mainNavController: NavController<ScreenDestination>,

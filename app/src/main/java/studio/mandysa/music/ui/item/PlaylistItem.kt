@@ -17,9 +17,7 @@ import studio.mandysa.music.ui.theme.onBackground
 import studio.mandysa.music.ui.theme.roundShape
 import studio.mandysa.music.ui.theme.textColor
 
-/**
- * @author 黄浩
- */
+
 
 @Composable
 fun PlaylistItem(imageVector: ImageVector, onClick: () -> Unit) {

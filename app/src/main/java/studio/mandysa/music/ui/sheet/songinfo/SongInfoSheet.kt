@@ -1,6 +1,5 @@
 package studio.mandysa.music.ui.sheet.songinfo
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
@@ -10,29 +9,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.olshevski.navigation.reimagined.NavController
-import dev.olshevski.navigation.reimagined.navigate
-import dev.olshevski.navigation.reimagined.popAll
 import studio.mandysa.music.logic.ktx.toTime
 import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.service.playmanager.ktx.*
 import studio.mandysa.music.ui.common.AppAsyncImage
 import studio.mandysa.music.ui.common.AppCard
-import studio.mandysa.music.ui.screen.BottomSheetDestination
-import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.horizontal
 import studio.mandysa.music.ui.theme.textColor
 import studio.mandysa.music.ui.theme.textColorLight
 import studio.mandysa.music.ui.theme.vertical
 
-/**
- * @author 黄浩
- */
+
 
 @Composable
 fun SongInfoSheet(
-    mainNavController: NavController<ScreenDestination>,
-    sheetNavController: NavController<BottomSheetDestination>,
     song: SongBean,
 ) {
     LazyColumn {
@@ -83,18 +73,7 @@ fun SongInfoSheet(
         item {
             SongInfoItem(
                 title = stringResource(id = studio.mandysa.music.R.string.album),
-                info = song.album.name,
-                modifier = Modifier.clickable {
-                    when (song) {
-                        is SongBean.Local -> {
-                            sheetNavController.popAll()
-                            mainNavController.navigate(ScreenDestination.AlbumCnt(album = song.album))
-                        }
-                        is SongBean.Network -> {
-
-                        }
-                    }
-                }
+                info = song.album.name
             )
         }
         item {

@@ -1,12 +1,10 @@
 package studio.mandysa.music.ui.common
 
-import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.drawable.Drawable
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.LinearInterpolator
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -21,18 +19,15 @@ import com.flaviofaria.kenburnsview.KenBurnsView
 import com.flaviofaria.kenburnsview.RandomTransitionGenerator
 import com.google.android.renderscript.Toolkit
 
-/**
- * @author 黄浩
- */
 
-@SuppressLint("SetJavaScriptEnabled")
+
 @Composable
 fun MotionBlur(modifier: Modifier, url: String, paused: Boolean) {
     val context = LocalContext.current
     var drawable by remember {
         mutableStateOf<Drawable?>(null)
     }
-    LaunchedEffect(key1 = url) {
+    LaunchedEffect(url) {
         val imageLoader = ImageLoader(context)
         val request = ImageRequest.Builder(context)
             .data(url)

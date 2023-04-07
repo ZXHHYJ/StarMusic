@@ -30,9 +30,7 @@ import studio.mandysa.music.service.playmanager.ktx.artist
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
 import studio.mandysa.music.service.playmanager.ktx.title
 
-/**
- * @author 黄浩
- */
+
 class MediaPlayService : LifecycleService() {
 
     companion object {

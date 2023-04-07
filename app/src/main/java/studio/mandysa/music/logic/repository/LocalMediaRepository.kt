@@ -3,14 +3,12 @@ package studio.mandysa.music.logic.repository
 import android.provider.MediaStore
 import com.funny.data_saver.core.mutableDataSaverListStateOf
 import kotlinx.coroutines.suspendCancellableCoroutine
-import studio.mandysa.music.logic.config.application
 import studio.mandysa.music.logic.config.DataSaverUtils
+import studio.mandysa.music.logic.config.application
 import studio.mandysa.music.service.playmanager.bean.SongBean
 import kotlin.coroutines.resume
 
-/**
- * @author 黄浩
- */
+
 object LocalMediaRepository {
 
     var artists by mutableDataSaverListStateOf(
@@ -118,36 +116,51 @@ object LocalMediaRepository {
             query?.close()
             it.resume(songs)
         }
-        albums = suspendCancellableCoroutine {
-            val albumKVHashMap = LinkedHashMap<String, SongBean.Local.Album>()
-            for (song in songs) {
-                if (albumKVHashMap.containsKey(song.album.id)) {
-                    continue
-                }
-                albumKVHashMap[song.album.id] = song.album.copy()
-            }
-            val albums = arrayListOf<SongBean.Local.Album>()
-            for (entry in albumKVHashMap) {
-                albums.add(entry.value)
-            }
-            it.resume(albums)
-        }
-        artists = suspendCancellableCoroutine {
-            val artistKVHashMap = LinkedHashMap<String, SongBean.Local.Artist>()
-            for (song in songs) {
-                if (artistKVHashMap.containsKey(song.artist.id)) {
-                    continue
-                }
-                artistKVHashMap[song.artist.id] = song.artist.copy()
-            }
-            val artists = arrayListOf<SongBean.Local.Artist>()
-            for (entry in artistKVHashMap) {
-                artists.add(entry.value)
-            }
-            it.resume(artists)
-        }
+        updateAlbum()
+        updateArtist()
     }
 
+    private fun updateAlbum() {
+        val albumKVHashMap = LinkedHashMap<String, SongBean.Local.Album>()
+        for (song in songs) {
+            if (albumKVHashMap.containsKey(song.album.id)) {
+                continue
+            }
+            albumKVHashMap[song.album.id] = song.album.copy()
+        }
+        val albums = arrayListOf<SongBean.Local.Album>()
+        for (entry in albumKVHashMap) {
+            albums.add(entry.value)
+        }
+        this.albums = albums
+    }
 
+    private fun updateArtist() {
+        val artistKVHashMap = LinkedHashMap<String, SongBean.Local.Artist>()
+        for (song in songs) {
+            if (artistKVHashMap.containsKey(song.artist.id)) {
+                continue
+            }
+            artistKVHashMap[song.artist.id] = song.artist.copy()
+        }
+        val artists = arrayListOf<SongBean.Local.Artist>()
+        for (entry in artistKVHashMap) {
+            artists.add(entry.value)
+        }
+        this.artists = artists
+    }
+
+    fun delete(song: SongBean.Local) {
+        when (val index = songs.indexOf(song)) {
+            -1 -> {}
+            else -> {
+                val newSongs = songs.toMutableList()
+                newSongs.removeAt(index)
+                songs = newSongs
+                updateAlbum()
+                updateArtist()
+            }
+        }
+    }
 
 }
