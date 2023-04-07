@@ -11,6 +11,6 @@ object SettingRepository {
     var motionBlurSetting by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "MotionBlurSetting",
-        initialValue = MotionBlurSetting.MotionBlur
+        initialValue = MotionBlurSetting.AlbumColor
     )
 }
