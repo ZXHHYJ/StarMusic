@@ -68,7 +68,7 @@ class MediaNotification(
         setShowWhen(false)
         setAction(false)
         setCategory(Notification.CATEGORY_SERVICE)
-        setSmallIcon(R.drawable.ic_launcher_foreground)
+        setSmallIcon(R.drawable.ic_notification_icon)
             .setStyle(
                 androidx.media.app.NotificationCompat.MediaStyle()
                     .setShowCancelButton(true)

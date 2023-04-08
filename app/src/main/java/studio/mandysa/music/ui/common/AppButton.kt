@@ -38,7 +38,7 @@ fun AppButton(
         shape = roundShape,
         border = null,
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = appButtonBackgroundColor,
+            backgroundColor = appButtonAccentColor,
             contentColor = onTextColor
         ),
         contentPadding = contentPadding,
@@ -55,7 +55,7 @@ fun AppListButton(
 ) {
     Surface(
         color = Color.Transparent,
-        contentColor = appListButtonBackgroundColor,
+        contentColor = appTextButtonAccentColor,
         shape = roundShape
     ) {
         Column(modifier = modifier.clickable {
@@ -88,7 +88,7 @@ fun AppMenuButton(
 ) {
     Surface(
         color = Color.Transparent,
-        contentColor = appListButtonBackgroundColor,
+        contentColor = appTextButtonAccentColor,
         shape = roundShape
     ) {
         Column(modifier = modifier.clickable {

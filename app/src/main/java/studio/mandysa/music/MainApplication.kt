@@ -14,13 +14,18 @@ import studio.mandysa.music.service.playmanager.bean.SongBean
 
 
 class MainApplication : Application() {
+
+    companion object {
+        init {
+            System.loadLibrary("monet")
+            //loading lib monet
+        }
+    }
+
     override fun onCreate() {
         super.onCreate()
         application = this
-        System.loadLibrary("monet")
-        //loading lib monet
         MMKV.initialize(this)
-        //初始化mmkv
         val gson = GsonBuilder().create()
         registerTypeConverters<SongBean.Local>(
             save = { bean -> gson.toJson(bean) },
@@ -34,9 +39,9 @@ class MainApplication : Application() {
             save = { bean -> gson.toJson(bean) },
             restore = { str -> gson.fromJson(str, SongBean.Local.Artist::class.java) }
         )
-        registerTypeConverters<SettingRepository.MotionBlurSetting>(
+        registerTypeConverters<SettingRepository.ColorSource>(
             save = { bean -> gson.toJson(bean) },
-            restore = { str -> gson.fromJson(str, SettingRepository.MotionBlurSetting::class.java) }
+            restore = { str -> gson.fromJson(str, SettingRepository.ColorSource::class.java) }
         )
         PlayManager.init(this)
         //初始化播放管理器

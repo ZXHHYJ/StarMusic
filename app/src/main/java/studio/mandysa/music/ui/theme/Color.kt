@@ -7,15 +7,17 @@ import com.kyant.monet.a2
 import com.kyant.monet.n1
 import com.kyant.monet.rangeTo
 
-
-val textAccentColor
+val appIconAccentColor
     @Composable get() = 45.a1
 
-val appButtonBackgroundColor
-    @Composable get() = 60.a1
-
-val appListButtonBackgroundColor
+val appTextAccentColor
     @Composable get() = 45.a1
+
+val appTextButtonAccentColor
+    @Composable get() = 45.a1
+
+val appButtonAccentColor
+    @Composable get() = 50.a1
 
 //字体颜色
 val textColor: Color

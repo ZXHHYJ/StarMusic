@@ -5,7 +5,6 @@ import kotlinx.parcelize.Parcelize
 import studio.mandysa.music.service.playmanager.bean.SongBean
 
 
-
 sealed class ScreenDestination : Parcelable {
 
     /**
@@ -19,6 +18,12 @@ sealed class ScreenDestination : Parcelable {
      */
     @Parcelize
     object Search : ScreenDestination()
+
+    /**
+     * 主题
+     */
+    @Parcelize
+    object Theme : ScreenDestination()
 
     /**
      * 歌手详情

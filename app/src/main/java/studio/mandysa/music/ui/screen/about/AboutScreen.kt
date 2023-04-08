@@ -7,7 +7,6 @@ import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 
 
-
 @Composable
 fun AboutScreen(
     mainNavController: NavController<ScreenDestination>,

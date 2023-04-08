@@ -4,13 +4,14 @@ import com.funny.data_saver.core.mutableDataSaverStateOf
 import studio.mandysa.music.logic.config.DataSaverUtils
 
 object SettingRepository {
-    enum class MotionBlurSetting {
-        MotionBlur, AlbumColor
+    enum class ColorSource {
+        Album, Wallpaper
     }
 
-    var motionBlurSetting by mutableDataSaverStateOf(
+    var colorSource by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "MotionBlurSetting",
-        initialValue = MotionBlurSetting.AlbumColor
+        initialValue = ColorSource.Album
     )
+
 }

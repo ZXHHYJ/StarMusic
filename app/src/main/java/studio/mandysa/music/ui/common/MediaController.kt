@@ -17,13 +17,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
 import studio.mandysa.music.R
-import studio.mandysa.music.logic.repository.SettingRepository
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
 import studio.mandysa.music.service.playmanager.ktx.title
 import studio.mandysa.music.ui.theme.barBackgroundColor
 import studio.mandysa.music.ui.theme.horizontal
-
 
 
 @Composable
@@ -53,31 +51,16 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
                     backgroundColor = Color.Transparent,
                     contentColor = Color.Transparent,
                 ) {
-                    when (SettingRepository.motionBlurSetting) {
-                        SettingRepository.MotionBlurSetting.MotionBlur -> {
-                            MotionBlur(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .align(Alignment.BottomCenter)
-                                    .height(controlBarHeight)
-                                    .clickable(onClick = onClick)
-                                    .background(Color.Gray),
-                                url = coverUrl,
-                                paused = panelState != PanelState.COLLAPSED
-                            )
-                        }
-                        SettingRepository.MotionBlurSetting.AlbumColor -> {
-                            AlbumColor(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .align(Alignment.BottomCenter)
-                                    .height(controlBarHeight)
-                                    .clickable(onClick = onClick)
-                                    .background(Color.Gray),
-                                url = coverUrl
-                            )
-                        }
-                    }
+                    MotionBlur(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .align(Alignment.BottomCenter)
+                            .height(controlBarHeight)
+                            .clickable(onClick = onClick)
+                            .background(Color.Gray),
+                        url = coverUrl,
+                        paused = panelState != PanelState.COLLAPSED
+                    )
                     Row(
                         modifier = Modifier
                             .padding(start = coverSize)

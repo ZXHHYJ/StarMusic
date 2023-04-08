@@ -27,4 +27,10 @@
     <string name="file_path">文件位置</string>
     <string name="file_size">文件大小</string>
     <string name="copyed">已复制</string>
+    <string name="theme">主题</string>
+    <string name="theme_info">配置Monet取色</string>
+    <string name="lyric">歌词</string>
+    <string name="lyric_info">修改歌词样式、状态栏歌词</string>
+    <string name="about">关于</string>
+    <string name="about_info">版本：%s</string>
 </resources>
