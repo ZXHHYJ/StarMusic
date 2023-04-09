@@ -11,8 +11,6 @@ import studio.mandysa.music.ui.common.rememberTopAppBarState
 import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 
-
-
 @Composable
 fun SearchScreen(
     mainNavController: NavController<ScreenDestination>,

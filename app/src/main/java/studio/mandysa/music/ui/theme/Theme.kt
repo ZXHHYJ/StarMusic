@@ -50,8 +50,8 @@ fun MandySaMusicTheme(
                     .data(coverUrl)
                     .build()
                 monetColor =
-                    imageLoader.execute(request).drawable?.toBitmap()?.scale(1, 1)?.asImageBitmap()
-                        ?.toPixelMap()?.get(0, 0) ?: Color.Red
+                    imageLoader.execute(request).drawable?.toBitmap()?.scale(3, 3)?.asImageBitmap()
+                        ?.toPixelMap()?.get(1, 1) ?: Color.Red
             }
         }
 

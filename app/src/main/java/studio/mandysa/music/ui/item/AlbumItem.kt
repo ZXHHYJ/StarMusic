@@ -49,7 +49,7 @@ fun AlbumItem(
                 Text(
                     text = album.name,
                     color = textColor,
-                    fontSize = 15.sp,
+                    fontSize = 13.sp,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
                     textAlign = TextAlign.Center

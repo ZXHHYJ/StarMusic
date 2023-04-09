@@ -20,14 +20,12 @@ import studio.mandysa.music.R
 import studio.mandysa.music.ui.common.TopAppBar
 import studio.mandysa.music.ui.common.bindTopAppBarState
 import studio.mandysa.music.ui.common.rememberTopAppBarState
-import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 
 
 @Composable
 fun SettingScreen(
     mainNavController: NavController<ScreenDestination>,
-    sheetNavController: NavController<BottomSheetDestination>,
     padding: PaddingValues,
 ) {
     val context = LocalContext.current

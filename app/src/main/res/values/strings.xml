@@ -12,7 +12,7 @@
     <string name="copy">复制</string>
     <string name="single">单曲</string>
     <string name="play_list">播放列表</string>
-    <string name="total_n_songs">共%1$d首</string>
+    <string name="total_n_songs">共%d首</string>
     <string name="music">音乐</string>
     <string name="permission_media_lib">授权访问手机媒体以扫描媒体库中的音乐</string>
     <string name="go_permission">前往授权</string>

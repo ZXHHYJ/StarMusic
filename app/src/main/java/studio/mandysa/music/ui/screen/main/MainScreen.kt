@@ -6,9 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
@@ -192,21 +189,15 @@ fun MainScreen() {
                                 HomeNavigationDestination.Single,
                                 HomeNavigationDestination.Search
                             ).forEach { item ->
-                                BottomNavigationItem(
-                                    icon = {
-                                        Icon(
-                                            item.tabIcon,
-                                            contentDescription = null
-                                        )
-                                    }, label = {
-                                        Text(text = item.tabName)
-                                    },
+                                AppBottomNavigationItem(
                                     selected = item == bottomLastDestination,
                                     onClick = {
                                         if (!homeNavController.moveToTop { it == item }) {
                                             homeNavController.navigate(item)
                                         }
-                                    }
+                                    },
+                                    imageVector = item.tabIcon,
+                                    title = item.tabName
                                 )
                             }
                         }
@@ -320,7 +311,6 @@ fun MainScreen() {
                             ScreenDestination.Setting -> {
                                 SettingScreen(
                                     mainNavController = mainNavController,
-                                    sheetNavController = sheetNavController,
                                     padding = padding
                                 )
                             }
