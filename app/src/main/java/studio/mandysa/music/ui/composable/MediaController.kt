@@ -20,7 +20,7 @@ import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
 import studio.mandysa.music.service.playmanager.ktx.title
-import studio.mandysa.music.ui.theme.barBackgroundColor
+import studio.mandysa.music.ui.theme.appBackgroundColor
 import studio.mandysa.music.ui.theme.horizontal
 
 
@@ -34,7 +34,7 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
                 .height(20.dp)
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
-                .background(barBackgroundColor)
+                .background(appBackgroundColor)
         ) {
             AppDivider(modifier = Modifier.fillMaxWidth())
         }

@@ -43,7 +43,6 @@ import studio.mandysa.music.ui.screen.theme.ThemeScreen
 import studio.mandysa.music.ui.sheet.SongMenuSheet
 import studio.mandysa.music.ui.sheet.songinfo.SongInfoSheet
 import studio.mandysa.music.ui.theme.appBackgroundColor
-import studio.mandysa.music.ui.theme.barBackgroundColor
 import studio.mandysa.music.ui.theme.round
 
 /**
@@ -84,37 +83,29 @@ private fun AppScaffold(
     navigationBar: @Composable () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
-    Row(modifier = modifier) {
-        Box(
-            modifier = Modifier
-                .fillMaxHeight()
-                .weight(1.0f)
-        ) {
-            var bottomBarSize by remember {
-                mutableStateOf(IntSize.Zero)
-            }
-            content.invoke(PaddingValues(bottom = with(LocalDensity.current) {
-                bottomBarSize.height.toDp()
-            }))
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter)
-                .onSizeChanged {
-                    bottomBarSize = it
-                }) {
-                controllerBar.invoke()
-                navigationBar.invoke()
-                Box(
-                    modifier = Modifier
-                        .height(
-                            with(LocalDensity.current) {
-                                WindowInsets.navigationBars
-                                    .getBottom(this)
-                                    .toDp()
-                            })
-                        .fillMaxWidth()
-                        .background(barBackgroundColor)
-                )
+    Box(
+        modifier = modifier
+    ) {
+        var bottomBarSize by remember {
+            mutableStateOf(IntSize.Zero)
+        }
+        content.invoke(PaddingValues(bottom = with(LocalDensity.current) {
+            bottomBarSize.height.toDp()
+        }))
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .align(Alignment.BottomCenter)
+            .onSizeChanged {
+                bottomBarSize = it
+            }) {
+            controllerBar.invoke()
+            navigationBar.invoke()
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(appBackgroundColor)
+            ) {
+                Spacer(modifier = Modifier.navigationBarsPadding())
             }
         }
     }
@@ -280,7 +271,6 @@ fun MainScreen() {
                                     padding = padding
                                 )
                             }
-
 
                             is ScreenDestination.SingerCnt -> {
                                 SingerCntScreen(

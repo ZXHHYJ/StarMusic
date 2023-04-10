@@ -11,8 +11,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import studio.mandysa.music.ui.theme.barBackgroundColor
-import studio.mandysa.music.ui.theme.barContentColor
+import studio.mandysa.music.ui.theme.appAccentColor
+import studio.mandysa.music.ui.theme.appBackgroundColor
 
 
 @Composable
@@ -22,8 +22,8 @@ fun AppBottomNavigationBar(
 ) {
     BottomNavigation(
         modifier = modifier,
-        backgroundColor = barBackgroundColor,
-        contentColor = barContentColor,
+        backgroundColor = appBackgroundColor,
+        contentColor = appAccentColor,
         elevation = 0.dp,
         content = content
     )

@@ -48,21 +48,9 @@ val appBackgroundColor
 val onBackground
     @Composable get() = Color.Black..Color.LightGray
 
-//空图片背景色
-val emptyImageBackground
-    @Composable get() = 76.a2..50.a2
-
 //容器颜色
 val cardBackgroundColor
     @Composable get() = 90.a2..70.a2
-
-//bar颜色
-val barBackgroundColor
-    @Composable get() = appBackgroundColor
-
-//barItem选中和未选中的颜色
-val barContentColor
-    @Composable get() = 45.a1
 
 val appDividerColor
     @Composable get() = Color(0xd8d8d8d8)

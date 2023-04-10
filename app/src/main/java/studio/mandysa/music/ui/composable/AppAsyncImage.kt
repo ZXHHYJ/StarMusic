@@ -8,9 +8,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import studio.mandysa.music.ui.theme.emptyImageBackground
-
-
+import studio.mandysa.music.ui.theme.appAccentColor
 
 @Composable
 fun AppAsyncImage(
@@ -19,7 +17,7 @@ fun AppAsyncImage(
     onClick: (() -> Unit)? = null
 ) {
     AsyncImage(
-        modifier = modifier.background(emptyImageBackground)
+        modifier = modifier.background(appAccentColor.copy(0.4f))
             .run {
                 if (onClick != null)
                     clickable(onClick = onClick)
