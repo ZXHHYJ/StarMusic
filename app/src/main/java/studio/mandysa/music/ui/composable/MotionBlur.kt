@@ -5,14 +5,18 @@ import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.drawable.Drawable
 import android.view.animation.AccelerateDecelerateInterpolator
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.graphics.blue
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.drawable.toDrawable
+import androidx.core.graphics.green
+import androidx.core.graphics.red
+import androidx.core.graphics.scale
 import coil.ImageLoader
 import coil.request.ImageRequest
 import com.flaviofaria.kenburnsview.KenBurnsView
@@ -20,9 +24,15 @@ import com.flaviofaria.kenburnsview.RandomTransitionGenerator
 import com.google.android.renderscript.Toolkit
 
 
-
 @Composable
-fun MotionBlur(modifier: Modifier, url: String, paused: Boolean) {
+fun MotionBlur(
+    modifier: Modifier,
+    obscuration: Color = Color(0x14000000),
+    whiteObscuration: Color = Color(0x20FFFFFF),
+    blackObscuration: Color = Color(0x3C000000),
+    url: String,
+    paused: Boolean
+) {
     val context = LocalContext.current
     var drawable by remember {
         mutableStateOf<Drawable?>(null)
@@ -34,14 +44,19 @@ fun MotionBlur(modifier: Modifier, url: String, paused: Boolean) {
             .build()
         val bitmap = imageLoader.execute(request).drawable?.toBitmap()
         if (bitmap != null) {
-            drawable = handleImageBlur(bitmap).toDrawable(context.resources)
+            drawable = handleImageBlur(
+                obscuration,
+                whiteObscuration,
+                blackObscuration,
+                bitmap
+            ).toDrawable(context.resources)
         }
     }
     AndroidView(factory = {
         KenBurnsView(it).apply {
             setTransitionGenerator(
                 RandomTransitionGenerator(
-                    3000,
+                    4000,
                     AccelerateDecelerateInterpolator()
                 )
             )
@@ -58,20 +73,58 @@ fun MotionBlur(modifier: Modifier, url: String, paused: Boolean) {
     }
 }
 
-@Preview
-@Composable
-fun PreviewMotionBlur() {
-    MotionBlur(modifier = Modifier.fillMaxSize(), "", true)
-}
-
-private fun handleImageBlur(image: Bitmap): Bitmap {
+private fun handleImageBlur(
+    obscuration: Color,
+    whiteObscuration: Color,
+    blackObscuration: Color,
+    image: Bitmap
+): Bitmap {
     var blurBitmap = image.copy(Bitmap.Config.ARGB_8888, true)
-    val canvas = Canvas(blurBitmap)
-    canvas.drawColor(0x40000000)
-    blurBitmap = scaleBitmap(blurBitmap, blurBitmap.height * 150 / blurBitmap.width)
+    val brightnessList = arrayListOf<Double>()
+    blurBitmap.scale(3, 3).let {
+        for (i in 0 until 3) {
+            for (j in 0 until 3) {
+                val pixel = it.getPixel(i, j)
+                val r = (0.299 * pixel.red) + (0.587 * pixel.green) + (0.114 * pixel.blue)
+                brightnessList.add(r)
+            }
+        }
+    }
+    val average = calculateAverage(brightnessList)
+    val median = calculateMedian(brightnessList)
+    if (average < 15 && median < 15) {
+        val canvas = Canvas(blurBitmap)
+        canvas.drawColor(whiteObscuration.toArgb())
+    } else
+        if (average > 200 && median > 200) {
+            val canvas = Canvas(blurBitmap)
+            canvas.drawColor(blackObscuration.toArgb())
+        } else {
+            val canvas = Canvas(blurBitmap)
+            canvas.drawColor(obscuration.toArgb())
+        }
+
+    blurBitmap = blurBitmap.scale(150,150)
     blurBitmap = meshBitmap(blurBitmap)
     blurBitmap = Toolkit.blur(blurBitmap, 25)
     return blurBitmap
+}
+
+//计算平均值
+private fun calculateAverage(numbers: List<Double>): Double {
+    if (numbers.isEmpty()) return 0.0
+    return numbers.sum() / numbers.size
+}
+
+//计算中位数
+private fun calculateMedian(numbers: List<Double>): Double {
+    val sortedNumbers = numbers.sorted()
+    val middleIndex = sortedNumbers.size / 2
+    return if (sortedNumbers.size % 2 == 0) {
+        (sortedNumbers[middleIndex - 1] + sortedNumbers[middleIndex]) / 2.0
+    } else {
+        sortedNumbers[middleIndex]
+    }
 }
 
 private val floats = floatArrayOf(
@@ -169,14 +222,4 @@ private fun meshBitmap(old: Bitmap): Bitmap {
     val canvas = Canvas(newBit)
     canvas.drawBitmapMesh(newBit, 5, 5, fArr2, 0, null, 0, null)
     return newBit
-}
-
-private fun scaleBitmap(origin: Bitmap, newHeight: Int): Bitmap {
-    val height = origin.height
-    val width = origin.width
-    val scaleWidth = 150f / width
-    val scaleHeight = newHeight.toFloat() / height
-    val matrix = Matrix()
-    matrix.postScale(scaleWidth, scaleHeight)
-    return Bitmap.createBitmap(origin, 0, 0, width, height, matrix, false)
 }
