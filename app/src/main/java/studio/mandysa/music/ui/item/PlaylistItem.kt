@@ -10,8 +10,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import studio.mandysa.music.ui.common.AppIcon
-import studio.mandysa.music.ui.common.AppAsyncImage
+import studio.mandysa.music.ui.composable.AppIcon
+import studio.mandysa.music.ui.composable.AppAsyncImage
 import studio.mandysa.music.ui.theme.cardBackgroundColor
 import studio.mandysa.music.ui.theme.onBackground
 import studio.mandysa.music.ui.theme.roundShape

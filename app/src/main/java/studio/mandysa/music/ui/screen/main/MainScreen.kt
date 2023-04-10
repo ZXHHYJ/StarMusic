@@ -25,7 +25,7 @@ import dev.olshevski.navigation.reimagined.*
 import dev.olshevski.navigation.reimagined.material.BottomSheetNavHost
 import studio.mandysa.music.R
 import studio.mandysa.music.service.playmanager.PlayManager
-import studio.mandysa.music.ui.common.*
+import studio.mandysa.music.ui.composable.*
 import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.screen.about.AboutScreen

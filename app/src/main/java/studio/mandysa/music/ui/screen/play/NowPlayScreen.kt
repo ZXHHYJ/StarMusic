@@ -29,7 +29,7 @@ import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.artist
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
 import studio.mandysa.music.service.playmanager.ktx.title
-import studio.mandysa.music.ui.common.*
+import studio.mandysa.music.ui.composable.*
 import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.theme.playScreenHorizontal
 import studio.mandysa.music.ui.theme.playScreenMaxWidth

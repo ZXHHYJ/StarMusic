@@ -20,7 +20,7 @@ import org.jaudiotagger.audio.AudioFileIO
 import org.jaudiotagger.tag.FieldKey
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.bean.SongBean
-import studio.mandysa.music.ui.common.Lyric
+import studio.mandysa.music.ui.composable.Lyric
 import studio.mandysa.music.ui.theme.horizontal
 import studio.mandysa.music.ui.theme.playScreenHorizontal
 import studio.mandysa.music.ui.theme.playScreenMaxWidth

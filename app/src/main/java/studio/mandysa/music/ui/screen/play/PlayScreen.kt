@@ -24,9 +24,9 @@ import androidx.lifecycle.map
 import dev.olshevski.navigation.reimagined.*
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
-import studio.mandysa.music.ui.common.BoxWithPercentages
-import studio.mandysa.music.ui.common.MotionBlur
-import studio.mandysa.music.ui.common.PanelState
+import studio.mandysa.music.ui.composable.BoxWithPercentages
+import studio.mandysa.music.ui.composable.MotionBlur
+import studio.mandysa.music.ui.composable.PanelState
 import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 import studio.mandysa.music.ui.theme.*

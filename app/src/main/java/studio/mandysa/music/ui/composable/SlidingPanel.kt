@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.common
+package studio.mandysa.music.ui.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation

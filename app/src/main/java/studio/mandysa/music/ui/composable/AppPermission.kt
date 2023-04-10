@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.common
+package studio.mandysa.music.ui.composable
 
 import android.Manifest
 import android.os.Build

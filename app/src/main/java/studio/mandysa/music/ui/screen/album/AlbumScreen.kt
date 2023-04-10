@@ -16,10 +16,10 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import studio.mandysa.music.R
 import studio.mandysa.music.logic.repository.LocalMediaRepository
-import studio.mandysa.music.ui.common.BoxWithPercentages
-import studio.mandysa.music.ui.common.TopAppBar
-import studio.mandysa.music.ui.common.bindTopAppBarState
-import studio.mandysa.music.ui.common.rememberTopAppBarState
+import studio.mandysa.music.ui.composable.BoxWithPercentages
+import studio.mandysa.music.ui.composable.TopAppBar
+import studio.mandysa.music.ui.composable.bindTopAppBarState
+import studio.mandysa.music.ui.composable.rememberTopAppBarState
 import studio.mandysa.music.ui.item.AlbumItem
 import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.screen.ScreenDestination

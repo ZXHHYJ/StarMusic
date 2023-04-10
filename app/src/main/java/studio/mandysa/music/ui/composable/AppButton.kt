@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.common
+package studio.mandysa.music.ui.composable
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

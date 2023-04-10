@@ -23,8 +23,8 @@ import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.service.playmanager.ktx.allArtist
 import studio.mandysa.music.service.playmanager.ktx.artist
 import studio.mandysa.music.service.playmanager.ktx.title
-import studio.mandysa.music.ui.common.AppIcon
-import studio.mandysa.music.ui.common.AppCard
+import studio.mandysa.music.ui.composable.AppIcon
+import studio.mandysa.music.ui.composable.AppCard
 import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.theme.vertical
 import studio.mandysa.music.ui.theme.playScreenHorizontal

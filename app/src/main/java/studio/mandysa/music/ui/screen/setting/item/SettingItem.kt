@@ -1,5 +1,6 @@
 package studio.mandysa.music.ui.screen.setting
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -11,25 +12,25 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import studio.mandysa.music.ui.common.AppDivider
-import studio.mandysa.music.ui.common.AppIcon
-import studio.mandysa.music.ui.common.AppSwitch
+import studio.mandysa.music.ui.composable.AppDivider
+import studio.mandysa.music.ui.composable.AppIcon
 import studio.mandysa.music.ui.theme.*
 
 @Composable
-fun SettingSwitchItem(
+fun SettingItem(
     modifier: Modifier = Modifier,
     imageVector: ImageVector,
     title: String,
     subTitle: String,
-    checked: Boolean,
-    onCheckedChange: ((Boolean) -> Unit),
+    onClick: () -> Unit,
 ) {
     Surface(
         color = Color.Transparent,
         shape = roundShape
     ) {
-        Column(modifier = modifier) {
+        Column(modifier = modifier.clickable {
+            onClick.invoke()
+        }) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -47,12 +48,6 @@ fun SettingSwitchItem(
                     Text(text = title, fontWeight = FontWeight.Bold)
                     Text(text = subTitle, fontSize = 14.sp)
                 }
-                Spacer(modifier = Modifier.weight(1.0f))
-                AppSwitch(
-                    checked = checked,
-                    onCheckedChange = onCheckedChange,
-                    modifier = Modifier.height(24.dp)
-                )
             }
             AppDivider(
                 modifier = Modifier

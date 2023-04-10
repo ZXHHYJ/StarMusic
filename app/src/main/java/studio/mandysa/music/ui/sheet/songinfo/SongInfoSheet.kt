@@ -12,8 +12,8 @@ import androidx.compose.ui.unit.sp
 import studio.mandysa.music.logic.ktx.toTime
 import studio.mandysa.music.service.playmanager.bean.SongBean
 import studio.mandysa.music.service.playmanager.ktx.*
-import studio.mandysa.music.ui.common.AppAsyncImage
-import studio.mandysa.music.ui.common.AppCard
+import studio.mandysa.music.ui.composable.AppAsyncImage
+import studio.mandysa.music.ui.composable.AppCard
 import studio.mandysa.music.ui.theme.horizontal
 import studio.mandysa.music.ui.theme.textColor
 import studio.mandysa.music.ui.theme.textColorLight

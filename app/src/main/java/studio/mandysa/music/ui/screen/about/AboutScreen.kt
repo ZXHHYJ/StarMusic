@@ -9,9 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import dev.olshevski.navigation.reimagined.NavController
 import studio.mandysa.music.R
-import studio.mandysa.music.ui.common.TopAppBar
-import studio.mandysa.music.ui.common.bindTopAppBarState
-import studio.mandysa.music.ui.common.rememberTopAppBarState
+import studio.mandysa.music.ui.composable.TopAppBar
+import studio.mandysa.music.ui.composable.bindTopAppBarState
+import studio.mandysa.music.ui.composable.rememberTopAppBarState
 import studio.mandysa.music.ui.screen.BottomSheetDestination
 import studio.mandysa.music.ui.screen.ScreenDestination
 

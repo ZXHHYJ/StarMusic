@@ -1,4 +1,4 @@
-package studio.mandysa.music.ui.common
+package studio.mandysa.music.ui.composable
 
 import android.widget.SeekBar
 import androidx.compose.runtime.Composable
