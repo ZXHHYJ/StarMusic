@@ -40,21 +40,22 @@ fun AppSwitch(
         var openProgress by rememberSaveable {
             mutableStateOf(0f)
         }
-        swipeableState.progress.let {
-            if (it.from == Status.OPEN && it.to == Status.OPEN) {
-                openProgress = (it.fraction)
-            } else
-                if (it.from == Status.OPEN && it.to == Status.CLOSE) {
-                    openProgress = (1f - it.fraction)
+        LaunchedEffect(swipeableState.progress) {
+            swipeableState.progress.run {
+                if (from == Status.OPEN && to == Status.OPEN) {
+                    openProgress = (fraction)
                 } else
-                    if (it.from == Status.CLOSE && it.to == Status.CLOSE) {
-                        openProgress = (1f - it.fraction)
+                    if (from == Status.OPEN && to == Status.CLOSE) {
+                        openProgress = (1f - fraction)
                     } else
-                        if (it.from == Status.CLOSE && it.to == Status.OPEN) {
-                            openProgress = (it.fraction)
-                        }
+                        if (from == Status.CLOSE && to == Status.CLOSE) {
+                            openProgress = (1f - fraction)
+                        } else
+                            if (from == Status.CLOSE && to == Status.OPEN) {
+                                openProgress = (fraction)
+                            }
+            }
         }
-        val coroutineScope = rememberCoroutineScope()
         LaunchedEffect(swipeableState.currentValue) {
             if (swipeableState.currentValue == Status.OPEN) {
                 onCheckedChange.invoke(true)
@@ -68,6 +69,7 @@ fun AppSwitch(
             border = BorderStroke(1.dp, appAccentColor.copy(alpha = openProgress)),
             elevation = 0.dp
         ) {
+            val coroutineScope = rememberCoroutineScope()
             Box(
                 modifier = Modifier
                     .size(height = blockSize, width = blockSize * 2)
