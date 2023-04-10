@@ -27,7 +27,6 @@ import studio.mandysa.music.logic.repository.SettingRepository
 import studio.mandysa.music.service.playmanager.PlayManager
 import studio.mandysa.music.service.playmanager.ktx.coverUrl
 
-
 @Composable
 fun MandySaMusicTheme(
     content: @Composable () -> Unit
@@ -38,8 +37,8 @@ fun MandySaMusicTheme(
     var monetColor: Color by remember {
         mutableStateOf(Color.Red)
     }
-    when (SettingRepository.colorSource) {
-        SettingRepository.ColorSource.Album -> {
+    when (SettingRepository.enableAlbumGetColor) {
+        true -> {
             val context = LocalContext.current
             val coverUrl by PlayManager.changeMusicLiveData().map {
                 it.coverUrl
@@ -55,7 +54,7 @@ fun MandySaMusicTheme(
             }
         }
 
-        SettingRepository.ColorSource.Wallpaper -> {
+        false -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 //判断是否支持获取壁纸颜色
                 try {

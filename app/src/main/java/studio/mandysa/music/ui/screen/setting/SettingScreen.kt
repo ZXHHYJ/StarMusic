@@ -1,6 +1,8 @@
 package studio.mandysa.music.ui.screen.setting
 
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -76,7 +78,14 @@ fun SettingScreen(
 
 private fun getVersionName(context: Context): String {
     try {
-        return context.packageManager.getPackageInfo(context.packageName, 0).versionName
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            context.packageManager.getPackageInfo(
+                context.packageName,
+                PackageManager.PackageInfoFlags.of(0)
+            ).versionName
+        } else {
+            context.packageManager.getPackageInfo(context.packageName, 0).versionName
+        }
     } catch (e: Exception) {
         throw e
     }

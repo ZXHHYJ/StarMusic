@@ -39,10 +39,6 @@ class MainApplication : Application() {
             save = { bean -> gson.toJson(bean) },
             restore = { str -> gson.fromJson(str, SongBean.Local.Artist::class.java) }
         )
-        registerTypeConverters<SettingRepository.ColorSource>(
-            save = { bean -> gson.toJson(bean) },
-            restore = { str -> gson.fromJson(str, SettingRepository.ColorSource::class.java) }
-        )
         PlayManager.init(this)
         //初始化播放管理器
         PlayManager.pauseLiveData()
