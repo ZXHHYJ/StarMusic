@@ -1,7 +1,7 @@
 <resources>
     <string name="channel_name">媒体控制器</string>
     <string name="channel_description">播放控制</string>
-    <string name="app_name">MandySa Music</string>
+    <string name="app_name">Star Music</string>
     <string name="media_lib">媒体库</string>
     <string name="singer">歌手</string>
     <string name="search">搜索</string>

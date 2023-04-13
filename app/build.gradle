@@ -8,7 +8,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "studio.mandysa.music"
+        applicationId "com.zxhhyj.music"
         minSdk 23
         targetSdk 33
         versionCode 1
@@ -57,7 +57,7 @@ android {
         }
     }
 
-    namespace 'studio.mandysa.music'
+    namespace 'com.zxhhyj.music'
 }
 
 dependencies {
@@ -76,6 +76,8 @@ dependencies {
     def reimagined_version = "1.4.0"
     implementation "dev.olshevski.navigation:reimagined:$reimagined_version"
     implementation "dev.olshevski.navigation:reimagined-material:$reimagined_version"
+    // https://github.com/mxalbert1996/compose-shared-elements
+    implementation "com.mxalbert.sharedelements:shared-elements:0.1.0-SNAPSHOT"
 
     def data_saver_version = "1.1.4"
     implementation "com.github.FunnySaltyFish.ComposeDataSaver:data-saver:$data_saver_version"
