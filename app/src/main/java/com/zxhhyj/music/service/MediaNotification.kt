@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Build
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import androidx.annotation.DrawableRes
 import androidx.core.app.NotificationCompat
 import androidx.media.session.MediaButtonReceiver
 import com.zxhhyj.music.R
@@ -17,49 +18,33 @@ class MediaNotification(
 ) :
     NotificationCompat.Builder(context, channelId) {
 
+    private fun button(@DrawableRes icon: Int, action: Long) = NotificationCompat.Action(
+        icon,
+        "media button",
+        MediaButtonReceiver.buildMediaButtonPendingIntent(
+            context,
+            action
+        )
+    )
+
+    private val skipPrevious =
+        button(R.drawable.ic_skip_previous, PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS)
+
+    private val pause = button(R.drawable.ic_pause, PlaybackStateCompat.ACTION_PLAY_PAUSE)
+
+    private val play = button(R.drawable.ic_play, PlaybackStateCompat.ACTION_PLAY_PAUSE)
+
+    private val skipNext = button(R.drawable.ic_skip_next, PlaybackStateCompat.ACTION_SKIP_TO_NEXT)
+
+    private val stop = button(R.drawable.ic_round_clear_24, PlaybackStateCompat.ACTION_STOP)
+
     fun setAction(playing: Boolean): MediaNotification {
         clearActions()
-        addAction(
-            NotificationCompat.Action(
-                R.drawable.ic_skip_previous,
-                "上一首",
-                MediaButtonReceiver.buildMediaButtonPendingIntent(
-                    context,
-                    PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
-                )
-            )
-        )
-        addAction(
-            NotificationCompat.Action(
-                if (playing) R.drawable.ic_pause else R.drawable.ic_play,
-                "播放或暂停",
-                MediaButtonReceiver.buildMediaButtonPendingIntent(
-                    context,
-                    PlaybackStateCompat.ACTION_PLAY_PAUSE
-                )
-            )
-        )
-        addAction(
-            NotificationCompat.Action(
-                R.drawable.ic_skip_next,
-                "下一首",
-                MediaButtonReceiver.buildMediaButtonPendingIntent(
-                    context,
-                    PlaybackStateCompat.ACTION_SKIP_TO_NEXT
-                )
-            )
-        )
+        listOf(skipPrevious, if (playing) pause else play, skipNext).forEach {
+            addAction(it)
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            addAction(
-                NotificationCompat.Action(
-                    R.drawable.ic_round_clear_24,
-                    "关闭媒体通知",
-                    MediaButtonReceiver.buildMediaButtonPendingIntent(
-                        context,
-                        PlaybackStateCompat.ACTION_STOP
-                    )
-                )
-            )
+            addAction(stop)
         }
         return this
     }

@@ -18,9 +18,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mxalbert.sharedelements.SharedElement
-import dev.olshevski.navigation.reimagined.NavController
-import dev.olshevski.navigation.reimagined.moveToTop
-import dev.olshevski.navigation.reimagined.navigate
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.ktx.allArtist
 import com.zxhhyj.music.service.playmanager.ktx.artist
@@ -34,13 +31,15 @@ import com.zxhhyj.music.ui.screen.play.MaterialFadeInTransitionSpec
 import com.zxhhyj.music.ui.screen.play.PlayScreenDestination
 import com.zxhhyj.music.ui.screen.play.ShareAlbumKey
 import com.zxhhyj.music.ui.theme.*
+import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.moveToTop
+import dev.olshevski.navigation.reimagined.navigate
 
 @Composable
 fun TopMediaController(
+    modifier: Modifier = Modifier,
     navController: NavController<PlayScreenDestination>,
     sheetNavController: NavController<BottomSheetDestination>,
-    modifier: Modifier = Modifier,
-    screenKey: PlayScreenDestination
 ) {
     val song by PlayManager.changeMusicLiveData().observeAsState()
     Row(
@@ -49,7 +48,7 @@ fun TopMediaController(
     ) {
         SharedElement(
             key = ShareAlbumKey,
-            screenKey = screenKey,
+            screenKey = PlayScreenDestination.PlayQueue/*不能分别使用PlayQueue和Lyric，会闪退*/,
             transitionSpec = MaterialFadeInTransitionSpec
         ) {
             AppCard(

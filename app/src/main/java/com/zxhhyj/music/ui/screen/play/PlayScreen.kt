@@ -143,8 +143,7 @@ fun PlayScreen(
                                     item {
                                         TopMediaController(
                                             navController = navController,
-                                            sheetNavController = sheetNavController,
-                                            screenKey = it
+                                            sheetNavController = sheetNavController
                                         )
                                     }
                                 }
@@ -160,8 +159,7 @@ fun PlayScreen(
                                     item {
                                         TopMediaController(
                                             navController = navController,
-                                            sheetNavController = sheetNavController,
-                                            screenKey = it
+                                            sheetNavController = sheetNavController
                                         )
                                     }
                                 }
