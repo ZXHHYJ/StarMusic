@@ -37,7 +37,7 @@ fun MandySaMusicTheme(
     var monetColor: Color by remember {
         mutableStateOf(Color.Red)
     }
-    when (SettingRepository.enableAlbumGetColor) {
+    when (SettingRepository.EnableAlbumGetColor) {
         true -> {
             val context = LocalContext.current
             val coverUrl by PlayManager.changeMusicLiveData().map {

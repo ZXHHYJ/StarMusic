@@ -5,9 +5,21 @@ import com.zxhhyj.music.logic.config.DataSaverUtils
 
 object SettingRepository {
 
-    var enableAlbumGetColor by mutableDataSaverStateOf(
+    /**
+     * 是否启用歌曲封面取色
+     */
+    var EnableAlbumGetColor by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "EnableAlbumGetColor",
+        initialValue = true
+    )
+
+    /**
+     * 是否首次启动APP
+     */
+    var IsFirstLaunch by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "IsFirstLaunch",
         initialValue = true
     )
 

@@ -30,9 +30,9 @@ fun ThemeScreen(padding: PaddingValues) {
                 imageVector = Icons.Rounded.Album,
                 title = "封面取色",
                 subTitle = "根据当前播放歌曲的封面取色",
-                checked = SettingRepository.enableAlbumGetColor,
+                checked = SettingRepository.EnableAlbumGetColor,
                 onCheckedChange = {
-                    SettingRepository.enableAlbumGetColor = it
+                    SettingRepository.EnableAlbumGetColor = it
                 }
             )
         }

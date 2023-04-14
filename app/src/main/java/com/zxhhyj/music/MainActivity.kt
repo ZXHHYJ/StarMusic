@@ -8,7 +8,6 @@ import com.zxhhyj.music.ui.screen.main.MainScreen
 import com.zxhhyj.music.ui.theme.MandySaMusicTheme
 
 
-
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,6 +1,8 @@
 package com.zxhhyj.music.logic.config
 
-import com.zxhhyj.music.MainApplication
+import android.app.Application
 
-
-lateinit var application: MainApplication
+/**
+ * 提供全局Context
+ */
+lateinit var application: Application
