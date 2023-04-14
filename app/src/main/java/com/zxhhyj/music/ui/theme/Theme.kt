@@ -2,6 +2,7 @@ package com.zxhhyj.music.ui.theme
 
 import android.app.WallpaperManager
 import android.app.WallpaperManager.FLAG_SYSTEM
+import android.graphics.Bitmap
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -14,12 +15,11 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.toPixelMap
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.graphics.drawable.toBitmap
-import androidx.core.graphics.scale
 import androidx.lifecycle.map
+import androidx.palette.graphics.Palette
 import coil.ImageLoader
 import coil.request.ImageRequest
 import com.kyant.monet.*
@@ -42,15 +42,19 @@ fun MandySaMusicTheme(
             val context = LocalContext.current
             val coverUrl by PlayManager.changeMusicLiveData().map {
                 it.coverUrl
-            }.observeAsState("")
+            }.observeAsState()
             LaunchedEffect(coverUrl) {
+                coverUrl ?: return@LaunchedEffect
                 val imageLoader = ImageLoader(context)
                 val request = ImageRequest.Builder(context)
                     .data(coverUrl)
                     .build()
-                monetColor =
-                    imageLoader.execute(request).drawable?.toBitmap()?.scale(3, 3)?.asImageBitmap()
-                        ?.toPixelMap()?.get(1, 1) ?: Color.Red
+                val bitmap = imageLoader.execute(request).drawable?.toBitmap()
+                bitmap ?: return@LaunchedEffect
+                val palette =
+                    Palette.from(bitmap.copy(Bitmap.Config.RGB_565, false)).generate()
+                monetColor = Color(palette.getDominantColor(Color.Red.toArgb()))
+                bitmap.recycle()
             }
         }
 
@@ -63,6 +67,7 @@ fun MandySaMusicTheme(
                 } catch (e: Exception) {
                     //windows sub system就会报错
                 }
+                val handler = Handler.createAsync(Looper.getMainLooper())
                 DisposableEffect(Unit) {
                     val colorsChangedListener =
                         WallpaperManager.OnColorsChangedListener { colors, which ->
@@ -70,9 +75,10 @@ fun MandySaMusicTheme(
                                 monetColor = Color(colors.primaryColor.toArgb())
                             }
                         }
+
                     wallpaperManager.addOnColorsChangedListener(
                         colorsChangedListener,
-                        Handler.createAsync(Looper.getMainLooper())
+                        handler
                     )
                     onDispose {
                         //避免内存泄露

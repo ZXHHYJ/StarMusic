@@ -50,6 +50,7 @@ fun MotionBlur(
                 blackObscuration,
                 bitmap
             ).toDrawable(context.resources)
+            bitmap.recycle()
         }
     }
     AndroidView(factory = {
