@@ -41,7 +41,7 @@ fun MandySaMusicTheme(
         true -> {
             val context = LocalContext.current
             val coverUrl by PlayManager.changeMusicLiveData().map {
-                it.coverUrl
+                it?.coverUrl
             }.observeAsState()
             LaunchedEffect(coverUrl) {
                 coverUrl ?: return@LaunchedEffect

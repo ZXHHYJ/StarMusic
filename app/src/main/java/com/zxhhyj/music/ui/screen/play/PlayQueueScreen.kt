@@ -12,23 +12,22 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.zxhhyj.music.R
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.bean.SongBean
 import com.zxhhyj.music.service.playmanager.ktx.allArtist
 import com.zxhhyj.music.service.playmanager.ktx.artist
 import com.zxhhyj.music.service.playmanager.ktx.title
 import com.zxhhyj.music.ui.composable.AppCard
+import com.zxhhyj.music.ui.composable.AppDivider
 import com.zxhhyj.music.ui.composable.AppIcon
 import com.zxhhyj.music.ui.theme.playScreenHorizontal
 import com.zxhhyj.music.ui.theme.translucentWhite
@@ -38,6 +37,37 @@ import com.zxhhyj.music.ui.theme.vertical
 fun ColumnScope.PlayQueueScreen() {
     val playlist by PlayManager.changePlayListLiveData().observeAsState()
     val song by PlayManager.changeMusicLiveData().observeAsState()
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = playScreenHorizontal, vertical = vertical)
+    ) {
+        Text(
+            text = "${(playlist?.indexOf(song) ?: 0) + 1}/${playlist?.size}",
+            color = translucentWhite,
+            fontSize = 14.sp
+        )
+        Text(
+            text = stringResource(id = R.string.play_list),
+            modifier = Modifier.weight(1.0f),
+            color = Color.White,
+            fontSize = 15.sp,
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = stringResource(id = R.string.clear),
+            color = translucentWhite,
+            fontSize = 14.sp,
+            modifier = Modifier.clickable {
+                PlayManager.clearPlayList()
+            })
+    }
+
+    AppDivider(
+        color = translucentWhite,
+        modifier = Modifier.padding(horizontal = playScreenHorizontal)
+    )
 
     BoxWithConstraints(
         modifier = Modifier
@@ -52,31 +82,8 @@ fun ColumnScope.PlayQueueScreen() {
         }
 
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .graphicsLayer { alpha = 0.99F }
-                .drawWithContent {
-                    val colors = listOf(
-                        Color.Transparent,
-                        Color.Black,
-                        Color.Black,
-                        Color.Black,
-                        Color.Black,
-                        Color.Black,
-                        Color.Black,
-                        Color.Black,
-                        Color.Transparent
-                    )
-                    drawContent()
-                    drawRect(
-                        brush = Brush.verticalGradient(colors),
-                        blendMode = BlendMode.DstIn
-                    )
-                }, state = lazyListState
+            modifier = Modifier.fillMaxSize(), state = lazyListState
         ) {
-            item {
-                Spacer(modifier = Modifier.height(maxHeight / 2))
-            }
             playlist?.let { songBeans ->
                 itemsIndexed(songBeans) { index, model ->
                     QueueSongItem(
@@ -89,17 +96,14 @@ fun ColumnScope.PlayQueueScreen() {
                     }
                 }
             }
-            item {
-                Spacer(modifier = Modifier.height(maxHeight / 2))
-            }
         }
         val boxHeightPx = with(LocalDensity.current) {
             maxHeight.roundToPx()
         }
         LaunchedEffect(playlist, song) {
-            val position = playlist!!.indexOf(song)
+            val position = playlist?.indexOf(song) ?: 0
             val height = (boxHeightPx - selectItemBoxSize.height) / 2
-            lazyListState.animateScrollToItem((position + 1).coerceAtLeast(0), -height)
+            lazyListState.animateScrollToItem(position.coerceAtLeast(0), -height)
         }
     }
 }

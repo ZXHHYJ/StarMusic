@@ -1,7 +1,8 @@
 package com.zxhhyj.music.ui.screen.play
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -49,13 +50,14 @@ val PlayScreenDestination.tabIcon
 
 const val ShareAlbumKey = "album"
 
-private const val TransitionDurationMillis = 300
+private const val TransitionDurationMillis = 250
 
 val MaterialFadeInTransitionSpec = SharedElementsTransitionSpec(
     pathMotionFactory = MaterialArcMotionFactory,
     durationMillis = TransitionDurationMillis,
     fadeMode = FadeMode.In
 )
+
 val MaterialFadeOutTransitionSpec = SharedElementsTransitionSpec(
     pathMotionFactory = MaterialArcMotionFactory,
     durationMillis = TransitionDurationMillis,
@@ -130,7 +132,10 @@ fun PlayScreen(
         ) {
             AnimatedNavHost(
                 controller = navController,
-                /* transitionSpec = { action, from, to -> tween(durationMillis = TransitionDurationMillis) }*/
+                transitionSpec = { _, _, _ ->
+                    val tween = tween<Float>(durationMillis = TransitionDurationMillis)
+                    fadeIn(tween) with fadeOut(tween)
+                }
             ) {
                 when (it) {
                     PlayScreenDestination.Main -> {
@@ -180,7 +185,7 @@ fun PlayScreen(
         ) {
 
             val coverUrl by PlayManager.changeMusicLiveData().map {
-                it.coverUrl
+                it?.coverUrl
             }.observeAsState()
             MotionBlur(
                 modifier = Modifier

@@ -16,6 +16,137 @@ import java.util.*
 @OptIn(DelicateCoroutinesApi::class)
 object PlayManager {
 
+    /**
+     * 当前播放的歌曲
+     */
+    private val mChangeMusic = MutableLiveData<SongBean?>()
+
+    /**
+     * 播放列表
+     */
+    private val mPlayList = MutableLiveData<List<SongBean>?>()
+
+    /**
+     * 播放状态
+     */
+    private val mPause = MutableLiveData(true)
+
+    /**
+     * 当前播放歌曲的下标
+     */
+    private val mIndex = MutableLiveData(0)
+
+    /**
+     * 当前播放歌曲进度
+     */
+    private val mProgress = MutableLiveData<Int>()
+
+    /**
+     * 当前播放歌曲时长
+     */
+    private val mDuration = MutableLiveData<Int>()
+
+    fun changePlayListLiveData(): LiveData<List<SongBean>?> {
+        return mPlayList
+    }
+
+    fun playingMusicProgressLiveData(): LiveData<Int> {
+        return mProgress
+    }
+
+    fun playingMusicDurationLiveData(): LiveData<Int> {
+        return mDuration
+    }
+
+    fun changeMusicLiveData(): LiveData<SongBean?> {
+        return mChangeMusic
+    }
+
+    fun isPaused(): Boolean {
+        return pauseLiveData().value!!
+    }
+
+    fun pauseLiveData(): LiveData<Boolean> {
+        return mPause
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun addNextPlay(song: SongBean) {
+        val list = mPlayList.value as ArrayList<SongBean>?
+        list?.let {
+            list.add(mIndex.value!! + 1, song)
+            mPlayList.value = it
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun play(list: List<SongBean>, index: Int) {
+        mPlayList.value = list
+        updateIndex(index)
+    }
+
+    /**
+     * 随机播放
+     */
+    fun shufflePlay(list: List<SongBean>, index: Int) {
+        val mutableList = list.toMutableList()
+        mutableList.shuffle()
+        play(mutableList, index)
+    }
+
+    fun seekTo(position: Int) {
+        mProgress.value = position
+        initMediaPlayer()
+        mMediaPlayer?.seekTo(position.toLong())
+    }
+
+    fun skipToPrevious() {
+        updateIndex(mIndex.value!! - 1)
+    }
+
+    fun skipToNext() {
+        updateIndex(mIndex.value!! + 1)
+    }
+
+    fun play() {
+        initMediaPlayer()
+
+        mMediaPlayer?.play()
+        mPositionUpdateJob = GlobalScope.launch(Dispatchers.Main) {
+            while (true) {
+                mProgress.value = mMediaPlayer?.currentPosition?.toInt() ?: return@launch
+                delay(1000)
+            }
+        }
+    }
+
+    fun pause() {
+        initMediaPlayer()
+
+        mMediaPlayer?.pause()
+    }
+
+    fun clearPlayList() {
+        stop()
+        mChangeMusic.value = null
+        mPlayList.value = null
+    }
+
+    init {
+        mIndex.observeForever {
+            if (mPlayList.value != null) {
+                val song = mPlayList.value!![it]
+                playMusic(song)
+            }
+        }
+    }
+
+    private lateinit var mApplication: Application
+
+    private var mPositionUpdateJob: Job? = null
+
+    private var mMediaPlayer: ExoPlayer? = null
+
     @Synchronized
     private fun createExoPlayer() = ExoPlayer.Builder(mApplication).build().apply {
         addListener(object : Player.Listener {
@@ -64,134 +195,6 @@ object PlayManager {
         }
     }
 
-    private lateinit var mApplication: Application
-
-    private var mPositionUpdateJob: Job? = null
-
-    private var mMediaPlayer: ExoPlayer? = null
-
-    fun init(application: Application) {
-        mApplication = application
-    }
-
-    /**
-     * 当前播放的歌曲
-     */
-    private val mChangeMusic = MutableLiveData<SongBean>()
-
-    /**
-     * 播放列表
-     */
-    private val mPlayList = MutableLiveData<List<SongBean>>()
-
-    /**
-     * 播放状态
-     */
-    private val mPause = MutableLiveData(true)
-
-    /**
-     * 当前播放歌曲的下标
-     */
-    private val mIndex = MutableLiveData(0)
-
-    /**
-     * 当前播放歌曲进度
-     */
-    private val mProgress = MutableLiveData<Int>()
-
-    /**
-     * 当前播放歌曲时长
-     */
-    private val mDuration = MutableLiveData<Int>()
-
-    fun changePlayListLiveData(): LiveData<List<SongBean>> {
-        return mPlayList
-    }
-
-    fun playingMusicProgressLiveData(): LiveData<Int> {
-        return mProgress
-    }
-
-    fun playingMusicDurationLiveData(): LiveData<Int> {
-        return mDuration
-    }
-
-    fun changeMusicLiveData(): LiveData<SongBean> {
-        return mChangeMusic
-    }
-
-    fun isPaused(): Boolean {
-        return pauseLiveData().value!!
-    }
-
-    fun pauseLiveData(): LiveData<Boolean> {
-        return mPause
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    fun addNextPlay(song: SongBean) {
-        val list = mPlayList.value as ArrayList<SongBean>?
-        list?.let {
-            list.add(mIndex.value!! + 1, song)
-            mPlayList.value = it
-        }
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    fun play(list: List<SongBean>, index: Int) {
-        mPlayList.value = list
-        updateIndex(index)
-    }
-
-    /**
-     * 随机播放
-     */
-    fun shufflePlay(list: List<SongBean>, index: Int) {
-        val mutableList = list.toMutableList()
-        mutableList.shuffle()
-        play(mutableList, index)
-    }
-
-    fun seekTo(position: Int) {
-        mProgress.value = position
-        initMediaPlayer()
-        mMediaPlayer?.seekTo(position.toLong())
-    }
-
-    private fun updateIndex(index: Int) {
-        if (!(index >= 0 && mPlayList.value != null && index <= mPlayList.value!!.size - 1)) {
-            pause()
-            return
-        }
-        mIndex.value = index
-    }
-
-    fun skipToPrevious() {
-        updateIndex(mIndex.value!! - 1)
-    }
-
-    fun skipToNext() {
-        updateIndex(mIndex.value!! + 1)
-    }
-
-    fun play() {
-        initMediaPlayer()
-
-        mMediaPlayer?.play()
-        mPositionUpdateJob = GlobalScope.launch(Dispatchers.Main) {
-            while (true) {
-                mProgress.value = mMediaPlayer?.currentPosition?.toInt() ?: return@launch
-                delay(1000)
-            }
-        }
-    }
-
-    fun pause() {
-        initMediaPlayer()
-
-        mMediaPlayer?.pause()
-    }
-
     private fun playMusic(song: SongBean) {
         initMediaPlayer()
 
@@ -212,13 +215,16 @@ object PlayManager {
         }
     }
 
-    init {
-        mIndex.observeForever {
-            if (mPlayList.value != null) {
-                val song = mPlayList.value!![it]
-                playMusic(song)
-            }
+    private fun updateIndex(index: Int) {
+        if (!(index >= 0 && mPlayList.value != null && index <= mPlayList.value!!.size - 1)) {
+            pause()
+            return
         }
+        mIndex.value = index
+    }
+
+    fun init(application: Application) {
+        mApplication = application
     }
 
     fun stop() {

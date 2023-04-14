@@ -21,8 +21,6 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.map
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import dev.olshevski.navigation.reimagined.*
-import dev.olshevski.navigation.reimagined.material.BottomSheetNavHost
 import com.zxhhyj.music.R
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.composable.*
@@ -44,6 +42,8 @@ import com.zxhhyj.music.ui.sheet.SongMenuSheet
 import com.zxhhyj.music.ui.sheet.songinfo.SongInfoSheet
 import com.zxhhyj.music.ui.theme.appBackgroundColor
 import com.zxhhyj.music.ui.theme.round
+import dev.olshevski.navigation.reimagined.*
+import dev.olshevski.navigation.reimagined.material.BottomSheetNavHost
 
 /**
  * Happy 22nd Birthday Shuangshengzi
@@ -143,15 +143,18 @@ fun MainScreen() {
         panelStateChange = {
             panelState = it
         },
-        content = {
-            val mediaControllerVisibility by PlayManager.changeMusicLiveData().map {
-                return@map true
+        content = { function ->
+            val visibilityMediaController by PlayManager.changeMusicLiveData().map {
+                return@map it != null
             }.observeAsState(false)
+            if (!visibilityMediaController && panelState == PanelState.EXPANDED) {
+                function.invoke(PanelState.COLLAPSED)
+            }
             AppScaffold(
                 modifier = Modifier.fillMaxSize(),
                 controllerBar = {
                     AnimatedVisibility(
-                        visible = mediaControllerVisibility,
+                        visible = visibilityMediaController,
                         enter = expandVertically(),
                         exit = shrinkVertically()
                     ) {
@@ -159,7 +162,7 @@ fun MainScreen() {
                             modifier = Modifier.fillMaxWidth(),
                             panelState = panelState
                         ) {
-                            it.invoke(PanelState.EXPANDED)
+                            function.invoke(PanelState.EXPANDED)
                         }
                     }
                 },
@@ -192,7 +195,7 @@ fun MainScreen() {
                                 )
                             }
                         }
-                        if (!mediaControllerVisibility) {
+                        if (!visibilityMediaController) {
                             AppDivider(modifier = Modifier.fillMaxWidth())
                         }
                     }
@@ -205,7 +208,7 @@ fun MainScreen() {
                 //避免导航时面板处于展开状态
                 LaunchedEffect(mainNavController.backstack) {
                     if (panelState == PanelState.EXPANDED) {
-                        it.invoke(PanelState.COLLAPSED)
+                        function.invoke(PanelState.COLLAPSED)
                     }
                 }
                 Box(modifier = Modifier.statusBarsPadding()) {

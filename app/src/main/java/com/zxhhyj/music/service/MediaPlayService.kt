@@ -86,6 +86,7 @@ class MediaPlayService : LifecycleService() {
     private fun initPlayManagerChanged() {
         PlayManager.apply {
             changeMusicLiveData().observe(this@MediaPlayService) {
+                if (it == null) return@observe
                 mMediaNotification
                     .setContentTitle(it.title)
                     .setContentText(it.artist.allArtist())
