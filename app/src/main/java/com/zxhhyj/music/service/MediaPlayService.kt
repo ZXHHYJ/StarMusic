@@ -19,7 +19,6 @@ import androidx.lifecycle.coroutineScope
 import androidx.media.session.MediaButtonReceiver
 import coil.imageLoader
 import coil.request.ImageRequest
-import kotlinx.coroutines.launch
 import com.zxhhyj.music.MainActivity
 import com.zxhhyj.music.R
 import com.zxhhyj.music.service.playmanager.PlayManager
@@ -29,6 +28,7 @@ import com.zxhhyj.music.service.playmanager.ktx.allArtist
 import com.zxhhyj.music.service.playmanager.ktx.artist
 import com.zxhhyj.music.service.playmanager.ktx.coverUrl
 import com.zxhhyj.music.service.playmanager.ktx.title
+import kotlinx.coroutines.launch
 
 
 class MediaPlayService : LifecycleService() {
@@ -39,13 +39,7 @@ class MediaPlayService : LifecycleService() {
 
         const val ID = 1
 
-        @Volatile
-        @JvmStatic
-        var instance: MediaPlayService? = null
-    }
-
-    init {
-        instance = this
+        var isServiceAlive = false
     }
 
     private fun refreshMediaNotifications() {
@@ -150,6 +144,7 @@ class MediaPlayService : LifecycleService() {
 
     override fun onCreate() {
         super.onCreate()
+        isServiceAlive = true;
         initPlayManagerChanged()
     }
 
@@ -157,7 +152,7 @@ class MediaPlayService : LifecycleService() {
         super.onDestroy()
         mMediaSession.isActive = false
         mMediaSession.release()
-        instance = null
+        isServiceAlive = false;
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

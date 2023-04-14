@@ -7,11 +7,10 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
+import com.zxhhyj.music.service.playmanager.bean.SongBean
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import com.zxhhyj.music.service.playmanager.bean.SongBean
 import java.util.*
-
 
 
 @OptIn(DelicateCoroutinesApi::class)
@@ -52,19 +51,25 @@ object PlayManager {
         })
     }
 
+    private fun initMediaPlayer() {
+        if (mMediaPlayer != null) return
+
+        mMediaPlayer = createExoPlayer()
+        val process = mProgress.value
+        mChangeMusic.value?.let {
+            playMusic(it)
+        }
+        process?.let {
+            seekTo(it)
+        }
+    }
+
     private lateinit var mApplication: Application
 
     private var mPositionUpdateJob: Job? = null
 
     private var mMediaPlayer: ExoPlayer? = null
-        get() {
-            if (field == null) {
-                field = createExoPlayer()
-            }
-            return field
-        }
 
-    @JvmStatic
     fun init(application: Application) {
         mApplication = application
     }
@@ -149,7 +154,8 @@ object PlayManager {
 
     fun seekTo(position: Int) {
         mProgress.value = position
-        mMediaPlayer!!.seekTo(position.toLong())
+        initMediaPlayer()
+        mMediaPlayer?.seekTo(position.toLong())
     }
 
     private fun updateIndex(index: Int) {
@@ -169,10 +175,9 @@ object PlayManager {
     }
 
     fun play() {
-        if (mMediaPlayer!!.isPlaying)
-            return
-        mMediaPlayer!!.play()
+        initMediaPlayer()
 
+        mMediaPlayer?.play()
         mPositionUpdateJob = GlobalScope.launch(Dispatchers.Main) {
             while (true) {
                 mProgress.value = mMediaPlayer?.currentPosition?.toInt() ?: return@launch
@@ -182,19 +187,21 @@ object PlayManager {
     }
 
     fun pause() {
-        if (!mMediaPlayer!!.isPlaying)
-            return
-        mMediaPlayer!!.pause()
+        initMediaPlayer()
+
+        mMediaPlayer?.pause()
     }
 
     private fun playMusic(song: SongBean) {
+        initMediaPlayer()
+
         mProgress.value = 0
         mChangeMusic.value = song
-        mMediaPlayer?.run {
+        mMediaPlayer?.let {
             when (song) {
                 is SongBean.Local -> {
-                    setMediaItem(MediaItem.fromUri(song.data))
-                    prepare()
+                    it.setMediaItem(MediaItem.fromUri(song.data))
+                    it.prepare()
                 }
                 is SongBean.Network -> {
                     /*val url = MUSIC_URL + song.id
@@ -216,10 +223,8 @@ object PlayManager {
 
     fun stop() {
         mPositionUpdateJob?.cancel()
-        mMediaPlayer?.run {
-            stop()
-            release()
-        }
+        mMediaPlayer?.stop()
+        mMediaPlayer?.release()
         mMediaPlayer = null
     }
 

@@ -54,7 +54,7 @@ class MainApplication : Application() {
     }
 
     private fun startPlayerService() {
-        if (MediaPlayService.instance == null) {
+        if (!MediaPlayService.isServiceAlive) {
             Intent(this, MediaPlayService::class.java).let {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     startForegroundService(it)
