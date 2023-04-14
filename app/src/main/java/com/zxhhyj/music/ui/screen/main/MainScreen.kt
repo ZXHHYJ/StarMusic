@@ -37,6 +37,7 @@ import com.zxhhyj.music.ui.screen.setting.SettingScreen
 import com.zxhhyj.music.ui.screen.singer.SingerScreen
 import com.zxhhyj.music.ui.screen.singercnt.SingerCntScreen
 import com.zxhhyj.music.ui.screen.single.SingleScreen
+import com.zxhhyj.music.ui.screen.splash.SplashScreen
 import com.zxhhyj.music.ui.screen.theme.ThemeScreen
 import com.zxhhyj.music.ui.sheet.SongMenuSheet
 import com.zxhhyj.music.ui.sheet.songinfo.SongInfoSheet
@@ -235,6 +236,7 @@ fun MainScreen() {
                                                 padding = padding
                                             )
                                         }
+
                                         HomeNavigationDestination.Album -> {
                                             AlbumScreen(
                                                 mainNavController = mainNavController,
@@ -242,6 +244,7 @@ fun MainScreen() {
                                                 padding = padding
                                             )
                                         }
+
                                         HomeNavigationDestination.Singer -> {
                                             SingerScreen(
                                                 mainNavController = mainNavController,
@@ -249,6 +252,7 @@ fun MainScreen() {
                                                 padding = padding
                                             )
                                         }
+
                                         HomeNavigationDestination.PlayList -> {
                                             PlayListScreen(
                                                 mainNavController = mainNavController,
@@ -256,6 +260,7 @@ fun MainScreen() {
                                                 padding = padding
                                             )
                                         }
+
                                         HomeNavigationDestination.Search -> {
                                             SearchScreen(
                                                 mainNavController = mainNavController,
@@ -307,6 +312,7 @@ fun MainScreen() {
                                     padding = padding
                                 )
                             }
+
                             ScreenDestination.Album -> {
                                 AlbumScreen(
                                     mainNavController = mainNavController,
@@ -314,6 +320,7 @@ fun MainScreen() {
                                     padding = padding
                                 )
                             }
+
                             ScreenDestination.ScanMusic -> {
                                 ScanMusicScreen(
                                     mainNavController = mainNavController,
@@ -321,6 +328,7 @@ fun MainScreen() {
                                     padding = padding
                                 )
                             }
+
                             ScreenDestination.Singer -> {
                                 SingerScreen(
                                     mainNavController = mainNavController,
@@ -328,6 +336,7 @@ fun MainScreen() {
                                     padding = padding
                                 )
                             }
+
                             ScreenDestination.PlayList -> {
                                 PlayListScreen(
                                     mainNavController = mainNavController,
@@ -335,8 +344,13 @@ fun MainScreen() {
                                     padding = padding
                                 )
                             }
+
                             ScreenDestination.Theme -> {
                                 ThemeScreen(padding = padding)
+                            }
+
+                            ScreenDestination.Splash -> {
+                                SplashScreen()
                             }
                         }
                     }

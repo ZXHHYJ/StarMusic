@@ -79,6 +79,7 @@ dependencies {
     // https://github.com/mxalbert1996/compose-shared-elements
     implementation "com.mxalbert.sharedelements:shared-elements:0.1.0-SNAPSHOT"
 
+    // https://github.com/FunnySaltyFish/ComposeDataSaver
     def data_saver_version = "1.1.4"
     implementation "com.github.FunnySaltyFish.ComposeDataSaver:data-saver:$data_saver_version"
     implementation "com.github.FunnySaltyFish.ComposeDataSaver:data-saver-mmkv:$data_saver_version"

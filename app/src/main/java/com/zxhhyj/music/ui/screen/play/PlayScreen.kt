@@ -141,10 +141,11 @@ fun PlayScreen(
                     PlayScreenDestination.Main -> {
                         NowPlayScreen(sheetNavController)
                     }
+
                     PlayScreenDestination.Lyric -> {
                         Column {
                             if (visibilityTopMediaBar) {
-                                LazyColumn {
+                                LazyColumn(userScrollEnabled = false) {
                                     item {
                                         TopMediaController(
                                             navController = navController,
@@ -157,10 +158,11 @@ fun PlayScreen(
                         }
 
                     }
+
                     PlayScreenDestination.PlayQueue -> {
                         Column {
                             if (visibilityTopMediaBar) {
-                                LazyColumn {
+                                LazyColumn(userScrollEnabled = false) {
                                     item {
                                         TopMediaController(
                                             navController = navController,
@@ -233,6 +235,7 @@ fun PlayScreen(
                             Spacer(modifier = Modifier.width(12.wp))
                         }
                     }
+
                     else -> {
                         Row(
                             modifier = Modifier

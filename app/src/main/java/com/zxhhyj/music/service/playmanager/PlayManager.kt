@@ -70,7 +70,6 @@ object PlayManager {
         return mPause
     }
 
-    @Suppress("UNCHECKED_CAST")
     fun addNextPlay(song: SongBean) {
         val list = mPlayList.value as ArrayList<SongBean>?
         list?.let {
@@ -79,19 +78,9 @@ object PlayManager {
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
     fun play(list: List<SongBean>, index: Int) {
         mPlayList.value = list
         updateIndex(index)
-    }
-
-    /**
-     * 随机播放
-     */
-    fun shufflePlay(list: List<SongBean>, index: Int) {
-        val mutableList = list.toMutableList()
-        mutableList.shuffle()
-        play(mutableList, index)
     }
 
     fun seekTo(position: Int) {
@@ -124,6 +113,10 @@ object PlayManager {
         initMediaPlayer()
 
         mMediaPlayer?.pause()
+    }
+
+    fun deleteSong(song: SongBean){
+
     }
 
     fun clearPlayList() {
@@ -167,15 +160,19 @@ object PlayManager {
                         mDuration.value = this@apply.duration.toInt()
                         this@PlayManager.play()
                     }
+
                     Player.STATE_BUFFERING -> {
 
                     }
+
                     Player.STATE_ENDED -> {
                         skipToNext()
                     }
+
                     Player.STATE_IDLE -> {
 
                     }
+
                     else -> {}
                 }
             }
@@ -206,11 +203,14 @@ object PlayManager {
                     it.setMediaItem(MediaItem.fromUri(song.data))
                     it.prepare()
                 }
+
                 is SongBean.Network -> {
                     /*val url = MUSIC_URL + song.id
                     setMediaItem(MediaItem.fromUri(url))
                     prepare()*/
                 }
+
+                else -> {}
             }
         }
     }

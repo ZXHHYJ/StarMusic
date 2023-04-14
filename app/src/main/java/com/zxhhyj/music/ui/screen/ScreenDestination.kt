@@ -1,11 +1,17 @@
 package com.zxhhyj.music.ui.screen
 
 import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 import com.zxhhyj.music.service.playmanager.bean.SongBean
+import kotlinx.parcelize.Parcelize
 
 
 sealed class ScreenDestination : Parcelable {
+
+    /**
+     * 起始页
+     */
+    @Parcelize
+    object Splash : ScreenDestination()
 
     /**
      * 主页
