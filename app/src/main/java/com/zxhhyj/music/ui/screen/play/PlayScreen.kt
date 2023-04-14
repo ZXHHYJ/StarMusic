@@ -4,6 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -21,15 +22,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.map
 import com.mxalbert.sharedelements.*
-import dev.olshevski.navigation.reimagined.*
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.ktx.coverUrl
 import com.zxhhyj.music.ui.composable.BoxWithPercentages
+import com.zxhhyj.music.ui.composable.BoxWithPercentagesScope
 import com.zxhhyj.music.ui.composable.MotionBlur
 import com.zxhhyj.music.ui.composable.PanelState
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
-import com.zxhhyj.music.ui.screen.play.queue.PlayQueueScreen
+import com.zxhhyj.music.ui.screen.play.composable.TopMediaController
 import com.zxhhyj.music.ui.theme.*
+import dev.olshevski.navigation.reimagined.*
 
 
 enum class PlayScreenDestination {
@@ -120,7 +122,8 @@ fun PlayScreen(
     }
 
     @Composable
-    fun RightNavHost() {
+    fun BoxWithPercentagesScope.RightNavHost() {
+        val visibilityTopMediaBar = maxWidth < maxHeight
         Box(
             modifier = Modifier
                 .widthIn(max = playScreenMaxWidth), contentAlignment = Alignment.Center
@@ -134,10 +137,37 @@ fun PlayScreen(
                         NowPlayScreen(sheetNavController)
                     }
                     PlayScreenDestination.Lyric -> {
-                        LyricScreen(navController, sheetNavController)
+                        Column {
+                            if (visibilityTopMediaBar) {
+                                LazyColumn {
+                                    item {
+                                        TopMediaController(
+                                            navController = navController,
+                                            sheetNavController = sheetNavController,
+                                            screenKey = it
+                                        )
+                                    }
+                                }
+                            }
+                            LyricScreen()
+                        }
+
                     }
                     PlayScreenDestination.PlayQueue -> {
-                        PlayQueueScreen(navController, sheetNavController)
+                        Column {
+                            if (visibilityTopMediaBar) {
+                                LazyColumn {
+                                    item {
+                                        TopMediaController(
+                                            navController = navController,
+                                            sheetNavController = sheetNavController,
+                                            screenKey = it
+                                        )
+                                    }
+                                }
+                            }
+                            PlayQueueScreen()
+                        }
                     }
                 }
             }

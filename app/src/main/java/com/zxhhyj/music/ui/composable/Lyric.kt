@@ -31,7 +31,6 @@ import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 
 
-
 //部分代码参考了:https://juejin.cn/post/7046235192616779784
 //特别感谢:Kyant
 
@@ -58,97 +57,98 @@ fun Lyric(
         return (minute.minutes + second.seconds + millisecond.milliseconds).toInt(DurationUnit.MILLISECONDS)
     }
 
-    val state = rememberLazyListState()
+    val lazyListState = rememberLazyListState()
+
     var position by rememberSaveable {
         mutableStateOf(0)
     }
+
     var lyrics by rememberSaveable {
         mutableStateOf(listOf<Pair<String, Int>>())
     }
-    var lyricBoxSize by remember {
-        mutableStateOf(IntSize.Zero)
-    }
+
     var selectLyricItemBoxSize by remember {
         mutableStateOf(IntSize.Zero)
     }
-    LazyColumn(
-        modifier = modifier
-            .graphicsLayer { alpha = 0.99F }
-            .drawWithContent {
-                val colors = listOf(
-                    Color.Transparent, Color.Black, Color.Black, Color.Black, Color.Black,
-                    Color.Black, Color.Black, Color.Black, Color.Transparent
-                )
-                drawContent()
-                drawRect(
-                    brush = Brush.verticalGradient(colors),
-                    blendMode = BlendMode.DstIn
+
+    BoxWithConstraints {
+        LazyColumn(
+            modifier = modifier
+                .graphicsLayer { alpha = 0.99F }
+                .drawWithContent {
+                    val colors = listOf(
+                        Color.Transparent, Color.Black, Color.Black, Color.Black, Color.Black,
+                        Color.Black, Color.Black, Color.Black, Color.Transparent
+                    )
+                    drawContent()
+                    drawRect(
+                        brush = Brush.verticalGradient(colors),
+                        blendMode = BlendMode.DstIn
+                    )
+                },
+            state = lazyListState
+        ) {
+            item {
+                Spacer(modifier = Modifier.height(maxHeight / 2))
+            }
+            itemsIndexed(lyrics) { index, model ->
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(roundShape)
+                        .clickable {
+                            onClick.invoke(model.second)
+                        }
+                        .padding(
+                            vertical = 20.dp,
+                            horizontal = horizontal / 2
+                        )
+                        .animateItemPlacement()
+                        .onSizeChanged {
+                            if (position == index) {
+                                selectLyricItemBoxSize = it
+                            }
+                        },
+                    text = model.first,
+                    color = if (position == index) Color.White else translucentWhite,
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold
                 )
             }
-            .onSizeChanged {
-                lyricBoxSize = it
-            },
-        state = state
-    ) {
-        item {
-            Spacer(modifier = Modifier.height(with(LocalDensity.current) { lyricBoxSize.height.toDp() } / 2))
+            item {
+                Spacer(modifier = Modifier.height(maxHeight / 2))
+            }
         }
-        itemsIndexed(lyrics) { index, model ->
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(roundShape)
-                    .clickable {
-                        onClick.invoke(model.second)
-                    }
-                    .padding(
-                        vertical = 20.dp,
-                        horizontal = horizontal /2
-                    )
-                    .animateItemPlacement()
-                    .onSizeChanged {
-                        if (position == index) {
-                            selectLyricItemBoxSize = it
+        LaunchedEffect(lyric) {
+            val list = arrayListOf<Pair<String, Int>>()
+            for (string in lyric.split("\n")) {
+                val data = string.replace("[", "").split("]")
+                for (i in 0 until data.size - 1) {
+                    try {
+                        data[data.size - 1].trim().let {
+                            if (it.isNotEmpty()) {
+                                list.add(it to timeStr(data[i]))
+                            }
                         }
-                    },
-                text = model.first,
-                color = if (position == index) Color.White else translucentWhite,
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
-        item {
-            Spacer(modifier = Modifier.height(with(LocalDensity.current) { lyricBoxSize.height.toDp() } / 2))
-        }
-    }
-    LaunchedEffect(lyric) {
-        val list = arrayListOf<Pair<String, Int>>()
-        for (string in lyric.split("\n")) {
-            val data = string.replace("[", "").split("]")
-            for (i in 0 until data.size - 1) {
-                try {
-                    data[data.size - 1].trim().let {
-                        if (it.isNotEmpty()) {
-                            list.add(it to timeStr(data[i]))
-                        }
+                    } catch (_: Exception) {
                     }
-                } catch (_: Exception) {
+                }
+            }
+            lyrics = list
+        }
+        LaunchedEffect(liveTime) {
+            lyrics.forEachIndexed { index, lrcContent ->
+                if (liveTime >= lrcContent.second) {
+                    position = index
                 }
             }
         }
-        lyrics = list
-    }
-    LaunchedEffect(liveTime) {
-        lyrics.forEachIndexed { index, lrcContent ->
-            if (liveTime >= lrcContent.second) {
-                position = index
+        val lyricHeightPx = with(LocalDensity.current) { maxHeight.roundToPx() }
+        LaunchedEffect(position, selectLyricItemBoxSize) {
+            if (!lazyListState.isScrollInProgress) {
+                val height = (lyricHeightPx - selectLyricItemBoxSize.height) / 2
+                lazyListState.animateScrollToItem((position + 1).coerceAtLeast(0), -height)
             }
-        }
-    }
-    LaunchedEffect(position, selectLyricItemBoxSize) {
-        if (!state.isScrollInProgress) {
-            val height = (lyricBoxSize.height - selectLyricItemBoxSize.height) / 2
-            state.animateScrollToItem((position + 1).coerceAtLeast(0), -height)
         }
     }
 }
