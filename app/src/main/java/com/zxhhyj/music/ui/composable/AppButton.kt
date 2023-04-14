@@ -1,7 +1,15 @@
 package com.zxhhyj.music.ui.composable
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Surface
@@ -12,8 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.zxhhyj.music.ui.theme.*
-
+import com.zxhhyj.music.ui.theme.appButtonAccentColor
+import com.zxhhyj.music.ui.theme.appTextButtonAccentColor
+import com.zxhhyj.music.ui.theme.horizontal
+import com.zxhhyj.music.ui.theme.onTextColor
+import com.zxhhyj.music.ui.theme.roundShape
+import com.zxhhyj.music.ui.theme.vertical
 
 
 @Composable
@@ -31,9 +43,7 @@ fun AppButton(
         elevation = ButtonDefaults.elevation(
             defaultElevation = 0.dp,
             pressedElevation = 0.dp,
-            disabledElevation = 0.dp,
-            hoveredElevation = 0.dp,
-            focusedElevation = 0.dp
+            disabledElevation = 0.dp
         ),
         shape = roundShape,
         border = null,

@@ -5,7 +5,12 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.view.animation.AccelerateDecelerateInterpolator
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -26,7 +31,6 @@ import com.google.android.renderscript.Toolkit
 @Composable
 fun MotionBlur(
     modifier: Modifier,
-    obscuration: Color = Color(0x14000000),
     whiteObscuration: Color = Color(0x20FFFFFF),
     blackObscuration: Color = Color(0x3C000000),
     url: String?,
@@ -45,7 +49,6 @@ fun MotionBlur(
         val bitmap = imageLoader.execute(request).drawable?.toBitmap()
         if (bitmap != null) {
             drawable = handleImageBlur(
-                obscuration,
                 whiteObscuration,
                 blackObscuration,
                 bitmap
@@ -75,7 +78,6 @@ fun MotionBlur(
 }
 
 private fun handleImageBlur(
-    obscuration: Color,
     whiteObscuration: Color,
     blackObscuration: Color,
     image: Bitmap
@@ -93,18 +95,12 @@ private fun handleImageBlur(
     }
     val average = calculateAverage(brightnessList)
     val median = calculateMedian(brightnessList)
-    if (average < 15 && median < 15) {
-        val canvas = Canvas(blurBitmap)
+    val canvas = Canvas(blurBitmap)
+    if (average < 50 && median < 50) {
         canvas.drawColor(whiteObscuration.toArgb())
-    } else
-        if (average > 200 && median > 200) {
-            val canvas = Canvas(blurBitmap)
-            canvas.drawColor(blackObscuration.toArgb())
-        } else {
-            val canvas = Canvas(blurBitmap)
-            canvas.drawColor(obscuration.toArgb())
-        }
-
+    } else {
+        canvas.drawColor(blackObscuration.toArgb())
+    }
     blurBitmap = blurBitmap.scale(150, 150)
     blurBitmap = meshBitmap(blurBitmap)
     blurBitmap = Toolkit.blur(blurBitmap, 25)
