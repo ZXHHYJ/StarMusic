@@ -88,6 +88,9 @@ dependencies {
     // https://github.com/krottv/compose-sliders
     implementation "com.github.krottv:compose-sliders:0.1.4"
 
+    // https://github.com/jrfeng/media-helper
+    implementation 'com.github.jrfeng:media-helper:1.0.7'
+
     implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.media:media:1.6.0'
     implementation 'androidx.palette:palette:1.0.0'
