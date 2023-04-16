@@ -2,6 +2,9 @@ package com.zxhhyj.music.ui.composable
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.rememberScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -25,6 +28,8 @@ import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.roundShape
 import com.zxhhyj.music.ui.theme.translucentWhite
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
@@ -67,9 +72,15 @@ fun Lyric(
         mutableStateOf(listOf<Pair<String, Int>>())
     }
 
-    var selectLyricItemBoxSize by remember {
+    var selectLyricItemSize by remember {
         mutableStateOf(IntSize.Zero)
     }
+
+    var enableLyricScroll by remember {
+        mutableStateOf(true)
+    }
+
+    val coroutineScope = rememberCoroutineScope()
 
     BoxWithConstraints {
         LazyColumn(
@@ -85,7 +96,17 @@ fun Lyric(
                         brush = Brush.verticalGradient(colors),
                         blendMode = BlendMode.DstIn
                     )
-                },
+                }
+                .scrollable(state = rememberScrollableState {
+                    if (enableLyricScroll) {
+                        coroutineScope.launch {
+                            enableLyricScroll = false
+                            delay(1500)
+                            enableLyricScroll = true
+                        }
+                    }
+                    it
+                }, orientation = Orientation.Vertical),
             state = lazyListState
         ) {
             item {
@@ -99,16 +120,15 @@ fun Lyric(
                         .clickable {
                             onClick.invoke(model.second)
                         }
+                        .onSizeChanged {
+                            if (position == index) {
+                                selectLyricItemSize = it
+                            }
+                        }
                         .padding(
                             vertical = 20.dp,
                             horizontal = horizontal / 2
-                        )
-                        .animateItemPlacement()
-                        .onSizeChanged {
-                            if (position == index) {
-                                selectLyricItemBoxSize = it
-                            }
-                        },
+                        ),
                     text = model.first,
                     color = if (position == index) Color.White else translucentWhite,
                     fontSize = 30.sp,
@@ -144,10 +164,16 @@ fun Lyric(
             }
         }
         val lyricHeightPx = with(LocalDensity.current) { maxHeight.roundToPx() }
-        LaunchedEffect(position, selectLyricItemBoxSize) {
-            if (!lazyListState.isScrollInProgress) {
-                val height = (lyricHeightPx - selectLyricItemBoxSize.height) / 2
-                lazyListState.animateScrollToItem((position + 1).coerceAtLeast(0), -height)
+        LaunchedEffect(Unit) {
+            val height = (lyricHeightPx - selectLyricItemSize.height) / 2
+            val index = (position + 1).coerceAtLeast(0)
+            lazyListState.scrollToItem(index, -height)
+        }
+        LaunchedEffect(position, selectLyricItemSize) {
+            if (enableLyricScroll) {
+                val height = (lyricHeightPx - selectLyricItemSize.height) / 2
+                val index = (position + 1).coerceAtLeast(0)
+                lazyListState.animateScrollToItem(index, -height)
             }
         }
     }
