@@ -5,9 +5,13 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.bean.SongBean
+import com.zxhhyj.music.ui.composable.KeepScreenOn
 import com.zxhhyj.music.ui.composable.Lyric
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.playScreenHorizontal
@@ -28,6 +33,9 @@ import java.io.File
 
 @Composable
 fun ColumnScope.LyricScreen() {
+    val pause by PlayManager.pauseLiveData().observeAsState(true)
+    KeepScreenOn(enable = !pause)
+
     val song by PlayManager.changeMusicLiveData().observeAsState()
     var lyric by rememberSaveable { mutableStateOf("") }
     LaunchedEffect(song) {
@@ -43,6 +51,7 @@ fun ColumnScope.LyricScreen() {
                     }
                 }
             }
+
             is SongBean.Network -> {}
             null -> {}
         }
@@ -77,5 +86,4 @@ fun ColumnScope.LyricScreen() {
             }
         }
     }
-
 }
