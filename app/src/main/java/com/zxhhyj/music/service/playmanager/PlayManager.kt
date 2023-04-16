@@ -7,14 +7,17 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.SeekParameters
 import com.zxhhyj.music.service.playmanager.bean.SongBean
+import com.zxhhyj.music.service.playmanager.impl.PlayManagerController
+import com.zxhhyj.music.service.playmanager.impl.PlayManagerState
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.util.*
 
 
 @OptIn(DelicateCoroutinesApi::class)
-object PlayManager {
+object PlayManager : PlayManagerState, PlayManagerController {
 
     /**
      * 当前播放的歌曲
@@ -46,80 +49,72 @@ object PlayManager {
      */
     private val mDuration = MutableLiveData<Int>()
 
-    fun changePlayListLiveData(): LiveData<List<SongBean>?> {
+    override fun changePlayListLiveData(): LiveData<List<SongBean>?> {
         return mPlayList
     }
 
-    fun playingMusicProgressLiveData(): LiveData<Int> {
+    override fun playingMusicProgressLiveData(): LiveData<Int> {
         return mProgress
     }
 
-    fun playingMusicDurationLiveData(): LiveData<Int> {
+    override fun playingMusicDurationLiveData(): LiveData<Int> {
         return mDuration
     }
 
-    fun changeMusicLiveData(): LiveData<SongBean?> {
+    override fun changeMusicLiveData(): LiveData<SongBean?> {
         return mChangeMusic
     }
 
-    fun isPaused(): Boolean {
+    override fun isPaused(): Boolean {
         return pauseLiveData().value!!
     }
 
-    fun pauseLiveData(): LiveData<Boolean> {
+    override fun pauseLiveData(): LiveData<Boolean> {
         return mPause
     }
 
-    fun addNextPlay(song: SongBean) {
-        val list = mPlayList.value as ArrayList<SongBean>?
-        list?.let {
-            list.add(mIndex.value!! + 1, song)
-            mPlayList.value = it
-        }
-    }
-
-    fun play(list: List<SongBean>, index: Int) {
+    override fun play(list: List<SongBean>, index: Int) {
         mPlayList.value = list
         updateIndex(index)
     }
 
-    fun seekTo(position: Int) {
+    override fun seekTo(position: Int) {
         mProgress.value = position
         initMediaPlayer()
         mMediaPlayer?.seekTo(position.toLong())
     }
 
-    fun skipToPrevious() {
+    override fun skipToPrevious() {
         updateIndex(mIndex.value!! - 1)
     }
 
-    fun skipToNext() {
+    override fun skipToNext() {
         updateIndex(mIndex.value!! + 1)
     }
 
-    fun play() {
+    override fun play() {
         initMediaPlayer()
-
         mMediaPlayer?.play()
-        mPositionUpdateJob = GlobalScope.launch(Dispatchers.Main) {
-            while (true) {
-                mProgress.value = mMediaPlayer?.currentPosition?.toInt() ?: return@launch
-                delay(1000)
+    }
+
+    override fun pause() {
+        initMediaPlayer()
+        mMediaPlayer?.pause()
+    }
+
+    override fun addNextPlay(song: SongBean) {
+        mPlayList.value?.let {
+            mPlayList.value = it.toMutableList().apply {
+                add((mIndex.value ?: return) + 1, song)
             }
         }
     }
 
-    fun pause() {
-        initMediaPlayer()
-
-        mMediaPlayer?.pause()
-    }
-
-    fun deleteSong(song: SongBean){
+    override fun deleteSong(song: SongBean) {
 
     }
 
-    fun clearPlayList() {
+    override fun clearPlayList() {
         stop()
         mChangeMusic.value = null
         mPlayList.value = null
@@ -129,7 +124,7 @@ object PlayManager {
         mIndex.observeForever {
             if (mPlayList.value != null) {
                 val song = mPlayList.value!![it]
-                playMusic(song)
+                prepareMusic(song)
             }
         }
     }
@@ -142,27 +137,39 @@ object PlayManager {
 
     @Synchronized
     private fun createExoPlayer() = ExoPlayer.Builder(mApplication).build().apply {
+        playWhenReady = true
+        setSeekParameters(SeekParameters.NEXT_SYNC)
         addListener(object : Player.Listener {
-            override fun onPlayerError(error: PlaybackException) {
-                super.onPlayerError(error)
-                skipToNext()
-            }
 
             override fun onIsPlayingChanged(isPlaying: Boolean) {
                 super.onIsPlayingChanged(isPlaying)
                 mPause.value = !isPlaying
+                if (isPlaying && mPositionUpdateJob == null) {
+                    mPositionUpdateJob = GlobalScope.launch(Dispatchers.Main) {
+                        while (true) {
+                            mProgress.value = mMediaPlayer?.currentPosition?.toInt()
+                            delay(1000)
+                        }
+                    }
+                } else {
+                    mPositionUpdateJob?.cancel()
+                    mPositionUpdateJob = null
+                }
+            }
+
+            override fun onEvents(player: Player, events: Player.Events) {
+                super.onEvents(player, events)
+                mDuration.value = player.duration.toInt()
             }
 
             override fun onPlaybackStateChanged(playbackState: Int) {
                 super.onPlaybackStateChanged(playbackState)
                 when (playbackState) {
                     Player.STATE_READY -> {
-                        mDuration.value = this@apply.duration.toInt()
-                        this@PlayManager.play()
+
                     }
 
                     Player.STATE_BUFFERING -> {
-
                     }
 
                     Player.STATE_ENDED -> {
@@ -170,11 +177,13 @@ object PlayManager {
                     }
 
                     Player.STATE_IDLE -> {
-
                     }
-
-                    else -> {}
                 }
+            }
+
+            override fun onPlayerError(error: PlaybackException) {
+                super.onPlayerError(error)
+                skipToNext()
             }
         })
     }
@@ -185,14 +194,14 @@ object PlayManager {
         mMediaPlayer = createExoPlayer()
         val process = mProgress.value
         mChangeMusic.value?.let {
-            playMusic(it)
+            prepareMusic(it)
         }
         process?.let {
             seekTo(it)
         }
     }
 
-    private fun playMusic(song: SongBean) {
+    private fun prepareMusic(song: SongBean) {
         initMediaPlayer()
 
         mProgress.value = 0
@@ -204,13 +213,7 @@ object PlayManager {
                     it.prepare()
                 }
 
-                is SongBean.Network -> {
-                    /*val url = MUSIC_URL + song.id
-                    setMediaItem(MediaItem.fromUri(url))
-                    prepare()*/
-                }
-
-                else -> {}
+                is SongBean.Network -> {}
             }
         }
     }
@@ -227,8 +230,9 @@ object PlayManager {
         mApplication = application
     }
 
-    fun stop() {
+    override fun stop() {
         mPositionUpdateJob?.cancel()
+        mPositionUpdateJob = null
         mMediaPlayer?.stop()
         mMediaPlayer?.release()
         mMediaPlayer = null

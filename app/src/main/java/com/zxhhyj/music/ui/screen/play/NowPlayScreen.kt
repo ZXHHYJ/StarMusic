@@ -2,8 +2,19 @@ package com.zxhhyj.music.ui.screen.play
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
@@ -15,12 +26,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
+import com.github.krottv.compose.sliders.SliderValueHorizontal
 import com.mxalbert.sharedelements.SharedElement
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.ktx.toTime
@@ -29,13 +44,17 @@ import com.zxhhyj.music.service.playmanager.ktx.allArtist
 import com.zxhhyj.music.service.playmanager.ktx.artist
 import com.zxhhyj.music.service.playmanager.ktx.coverUrl
 import com.zxhhyj.music.service.playmanager.ktx.title
-import com.zxhhyj.music.ui.composable.*
+import com.zxhhyj.music.ui.composable.AppAsyncImage
+import com.zxhhyj.music.ui.composable.AppCard
+import com.zxhhyj.music.ui.composable.AppIcon
+import com.zxhhyj.music.ui.composable.BoxWithPercentages
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.theme.playScreenHorizontal
 import com.zxhhyj.music.ui.theme.translucentWhite
 import com.zxhhyj.music.ui.theme.translucentWhiteFixBug
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
+import kotlin.math.roundToInt
 
 @Composable
 fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
@@ -109,29 +128,64 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                         }
                 )
             }
-            //-----
 
-            val musicPlaybackProgress by PlayManager.playingMusicProgressLiveData().map {
+            //-----
+            val progress by PlayManager.playingMusicProgressLiveData().map {
                 it
             }.observeAsState(0)
-            val musicDuration by PlayManager.playingMusicDurationLiveData().map {
+
+            val duration by PlayManager.playingMusicDurationLiveData().map {
                 it
             }.observeAsState(1)
 
-            SeekBar(
+            SliderValueHorizontal(
+                value = progress.toFloat() / duration.toFloat(),
+                onValueChange = {
+                    PlayManager.seekTo((duration * it).roundToInt())
+                    PlayManager.pause()
+                },
+                onValueChangeFinished = {
+                    PlayManager.play()
+                },
+                thumbSizeInDp = DpSize(10.dp, 10.dp),
                 modifier = Modifier
-                    .fillMaxWidth(),
-                value = musicPlaybackProgress,
-                maxValue = musicDuration,
-                onValueChange = { PlayManager.seekTo(it) }
+                    .fillMaxWidth()
+                    .height(16.dp),
+                thumbHeightMax = true,
+                track = { _: Modifier,
+                          fraction: Float,
+                          _: MutableInteractionSource,
+                          _: List<Float>,
+                          _: Boolean ->
+                    LinearProgressIndicator(
+                        progress = fraction,
+                        color = Color.White,
+                        backgroundColor = translucentWhiteFixBug,
+                        strokeCap = StrokeCap.Round,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(4.dp)
+                    )
+                },
+                thumb = { modifier: Modifier,
+                          _: Dp,
+                          _: MutableInteractionSource,
+                          _: Boolean,
+                          thumbSize: DpSize ->
+                    Spacer(
+                        modifier = modifier
+                            .size(thumbSize)
+                            .background(Color.White, RoundedCornerShape(50))
+                    )
+                }
             )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                Text(text = musicPlaybackProgress.toTime(), color = translucentWhite)
+                Text(text = progress.toTime(), color = translucentWhite)
                 Spacer(modifier = Modifier.weight(1f))
-                Text(text = musicDuration.toTime(), color = translucentWhite)
+                Text(text = duration.toTime(), color = translucentWhite)
             }
             //-----
             val buttonSize = 18.wp

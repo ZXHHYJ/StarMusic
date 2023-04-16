@@ -128,6 +128,14 @@ class MediaPlayService : LifecycleService() {
                     )
                 }
             }
+            changePlayListLiveData().observe(this@MediaPlayService) {
+                //播放列表被清空
+                //为了避免用户尝试恢复播放
+                //直接把服务杀掉
+                if (it == null) {
+                    stopSelf()
+                }
+            }
         }
     }
 

@@ -85,6 +85,9 @@ dependencies {
     implementation "com.github.FunnySaltyFish.ComposeDataSaver:data-saver-mmkv:$data_saver_version"
     implementation 'com.tencent:mmkv:1.2.14'
 
+    // https://github.com/krottv/compose-sliders
+    implementation "com.github.krottv:compose-sliders:0.1.4"
+
     implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.media:media:1.6.0'
     implementation 'androidx.palette:palette:1.0.0'
