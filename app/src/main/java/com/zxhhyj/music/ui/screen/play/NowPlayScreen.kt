@@ -58,15 +58,20 @@ import kotlin.math.roundToInt
 @Composable
 fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
     val song by PlayManager.changeMusicLiveData().observeAsState()
-    BoxWithPercentages(modifier = Modifier.fillMaxSize()) {
+    BoxWithPercentages(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = PlayScreen.PlayScreenContentHorizontal)
+    ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = PlayScreen.PlayScreenContentHorizontal),
+                .fillMaxSize(),
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
             if (100.hp > 100.wp) {
+                //歌曲专辑封面
                 SharedElement(
                     key = ShareAlbumKey,
                     screenKey = PlayScreenDestination.Main,
@@ -86,11 +91,12 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                     }
                 }
             }
-            //-----
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
             ) {
+                //歌曲标题、歌手名称和菜单按钮
                 Column(
                     modifier = Modifier
                         .weight(1.0f),
@@ -125,7 +131,7 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                 )
             }
 
-            //-----
+
             val progress by PlayManager.playingMusicProgressLiveData().map {
                 it
             }.observeAsState(0)
@@ -134,6 +140,7 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                 it
             }.observeAsState(1)
 
+            //歌曲进度条
             SliderValueHorizontal(
                 value = progress.toFloat() / duration.toFloat(),
                 onValueChange = {
@@ -175,6 +182,7 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                     )
                 }
             )
+            //当前歌曲播放进度和歌曲时长
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -183,9 +191,8 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                 Spacer(modifier = Modifier.weight(1f))
                 Text(text = duration.toTime(), color = translucentWhite)
             }
-            //-----
-            val buttonSize = 18.wp
 
+            //上一曲、暂停和下一曲
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -193,9 +200,13 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+
+                val buttonSize = 18.wp
+
                 val playPauseState by PlayManager.pauseLiveData().map {
                     if (it) R.drawable.ic_play else R.drawable.ic_pause
                 }.observeAsState(R.drawable.ic_play)
+
                 AppIcon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_previous),
                     contentDescription = null,

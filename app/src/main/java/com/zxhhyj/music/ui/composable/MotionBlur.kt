@@ -36,13 +36,15 @@ fun MotionBlur(
     url: String?,
     paused: Boolean
 ) {
-    val context = LocalContext.current
+
     var drawable by remember {
         mutableStateOf<Drawable?>(null)
     }
+
+    val context = LocalContext.current
+    val imageLoader = ImageLoader(context)
     LaunchedEffect(url) {
         if (url == null) return@LaunchedEffect
-        val imageLoader = ImageLoader(context)
         val request = ImageRequest.Builder(context)
             .data(url)
             .build()

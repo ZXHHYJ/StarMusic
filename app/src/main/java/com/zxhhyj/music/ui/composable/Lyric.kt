@@ -8,11 +8,9 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,20 +28,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.zxhhyj.music.ui.screen.play.PlayScreen
 import com.zxhhyj.music.ui.theme.roundShape
-import com.zxhhyj.music.ui.theme.translucentWhite
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
-
 
 //部分代码参考了:https://juejin.cn/post/7046235192616779784
 //特别感谢:Kyant
@@ -53,6 +45,7 @@ fun Lyric(
     modifier: Modifier = Modifier,
     lyric: String,
     liveTime: Int,
+    lyricItem: @Composable (modifier: Modifier, lyric: String, index: Int, position: Int) -> Unit,
     onClick: (Int) -> Unit
 ) {
     /**
@@ -121,26 +114,17 @@ fun Lyric(
                 Spacer(modifier = Modifier.height(maxHeight / 2))
             }
             itemsIndexed(lyrics) { index, model ->
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(roundShape)
-                        .clickable {
-                            onClick.invoke(model.second)
+                lyricItem.invoke(Modifier
+                    .fillMaxWidth()
+                    .clip(roundShape)
+                    .clickable {
+                        onClick.invoke(model.second)
+                    }
+                    .onSizeChanged {
+                        if (position == index) {
+                            selectLyricItemSize = it
                         }
-                        .onSizeChanged {
-                            if (position == index) {
-                                selectLyricItemSize = it
-                            }
-                        }
-                        .padding(
-                            vertical = 20.dp,
-                            horizontal = PlayScreen.PlayScreenContentHorizontal
-                        ),
-                    text = model.first,
-                    color = if (position == index) Color.White else translucentWhite,
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.Bold
+                    }, model.first, index, position
                 )
             }
             item {

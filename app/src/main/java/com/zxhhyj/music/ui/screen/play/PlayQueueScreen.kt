@@ -112,6 +112,11 @@ fun ColumnScope.PlayQueueScreen() {
         val boxHeightPx = with(LocalDensity.current) {
             maxHeight.roundToPx()
         }
+        LaunchedEffect(Unit) {
+            val position = playlist?.indexOf(song) ?: 0
+            val height = (boxHeightPx - selectItemBoxSize.height) / 2
+            lazyListState.scrollToItem(position.coerceAtLeast(0), -height)
+        }
         LaunchedEffect(playlist, song) {
             val position = playlist?.indexOf(song) ?: 0
             val height = (boxHeightPx - selectItemBoxSize.height) / 2

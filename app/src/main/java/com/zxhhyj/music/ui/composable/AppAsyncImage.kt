@@ -20,7 +20,7 @@ fun AppAsyncImage(
     AsyncImage(
         modifier = modifier
             .background(Color.White)
-            .background(appAccentColor.copy(0.4f))
+            .background(appAccentColor.copy(0.2f))
             .run {
                 onClick?.run { clickable(onClick = onClick) } ?: this
             },
