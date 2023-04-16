@@ -8,7 +8,3 @@ val horizontal = 16.dp
 
 val round = 8.dp
 
-val playScreenHorizontal = 28.dp
-
-val playScreenMaxWidth = 380.dp
-

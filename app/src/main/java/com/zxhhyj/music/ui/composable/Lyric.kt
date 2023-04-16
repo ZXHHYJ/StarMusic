@@ -1,17 +1,26 @@
 package com.zxhhyj.music.ui.composable
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
@@ -25,7 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.zxhhyj.music.ui.theme.horizontal
+import com.zxhhyj.music.ui.screen.play.PlayScreen
 import com.zxhhyj.music.ui.theme.roundShape
 import com.zxhhyj.music.ui.theme.translucentWhite
 import kotlinx.coroutines.delay
@@ -39,7 +48,6 @@ import kotlin.time.DurationUnit
 //部分代码参考了:https://juejin.cn/post/7046235192616779784
 //特别感谢:Kyant
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Lyric(
     modifier: Modifier = Modifier,
@@ -127,7 +135,7 @@ fun Lyric(
                         }
                         .padding(
                             vertical = 20.dp,
-                            horizontal = horizontal / 2
+                            horizontal = PlayScreen.PlayScreenContentHorizontal
                         ),
                     text = model.first,
                     color = if (position == index) Color.White else translucentWhite,

@@ -49,7 +49,6 @@ import com.zxhhyj.music.ui.composable.AppCard
 import com.zxhhyj.music.ui.composable.AppIcon
 import com.zxhhyj.music.ui.composable.BoxWithPercentages
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
-import com.zxhhyj.music.ui.theme.playScreenHorizontal
 import com.zxhhyj.music.ui.theme.translucentWhite
 import com.zxhhyj.music.ui.theme.translucentWhiteFixBug
 import dev.olshevski.navigation.reimagined.NavController
@@ -59,14 +58,11 @@ import kotlin.math.roundToInt
 @Composable
 fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
     val song by PlayManager.changeMusicLiveData().observeAsState()
-    BoxWithPercentages(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = playScreenHorizontal)
-    ) {
+    BoxWithPercentages(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(horizontal = PlayScreen.PlayScreenContentHorizontal),
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

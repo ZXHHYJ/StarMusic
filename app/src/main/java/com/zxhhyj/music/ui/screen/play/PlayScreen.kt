@@ -52,6 +52,12 @@ const val ShareAlbumKey = "album"
 
 private const val TransitionDurationMillis = 250
 
+object PlayScreen {
+    val PlayScreenContentHorizontal = 10.dp
+    val PlayScreenHorizontal = 20.dp
+    val PlayScreenMaxWidth = 380.dp
+}
+
 val MaterialFadeInTransitionSpec = SharedElementsTransitionSpec(
     pathMotionFactory = MaterialArcMotionFactory,
     durationMillis = TransitionDurationMillis,
@@ -85,9 +91,9 @@ fun PlayScreen(
         val scope = LocalSharedElementsRootScope.current!!
         BottomNavigation(
             modifier = Modifier
-                .widthIn(max = playScreenMaxWidth)
+                .widthIn(max = PlayScreen.PlayScreenMaxWidth)
                 .fillMaxWidth()
-                .padding(horizontal = horizontal),
+                .padding(horizontal = PlayScreen.PlayScreenContentHorizontal + PlayScreen.PlayScreenHorizontal),
             elevation = 0.dp,
             backgroundColor = Color.Transparent
         ) {
@@ -128,7 +134,9 @@ fun PlayScreen(
         val visibilityTopMediaBar = maxWidth < maxHeight
         Box(
             modifier = Modifier
-                .widthIn(max = playScreenMaxWidth), contentAlignment = Alignment.Center
+                .widthIn(max = PlayScreen.PlayScreenMaxWidth)
+                .padding(horizontal = 20.dp),
+            contentAlignment = Alignment.Center
         ) {
             AnimatedNavHost(
                 controller = navController,

@@ -1,15 +1,28 @@
 package com.zxhhyj.music.ui.screen.play
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Remove
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,7 +42,6 @@ import com.zxhhyj.music.service.playmanager.ktx.title
 import com.zxhhyj.music.ui.composable.AppCard
 import com.zxhhyj.music.ui.composable.AppDivider
 import com.zxhhyj.music.ui.composable.AppIcon
-import com.zxhhyj.music.ui.theme.playScreenHorizontal
 import com.zxhhyj.music.ui.theme.translucentWhite
 import com.zxhhyj.music.ui.theme.vertical
 
@@ -41,7 +53,7 @@ fun ColumnScope.PlayQueueScreen() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = playScreenHorizontal, vertical = vertical)
+            .padding(horizontal = PlayScreen.PlayScreenContentHorizontal, vertical = vertical)
     ) {
         Text(
             text = "${(playlist?.indexOf(song) ?: 0) + 1}/${playlist?.size}",
@@ -66,7 +78,7 @@ fun ColumnScope.PlayQueueScreen() {
 
     AppDivider(
         color = translucentWhite,
-        modifier = Modifier.padding(horizontal = playScreenHorizontal)
+        modifier = Modifier.padding(horizontal = PlayScreen.PlayScreenContentHorizontal)
     )
 
     BoxWithConstraints(
@@ -114,19 +126,23 @@ private fun QueueSongItem(
     song: SongBean,
     onClick: () -> Unit
 ) {
-    AppCard(backgroundColor = Color.Transparent) {
+    AppCard(
+        backgroundColor = Color.Transparent,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(64.dp)
+    ) {
         Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .height(64.dp)
-                .clickable(onClick = onClick),
+            modifier = Modifier
+                .fillMaxSize()
+                .clickable(onClick = onClick)
+                .padding(horizontal = PlayScreen.PlayScreenContentHorizontal),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(1.0f)
-                    .padding(start = playScreenHorizontal)
                     .padding(vertical = vertical),
             ) {
                 Text(
@@ -152,7 +168,6 @@ private fun QueueSongItem(
 
                     }
             )
-            Spacer(modifier = Modifier.padding(end = playScreenHorizontal))
         }
     }
 }

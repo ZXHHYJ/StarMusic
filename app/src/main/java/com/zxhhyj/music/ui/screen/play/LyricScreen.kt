@@ -3,7 +3,6 @@ package com.zxhhyj.music.ui.screen.play
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,8 +22,6 @@ import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.bean.SongBean
 import com.zxhhyj.music.ui.composable.KeepScreenOn
 import com.zxhhyj.music.ui.composable.Lyric
-import com.zxhhyj.music.ui.theme.horizontal
-import com.zxhhyj.music.ui.theme.playScreenHorizontal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.jaudiotagger.audio.AudioFileIO
@@ -77,8 +74,7 @@ fun ColumnScope.LyricScreen() {
             Lyric(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1.0f)
-                    .padding(horizontal = playScreenHorizontal - horizontal / 2),
+                    .weight(1.0f),
                 lyric = lyric,
                 liveTime = time
             ) {

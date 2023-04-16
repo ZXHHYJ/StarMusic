@@ -23,8 +23,6 @@ import coil.request.ImageRequest
 import com.zxhhyj.music.MainActivity
 import com.zxhhyj.music.R
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.service.playmanager.PlayManager.isPaused
-import com.zxhhyj.music.service.playmanager.PlayManager.playingMusicProgressLiveData
 import com.zxhhyj.music.service.playmanager.ktx.allArtist
 import com.zxhhyj.music.service.playmanager.ktx.artist
 import com.zxhhyj.music.service.playmanager.ktx.coverUrl
@@ -49,7 +47,7 @@ class MediaPlayService : LifecycleService() {
 
     private fun refreshMediaNotifications() {
         if (!isForeground) {
-            startForeground(ID, mMediaNotification.setAction(!isPaused()).build())
+            startForeground(ID, mMediaNotification.setAction(!PlayManager.isPaused()).build())
             isForeground = true
         } else {
             if (ActivityCompat.checkSelfPermission(
@@ -59,10 +57,10 @@ class MediaPlayService : LifecycleService() {
             ) {
                 return
             }
-            mNotificationManager.notify(ID, mMediaNotification.setAction(!isPaused()).build())
+            mNotificationManager.notify(ID, mMediaNotification.setAction(!PlayManager.isPaused()).build())
         }
 
-        if (isPaused()) {
+        if (PlayManager.isPaused()) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
                 stopForeground(false)
                 isForeground = false
@@ -73,8 +71,8 @@ class MediaPlayService : LifecycleService() {
     private fun refreshMediaSession() {
         mMediaSession.setPlaybackState(
             playbackStateBuilder.setState(
-                if (isPaused()) PlaybackStateCompat.STATE_PAUSED else PlaybackStateCompat.STATE_PLAYING,
-                playingMusicProgressLiveData().value!!.toLong(),
+                if (PlayManager.isPaused()) PlaybackStateCompat.STATE_PAUSED else PlaybackStateCompat.STATE_PLAYING,
+                PlayManager.playingMusicProgressLiveData().value!!.toLong(),
                 1.0F
             ).build()
         )
@@ -141,7 +139,7 @@ class MediaPlayService : LifecycleService() {
                 }
             }
         }
-        playingMusicProgressLiveData().observe(this@MediaPlayService) {
+        PlayManager.playingMusicProgressLiveData().observe(this@MediaPlayService) {
             refreshMediaSession()
         }
         PlayManager.pauseLiveData().observe(this@MediaPlayService) {

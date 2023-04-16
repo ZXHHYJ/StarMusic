@@ -2,7 +2,16 @@ package com.zxhhyj.music.ui.screen.play.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -28,9 +37,13 @@ import com.zxhhyj.music.ui.composable.AppCard
 import com.zxhhyj.music.ui.composable.AppIcon
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.play.MaterialFadeInTransitionSpec
+import com.zxhhyj.music.ui.screen.play.PlayScreen
 import com.zxhhyj.music.ui.screen.play.PlayScreenDestination
 import com.zxhhyj.music.ui.screen.play.ShareAlbumKey
-import com.zxhhyj.music.ui.theme.*
+import com.zxhhyj.music.ui.theme.horizontal
+import com.zxhhyj.music.ui.theme.translucentWhite
+import com.zxhhyj.music.ui.theme.translucentWhiteFixBug
+import com.zxhhyj.music.ui.theme.vertical
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.moveToTop
 import dev.olshevski.navigation.reimagined.navigate
@@ -43,9 +56,11 @@ fun TopMediaController(
 ) {
     val song by PlayManager.changeMusicLiveData().observeAsState()
     Row(
-        modifier = modifier.heightIn(max = 82.dp),
+        modifier = modifier
+            .heightIn(max = 82.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        Spacer(modifier = Modifier.width(PlayScreen.PlayScreenContentHorizontal))
         SharedElement(
             key = ShareAlbumKey,
             screenKey = PlayScreenDestination.PlayQueue/*不能分别使用PlayQueue和Lyric，会闪退*/,
@@ -56,7 +71,7 @@ fun TopMediaController(
                 modifier = Modifier
                     .padding(
                         PaddingValues.Absolute(
-                            left = playScreenHorizontal,
+                            left = 0.dp,
                             right = horizontal / 2,
                             top = vertical,
                             bottom = vertical
@@ -104,6 +119,6 @@ fun TopMediaController(
                     sheetNavController.navigate(BottomSheetDestination.SongMenu(song!!))
                 }
         )
-        Spacer(modifier = Modifier.padding(end = playScreenHorizontal))
+        Spacer(modifier = Modifier.width(PlayScreen.PlayScreenContentHorizontal))
     }
 }
