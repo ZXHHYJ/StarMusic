@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.composable
+package com.zxhhyj.music.ui.common
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column

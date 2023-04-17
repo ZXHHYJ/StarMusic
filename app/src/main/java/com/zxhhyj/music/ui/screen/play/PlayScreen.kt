@@ -25,12 +25,12 @@ import androidx.lifecycle.map
 import com.mxalbert.sharedelements.*
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.ktx.coverUrl
-import com.zxhhyj.music.ui.composable.BoxWithPercentages
-import com.zxhhyj.music.ui.composable.BoxWithPercentagesScope
-import com.zxhhyj.music.ui.composable.MotionBlur
-import com.zxhhyj.music.ui.composable.PanelState
+import com.zxhhyj.music.ui.common.BoxWithPercentages
+import com.zxhhyj.music.ui.common.BoxWithPercentagesScope
+import com.zxhhyj.music.ui.common.MotionBlur
+import com.zxhhyj.music.ui.common.PanelState
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
-import com.zxhhyj.music.ui.screen.play.composable.TopMediaController
+import com.zxhhyj.music.ui.screen.play.common.TopMediaController
 import com.zxhhyj.music.ui.theme.*
 import dev.olshevski.navigation.reimagined.*
 

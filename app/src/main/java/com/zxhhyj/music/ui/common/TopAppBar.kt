@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.composable
+package com.zxhhyj.music.ui.common
 
 import android.os.Parcelable
 import androidx.compose.foundation.background

@@ -10,8 +10,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.zxhhyj.music.ui.composable.AppIcon
-import com.zxhhyj.music.ui.composable.AppAsyncImage
+import com.zxhhyj.music.ui.common.AppIcon
+import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.theme.cardBackgroundColor
 import com.zxhhyj.music.ui.theme.onBackground
 import com.zxhhyj.music.ui.theme.roundShape

@@ -11,9 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.ui.composable.TopAppBar
-import com.zxhhyj.music.ui.composable.bindTopAppBarState
-import com.zxhhyj.music.ui.composable.rememberTopAppBarState
+import com.zxhhyj.music.ui.common.TopAppBar
+import com.zxhhyj.music.ui.common.bindTopAppBarState
+import com.zxhhyj.music.ui.common.rememberTopAppBarState
 import com.zxhhyj.music.ui.screen.setting.SettingSwitchItem
 
 @Composable

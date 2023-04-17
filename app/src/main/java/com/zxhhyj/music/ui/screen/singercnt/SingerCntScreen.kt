@@ -11,10 +11,10 @@ import dev.olshevski.navigation.reimagined.NavController
 import com.zxhhyj.music.logic.repository.LocalMediaRepository.songs
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.bean.SongBean
-import com.zxhhyj.music.ui.composable.BoxWithPercentages
-import com.zxhhyj.music.ui.composable.TopAppBar
-import com.zxhhyj.music.ui.composable.bindTopAppBarState
-import com.zxhhyj.music.ui.composable.rememberTopAppBarState
+import com.zxhhyj.music.ui.common.BoxWithPercentages
+import com.zxhhyj.music.ui.common.TopAppBar
+import com.zxhhyj.music.ui.common.bindTopAppBarState
+import com.zxhhyj.music.ui.common.rememberTopAppBarState
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination

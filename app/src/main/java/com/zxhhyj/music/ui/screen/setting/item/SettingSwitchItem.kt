@@ -11,9 +11,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.zxhhyj.music.ui.composable.AppDivider
-import com.zxhhyj.music.ui.composable.AppIcon
-import com.zxhhyj.music.ui.composable.AppSwitch
+import com.zxhhyj.music.ui.common.AppDivider
+import com.zxhhyj.music.ui.common.AppIcon
+import com.zxhhyj.music.ui.common.AppSwitch
 import com.zxhhyj.music.ui.theme.*
 
 @Composable

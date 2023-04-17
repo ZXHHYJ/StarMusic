@@ -22,8 +22,8 @@ import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.bean.SongBean
-import com.zxhhyj.music.ui.composable.KeepScreenOn
-import com.zxhhyj.music.ui.composable.Lyric
+import com.zxhhyj.music.ui.common.KeepScreenOn
+import com.zxhhyj.music.ui.common.Lyric
 import com.zxhhyj.music.ui.theme.translucentWhite
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

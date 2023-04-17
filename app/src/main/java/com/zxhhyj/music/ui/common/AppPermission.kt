@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.composable
+package com.zxhhyj.music.ui.common
 
 import android.Manifest
 import android.os.Build

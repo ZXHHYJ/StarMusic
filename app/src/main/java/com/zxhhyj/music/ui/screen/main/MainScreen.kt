@@ -23,7 +23,7 @@ import androidx.lifecycle.map
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zxhhyj.music.R
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.ui.composable.*
+import com.zxhhyj.music.ui.common.*
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.about.AboutScreen
@@ -37,7 +37,6 @@ import com.zxhhyj.music.ui.screen.setting.SettingScreen
 import com.zxhhyj.music.ui.screen.singer.SingerScreen
 import com.zxhhyj.music.ui.screen.singercnt.SingerCntScreen
 import com.zxhhyj.music.ui.screen.single.SingleScreen
-import com.zxhhyj.music.ui.screen.splash.SplashScreen
 import com.zxhhyj.music.ui.screen.theme.ThemeScreen
 import com.zxhhyj.music.ui.sheet.SongMenuSheet
 import com.zxhhyj.music.ui.sheet.songinfo.SongInfoSheet
@@ -49,7 +48,6 @@ import dev.olshevski.navigation.reimagined.material.BottomSheetNavHost
 /**
  * Happy 22nd Birthday Shuangshengzi
  */
-
 
 enum class HomeNavigationDestination {
     Single,
@@ -347,10 +345,6 @@ fun MainScreen() {
 
                             ScreenDestination.Theme -> {
                                 ThemeScreen(padding = padding)
-                            }
-
-                            ScreenDestination.Splash -> {
-                                SplashScreen()
                             }
                         }
                     }

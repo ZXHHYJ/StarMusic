@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.composable
+package com.zxhhyj.music.ui.common
 
 
 import android.graphics.Bitmap
@@ -27,6 +27,7 @@ import coil.request.ImageRequest
 import com.flaviofaria.kenburnsview.KenBurnsView
 import com.flaviofaria.kenburnsview.RandomTransitionGenerator
 import com.google.android.renderscript.Toolkit
+import com.zxhhyj.music.ui.common.lifecycle.rememberLifecycle
 
 @Composable
 fun MotionBlur(
@@ -58,6 +59,7 @@ fun MotionBlur(
             bitmap.recycle()
         }
     }
+    val lifecycle = rememberLifecycle()
     AndroidView(factory = {
         KenBurnsView(it).apply {
             setTransitionGenerator(
@@ -72,9 +74,15 @@ fun MotionBlur(
             it.setImageDrawable(drawable!!)
         }
         if (paused) {
-            it.pause()
+            it.resume()
         } else {
             it.resume()
+        }
+        lifecycle.onLifeResume {
+            it.resume()
+        }
+        lifecycle.onLifePause {
+            it.pause()
         }
     }
 }

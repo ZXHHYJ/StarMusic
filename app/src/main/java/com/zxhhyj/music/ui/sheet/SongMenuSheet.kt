@@ -19,9 +19,9 @@ import com.zxhhyj.music.logic.repository.LocalMediaRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.bean.SongBean
 import com.zxhhyj.music.service.playmanager.ktx.*
-import com.zxhhyj.music.ui.composable.AppAsyncImage
-import com.zxhhyj.music.ui.composable.AppCard
-import com.zxhhyj.music.ui.composable.AppMenuButton
+import com.zxhhyj.music.ui.common.AppAsyncImage
+import com.zxhhyj.music.ui.common.AppCard
+import com.zxhhyj.music.ui.common.AppMenuButton
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.theme.horizontal

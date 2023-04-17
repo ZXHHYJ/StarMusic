@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.composable
+package com.zxhhyj.music.ui.common
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background

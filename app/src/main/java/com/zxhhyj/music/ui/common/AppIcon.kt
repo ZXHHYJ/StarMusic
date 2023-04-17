@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.composable
+package com.zxhhyj.music.ui.common
 
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalContentAlpha

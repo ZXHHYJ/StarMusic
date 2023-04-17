@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.composable
+package com.zxhhyj.music.ui.common
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState

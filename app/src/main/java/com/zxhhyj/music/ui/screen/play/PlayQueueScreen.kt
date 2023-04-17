@@ -39,9 +39,9 @@ import com.zxhhyj.music.service.playmanager.bean.SongBean
 import com.zxhhyj.music.service.playmanager.ktx.allArtist
 import com.zxhhyj.music.service.playmanager.ktx.artist
 import com.zxhhyj.music.service.playmanager.ktx.title
-import com.zxhhyj.music.ui.composable.AppCard
-import com.zxhhyj.music.ui.composable.AppDivider
-import com.zxhhyj.music.ui.composable.AppIcon
+import com.zxhhyj.music.ui.common.AppCard
+import com.zxhhyj.music.ui.common.AppDivider
+import com.zxhhyj.music.ui.common.AppIcon
 import com.zxhhyj.music.ui.theme.translucentWhite
 import com.zxhhyj.music.ui.theme.vertical
 

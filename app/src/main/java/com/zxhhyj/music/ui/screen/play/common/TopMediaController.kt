@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.screen.play.composable
+package com.zxhhyj.music.ui.screen.play.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,9 +32,9 @@ import com.zxhhyj.music.service.playmanager.ktx.allArtist
 import com.zxhhyj.music.service.playmanager.ktx.artist
 import com.zxhhyj.music.service.playmanager.ktx.coverUrl
 import com.zxhhyj.music.service.playmanager.ktx.title
-import com.zxhhyj.music.ui.composable.AppAsyncImage
-import com.zxhhyj.music.ui.composable.AppCard
-import com.zxhhyj.music.ui.composable.AppIcon
+import com.zxhhyj.music.ui.common.AppAsyncImage
+import com.zxhhyj.music.ui.common.AppCard
+import com.zxhhyj.music.ui.common.AppIcon
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.play.MaterialFadeInTransitionSpec
 import com.zxhhyj.music.ui.screen.play.PlayScreen

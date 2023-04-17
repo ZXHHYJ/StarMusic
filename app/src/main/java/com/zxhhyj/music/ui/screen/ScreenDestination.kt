@@ -6,13 +6,6 @@ import kotlinx.parcelize.Parcelize
 
 
 sealed class ScreenDestination : Parcelable {
-
-    /**
-     * 起始页
-     */
-    @Parcelize
-    object Splash : ScreenDestination()
-
     /**
      * 主页
      */
