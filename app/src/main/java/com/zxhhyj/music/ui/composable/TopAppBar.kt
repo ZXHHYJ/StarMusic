@@ -2,11 +2,25 @@ package com.zxhhyj.music.ui.composable
 
 import android.os.Parcelable
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -23,13 +37,13 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.parcelize.IgnoredOnParcel
-import kotlinx.parcelize.Parcelize
 import com.zxhhyj.music.ui.theme.appBackgroundColor
+import com.zxhhyj.music.ui.theme.appIconAccentColor
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.textColor
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 import kotlin.math.roundToInt
-
 
 
 @Stable
@@ -122,7 +136,9 @@ fun TopAppBar(
                                     )
                                 }
                         )
-                        actions.invoke(this)
+                        CompositionLocalProvider(LocalContentColor provides appIconAccentColor) {
+                            actions.invoke(this)
+                        }
                     }
                 )
                 Column(modifier = Modifier

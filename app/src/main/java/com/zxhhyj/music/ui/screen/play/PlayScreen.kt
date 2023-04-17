@@ -50,7 +50,7 @@ val PlayScreenDestination.tabIcon
 
 const val ShareAlbumKey = "album"
 
-private const val TransitionDurationMillis = 250
+private const val TransitionDurationMillis = 300
 
 object PlayScreen {
     val PlayScreenContentHorizontal = 10.dp
