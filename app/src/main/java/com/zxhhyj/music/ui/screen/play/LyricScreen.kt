@@ -97,6 +97,7 @@ fun ColumnScope.LyricScreen() {
             }
         ) {
             PlayManager.seekTo(it)
+            PlayManager.play()
         }
 
     }

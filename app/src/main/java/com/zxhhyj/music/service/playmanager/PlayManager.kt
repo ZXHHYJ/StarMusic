@@ -7,7 +7,6 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SeekParameters
 import com.zxhhyj.music.service.playmanager.bean.SongBean
 import com.zxhhyj.music.service.playmanager.impl.PlayManagerController
 import com.zxhhyj.music.service.playmanager.impl.PlayManagerState
@@ -17,7 +16,7 @@ import java.util.*
 
 
 @OptIn(DelicateCoroutinesApi::class)
-object PlayManager : PlayManagerState, PlayManagerController {
+object PlayManager : PlayManagerState, PlayManagerController, Player.Listener {
 
     /**
      * 当前播放的歌曲
@@ -136,69 +135,20 @@ object PlayManager : PlayManagerState, PlayManagerController {
     private var mMediaPlayer: ExoPlayer? = null
 
     @Synchronized
-    private fun createExoPlayer() = ExoPlayer.Builder(mApplication).build().apply {
-        playWhenReady = true
-        setSeekParameters(SeekParameters.NEXT_SYNC)
-        addListener(object : Player.Listener {
-
-            override fun onIsPlayingChanged(isPlaying: Boolean) {
-                super.onIsPlayingChanged(isPlaying)
-                mPause.value = !isPlaying
-                if (isPlaying && mPositionUpdateJob == null) {
-                    mPositionUpdateJob = GlobalScope.launch(Dispatchers.Main) {
-                        while (true) {
-                            mProgress.value = mMediaPlayer?.currentPosition?.toInt()
-                            delay(1000)
-                        }
-                    }
-                } else {
-                    mPositionUpdateJob?.cancel()
-                    mPositionUpdateJob = null
-                }
-            }
-
-            override fun onEvents(player: Player, events: Player.Events) {
-                super.onEvents(player, events)
-                mDuration.value = player.duration.toInt()
-            }
-
-            override fun onPlaybackStateChanged(playbackState: Int) {
-                super.onPlaybackStateChanged(playbackState)
-                when (playbackState) {
-                    Player.STATE_READY -> {
-
-                    }
-
-                    Player.STATE_BUFFERING -> {
-                    }
-
-                    Player.STATE_ENDED -> {
-                        skipToNext()
-                    }
-
-                    Player.STATE_IDLE -> {
-                    }
-                }
-            }
-
-            override fun onPlayerError(error: PlaybackException) {
-                super.onPlayerError(error)
-                skipToNext()
-            }
-        })
+    private fun createExoPlayer(): ExoPlayer {
+        val exoPlayer = ExoPlayer.Builder(mApplication).build()
+        exoPlayer.addListener(this)
+        return exoPlayer
     }
 
+    //初始化媒体播放器
+    @Synchronized
     private fun initMediaPlayer() {
         if (mMediaPlayer != null) return
-
         mMediaPlayer = createExoPlayer()
         val process = mProgress.value
-        mChangeMusic.value?.let {
-            prepareMusic(it)
-        }
-        process?.let {
-            seekTo(it)
-        }
+        prepareMusic(mChangeMusic.value ?: return)
+        seekTo(process ?: return)
     }
 
     private fun prepareMusic(song: SongBean) {
@@ -211,6 +161,7 @@ object PlayManager : PlayManagerState, PlayManagerController {
                 is SongBean.Local -> {
                     it.setMediaItem(MediaItem.fromUri(song.data))
                     it.prepare()
+                    it.playWhenReady = true
                 }
 
                 is SongBean.Network -> {}
@@ -236,6 +187,57 @@ object PlayManager : PlayManagerState, PlayManagerController {
         mMediaPlayer?.stop()
         mMediaPlayer?.release()
         mMediaPlayer = null
+    }
+
+    /**
+     * Exoplayer 部分
+     */
+
+    override fun onIsPlayingChanged(isPlaying: Boolean) {
+        super.onIsPlayingChanged(isPlaying)
+        mPause.value = !isPlaying
+        if (isPlaying && mPositionUpdateJob == null) {
+            mPositionUpdateJob = GlobalScope.launch(Dispatchers.Main) {
+                while (true) {
+                    mProgress.value = mMediaPlayer?.currentPosition?.toInt()
+                    delay(1000)
+                }
+            }
+        } else {
+            mPositionUpdateJob?.cancel()
+            mPositionUpdateJob = null
+        }
+    }
+
+    override fun onEvents(player: Player, events: Player.Events) {
+        super.onEvents(player, events)
+        if (player.duration.toInt() != mDuration.value) {
+            mDuration.value = player.duration.toInt()
+        }
+    }
+
+    override fun onPlaybackStateChanged(playbackState: Int) {
+        super.onPlaybackStateChanged(playbackState)
+        when (playbackState) {
+            Player.STATE_READY -> {
+
+            }
+
+            Player.STATE_BUFFERING -> {
+            }
+
+            Player.STATE_ENDED -> {
+                skipToNext()
+            }
+
+            Player.STATE_IDLE -> {
+            }
+        }
+    }
+
+    override fun onPlayerError(error: PlaybackException) {
+        super.onPlayerError(error)
+        skipToNext()
     }
 
 }
