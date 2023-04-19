@@ -109,6 +109,7 @@ class MediaPlayService : LifecycleService() {
         super.onCreate()
         mAudioFocusHelper =
             AudioFocusHelper(this, object : AudioFocusHelper.OnAudioFocusChangeListener {
+
                 override fun onLoss() {
                     PlayManager.pause()
                 }
@@ -192,6 +193,12 @@ class MediaPlayService : LifecycleService() {
                     AudioManager.STREAM_MUSIC,
                     AudioManager.AUDIOFOCUS_GAIN
                 )
+            } else {
+                try {
+                    mAudioFocusHelper.abandonAudioFocus()
+                } catch (_: Exception) {
+                    //AudioFocusHelper的空指针bug
+                }
             }
         }
         PlayManager.durationLiveData().observe(this@MediaPlayService) {
@@ -215,7 +222,11 @@ class MediaPlayService : LifecycleService() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mAudioFocusHelper.abandonAudioFocus()
+        try {
+            mAudioFocusHelper.abandonAudioFocus()
+        } catch (_: Exception) {
+            //AudioFocusHelper的空指针bug
+        }
         mMediaSession.isActive = false
         mMediaSession.release()
         isServiceAlive = false
@@ -251,11 +262,6 @@ class MediaPlayService : LifecycleService() {
                 override fun onSeekTo(pos: Long) {
                     super.onSeekTo(pos)
                     PlayManager.seekTo(pos.toInt())
-                }
-
-                override fun onMediaButtonEvent(mediaButtonEvent: Intent?): Boolean {
-                    println(mediaButtonEvent)
-                    return super.onMediaButtonEvent(mediaButtonEvent)
                 }
 
                 override fun onStop() {
