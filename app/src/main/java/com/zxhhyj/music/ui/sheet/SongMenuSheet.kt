@@ -1,11 +1,22 @@
 package com.zxhhyj.music.ui.sheet
 
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Album
+import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -18,7 +29,6 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.LocalMediaRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.bean.SongBean
-import com.zxhhyj.music.service.playmanager.ktx.*
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.AppCard
 import com.zxhhyj.music.ui.common.AppMenuButton
@@ -51,18 +61,18 @@ fun SongMenuSheet(
                         .height(70.dp)
                 ) {
                     AppCard(backgroundColor = Color.Transparent, modifier = Modifier.size(70.dp)) {
-                        AppAsyncImage(modifier = Modifier.fillMaxSize(), url = song.coverUrl)
+                        AppAsyncImage(modifier = Modifier.fillMaxSize(), url = song.album.coverUrl)
                     }
                     Column(modifier = Modifier.padding(vertical)) {
                         Text(
-                            text = song.title,
+                            text = song.songName,
                             color = textColor,
                             fontSize = 15.sp,
                             maxLines = 1
                         )
                         Spacer(modifier = Modifier.weight(1.0f))
                         Text(
-                            text = song.artist.allArtist(),
+                            text = song.artist.name,
                             color = textColorLight,
                             fontSize = 13.sp,
                             maxLines = 1,
@@ -75,25 +85,21 @@ fun SongMenuSheet(
             AppMenuButton(
                 onClick = {
                     sheetNavController.popAll()
-                    if (song is SongBean.Local) {
-                        mainNavController.navigate(ScreenDestination.AlbumCnt(song.album))
-                    }
+                    mainNavController.navigate(ScreenDestination.AlbumCnt(song.album))
                 },
                 imageVector = Icons.Rounded.Album,
                 text = "${stringResource(id = R.string.album)}:${song.album.name}"
             )
         }
-        if (song is SongBean.Local) {
-            item {
-                AppMenuButton(
-                    onClick = {
-                        sheetNavController.popAll()
-                        mainNavController.navigate(ScreenDestination.SingerCnt(song.artist))
-                    },
-                    imageVector = Icons.Rounded.Person,
-                    text = "${stringResource(id = R.string.singer)}:${song.artist.name}"
-                )
-            }
+        item {
+            AppMenuButton(
+                onClick = {
+                    sheetNavController.popAll()
+                    mainNavController.navigate(ScreenDestination.SingerCnt(song.artist))
+                },
+                imageVector = Icons.Rounded.Person,
+                text = "${stringResource(id = R.string.singer)}:${song.artist.name}"
+            )
         }
         item {
             AppMenuButton(
@@ -117,21 +123,15 @@ fun SongMenuSheet(
         }
         item {
             val currentSong by PlayManager.changeMusicLiveData().observeAsState()
-            if (currentSong != song) {
-                when (currentSong) {
-                    is SongBean.Local -> {
-                        AppMenuButton(
-                            onClick = {
-                                sheetNavController.popAll()
-                                LocalMediaRepository.delete(currentSong as SongBean.Local)
-                            },
-                            imageVector = Icons.Rounded.Delete,
-                            text = stringResource(id = R.string.delete)
-                        )
-                    }
-                    is SongBean.Network -> {}
-                    null -> {}
-                }
+            if (currentSong != song && currentSong != null) {
+                AppMenuButton(
+                    onClick = {
+                        sheetNavController.popAll()
+                        LocalMediaRepository.delete(currentSong!!)
+                    },
+                    imageVector = Icons.Rounded.Delete,
+                    text = stringResource(id = R.string.delete)
+                )
             }
         }
     }

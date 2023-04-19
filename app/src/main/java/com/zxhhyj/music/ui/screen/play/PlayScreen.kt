@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.map
 import com.mxalbert.sharedelements.*
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.service.playmanager.ktx.coverUrl
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.common.BoxWithPercentagesScope
 import com.zxhhyj.music.ui.common.MotionBlur
@@ -195,7 +194,7 @@ fun PlayScreen(
         ) {
 
             val coverUrl by PlayManager.changeMusicLiveData().map {
-                it?.coverUrl
+                it?.album?.coverUrl
             }.observeAsState()
             MotionBlur(
                 modifier = Modifier
@@ -254,7 +253,9 @@ fun PlayScreen(
                             BackHandler(panelState == PanelState.EXPANDED) {
                                 function.invoke(PanelState.COLLAPSED)
                             }
-                            NavBackHandler(navController)
+                            BackHandler(navController.backstack.entries.last().destination != PlayScreenDestination.Main) {
+                                navController.popUpTo { it == PlayScreenDestination.Main }
+                            }
                             RightNavHost()
                         }
                         BottomNavigationBar()

@@ -1,6 +1,13 @@
 package com.zxhhyj.music.ui.sheet.songinfo
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -11,14 +18,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.logic.ktx.toTime
 import com.zxhhyj.music.service.playmanager.bean.SongBean
-import com.zxhhyj.music.service.playmanager.ktx.*
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.AppCard
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.textColor
 import com.zxhhyj.music.ui.theme.textColorLight
 import com.zxhhyj.music.ui.theme.vertical
-
 
 
 @Composable
@@ -38,18 +43,18 @@ fun SongInfoSheet(
                         .height(70.dp)
                 ) {
                     AppCard(backgroundColor = Color.Transparent, modifier = Modifier.size(70.dp)) {
-                        AppAsyncImage(modifier = Modifier.fillMaxSize(), url = song.coverUrl)
+                        AppAsyncImage(modifier = Modifier.fillMaxSize(), url = song.album.coverUrl)
                     }
                     Column(modifier = Modifier.padding(vertical)) {
                         Text(
-                            text = song.title,
+                            text = song.songName,
                             color = textColor,
                             fontSize = 15.sp,
                             maxLines = 1
                         )
                         Spacer(modifier = Modifier.weight(1.0f))
                         Text(
-                            text = song.artist.allArtist(),
+                            text = song.artist.name,
                             color = textColorLight,
                             fontSize = 13.sp,
                             maxLines = 1,
@@ -59,16 +64,10 @@ fun SongInfoSheet(
             }
         }
         item {
-            when (song) {
-                is SongBean.Local -> SongInfoItem(
-                    title = stringResource(id = com.zxhhyj.music.R.string.duration),
-                    info = song.duration.toTime()
-                )
-                is SongBean.Network -> {
-
-                }
-            }
-
+            SongInfoItem(
+                title = stringResource(id = com.zxhhyj.music.R.string.duration),
+                info = song.duration.toTime()
+            )
         }
         item {
             SongInfoItem(
@@ -77,58 +76,32 @@ fun SongInfoSheet(
             )
         }
         item {
-            when (song) {
-                is SongBean.Local -> {
-                    SongInfoItem(
-                        title = stringResource(id = com.zxhhyj.music.R.string.bit_rate),
-                        info = ""
-                    )
-                    // TODO: 未完成比特率的获取
-                }
-                is SongBean.Network -> {
-
-                }
-            }
+            SongInfoItem(
+                title = stringResource(id = com.zxhhyj.music.R.string.bit_rate),
+                info = ""
+            )
         }
         item {
-            when (song) {
-                is SongBean.Local -> {
-                    val hz = song.size / (song.duration / 1000)
-                    SongInfoItem(
-                        title = stringResource(id = com.zxhhyj.music.R.string.sample_rate),
-                        info = "${getClosestValue(hz.toInt())} Hz"
-                    )
-                }
-                is SongBean.Network -> {
-                }
-            }
+            val hz = song.size / (song.duration / 1000)
+            SongInfoItem(
+                title = stringResource(id = com.zxhhyj.music.R.string.sample_rate),
+                info = "${getClosestValue(hz.toInt())} Hz"
+            )
         }
         item {
             Spacer(modifier = Modifier.height(vertical))
         }
         item {
-            when (song) {
-                is SongBean.Local -> {
-                    SongInfoItem(
-                        title = stringResource(id = com.zxhhyj.music.R.string.file_path),
-                        info = song.data
-                    )
-                }
-                is SongBean.Network -> {
-                }
-            }
+            SongInfoItem(
+                title = stringResource(id = com.zxhhyj.music.R.string.file_path),
+                info = song.data
+            )
         }
         item {
-            when (song) {
-                is SongBean.Local -> {
-                    SongInfoItem(
-                        title = stringResource(id = com.zxhhyj.music.R.string.file_size),
-                        info = "${song.size / 1024 / 1024} MB"
-                    )
-                }
-                is SongBean.Network -> {
-                }
-            }
+            SongInfoItem(
+                title = stringResource(id = com.zxhhyj.music.R.string.file_size),
+                info = "${song.size / 1024 / 1024} MB"
+            )
         }
     }
 }

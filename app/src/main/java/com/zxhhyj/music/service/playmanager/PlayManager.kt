@@ -52,11 +52,11 @@ object PlayManager : PlayManagerState, PlayManagerController, Player.Listener {
         return mPlayList
     }
 
-    override fun playingMusicProgressLiveData(): LiveData<Int> {
+    override fun progressLiveData(): LiveData<Int> {
         return mProgress
     }
 
-    override fun playingMusicDurationLiveData(): LiveData<Int> {
+    override fun durationLiveData(): LiveData<Int> {
         return mDuration
     }
 
@@ -64,9 +64,8 @@ object PlayManager : PlayManagerState, PlayManagerController, Player.Listener {
         return mChangeMusic
     }
 
-    override fun isPaused(): Boolean {
-        return pauseLiveData().value!!
-    }
+    override val isPaused: Boolean
+        get() = pauseLiveData().value ?: true
 
     override fun pauseLiveData(): LiveData<Boolean> {
         return mPause
@@ -157,15 +156,9 @@ object PlayManager : PlayManagerState, PlayManagerController, Player.Listener {
         mProgress.value = 0
         mChangeMusic.value = song
         mMediaPlayer?.let {
-            when (song) {
-                is SongBean.Local -> {
-                    it.setMediaItem(MediaItem.fromUri(song.data))
-                    it.prepare()
-                    it.playWhenReady = true
-                }
-
-                is SongBean.Network -> {}
-            }
+            it.setMediaItem(MediaItem.fromUri(song.data))
+            it.prepare()
+            it.playWhenReady = true
         }
     }
 

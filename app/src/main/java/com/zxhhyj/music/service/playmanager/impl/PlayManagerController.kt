@@ -22,5 +22,4 @@ interface PlayManagerController {
     fun deleteSong(song: SongBean)
 
     fun clearPlayList()
-
 }

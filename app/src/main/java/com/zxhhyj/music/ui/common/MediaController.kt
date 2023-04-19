@@ -2,7 +2,15 @@ package com.zxhhyj.music.ui.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,12 +24,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
+import com.zxhhyj.music.R
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.service.playmanager.ktx.coverUrl
-import com.zxhhyj.music.service.playmanager.ktx.title
 import com.zxhhyj.music.ui.theme.appBackgroundColor
 import com.zxhhyj.music.ui.theme.horizontal
-import com.zxhhyj.music.R
 
 @Composable
 fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> Unit) {
@@ -55,7 +61,7 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
                             .height(controlBarHeight)
                             .clickable(onClick = onClick)
                             .background(Color.Gray),
-                        url = song?.coverUrl ?: "",
+                        url = song?.album?.coverUrl ?: "",
                         paused = panelState != PanelState.COLLAPSED
                     )
                     Row(
@@ -68,7 +74,7 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
                             modifier = Modifier
                                 .padding(start = horizontal)
                                 .weight(1.0f),
-                            text = song?.title ?: "",
+                            text = song?.songName ?: "",
                             fontSize = 16.sp,
                             maxLines = 1,
                             fontWeight = FontWeight.Bold,
@@ -85,7 +91,7 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
                             modifier = Modifier
                                 .size(buttonSize)
                                 .clickable {
-                                    if (PlayManager.isPaused()) {
+                                    if (PlayManager.isPaused) {
                                         PlayManager.play()
                                     } else {
                                         PlayManager.pause()
@@ -107,7 +113,10 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
                     }
                 }
                 AppCard(backgroundColor = Color.Transparent, modifier = Modifier.size(coverSize)) {
-                    AppAsyncImage(modifier = Modifier.fillMaxSize(), url = song?.coverUrl ?: "")
+                    AppAsyncImage(
+                        modifier = Modifier.fillMaxSize(),
+                        url = song?.album?.coverUrl ?: ""
+                    )
                 }
             }
         }

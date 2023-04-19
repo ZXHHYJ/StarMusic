@@ -23,10 +23,6 @@ import coil.request.ImageRequest
 import com.zxhhyj.music.MainActivity
 import com.zxhhyj.music.R
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.service.playmanager.ktx.allArtist
-import com.zxhhyj.music.service.playmanager.ktx.artist
-import com.zxhhyj.music.service.playmanager.ktx.coverUrl
-import com.zxhhyj.music.service.playmanager.ktx.title
 import kotlinx.coroutines.launch
 import media.helper.AudioFocusHelper
 
@@ -41,13 +37,23 @@ class MediaPlayService : LifecycleService() {
 
         var isServiceAlive = false
 
-        private val playbackStateBuilder = PlaybackStateCompat.Builder()
+        private val PlaybackStateBuilder = PlaybackStateCompat.Builder()
             .setActions(PlaybackStateCompat.ACTION_SEEK_TO or PlaybackStateCompat.ACTION_PLAY_PAUSE or PlaybackStateCompat.ACTION_SKIP_TO_NEXT or PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS or PlaybackStateCompat.ACTION_STOP)
+
+        private val MediaMetadataBuilder = MediaMetadataCompat.Builder()
     }
+
+    data class State(
+        /*  var title: String,
+          var artist: ArrayList<SongBean.Artist>,*/
+        @PlaybackStateCompat.State var state: Int,
+        var position: Long,
+        var playbackSpeed: Float = 0.0f
+    )
 
     private fun refreshMediaNotifications() {
         if (!isForeground) {
-            startForeground(ID, mMediaNotification.setAction(!PlayManager.isPaused()).build())
+            startForeground(ID, mMediaNotification.setAction(!PlayManager.isPaused).build())
             isForeground = true
         } else {
             if (ActivityCompat.checkSelfPermission(
@@ -57,10 +63,13 @@ class MediaPlayService : LifecycleService() {
             ) {
                 return
             }
-            mNotificationManager.notify(ID, mMediaNotification.setAction(!PlayManager.isPaused()).build())
+            mNotificationManager.notify(
+                ID,
+                mMediaNotification.setAction(!PlayManager.isPaused).build()
+            )
         }
 
-        if (PlayManager.isPaused()) {
+        if (PlayManager.isPaused) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
                 stopForeground(false)
                 isForeground = false
@@ -68,26 +77,32 @@ class MediaPlayService : LifecycleService() {
         }
     }
 
-    private fun refreshMediaSession() {
-        mMediaSession.setPlaybackState(
-            playbackStateBuilder.setState(
-                if (PlayManager.isPaused()) PlaybackStateCompat.STATE_PAUSED else PlaybackStateCompat.STATE_PLAYING,
-                PlayManager.playingMusicProgressLiveData().value!!.toLong(),
-                1.0F
-            ).build()
-        )
-    }
-
+    /**
+     * 媒体通知
+     */
     private lateinit var mMediaNotification: MediaNotification
 
+    /**
+     * 媒体会话
+     */
     private lateinit var mMediaSession: MediaSessionCompat
 
+    /**
+     * 通知管理器
+     */
     private lateinit var mNotificationManager: NotificationManagerCompat
 
+    /**
+     * 管理音频焦点
+     */
     private lateinit var mAudioFocusHelper: AudioFocusHelper
 
-    //判断是否是前台服务
+    /**
+     * 判断是否是前台服务
+     */
     private var isForeground = false
+
+    private var state = State(PlaybackStateCompat.STATE_PAUSED, 0, 1.0f)
 
     override fun onCreate() {
         isServiceAlive = true
@@ -117,15 +132,15 @@ class MediaPlayService : LifecycleService() {
         PlayManager.changeMusicLiveData().observe(this@MediaPlayService) {
             if (it == null) return@observe
             mMediaNotification
-                .setContentTitle(it.title)
-                .setContentText(it.artist.allArtist())
+                .setContentTitle(it.songName)
+                .setContentText(it.artist.name)
                 .build()
             refreshMediaNotifications()
             lifecycle.coroutineScope.launch {
                 try {
                     val drawable = imageLoader.execute(
                         ImageRequest.Builder(this@MediaPlayService)
-                            .data(it.coverUrl)
+                            .data(it.album.coverUrl)
                             .build()
                     ).drawable as BitmapDrawable
                     mMediaNotification.setLargeIcon(
@@ -138,13 +153,40 @@ class MediaPlayService : LifecycleService() {
                 } catch (_: Exception) {
                 }
             }
+
+            mMediaSession.setMetadata(
+                MediaMetadataBuilder
+                    .putString(MediaMetadataCompat.METADATA_KEY_TITLE, it.songName)
+                    .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, it.artist.name)
+                    .build()
+            )
         }
-        PlayManager.playingMusicProgressLiveData().observe(this@MediaPlayService) {
-            refreshMediaSession()
+        PlayManager.progressLiveData().observe(this@MediaPlayService) {
+            state =
+                state.copy(position = it.toLong())
+            //通知session播放状态、播放进度、播放速度
+            mMediaSession.setPlaybackState(
+                PlaybackStateBuilder.setState(
+                    state.state,
+                    state.position,
+                    state.playbackSpeed
+                ).build()
+            )
         }
         PlayManager.pauseLiveData().observe(this@MediaPlayService) {
             refreshMediaNotifications()
-            refreshMediaSession()
+
+            state =
+                state.copy(state = if (it) PlaybackStateCompat.STATE_PAUSED else PlaybackStateCompat.STATE_PLAYING)
+            //通知session播放状态、播放进度、播放速度
+            mMediaSession.setPlaybackState(
+                PlaybackStateBuilder.setState(
+                    state.state,
+                    state.position,
+                    state.playbackSpeed
+                ).build()
+            )
+
             if (it == false) {
                 mAudioFocusHelper.requestAudioFocus(
                     AudioManager.STREAM_MUSIC,
@@ -152,16 +194,13 @@ class MediaPlayService : LifecycleService() {
                 )
             }
         }
-        PlayManager.playingMusicDurationLiveData().observe(this@MediaPlayService) {
-            PlayManager.changeMusicLiveData().value?.apply {
-                mMediaSession.setMetadata(
-                    MediaMetadataCompat.Builder()
-                        .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, it.toLong())
-                        .putString(MediaMetadataCompat.METADATA_KEY_TITLE, title)
-                        .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, artist.allArtist())
-                        .build()
-                )
-            }
+        PlayManager.durationLiveData().observe(this@MediaPlayService) {
+            //通知session歌曲时长
+            mMediaSession.setMetadata(
+                MediaMetadataCompat.Builder()
+                    .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, it.toLong())
+                    .build()
+            )
         }
         PlayManager.changePlayListLiveData().observe(this@MediaPlayService) {
             //播放列表被清空

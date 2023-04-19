@@ -22,16 +22,20 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.map
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zxhhyj.music.R
+import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.*
+import com.zxhhyj.music.ui.dialog.ScanMusicDialog
+import com.zxhhyj.music.ui.dialog.SplashDialog
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
+import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.about.AboutScreen
 import com.zxhhyj.music.ui.screen.album.AlbumScreen
 import com.zxhhyj.music.ui.screen.albumcnt.AlbumCntScreen
 import com.zxhhyj.music.ui.screen.play.PlayScreen
 import com.zxhhyj.music.ui.screen.playlist.PlayListScreen
-import com.zxhhyj.music.ui.screen.scanmusic.ScanMusicScreen
+import com.zxhhyj.music.ui.screen.scanmusic.MediaLibScreen
 import com.zxhhyj.music.ui.screen.search.SearchScreen
 import com.zxhhyj.music.ui.screen.setting.SettingScreen
 import com.zxhhyj.music.ui.screen.singer.SingerScreen
@@ -119,6 +123,10 @@ fun MainScreen() {
 
     val homeNavController =
         rememberNavController(startDestination = HomeNavigationDestination.Single)
+
+    val dialogNavController = rememberNavController<DialogDestination>(
+        initialBackstack = emptyList()
+    )
 
     val sheetNavController = rememberNavController<BottomSheetDestination>(
         initialBackstack = emptyList()
@@ -231,6 +239,7 @@ fun MainScreen() {
                                             SingleScreen(
                                                 mainNavController = mainNavController,
                                                 sheetNavController = sheetNavController,
+                                                dialogNavController = dialogNavController,
                                                 padding = padding
                                             )
                                         }
@@ -238,7 +247,6 @@ fun MainScreen() {
                                         HomeNavigationDestination.Album -> {
                                             AlbumScreen(
                                                 mainNavController = mainNavController,
-                                                sheetNavController = sheetNavController,
                                                 padding = padding
                                             )
                                         }
@@ -314,13 +322,12 @@ fun MainScreen() {
                             ScreenDestination.Album -> {
                                 AlbumScreen(
                                     mainNavController = mainNavController,
-                                    sheetNavController = sheetNavController,
                                     padding = padding
                                 )
                             }
 
-                            ScreenDestination.ScanMusic -> {
-                                ScanMusicScreen(
+                            ScreenDestination.MediaLib -> {
+                                MediaLibScreen(
                                     mainNavController = mainNavController,
                                     sheetNavController = sheetNavController,
                                     padding = padding
@@ -356,6 +363,27 @@ fun MainScreen() {
             panelState = panelState,
             it
         )
+    }
+
+    DialogNavHost(controller = dialogNavController) {
+        val onDismissRequest: () -> Unit = {
+            dialogNavController.pop()
+        }
+        when (it) {
+            DialogDestination.ScanMusic -> {
+                ScanMusicDialog(onDismissRequest = onDismissRequest)
+            }
+
+            DialogDestination.Splash -> {
+                SplashDialog(onDismissRequest = onDismissRequest)
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        if (SettingRepository.IsFirstLaunch) {
+            dialogNavController.navigate(DialogDestination.Splash)
+        }
     }
 
     BottomSheetNavHost(

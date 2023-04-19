@@ -24,14 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mxalbert.sharedelements.SharedElement
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.service.playmanager.ktx.allArtist
-import com.zxhhyj.music.service.playmanager.ktx.artist
-import com.zxhhyj.music.service.playmanager.ktx.coverUrl
-import com.zxhhyj.music.service.playmanager.ktx.title
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.AppCard
 import com.zxhhyj.music.ui.common.AppIcon
@@ -79,7 +76,7 @@ fun TopMediaController(
                     )
                     .size(56.dp),
             ) {
-                AppAsyncImage(modifier = Modifier.fillMaxSize(), url = song?.coverUrl) {
+                AppAsyncImage(modifier = Modifier.fillMaxSize(), url = song?.album?.coverUrl) {
                     navController.moveToTop {
                         it == PlayScreenDestination.Main
                     }
@@ -92,19 +89,21 @@ fun TopMediaController(
                 .height(46.dp),
         ) {
             Text(
-                text = song?.title ?: "",
+                text = song?.songName ?: "",
                 color = Color.White,
                 fontSize = 16.sp,
                 maxLines = 1,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                overflow = TextOverflow.Ellipsis
             )
             Spacer(modifier = Modifier.weight(1.0f))
             Text(
-                text = song?.artist?.allArtist() ?: "",
+                text = song?.artist?.name ?: "",
                 color = translucentWhite,
                 fontSize = 14.sp,
                 maxLines = 1,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                overflow = TextOverflow.Ellipsis
             )
         }
         AppIcon(

@@ -30,15 +30,13 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.bean.SongBean
-import com.zxhhyj.music.service.playmanager.ktx.allArtist
-import com.zxhhyj.music.service.playmanager.ktx.artist
-import com.zxhhyj.music.service.playmanager.ktx.title
 import com.zxhhyj.music.ui.common.AppCard
 import com.zxhhyj.music.ui.common.AppDivider
 import com.zxhhyj.music.ui.common.AppIcon
@@ -151,17 +149,22 @@ private fun QueueSongItem(
                     .padding(vertical = vertical),
             ) {
                 Text(
-                    text = song.title,
+                    text = song.songName,
                     color = Color.White,
-                    fontSize = 15.sp, maxLines = 1,
-                    textAlign = TextAlign.Center
+                    fontSize = 15.sp,
+                    maxLines = 1,
+                    textAlign = TextAlign.Center,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.weight(1.0f))
                 Text(
-                    text = song.artist.allArtist(),
+                    text = song.artist.name,
                     color = translucentWhite,
-                    fontSize = 13.sp, maxLines = 1,
-                    textAlign = TextAlign.Center
+                    fontSize = 13.sp,
+                    maxLines = 1,
+                    textAlign = TextAlign.Center,
+                    overflow =
+                    TextOverflow.Ellipsis
                 )
             }
             AppIcon(

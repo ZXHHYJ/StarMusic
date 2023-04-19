@@ -12,8 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
-import dev.olshevski.navigation.reimagined.NavController
-import dev.olshevski.navigation.reimagined.navigate
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.LocalMediaRepository
 import com.zxhhyj.music.ui.common.BoxWithPercentages
@@ -21,16 +19,16 @@ import com.zxhhyj.music.ui.common.TopAppBar
 import com.zxhhyj.music.ui.common.bindTopAppBarState
 import com.zxhhyj.music.ui.common.rememberTopAppBarState
 import com.zxhhyj.music.ui.item.AlbumItem
-import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
+import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.navigate
 
 
 @Composable
 fun AlbumScreen(
     mainNavController: NavController<ScreenDestination>,
-    sheetNavController: NavController<BottomSheetDestination>,
     padding: PaddingValues
 ) {
     BoxWithPercentages(modifier = Modifier.fillMaxSize()) {

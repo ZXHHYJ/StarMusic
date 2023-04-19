@@ -2,10 +2,10 @@ package com.zxhhyj.music.logic.repository
 
 import android.provider.MediaStore
 import com.funny.data_saver.core.mutableDataSaverListStateOf
-import kotlinx.coroutines.suspendCancellableCoroutine
 import com.zxhhyj.music.logic.config.DataSaverUtils
 import com.zxhhyj.music.logic.config.application
 import com.zxhhyj.music.service.playmanager.bean.SongBean
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
 
@@ -14,25 +14,25 @@ object LocalMediaRepository {
     var artists by mutableDataSaverListStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "local_artists",
-        initialValue = listOf<SongBean.Local.Artist>()
+        initialValue = listOf<SongBean.Artist>()
     )
         private set
 
     var albums by mutableDataSaverListStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "local_albums",
-        initialValue = listOf<SongBean.Local.Album>()
+        initialValue = listOf<SongBean.Album>()
     )
         private set
 
     var songs by mutableDataSaverListStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "local_songs",
-        initialValue = listOf<SongBean.Local>()
+        initialValue = listOf<SongBean>()
     )
         private set
 
-    val SongBean.Local.Album.artist: SongBean.Local.Artist
+    val SongBean.Album.artist: SongBean.Artist
         get() {
             for (song in this@LocalMediaRepository.songs) {
                 if (song.album.id == this.id)
@@ -41,9 +41,9 @@ object LocalMediaRepository {
             throw java.lang.NullPointerException("artist is null")
         }
 
-    val SongBean.Local.Album.songs: List<SongBean.Local>
+    val SongBean.Album.songs: List<SongBean>
         get() {
-            val list = arrayListOf<SongBean.Local>()
+            val list = arrayListOf<SongBean>()
             for (song in this@LocalMediaRepository.songs) {
                 if (song.album.id == this.id) {
                     list.add(song)
@@ -52,9 +52,9 @@ object LocalMediaRepository {
             return list
         }
 
-    val SongBean.Local.Artist.songs: List<SongBean.Local>
+    val SongBean.Artist.songs: List<SongBean>
         get() {
-            val list = arrayListOf<SongBean.Local>()
+            val list = arrayListOf<SongBean>()
             for (song in this@LocalMediaRepository.songs) {
                 if (song.artist.id == this.id) {
                     list.add(song)
@@ -84,7 +84,7 @@ object LocalMediaRepository {
                 null,
                 null
             )
-            val songs = arrayListOf<SongBean.Local>()
+            val songs = arrayListOf<SongBean>()
             while (query != null && query.moveToNext()) {
                 val album =
                     query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.ALBUM))
@@ -103,9 +103,9 @@ object LocalMediaRepository {
                 val size =
                     query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.SIZE))
                 songs.add(
-                    SongBean.Local(
-                        album = SongBean.Local.Album(albumId.toString(), album),
-                        artist = SongBean.Local.Artist(artistId.toString(), artist),
+                    SongBean(
+                        album = SongBean.Album(albumId.toString(), album),
+                        artist = SongBean.Artist(artistId.toString(), artist),
                         duration = duration,
                         data = data,
                         songName = songName,
@@ -121,14 +121,14 @@ object LocalMediaRepository {
     }
 
     private fun updateAlbum() {
-        val albumKVHashMap = LinkedHashMap<String, SongBean.Local.Album>()
+        val albumKVHashMap = LinkedHashMap<String, SongBean.Album>()
         for (song in songs) {
             if (albumKVHashMap.containsKey(song.album.id)) {
                 continue
             }
             albumKVHashMap[song.album.id] = song.album.copy()
         }
-        val albums = arrayListOf<SongBean.Local.Album>()
+        val albums = arrayListOf<SongBean.Album>()
         for (entry in albumKVHashMap) {
             albums.add(entry.value)
         }
@@ -136,21 +136,21 @@ object LocalMediaRepository {
     }
 
     private fun updateArtist() {
-        val artistKVHashMap = LinkedHashMap<String, SongBean.Local.Artist>()
+        val artistKVHashMap = LinkedHashMap<String, SongBean.Artist>()
         for (song in songs) {
             if (artistKVHashMap.containsKey(song.artist.id)) {
                 continue
             }
             artistKVHashMap[song.artist.id] = song.artist.copy()
         }
-        val artists = arrayListOf<SongBean.Local.Artist>()
+        val artists = arrayListOf<SongBean.Artist>()
         for (entry in artistKVHashMap) {
             artists.add(entry.value)
         }
         this.artists = artists
     }
 
-    fun delete(song: SongBean.Local) {
+    fun delete(song: SongBean) {
         when (val index = songs.indexOf(song)) {
             -1 -> {}
             else -> {

@@ -11,8 +11,6 @@ import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.textColor
 import com.zxhhyj.music.ui.theme.vertical
 
-
-
 @Composable
 fun SubTitleItem(modifier: Modifier = Modifier, title: String) {
     Text(

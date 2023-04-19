@@ -26,17 +26,17 @@ class MainApplication : Application() {
         application = this
         MMKV.initialize(this)
         val gson = GsonBuilder().create()
-        registerTypeConverters<SongBean.Local>(
+        registerTypeConverters<SongBean>(
             save = { bean -> gson.toJson(bean) },
-            restore = { str -> gson.fromJson(str, SongBean.Local::class.java) }
+            restore = { str -> gson.fromJson(str, SongBean::class.java) }
         )
-        registerTypeConverters<SongBean.Local.Album>(
+        registerTypeConverters<SongBean.Album>(
             save = { bean -> gson.toJson(bean) },
-            restore = { str -> gson.fromJson(str, SongBean.Local.Album::class.java) }
+            restore = { str -> gson.fromJson(str, SongBean.Album::class.java) }
         )
-        registerTypeConverters<SongBean.Local.Artist>(
+        registerTypeConverters<SongBean.Artist>(
             save = { bean -> gson.toJson(bean) },
-            restore = { str -> gson.fromJson(str, SongBean.Local.Artist::class.java) }
+            restore = { str -> gson.fromJson(str, SongBean.Artist::class.java) }
         )
         PlayManager.init(this)
         //初始化播放管理器

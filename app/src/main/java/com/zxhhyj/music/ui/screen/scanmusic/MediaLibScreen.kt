@@ -1,6 +1,10 @@
 package com.zxhhyj.music.ui.screen.scanmusic
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -12,7 +16,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.LocalMediaRepository
-import com.zxhhyj.music.ui.common.*
+import com.zxhhyj.music.ui.common.AppButton
+import com.zxhhyj.music.ui.common.AppRoundCard
+import com.zxhhyj.music.ui.common.TopAppBar
+import com.zxhhyj.music.ui.common.bindTopAppBarState
+import com.zxhhyj.music.ui.common.rememberTopAppBarState
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.theme.cardBackgroundColor
@@ -21,7 +29,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
-fun ScanMusicScreen(
+fun MediaLibScreen(
     mainNavController: NavController<ScreenDestination>,
     sheetNavController: NavController<BottomSheetDestination>,
     padding: PaddingValues
@@ -45,11 +53,14 @@ fun ScanMusicScreen(
             }
         }
         item {
-            AppButton(onClick = {
-                coroutineScope.launch(Dispatchers.IO) {
-                    LocalMediaRepository.scanMedia()
-                }
-            }) {
+            AppButton(
+                onClick = {
+                    coroutineScope.launch(Dispatchers.IO) {
+                        LocalMediaRepository.scanMedia()
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text(text = stringResource(id = R.string.scan_music))
             }
         }
@@ -57,6 +68,6 @@ fun ScanMusicScreen(
     TopAppBar(
         state = topAppBarState,
         modifier = Modifier.fillMaxWidth(),
-        title = stringResource(id = R.string.scan_music)
+        title = stringResource(id = R.string.media_lib)
     )
 }

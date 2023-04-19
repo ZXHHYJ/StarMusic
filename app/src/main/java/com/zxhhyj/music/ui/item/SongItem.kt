@@ -1,7 +1,14 @@
 package com.zxhhyj.music.ui.item
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
@@ -10,21 +17,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.olshevski.navigation.reimagined.NavController
-import dev.olshevski.navigation.reimagined.navigate
 import com.zxhhyj.music.service.playmanager.bean.SongBean
-import com.zxhhyj.music.service.playmanager.ktx.allArtist
-import com.zxhhyj.music.service.playmanager.ktx.artist
-import com.zxhhyj.music.service.playmanager.ktx.coverUrl
-import com.zxhhyj.music.service.playmanager.ktx.title
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.AppCard
 import com.zxhhyj.music.ui.common.AppIcon
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.theme.*
-
+import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.navigate
 
 
 @Composable
@@ -47,7 +50,7 @@ fun SongItem(
                     .padding(horizontal = horizontal, vertical = vertical)
                     .size(50.dp),
             ) {
-                AppAsyncImage(modifier = Modifier.fillMaxSize(), url = song.coverUrl)
+                AppAsyncImage(modifier = Modifier.fillMaxSize(), url = song.album.coverUrl)
             }
             Column(
                 modifier = Modifier
@@ -56,19 +59,21 @@ fun SongItem(
                     .padding(vertical = vertical),
             ) {
                 Text(
-                    text = song.title,
+                    text = song.songName,
                     color = textColor,
                     fontSize = 15.sp,
                     maxLines = 1,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.weight(1.0f))
                 Text(
-                    text = song.artist.allArtist(),
+                    text = song.artist.name,
                     color = textColorLight,
                     fontSize = 13.sp,
                     maxLines = 1,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
             AppIcon(

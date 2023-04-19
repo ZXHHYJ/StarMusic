@@ -28,13 +28,13 @@ sealed class ScreenDestination : Parcelable {
      * 歌手详情
      */
     @Parcelize
-    data class SingerCnt(val artist: SongBean.Local.Artist) : ScreenDestination()
+    data class SingerCnt(val artist: SongBean.Artist) : ScreenDestination()
 
     /**
      * 专辑详情
      */
     @Parcelize
-    data class AlbumCnt(val album: SongBean.Local.Album) : ScreenDestination()
+    data class AlbumCnt(val album: SongBean.Album) : ScreenDestination()
 
     /**
      * 专辑
@@ -55,10 +55,10 @@ sealed class ScreenDestination : Parcelable {
     object About : ScreenDestination()
 
     /**
-     * 扫描音乐
+     * 媒体库
      */
     @Parcelize
-    object ScanMusic : ScreenDestination()
+    object MediaLib : ScreenDestination()
 
     /**
      * 歌手

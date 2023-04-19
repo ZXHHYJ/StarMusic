@@ -40,10 +40,6 @@ import com.mxalbert.sharedelements.SharedElement
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.ktx.toTime
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.service.playmanager.ktx.allArtist
-import com.zxhhyj.music.service.playmanager.ktx.artist
-import com.zxhhyj.music.service.playmanager.ktx.coverUrl
-import com.zxhhyj.music.service.playmanager.ktx.title
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.AppCard
 import com.zxhhyj.music.ui.common.AppIcon
@@ -86,7 +82,7 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                     ) {
                         AppAsyncImage(
                             modifier = Modifier.fillMaxSize(),
-                            url = song?.coverUrl ?: ""
+                            url = song?.album?.coverUrl ?: ""
                         )
                     }
                 }
@@ -103,7 +99,7 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                     horizontalAlignment = Alignment.Start
                 ) {
                     Text(
-                        text = song?.title ?: "",
+                        text = song?.songName ?: "",
                         color = Color.White,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
@@ -111,7 +107,7 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                     )
                     Spacer(modifier = Modifier.padding(top = 2.dp))
                     Text(
-                        text = song?.artist?.allArtist() ?: "",
+                        text = song?.artist?.name ?: "",
                         color = translucentWhite,
                         fontSize = 16.sp,
                         maxLines = 1
@@ -132,11 +128,11 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
             }
 
 
-            val progress by PlayManager.playingMusicProgressLiveData().map {
+            val progress by PlayManager.progressLiveData().map {
                 it
             }.observeAsState(0)
 
-            val duration by PlayManager.playingMusicDurationLiveData().map {
+            val duration by PlayManager.durationLiveData().map {
                 it
             }.observeAsState(1)
 
@@ -225,7 +221,7 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                         .scale(1.2f)
                         .size(23.wp)
                         .clickable {
-                            if (PlayManager.isPaused())
+                            if (PlayManager.isPaused)
                                 PlayManager.play()
                             else PlayManager.pause()
                         },

@@ -6,13 +6,13 @@ import com.zxhhyj.music.service.playmanager.bean.SongBean
 interface PlayManagerState {
     fun changePlayListLiveData(): LiveData<List<SongBean>?>
 
-    fun playingMusicProgressLiveData(): LiveData<Int>
+    fun progressLiveData(): LiveData<Int>
 
-    fun playingMusicDurationLiveData(): LiveData<Int>
+    fun durationLiveData(): LiveData<Int>
 
     fun changeMusicLiveData(): LiveData<SongBean?>
 
-    fun isPaused(): Boolean
+    val isPaused: Boolean
 
     fun pauseLiveData(): LiveData<Boolean>
 }

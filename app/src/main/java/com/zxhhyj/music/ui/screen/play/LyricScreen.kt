@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.service.playmanager.bean.SongBean
 import com.zxhhyj.music.ui.common.KeepScreenOn
 import com.zxhhyj.music.ui.common.Lyric
 import com.zxhhyj.music.ui.theme.translucentWhite
@@ -39,21 +38,13 @@ fun ColumnScope.LyricScreen() {
     val song by PlayManager.changeMusicLiveData().observeAsState()
     var lyric by rememberSaveable { mutableStateOf("") }
     LaunchedEffect(song) {
-        when (song) {
-            is SongBean.Local -> {
-                launch(Dispatchers.IO) {
-                    val model = (song as SongBean.Local)
-                    lyric = try {
-                        val audioFile = AudioFileIO.read(File(model.data))
-                        audioFile.tag.getFirst(FieldKey.LYRICS)
-                    } catch (_: Exception) {
-                        String()
-                    }
-                }
+        launch(Dispatchers.IO) {
+            lyric = try {
+                val audioFile = AudioFileIO.read(File((song ?: return@launch).data))
+                audioFile.tag.getFirst(FieldKey.LYRICS)
+            } catch (_: Exception) {
+                String()
             }
-
-            is SongBean.Network -> {}
-            null -> {}
         }
     }
     if (lyric.isEmpty()) {
@@ -71,7 +62,7 @@ fun ColumnScope.LyricScreen() {
             )
         }
     } else {
-        val liveTime by PlayManager.playingMusicProgressLiveData()
+        val liveTime by PlayManager.progressLiveData()
             .observeAsState(0)
         Lyric(
             modifier = Modifier

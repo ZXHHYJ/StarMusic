@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ColorLens
 import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.Source
 import androidx.compose.material.icons.rounded.TextFormat
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -45,6 +46,15 @@ fun SettingScreen(
                 subTitle = stringResource(id = R.string.theme_info)
             ) {
                 mainNavController.navigate(ScreenDestination.Theme)
+            }
+        }
+        item {
+            SettingItem(
+                imageVector = Icons.Rounded.Source,
+                title = stringResource(id = R.string.media_lib),
+                subTitle = stringResource(id = R.string.scan_music)
+            ) {
+                mainNavController.navigate(ScreenDestination.MediaLib)
             }
         }
         item {
