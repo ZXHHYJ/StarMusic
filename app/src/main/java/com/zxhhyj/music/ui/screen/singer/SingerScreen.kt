@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.LocalMediaRepository
-import com.zxhhyj.music.ui.common.MediaPermission
 import com.zxhhyj.music.ui.common.TopAppBar
 import com.zxhhyj.music.ui.common.bindTopAppBarState
 import com.zxhhyj.music.ui.common.rememberTopAppBarState
@@ -26,27 +25,22 @@ fun SingerScreen(
     sheetNavController: NavController<BottomSheetDestination>,
     padding: PaddingValues
 ) {
-    MediaPermission(
+    val topAppBarState = rememberTopAppBarState()
+    LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
+            .bindTopAppBarState(topAppBarState)
+            .fillMaxSize(),
+        contentPadding = padding
     ) {
-        val topAppBarState = rememberTopAppBarState()
-        LazyColumn(
-            modifier = Modifier.bindTopAppBarState(topAppBarState),
-            contentPadding = padding
-        ) {
-            items(LocalMediaRepository.artists) {
-                ArtistItem(artist = it) {
-                    mainNavController.navigate(ScreenDestination.SingerCnt(it))
-                }
+        items(LocalMediaRepository.artists) {
+            ArtistItem(artist = it) {
+                mainNavController.navigate(ScreenDestination.SingerCnt(it))
             }
         }
-        TopAppBar(
-            state = topAppBarState,
-            modifier = Modifier.fillMaxWidth(),
-            title = stringResource(id = R.string.singer)
-        ) {
-
-        }
     }
+    TopAppBar(
+        state = topAppBarState,
+        modifier = Modifier.fillMaxWidth(),
+        title = stringResource(id = R.string.singer)
+    )
 }

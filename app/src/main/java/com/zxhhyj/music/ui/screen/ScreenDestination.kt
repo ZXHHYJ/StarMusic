@@ -55,10 +55,10 @@ sealed class ScreenDestination : Parcelable {
     object About : ScreenDestination()
 
     /**
-     * 媒体库
+     * 媒体源
      */
     @Parcelize
-    object MediaLib : ScreenDestination()
+    object MediaSource : ScreenDestination()
 
     /**
      * 歌手

@@ -15,12 +15,21 @@ object SettingRepository {
     )
 
     /**
-     * 是否首次启动APP
+     * 是否启用Android媒体库
      */
-    var IsFirstLaunch by mutableDataSaverStateOf(
+    var EnableAndroidMediaLibs by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
-        key = "IsFirstLaunch",
-        initialValue = true
+        key = "EnableAndroidMediaLibs",
+        initialValue = false
+    )
+
+    /**
+     * 是否首次启动APP(同意隐私政策)
+     */
+    var AgreePrivacyPolicy by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "AgreePrivacyPolicy",
+        initialValue = false
     )
 
 }

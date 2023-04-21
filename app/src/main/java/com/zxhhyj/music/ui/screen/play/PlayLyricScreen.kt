@@ -31,7 +31,7 @@ import org.jaudiotagger.tag.FieldKey
 import java.io.File
 
 @Composable
-fun ColumnScope.LyricScreen() {
+fun ColumnScope.PlayLyricScreen() {
     val pause by PlayManager.pauseLiveData().observeAsState(true)
     KeepScreenOn(enable = !pause)
 
@@ -77,12 +77,12 @@ fun ColumnScope.LyricScreen() {
                 Text(
                     modifier = modifier
                         .padding(
-                            vertical = 20.dp,
+                            vertical = 18.dp,
                             horizontal = PlayScreen.PlayScreenContentHorizontal
                         ),
                     text = model,
                     color = if (position == index) Color.White else translucentWhite,
-                    fontSize = 30.sp,
+                    fontSize = 26.sp,
                     fontWeight = FontWeight.Bold
                 )
             }

@@ -22,10 +22,9 @@ import coil.imageLoader
 import coil.request.ImageRequest
 import com.zxhhyj.music.MainActivity
 import com.zxhhyj.music.R
+import com.zxhhyj.music.logic.helper.AudioFocusHelper
 import com.zxhhyj.music.service.playmanager.PlayManager
 import kotlinx.coroutines.launch
-import media.helper.AudioFocusHelper
-
 
 class MediaPlayService : LifecycleService() {
 
@@ -194,11 +193,7 @@ class MediaPlayService : LifecycleService() {
                     AudioManager.AUDIOFOCUS_GAIN
                 )
             } else {
-                try {
-                    mAudioFocusHelper.abandonAudioFocus()
-                } catch (_: Exception) {
-                    //AudioFocusHelper的空指针bug
-                }
+                mAudioFocusHelper.abandonAudioFocus()
             }
         }
         PlayManager.durationLiveData().observe(this@MediaPlayService) {
@@ -222,11 +217,7 @@ class MediaPlayService : LifecycleService() {
 
     override fun onDestroy() {
         super.onDestroy()
-        try {
-            mAudioFocusHelper.abandonAudioFocus()
-        } catch (_: Exception) {
-            //AudioFocusHelper的空指针bug
-        }
+        mAudioFocusHelper.abandonAudioFocus()
         mMediaSession.isActive = false
         mMediaSession.release()
         isServiceAlive = false

@@ -4,7 +4,7 @@ package com.zxhhyj.music.ui.common
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
-import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.LinearInterpolator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -64,8 +64,8 @@ fun MotionBlur(
         KenBurnsView(it).apply {
             setTransitionGenerator(
                 RandomTransitionGenerator(
-                    4000,
-                    AccelerateDecelerateInterpolator()
+                    3000,
+                    LinearInterpolator()
                 )
             )
         }

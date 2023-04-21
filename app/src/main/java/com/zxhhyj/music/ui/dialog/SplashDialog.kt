@@ -14,6 +14,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import com.zxhhyj.music.R
+import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.ui.common.AppDialog
 import com.zxhhyj.music.ui.theme.appTextAccentColor
 
@@ -29,6 +30,7 @@ fun SplashDialog(onDismissRequest: () -> Unit) {
                 text = stringResource(id = R.string.agree_and_continue),
                 modifier = Modifier.clickable {
                     onDismissRequest.invoke()
+                    SettingRepository.AgreePrivacyPolicy = true
                 })
         },
         dismiss = {

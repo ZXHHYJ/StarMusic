@@ -1,6 +1,5 @@
 package com.zxhhyj.music.ui.screen.setting
 
-import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,23 +14,30 @@ import androidx.compose.material.icons.rounded.Source
 import androidx.compose.material.icons.rounded.TextFormat
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import dev.olshevski.navigation.reimagined.NavController
-import dev.olshevski.navigation.reimagined.navigate
 import com.zxhhyj.music.R
+import com.zxhhyj.music.logic.config.application
 import com.zxhhyj.music.ui.common.TopAppBar
 import com.zxhhyj.music.ui.common.bindTopAppBarState
 import com.zxhhyj.music.ui.common.rememberTopAppBarState
 import com.zxhhyj.music.ui.screen.ScreenDestination
-
+import com.zxhhyj.music.ui.screen.setting.item.SettingItem
+import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.navigate
 
 @Composable
 fun SettingScreen(
     mainNavController: NavController<ScreenDestination>,
     padding: PaddingValues,
 ) {
-    val context = LocalContext.current
+    val versionName = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        application.packageManager.getPackageInfo(
+            application.packageName,
+            PackageManager.PackageInfoFlags.of(0)
+        )
+    } else {
+        application.packageManager.getPackageInfo(application.packageName, 0)
+    }.versionName
     val topAppBarState = rememberTopAppBarState()
     LazyColumn(
         modifier = Modifier
@@ -54,7 +60,7 @@ fun SettingScreen(
                 title = stringResource(id = R.string.media_lib),
                 subTitle = stringResource(id = R.string.scan_music)
             ) {
-                mainNavController.navigate(ScreenDestination.MediaLib)
+                mainNavController.navigate(ScreenDestination.MediaSource)
             }
         }
         item {
@@ -72,7 +78,7 @@ fun SettingScreen(
                 title = stringResource(id = R.string.about),
                 subTitle = stringResource(
                     id = R.string.about_info,
-                    formatArgs = arrayOf(getVersionName(context))
+                    formatArgs = arrayOf(versionName)
                 )
             ) {
                 mainNavController.navigate(ScreenDestination.About)
@@ -84,19 +90,4 @@ fun SettingScreen(
         modifier = Modifier.fillMaxWidth(),
         title = stringResource(id = R.string.setting)
     )
-}
-
-private fun getVersionName(context: Context): String {
-    try {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            context.packageManager.getPackageInfo(
-                context.packageName,
-                PackageManager.PackageInfoFlags.of(0)
-            ).versionName
-        } else {
-            context.packageManager.getPackageInfo(context.packageName, 0).versionName
-        }
-    } catch (e: Exception) {
-        throw e
-    }
 }

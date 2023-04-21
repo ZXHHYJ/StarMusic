@@ -35,7 +35,7 @@ import com.zxhhyj.music.ui.screen.album.AlbumScreen
 import com.zxhhyj.music.ui.screen.albumcnt.AlbumCntScreen
 import com.zxhhyj.music.ui.screen.play.PlayScreen
 import com.zxhhyj.music.ui.screen.playlist.PlayListScreen
-import com.zxhhyj.music.ui.screen.scanmusic.MediaLibScreen
+import com.zxhhyj.music.ui.screen.mediasource.MediaSourceScreen
 import com.zxhhyj.music.ui.screen.search.SearchScreen
 import com.zxhhyj.music.ui.screen.setting.SettingScreen
 import com.zxhhyj.music.ui.screen.singer.SingerScreen
@@ -326,10 +326,9 @@ fun MainScreen() {
                                 )
                             }
 
-                            ScreenDestination.MediaLib -> {
-                                MediaLibScreen(
+                            ScreenDestination.MediaSource -> {
+                                MediaSourceScreen(
                                     mainNavController = mainNavController,
-                                    sheetNavController = sheetNavController,
                                     padding = padding
                                 )
                             }
@@ -371,7 +370,10 @@ fun MainScreen() {
         }
         when (it) {
             DialogDestination.ScanMusic -> {
-                ScanMusicDialog(onDismissRequest = onDismissRequest)
+                ScanMusicDialog(
+                    onDismissRequest = onDismissRequest,
+                    mainNavController = mainNavController
+                )
             }
 
             DialogDestination.Splash -> {
@@ -380,9 +382,12 @@ fun MainScreen() {
         }
     }
 
-    LaunchedEffect(Unit) {
-        if (SettingRepository.IsFirstLaunch) {
+    DisposableEffect(Unit) {
+        if (!SettingRepository.AgreePrivacyPolicy) {
             dialogNavController.navigate(DialogDestination.Splash)
+        }
+        onDispose {
+            dialogNavController.pop()
         }
     }
 

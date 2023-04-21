@@ -161,7 +161,7 @@ fun PlayScreen(
                                     }
                                 }
                             }
-                            LyricScreen()
+                            PlayLyricScreen()
                         }
 
                     }

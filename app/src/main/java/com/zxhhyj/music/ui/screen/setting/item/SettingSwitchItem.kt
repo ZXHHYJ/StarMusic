@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.screen.setting
+package com.zxhhyj.music.ui.screen.setting.item
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface

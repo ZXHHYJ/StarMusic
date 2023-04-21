@@ -4,24 +4,33 @@ import androidx.compose.foundation.clickable
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.zxhhyj.music.R
 import com.zxhhyj.music.ui.common.AppDialog
+import com.zxhhyj.music.ui.screen.ScreenDestination
+import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.navigate
 
 @Composable
-fun ScanMusicDialog(onDismissRequest: () -> Unit) {
+fun ScanMusicDialog(
+    onDismissRequest: () -> Unit,
+    mainNavController: NavController<ScreenDestination>
+) {
     AppDialog(
         onDismissRequest = onDismissRequest,
-        title = "扫描音乐",
+        title = stringResource(id = R.string.scan_music),
         confirm = {
-            Text(text = "确定", modifier = Modifier.clickable {
+            Text(text = stringResource(id = R.string.yes), modifier = Modifier.clickable {
                 onDismissRequest.invoke()
+                mainNavController.navigate(ScreenDestination.MediaSource)
             })
         },
         dismiss = {
-            Text(text = "取消", modifier = Modifier.clickable {
+            Text(text = stringResource(id = R.string.cancel), modifier = Modifier.clickable {
                 onDismissRequest.invoke()
             })
         })
     {
-        Text(text = "我是测试内容")
+        Text(text = stringResource(id = R.string.scan_music_dialog_text))
     }
 }

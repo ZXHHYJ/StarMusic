@@ -163,4 +163,10 @@ object LocalMediaRepository {
         }
     }
 
+    fun clear() {
+        songs = listOf()
+        artists = listOf()
+        albums = listOf()
+    }
+
 }
