@@ -5,23 +5,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.zxhhyj.music.logic.repository.LocalMediaRepository.songs
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.bean.SongBean
+import com.zxhhyj.music.ui.common.AppIcon
 import com.zxhhyj.music.ui.common.TopAppBar
 import com.zxhhyj.music.ui.common.bindTopAppBarState
 import com.zxhhyj.music.ui.common.rememberTopAppBarState
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
-import com.zxhhyj.music.ui.screen.ScreenDestination
 import dev.olshevski.navigation.reimagined.NavController
 
 
 @Composable
 fun AlbumCntScreen(
-    mainNavController: NavController<ScreenDestination>,
     sheetNavController: NavController<BottomSheetDestination>,
     padding: PaddingValues,
     album: SongBean.Album
@@ -44,4 +45,7 @@ fun AlbumCntScreen(
         modifier = Modifier.fillMaxWidth(),
         title = album.name
     )
+    {
+        AppIcon(imageVector = Icons.Rounded.MoreVert, contentDescription = null)
+    }
 }

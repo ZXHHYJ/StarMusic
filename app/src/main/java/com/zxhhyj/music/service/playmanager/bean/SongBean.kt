@@ -3,7 +3,7 @@ package com.zxhhyj.music.service.playmanager.bean
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-
+@Parcelize
 data class SongBean(
     val album: Album,
     val artist: Artist,
@@ -11,7 +11,7 @@ data class SongBean(
     val data: String,
     val songName: String,
     val size: Long
-) {
+) : Parcelable {
 
     @Parcelize
     data class Artist(val id: String, val name: String) : Parcelable

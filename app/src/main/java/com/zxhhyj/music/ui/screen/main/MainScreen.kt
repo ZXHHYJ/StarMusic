@@ -297,7 +297,6 @@ fun MainScreen() {
 
                             is ScreenDestination.AlbumCnt -> {
                                 AlbumCntScreen(
-                                    mainNavController = mainNavController,
                                     sheetNavController = sheetNavController,
                                     padding = padding,
                                     album = destination.album
