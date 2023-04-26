@@ -18,8 +18,8 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.LocalMediaRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.ui.common.AppIcon
-import com.zxhhyj.music.ui.common.AppListButton
+import com.zxhhyj.music.ui.common.icon.AppRoundIcon
+import com.zxhhyj.music.ui.common.button.AppListButton
 import com.zxhhyj.music.ui.common.TopAppBar
 import com.zxhhyj.music.ui.common.bindTopAppBarState
 import com.zxhhyj.music.ui.common.rememberTopAppBarState
@@ -94,7 +94,7 @@ fun SingleScreen(
         modifier = Modifier.fillMaxWidth(),
         title = stringResource(id = R.string.media_lib)
     ) {
-        AppIcon(
+        AppRoundIcon(
             imageVector = Icons.Rounded.MoreVert,
             contentDescription = null,
             modifier = Modifier.clickable {

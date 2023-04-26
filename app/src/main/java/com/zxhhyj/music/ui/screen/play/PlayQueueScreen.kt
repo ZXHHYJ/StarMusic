@@ -37,9 +37,9 @@ import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.bean.SongBean
-import com.zxhhyj.music.ui.common.AppCard
+import com.zxhhyj.music.ui.common.card.AppCard
 import com.zxhhyj.music.ui.common.AppDivider
-import com.zxhhyj.music.ui.common.AppIcon
+import com.zxhhyj.music.ui.common.icon.AppRoundIcon
 import com.zxhhyj.music.ui.theme.translucentWhite
 import com.zxhhyj.music.ui.theme.vertical
 
@@ -167,7 +167,7 @@ private fun QueueSongItem(
                     TextOverflow.Ellipsis
                 )
             }
-            AppIcon(
+            AppRoundIcon(
                 imageVector = Icons.Rounded.Remove,
                 tint = translucentWhite,
                 contentDescription = null,

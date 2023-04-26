@@ -33,9 +33,10 @@ import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.about.AboutScreen
 import com.zxhhyj.music.ui.screen.album.AlbumScreen
 import com.zxhhyj.music.ui.screen.albumcnt.AlbumCntScreen
+import com.zxhhyj.music.ui.screen.lyric.LyricScreen
+import com.zxhhyj.music.ui.screen.mediasource.MediaSourceScreen
 import com.zxhhyj.music.ui.screen.play.PlayScreen
 import com.zxhhyj.music.ui.screen.playlist.PlayListScreen
-import com.zxhhyj.music.ui.screen.mediasource.MediaSourceScreen
 import com.zxhhyj.music.ui.screen.search.SearchScreen
 import com.zxhhyj.music.ui.screen.setting.SettingScreen
 import com.zxhhyj.music.ui.screen.singer.SingerScreen
@@ -351,6 +352,10 @@ fun MainScreen() {
                             ScreenDestination.Theme -> {
                                 ThemeScreen(padding = padding)
                             }
+
+                            ScreenDestination.Lyric -> {
+                                LyricScreen(padding = padding)
+                            }
                         }
                     }
                 }
@@ -419,7 +424,7 @@ fun MainScreen() {
                 }
 
                 is BottomSheetDestination.Message -> {
-                    Message(sheetNavController = sheetNavController, message = destination.message)
+                    Message(message = destination.message)
                 }
 
                 is BottomSheetDestination.BottomSheet -> {

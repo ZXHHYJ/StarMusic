@@ -45,7 +45,6 @@ import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlin.math.roundToInt
 
-
 @Stable
 @Parcelize
 class TopAppBarState : Parcelable {

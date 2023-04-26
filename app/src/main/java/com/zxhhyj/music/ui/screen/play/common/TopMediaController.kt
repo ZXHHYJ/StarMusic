@@ -29,9 +29,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mxalbert.sharedelements.SharedElement
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.ui.common.AppAsyncImage
-import com.zxhhyj.music.ui.common.AppCard
-import com.zxhhyj.music.ui.common.AppIcon
+import com.zxhhyj.music.ui.common.image.AppAsyncImage
+import com.zxhhyj.music.ui.common.card.AppCard
+import com.zxhhyj.music.ui.common.icon.AppRoundIcon
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.play.MaterialFadeInTransitionSpec
 import com.zxhhyj.music.ui.screen.play.PlayScreen
@@ -106,7 +106,7 @@ fun TopMediaController(
                 overflow = TextOverflow.Ellipsis
             )
         }
-        AppIcon(
+        AppRoundIcon(
             imageVector = Icons.Rounded.MoreVert,
             tint = Color.White,
             contentDescription = null,

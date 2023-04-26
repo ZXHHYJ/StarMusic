@@ -18,7 +18,6 @@ import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.ui.common.AppDialog
 import com.zxhhyj.music.ui.theme.appTextAccentColor
 
-
 @Composable
 fun SplashDialog(onDismissRequest: () -> Unit) {
     val activity = LocalContext.current as? Activity

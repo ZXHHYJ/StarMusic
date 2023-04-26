@@ -16,6 +16,7 @@ data class SongBean(
 
     @Parcelize
     data class Artist(val id: String, val name: String) : Parcelable
+
     @Parcelize
     data class Album(
         val id: String,

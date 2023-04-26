@@ -1,21 +1,21 @@
 package com.zxhhyj.music.ui.common
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.olshevski.navigation.reimagined.NavController
-import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.textColor
 
-
-
 @Composable
-fun Message(sheetNavController: NavController<BottomSheetDestination>, message: String) {
+fun Message(message: String) {
     Column(
         modifier = Modifier
             .padding(horizontal = horizontal)
@@ -30,13 +30,6 @@ fun Message(sheetNavController: NavController<BottomSheetDestination>, message: 
             text = message,
             color = textColor
         )
-        Spacer(modifier = Modifier.height(5.dp))
-        /*MenuButton(
-            title = stringResource(id = R.string.copy),
-            imageVector = Icons.Rounded.ContentCopy
-        ) {
-            copyText(message)
-            sheetNavController.pop()
-        }*/
+        Spacer(modifier = Modifier.navigationBarsPadding())
     }
 }

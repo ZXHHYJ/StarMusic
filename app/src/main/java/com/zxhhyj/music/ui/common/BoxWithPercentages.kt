@@ -6,12 +6,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 
-
-
 @Composable
-fun BoxWithPercentages(modifier: Modifier, content: @Composable BoxWithPercentagesScope.() -> Unit) {
+fun BoxWithPercentages(
+    modifier: Modifier,
+    content: @Composable BoxWithPercentagesScope.() -> Unit
+) {
     BoxWithConstraints(modifier = modifier) {
-        content.invoke(BoxWithPercentagesScope(constraints, maxHeight, maxWidth, minHeight, minWidth))
+        content.invoke(
+            BoxWithPercentagesScope(
+                constraints,
+                maxHeight,
+                maxWidth,
+                minHeight,
+                minWidth
+            )
+        )
     }
 }
 

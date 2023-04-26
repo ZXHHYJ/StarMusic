@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.common
+package com.zxhhyj.music.ui.common.image
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

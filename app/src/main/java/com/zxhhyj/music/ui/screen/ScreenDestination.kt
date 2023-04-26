@@ -25,6 +25,12 @@ sealed class ScreenDestination : Parcelable {
     object Theme : ScreenDestination()
 
     /**
+     * 歌词设置
+     */
+    @Parcelize
+    object Lyric : ScreenDestination()
+
+    /**
      * 歌手详情
      */
     @Parcelize

@@ -16,12 +16,11 @@ import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.LocalMediaRepository.songs
 import com.zxhhyj.music.service.playmanager.bean.SongBean
-import com.zxhhyj.music.ui.common.AppAsyncImage
-import com.zxhhyj.music.ui.common.AppCard
+import com.zxhhyj.music.ui.common.image.AppAsyncImage
+import com.zxhhyj.music.ui.common.card.AppCard
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.theme.textColor
 import com.zxhhyj.music.ui.theme.textColorLight
-
 
 @Composable
 fun AlbumItem(

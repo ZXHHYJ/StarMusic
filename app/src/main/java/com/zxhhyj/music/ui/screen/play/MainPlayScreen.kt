@@ -40,9 +40,9 @@ import com.mxalbert.sharedelements.SharedElement
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.ktx.toTime
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.ui.common.AppAsyncImage
-import com.zxhhyj.music.ui.common.AppCard
-import com.zxhhyj.music.ui.common.AppIcon
+import com.zxhhyj.music.ui.common.image.AppAsyncImage
+import com.zxhhyj.music.ui.common.card.AppCard
+import com.zxhhyj.music.ui.common.icon.AppRoundIcon
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.theme.translucentWhite
@@ -113,7 +113,7 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                         maxLines = 1
                     )
                 }
-                AppIcon(
+                AppRoundIcon(
                     imageVector = Icons.Rounded.MoreVert,
                     tint = Color.White,
                     contentDescription = null,
@@ -203,7 +203,7 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                     if (it) R.drawable.ic_play else R.drawable.ic_pause
                 }.observeAsState(R.drawable.ic_play)
 
-                AppIcon(
+                AppRoundIcon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_previous),
                     contentDescription = null,
                     modifier = Modifier
@@ -214,7 +214,7 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                     tint = Color.White
                 )
                 Spacer(modifier = Modifier.width(8.wp))
-                AppIcon(
+                AppRoundIcon(
                     imageVector = ImageVector.vectorResource(id = playPauseState),
                     contentDescription = null,
                     modifier = Modifier
@@ -228,7 +228,7 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                     tint = Color.White
                 )
                 Spacer(modifier = Modifier.width(8.wp))
-                AppIcon(
+                AppRoundIcon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_next),
                     contentDescription = null,
                     modifier = Modifier

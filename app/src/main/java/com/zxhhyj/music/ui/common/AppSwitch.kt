@@ -18,8 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.launch
 import com.zxhhyj.music.ui.theme.appAccentColor
+import kotlinx.coroutines.launch
 
 enum class Status {
     CLOSE, OPEN

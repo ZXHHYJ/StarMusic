@@ -8,7 +8,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.zxhhyj.music.ui.theme.appDividerColor
 
-
 @Composable
 fun AppDivider(
     modifier: Modifier = Modifier,

@@ -1,13 +1,12 @@
-package com.zxhhyj.music.ui.screen.setting.item
+package com.zxhhyj.music.ui.common.button
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -15,49 +14,40 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.ui.common.AppDivider
-import com.zxhhyj.music.ui.common.AppSwitch
-import com.zxhhyj.music.ui.theme.*
+import com.zxhhyj.music.ui.common.icon.AppRoundIcon
+import com.zxhhyj.music.ui.theme.appTextButtonAccentColor
+import com.zxhhyj.music.ui.theme.horizontal
+import com.zxhhyj.music.ui.theme.roundShape
+import com.zxhhyj.music.ui.theme.vertical
 
 @Composable
-fun SettingSwitchItem(
+fun AppMenuButton(
     modifier: Modifier = Modifier,
+    onClick: () -> Unit,
     imageVector: ImageVector,
-    title: String,
-    subTitle: String,
-    checked: Boolean,
-    onCheckedChange: ((Boolean) -> Unit),
+    text: String,
+    enabled: Boolean = true
 ) {
     Surface(
         color = Color.Transparent,
+        contentColor = if (enabled) appTextButtonAccentColor else Color.DarkGray,
         shape = roundShape
     ) {
-        Column(modifier = modifier) {
+        Column(modifier = modifier.clickable(enabled) {
+            onClick.invoke()
+        }) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(50.dp)
                     .padding(horizontal = horizontal, vertical = vertical),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    imageVector = imageVector,
-                    contentDescription = title,
-                    tint = appIconAccentColor
-                )
-                Spacer(modifier = Modifier.width(vertical))
-                Column {
-                    Text(text = title, fontWeight = FontWeight.Bold)
-                    Text(text = subTitle, fontSize = 14.sp)
-                }
+                Text(text = text)
                 Spacer(modifier = Modifier.weight(1.0f))
-                AppSwitch(
-                    checked = checked,
-                    onCheckedChange = onCheckedChange,
-                    modifier = Modifier.height(24.dp)
-                )
+                AppRoundIcon(imageVector = imageVector, contentDescription = text)
             }
             AppDivider(
                 modifier = Modifier

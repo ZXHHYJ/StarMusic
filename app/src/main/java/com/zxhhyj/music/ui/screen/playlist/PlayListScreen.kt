@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
-import com.zxhhyj.music.ui.common.AppIcon
+import com.zxhhyj.music.ui.common.icon.AppRoundIcon
 import com.zxhhyj.music.ui.common.TopAppBar
 import com.zxhhyj.music.ui.common.bindTopAppBarState
 import com.zxhhyj.music.ui.common.rememberTopAppBarState
@@ -37,6 +37,6 @@ fun PlayListScreen(
     TopAppBar(
         state = topAppBarState, modifier = Modifier, title = stringResource(id = R.string.play_list)
     ) {
-        AppIcon(imageVector = Icons.Rounded.MoreVert, contentDescription = null)
+        AppRoundIcon(imageVector = Icons.Rounded.MoreVert, contentDescription = null)
     }
 }

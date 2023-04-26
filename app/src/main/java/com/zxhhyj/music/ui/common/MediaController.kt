@@ -26,6 +26,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
 import com.zxhhyj.music.R
 import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.ui.common.card.AppCard
+import com.zxhhyj.music.ui.common.icon.AppRoundIcon
+import com.zxhhyj.music.ui.common.image.AppAsyncImage
 import com.zxhhyj.music.ui.theme.appBackgroundColor
 import com.zxhhyj.music.ui.theme.horizontal
 
@@ -84,7 +87,7 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
                             if (it) R.drawable.ic_play else R.drawable.ic_pause
                         }.observeAsState(R.drawable.ic_play)
                         val buttonSize = 36.dp
-                        AppIcon(
+                        AppRoundIcon(
                             imageVector = ImageVector.vectorResource(playPauseState),
                             tint = Color.White,
                             contentDescription = null,
@@ -99,7 +102,7 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
                                 }
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        AppIcon(
+                        AppRoundIcon(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_skip_next),
                             tint = Color.White,
                             contentDescription = null,

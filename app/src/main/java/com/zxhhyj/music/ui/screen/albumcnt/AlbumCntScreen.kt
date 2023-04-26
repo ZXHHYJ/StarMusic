@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import com.zxhhyj.music.logic.repository.LocalMediaRepository.songs
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.bean.SongBean
-import com.zxhhyj.music.ui.common.AppIcon
+import com.zxhhyj.music.ui.common.icon.AppRoundIcon
 import com.zxhhyj.music.ui.common.TopAppBar
 import com.zxhhyj.music.ui.common.bindTopAppBarState
 import com.zxhhyj.music.ui.common.rememberTopAppBarState
@@ -46,6 +46,6 @@ fun AlbumCntScreen(
         title = album.name
     )
     {
-        AppIcon(imageVector = Icons.Rounded.MoreVert, contentDescription = null)
+        AppRoundIcon(imageVector = Icons.Rounded.MoreVert, contentDescription = null)
     }
 }

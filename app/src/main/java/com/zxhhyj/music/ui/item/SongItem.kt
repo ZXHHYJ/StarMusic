@@ -21,14 +21,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.service.playmanager.bean.SongBean
-import com.zxhhyj.music.ui.common.AppAsyncImage
-import com.zxhhyj.music.ui.common.AppCard
-import com.zxhhyj.music.ui.common.AppIcon
+import com.zxhhyj.music.ui.common.card.AppCard
+import com.zxhhyj.music.ui.common.icon.AppRoundIcon
+import com.zxhhyj.music.ui.common.image.AppAsyncImage
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
-import com.zxhhyj.music.ui.theme.*
+import com.zxhhyj.music.ui.theme.horizontal
+import com.zxhhyj.music.ui.theme.onBackground
+import com.zxhhyj.music.ui.theme.textColor
+import com.zxhhyj.music.ui.theme.textColorLight
+import com.zxhhyj.music.ui.theme.vertical
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
-
 
 @Composable
 fun SongItem(
@@ -76,7 +79,7 @@ fun SongItem(
                     overflow = TextOverflow.Ellipsis
                 )
             }
-            AppIcon(
+            AppRoundIcon(
                 imageVector = Icons.Rounded.MoreVert,
                 tint = onBackground,
                 contentDescription = null,

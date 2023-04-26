@@ -9,9 +9,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ColorLens
+import androidx.compose.material.icons.rounded.FontDownload
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Source
-import androidx.compose.material.icons.rounded.TextFormat
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -65,11 +65,11 @@ fun SettingScreen(
         }
         item {
             SettingItem(
-                imageVector = Icons.Rounded.TextFormat,
+                imageVector = Icons.Rounded.FontDownload,
                 title = stringResource(id = R.string.lyric),
                 subTitle = stringResource(id = R.string.lyric_info)
             ) {
-
+                mainNavController.navigate(ScreenDestination.Lyric)
             }
         }
         item {

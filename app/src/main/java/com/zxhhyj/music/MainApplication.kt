@@ -55,12 +55,11 @@ class MainApplication : Application() {
 
     private fun startPlayerService() {
         if (!MediaPlayService.isServiceAlive) {
-            Intent(this, MediaPlayService::class.java).let {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(it)
-                } else {
-                    startService(it)
-                }
+            val intent = Intent(this, MediaPlayService::class.java)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(intent)
+            } else {
+                startService(intent)
             }
         }
     }

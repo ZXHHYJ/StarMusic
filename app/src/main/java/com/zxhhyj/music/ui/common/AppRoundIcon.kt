@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.common
+package com.zxhhyj.music.ui.common.icon
 
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalContentAlpha
@@ -7,9 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.zxhhyj.music.ui.common.card.AppRoundCard
 
 @Composable
-fun AppIcon(
+fun AppRoundIcon(
     imageVector: ImageVector,
     contentDescription: String?,
     modifier: Modifier = Modifier,

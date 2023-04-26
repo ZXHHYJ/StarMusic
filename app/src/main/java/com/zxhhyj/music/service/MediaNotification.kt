@@ -11,6 +11,9 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.service.playmanager.PlayManager
 
 
+/**
+ * 媒体通知
+ */
 class MediaNotification(
     private val context: Context,
     mediaSessionCompat: MediaSessionCompat,
