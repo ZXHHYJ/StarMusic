@@ -16,7 +16,7 @@
     <string name="setting">设置</string>
     <string name="scan_music">扫描音乐</string>
     <string name="not_lyric">无歌词</string>
-    <string name="delete">从媒体库中移除</string>
+    <string name="delete">删除</string>
     <string name="song_info">歌曲信息</string>
     <string name="bit_rate">比特率</string>
     <string name="duration">时长</string>
@@ -38,4 +38,5 @@
     <string name="yes">确定</string>
     <string name="scan_music_dialog_text">向你的媒体库中添加些内容</string>
     <string name="android_meida_libs">Android媒体库</string>
+    <string name="hide">隐藏</string>
 </resources>

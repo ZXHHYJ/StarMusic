@@ -39,7 +39,7 @@ fun MediaSourceScreen(
     val coroutineScope = rememberCoroutineScope()
     val permissionState =
         rememberPermissionState(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) Manifest.permission.READ_MEDIA_AUDIO else Manifest.permission.READ_EXTERNAL_STORAGE)
-    LaunchedEffect(SettingRepository.EnableAndroidMediaLibs) {
+    LaunchedEffect(SettingRepository.EnableAndroidMediaLibs, permissionState.status) {
         if (SettingRepository.EnableAndroidMediaLibs) {
             when (permissionState.status) {
                 is PermissionStatus.Denied -> {

@@ -94,14 +94,15 @@ fun AppMenuButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     imageVector: ImageVector,
-    text: String
+    text: String,
+    enabled: Boolean = true
 ) {
     Surface(
         color = Color.Transparent,
-        contentColor = appTextButtonAccentColor,
+        contentColor = if (enabled) appTextButtonAccentColor else Color.DarkGray,
         shape = roundShape
     ) {
-        Column(modifier = modifier.clickable {
+        Column(modifier = modifier.clickable(enabled) {
             onClick.invoke()
         }) {
             Row(

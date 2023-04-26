@@ -1,11 +1,18 @@
 package com.zxhhyj.music.logic.repository
 
+import android.annotation.SuppressLint
+import android.content.ContentUris
+import android.os.Build
 import android.provider.MediaStore
+import androidx.activity.result.IntentSenderRequest
 import com.funny.data_saver.core.mutableDataSaverListStateOf
 import com.zxhhyj.music.logic.config.DataSaverUtils
 import com.zxhhyj.music.logic.config.application
+import com.zxhhyj.music.logic.helper.ToastHelper
 import com.zxhhyj.music.service.playmanager.bean.SongBean
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 
 
@@ -32,14 +39,12 @@ object LocalMediaRepository {
     )
         private set
 
-    val SongBean.Album.artist: SongBean.Artist
-        get() {
-            for (song in this@LocalMediaRepository.songs) {
-                if (song.album.id == this.id)
-                    return song.artist
-            }
-            throw java.lang.NullPointerException("artist is null")
-        }
+    var hideSongs by mutableDataSaverListStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "hide_songs",
+        initialValue = listOf<SongBean>()
+    )
+        private set
 
     val SongBean.Album.songs: List<SongBean>
         get() {
@@ -66,42 +71,36 @@ object LocalMediaRepository {
     /**
      * 扫描媒体
      */
+    @SuppressLint("Range")
     suspend fun scanMedia() {
         songs = suspendCancellableCoroutine {
             val query = application.contentResolver.query(
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                arrayOf(
-                    MediaStore.Audio.AudioColumns.ALBUM,
-                    MediaStore.Audio.AudioColumns.ALBUM_ID,
-                    MediaStore.Audio.AudioColumns.ARTIST,
-                    MediaStore.Audio.AudioColumns.ARTIST_ID,
-                    MediaStore.Audio.AudioColumns.DURATION,
-                    MediaStore.Audio.AudioColumns.DATA,
-                    MediaStore.Audio.AudioColumns.TITLE,
-                    MediaStore.Audio.AudioColumns.SIZE,
-                ),
                 null,
+                "${MediaStore.Audio.Media.IS_MUSIC} != 0",
                 null,
                 null
             )
             val songs = arrayListOf<SongBean>()
             while (query != null && query.moveToNext()) {
                 val album =
-                    query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.ALBUM))
+                    query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM))
                 val albumId =
-                    query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.ALBUM_ID))
+                    query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID))
                 val artist =
-                    query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.ARTIST))
+                    query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST))
                 val artistId =
-                    query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.ARTIST_ID))
+                    query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST_ID))
                 val duration =
-                    query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.DURATION))
+                    query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION))
                 val data =
-                    query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.DATA))
+                    query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA))
                 val songName =
-                    query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.TITLE))
+                    query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE))
                 val size =
-                    query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.SIZE))
+                    query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE))
+                val id =
+                    query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.Media._ID))
                 songs.add(
                     SongBean(
                         album = SongBean.Album(albumId.toString(), album),
@@ -109,7 +108,8 @@ object LocalMediaRepository {
                         duration = duration,
                         data = data,
                         songName = songName,
-                        size = size
+                        size = size,
+                        id = id
                     )
                 )
             }
@@ -128,11 +128,7 @@ object LocalMediaRepository {
             }
             albumKVHashMap[song.album.id] = song.album.copy()
         }
-        val albums = arrayListOf<SongBean.Album>()
-        for (entry in albumKVHashMap) {
-            albums.add(entry.value)
-        }
-        this.albums = albums
+        this.albums = albumKVHashMap.values.toList()
     }
 
     private fun updateArtist() {
@@ -143,26 +139,67 @@ object LocalMediaRepository {
             }
             artistKVHashMap[song.artist.id] = song.artist.copy()
         }
-        val artists = arrayListOf<SongBean.Artist>()
-        for (entry in artistKVHashMap) {
-            artists.add(entry.value)
-        }
-        this.artists = artists
+        this.artists = artistKVHashMap.values.toList()
     }
 
-    fun delete(song: SongBean) {
-        when (val index = songs.indexOf(song)) {
-            -1 -> {}
-            else -> {
-                val newSongs = songs.toMutableList()
-                newSongs.removeAt(index)
-                songs = newSongs
-                updateAlbum()
-                updateArtist()
+    /**
+     * 从媒体库中隐藏某个歌曲
+     */
+    fun hide(song: SongBean) {
+        val index = songs.indexOf(song)
+        if (index != -1) {
+            songs = songs.toMutableList().also {
+                it.removeAt(index)
+            }
+            updateAlbum()
+            updateArtist()
+            hideSongs = hideSongs.toMutableList().also {
+                it.add(song)
             }
         }
     }
 
+    /**
+     * 从媒体库中删除某个歌曲
+     */
+    suspend fun delete(song: SongBean) {
+        val index = songs.indexOf(song)
+        if (index != -1) {
+            songs = songs.toMutableList().also {
+                it.removeAt(index)
+            }
+            updateAlbum()
+            updateArtist()
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val deleteUri =
+                ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, song.id)
+            val pendingIntent = MediaStore.createDeleteRequest(
+                application.contentResolver,
+                listOf(deleteUri)
+            )
+            val request = IntentSenderRequest.Builder(pendingIntent.intentSender).build()
+            try {
+                withContext(Dispatchers.IO) {
+                    application.startIntentSender(
+                        request.intentSender,
+                        request.fillInIntent,
+                        request.flagsMask,
+                        request.flagsValues,
+                        0
+                    )
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                ToastHelper.toast(e.message ?: return)
+            }
+            return
+        }
+    }
+
+    /**
+     * 清空媒体库
+     */
     fun clear() {
         songs = listOf()
         artists = listOf()

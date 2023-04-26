@@ -15,11 +15,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Album
 import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.HideSource
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -41,6 +43,7 @@ import com.zxhhyj.music.ui.theme.vertical
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.popAll
+import kotlinx.coroutines.launch
 
 @Composable
 fun SongMenuSheet(
@@ -48,6 +51,8 @@ fun SongMenuSheet(
     sheetNavController: NavController<BottomSheetDestination>,
     song: SongBean,
 ) {
+    val currentSong by PlayManager.changeMusicLiveData().observeAsState()
+    val coroutineScope = rememberCoroutineScope()
     LazyColumn {
         item {
             Box(
@@ -122,17 +127,29 @@ fun SongMenuSheet(
             )
         }
         item {
-            val currentSong by PlayManager.changeMusicLiveData().observeAsState()
-            if (currentSong != song && currentSong != null) {
-                AppMenuButton(
-                    onClick = {
-                        sheetNavController.popAll()
-                        LocalMediaRepository.delete(currentSong!!)
-                    },
-                    imageVector = Icons.Rounded.Delete,
-                    text = stringResource(id = R.string.delete)
-                )
-            }
+
+            AppMenuButton(
+                onClick = {
+                    sheetNavController.popAll()
+                    LocalMediaRepository.hide(song)
+                },
+                imageVector = Icons.Rounded.HideSource,
+                text = stringResource(id = R.string.hide),
+                enabled = currentSong != song
+            )
+        }
+        item {
+
+            AppMenuButton(
+                onClick = {
+                    sheetNavController.popAll()
+                    coroutineScope.launch {
+                        LocalMediaRepository.delete(song)
+                    }
+                },
+                imageVector = Icons.Rounded.Delete,
+                text = stringResource(id = R.string.delete), enabled = currentSong != song
+            )
         }
     }
 }
