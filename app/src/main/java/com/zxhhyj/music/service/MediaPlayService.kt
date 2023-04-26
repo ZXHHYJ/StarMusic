@@ -52,7 +52,7 @@ class MediaPlayService : LifecycleService() {
 
     private fun refreshMediaNotifications() {
         if (!isForeground) {
-            startForeground(ID, mMediaNotification.setAction(!PlayManager.isPaused).build())
+            startForeground(ID, mMediaNotification.build())
             isForeground = true
         } else {
             if (ActivityCompat.checkSelfPermission(
@@ -64,15 +64,17 @@ class MediaPlayService : LifecycleService() {
             }
             mNotificationManager.notify(
                 ID,
-                mMediaNotification.setAction(!PlayManager.isPaused).build()
+                mMediaNotification.build()
             )
         }
 
         if (PlayManager.isPaused) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                stopForeground(STOP_FOREGROUND_DETACH)
+            } else {
                 stopForeground(false)
-                isForeground = false
             }
+            isForeground = false
         }
     }
 
@@ -106,29 +108,7 @@ class MediaPlayService : LifecycleService() {
     override fun onCreate() {
         isServiceAlive = true
         super.onCreate()
-        mAudioFocusHelper =
-            AudioFocusHelper(this, object : AudioFocusHelper.OnAudioFocusChangeListener {
-
-                override fun onLoss() {
-                    PlayManager.pause()
-                }
-
-                override fun onLossTransient() {
-                    PlayManager.pause()
-                }
-
-                override fun onLossTransientCanDuck() {
-
-                }
-
-                override fun onGain(lossTransient: Boolean, lossTransientCanDuck: Boolean) {
-                    if (lossTransient) {
-                        PlayManager.play()
-                    }
-                }
-
-            })
-
+        mAudioFocusHelper = AudioFocusHelper(this, AudioFocusChangeListener())
         PlayManager.changeMusicLiveData().observe(this@MediaPlayService) {
             if (it == null) return@observe
             mMediaNotification
@@ -249,42 +229,72 @@ class MediaPlayService : LifecycleService() {
                     PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
                 )
             )
-            mMediaSession.setCallback(object : MediaSessionCompat.Callback() {
-                override fun onSeekTo(pos: Long) {
-                    super.onSeekTo(pos)
-                    PlayManager.seekTo(pos.toInt())
-                }
-
-                override fun onStop() {
-                    super.onStop()
-                    PlayManager.stop()
-                    stopSelf()
-                }
-
-                override fun onSkipToNext() {
-                    super.onSkipToNext()
-                    PlayManager.skipToNext()
-                }
-
-                override fun onSkipToPrevious() {
-                    super.onSkipToPrevious()
-                    PlayManager.skipToPrevious()
-                }
-
-                override fun onPlay() {
-                    super.onPlay()
-                    PlayManager.play()
-                }
-
-                override fun onPause() {
-                    super.onPause()
-                    PlayManager.pause()
-                }
-            })
+            mMediaSession.setCallback(MediaSessionCallback())
             mMediaNotification = MediaNotification(this, mMediaSession, CHANNEL_ID)
         }
+        //fix bug：没有这行代码的话，划掉通知后app会被一同关闭
+        startForeground(ID, mMediaNotification.build())
         MediaButtonReceiver.handleIntent(mMediaSession, intent)
         return super.onStartCommand(intent, flags, startId)
     }
 
+    /**
+     * 监听MediaSessionCallback事件
+     */
+    inner class MediaSessionCallback : MediaSessionCompat.Callback() {
+        override fun onSeekTo(pos: Long) {
+            super.onSeekTo(pos)
+            PlayManager.seekTo(pos.toInt())
+        }
+
+        override fun onStop() {
+            super.onStop()
+            PlayManager.stop()
+            stopSelf()
+        }
+
+        override fun onSkipToNext() {
+            super.onSkipToNext()
+            PlayManager.skipToNext()
+        }
+
+        override fun onSkipToPrevious() {
+            super.onSkipToPrevious()
+            PlayManager.skipToPrevious()
+        }
+
+        override fun onPlay() {
+            super.onPlay()
+            PlayManager.play()
+        }
+
+        override fun onPause() {
+            super.onPause()
+            PlayManager.pause()
+        }
+    }
+
+    /**
+     * 对音频焦点获取与丢失做出反应
+     */
+    inner class AudioFocusChangeListener : AudioFocusHelper.OnAudioFocusChangeListener {
+
+        override fun onLoss() {
+            PlayManager.pause()
+        }
+
+        override fun onLossTransient() {
+            PlayManager.pause()
+        }
+
+        override fun onLossTransientCanDuck() {
+
+        }
+
+        override fun onGain(lossTransient: Boolean, lossTransientCanDuck: Boolean) {
+            if (lossTransient) {
+                PlayManager.play()
+            }
+        }
+    }
 }
