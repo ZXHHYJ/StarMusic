@@ -3,7 +3,6 @@ package com.zxhhyj.music.ui.screen.mediasource
 import android.Manifest
 import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,7 +29,7 @@ import com.zxhhyj.music.ui.screen.setting.item.SettingItem
 import com.zxhhyj.music.ui.screen.setting.item.SettingSwitchItem
 import dev.olshevski.navigation.reimagined.NavController
 
-@OptIn(ExperimentalPermissionsApi::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun MediaSourceScreen(
     mainNavController: NavController<ScreenDestination>,
@@ -59,7 +58,10 @@ fun MediaSourceScreen(
             SettingSwitchItem(
                 imageVector = Icons.Rounded.LibraryMusic,
                 title = stringResource(id = R.string.android_meida_libs),
-                subTitle = "当前媒体库中包含" + MediaLibsRepository.songs.size + "首歌曲",
+                subTitle = stringResource(
+                    id = R.string.media_lib_has_songs_size,
+                    MediaLibsRepository.songs.size
+                ),
                 checked = SettingRepository.EnableAndroidMediaLibs,
                 onCheckedChange = {
                     SettingRepository.EnableAndroidMediaLibs = it
@@ -69,9 +71,8 @@ fun MediaSourceScreen(
         item {
             AnimatedVisibility(visible = SettingRepository.EnableAndroidMediaLibs) {
                 SettingItem(
-                    modifier = Modifier.animateItemPlacement(),
                     imageVector = Icons.Rounded.Refresh,
-                    title = "刷新媒体库"
+                    title = stringResource(id = R.string.refresh_media_lib)
                 ) {
                     mediaLibsManager.scanMedia()
                 }

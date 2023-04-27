@@ -77,10 +77,7 @@ fun SettingScreen(
             SettingItem(
                 imageVector = Icons.Rounded.Info,
                 title = stringResource(id = R.string.about),
-                subTitle = stringResource(
-                    id = R.string.about_info,
-                    formatArgs = arrayOf(versionName)
-                )
+                subTitle = stringResource(id = R.string.about_info, versionName)
             ) {
                 mainNavController.navigate(ScreenDestination.About)
             }

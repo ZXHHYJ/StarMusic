@@ -39,4 +39,6 @@
     <string name="scan_music_dialog_text">向你的媒体库中添加些内容</string>
     <string name="android_meida_libs">Android媒体库</string>
     <string name="hide">隐藏</string>
+    <string name="refresh_media_lib">刷新媒体库</string>
+    <string name="media_lib_has_songs_size">当前媒体库包含%d首歌曲</string>
 </resources>

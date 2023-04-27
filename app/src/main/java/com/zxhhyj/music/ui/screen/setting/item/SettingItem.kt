@@ -53,7 +53,7 @@ fun SettingItem(
                 Spacer(modifier = Modifier.width(vertical))
                 Column {
                     Text(text = title, fontWeight = FontWeight.Bold, color = textColor)
-                    Text(text = subTitle ?: return@Column, fontSize = 14.sp, color = textColor)
+                    subTitle?.let { Text(text = subTitle, fontSize = 14.sp, color = textColor) }
                 }
             }
             AppDivider(
