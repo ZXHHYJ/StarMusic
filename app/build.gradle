@@ -11,8 +11,8 @@ android {
         applicationId "com.zxhhyj.music"
         minSdk 23
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "2023.4.28"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         ndk {

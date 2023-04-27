@@ -309,8 +309,6 @@ fun MainScreen() {
 
                             ScreenDestination.About -> {
                                 AboutScreen(
-                                    mainNavController = mainNavController,
-                                    sheetNavController = sheetNavController,
                                     padding = padding
                                 )
                             }

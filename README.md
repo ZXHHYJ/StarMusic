@@ -10,7 +10,7 @@
 <p align="center">
 <img src="https://img.shields.io/badge/language-kotlin-orange.svg"/>
 <img src="https://img.shields.io/badge/license-Apache-blue"/>
-<a href="https://gitee.com/ZXHHYJ/mandysa_music/releases"><img src="https://img.shields.io/badge/updates-%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97-brightgreen"/></a>
+<a href="https://gitee.com/ZXHHYJ/star_music/commits/master"><img src="https://img.shields.io/badge/updates-%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97-brightgreen"/></a>
 </p>
 
 <br>

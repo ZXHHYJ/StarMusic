@@ -1,7 +1,5 @@
 package com.zxhhyj.music.ui.screen.setting
 
-import android.content.pm.PackageManager
-import android.os.Build
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.config.application
+import com.zxhhyj.music.logic.helper.VersionHelper
 import com.zxhhyj.music.ui.common.topbar.TopAppBar
 import com.zxhhyj.music.ui.common.topbar.bindTopAppBarState
 import com.zxhhyj.music.ui.common.topbar.rememberTopAppBarState
@@ -30,15 +28,6 @@ fun SettingScreen(
     mainNavController: NavController<ScreenDestination>,
     padding: PaddingValues,
 ) {
-    val versionName = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        application.packageManager.getPackageInfo(
-            application.packageName,
-            PackageManager.PackageInfoFlags.of(0)
-        )
-    } else {
-        @Suppress("DEPRECATION")
-        application.packageManager.getPackageInfo(application.packageName, 0)
-    }.versionName
     val topAppBarState = rememberTopAppBarState()
     LazyColumn(
         modifier = Modifier
@@ -77,7 +66,7 @@ fun SettingScreen(
             SettingItem(
                 imageVector = Icons.Rounded.Info,
                 title = stringResource(id = R.string.about),
-                subTitle = stringResource(id = R.string.about_info, versionName)
+                subTitle = stringResource(id = R.string.about_info, VersionHelper.VersionName)
             ) {
                 mainNavController.navigate(ScreenDestination.About)
             }

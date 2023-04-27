@@ -46,4 +46,6 @@
     <string name="album_get_color_info">从正在播放的歌曲中提取颜色</string>
     <string name="monet_get_color">Monet取色</string>
     <string name="monet_get_color_info">莫奈取色</string>
+    <string name="version">版本</string>
+    <string name="link">链接</string>
 </resources>
