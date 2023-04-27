@@ -1,4 +1,4 @@
-package com.zxhhyj.music.logic.repository.media
+package com.zxhhyj.music.logic.repository
 
 import android.annotation.SuppressLint
 import android.content.ContentUris
@@ -22,8 +22,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
-
-object MediaLibsRepository {
+object AndroidMediaLibsRepository {
 
     var artists by mutableDataSaverListStateOf(
         dataSaverInterface = DataSaverUtils,
@@ -56,7 +55,7 @@ object MediaLibsRepository {
     val SongBean.Album.songs: List<SongBean>
         get() {
             val list = arrayListOf<SongBean>()
-            for (song in MediaLibsRepository.songs) {
+            for (song in AndroidMediaLibsRepository.songs) {
                 if (song.album.id == this.id) {
                     list.add(song)
                 }
@@ -67,7 +66,7 @@ object MediaLibsRepository {
     val SongBean.Artist.songs: List<SongBean>
         get() {
             val list = arrayListOf<SongBean>()
-            for (song in MediaLibsRepository.songs) {
+            for (song in AndroidMediaLibsRepository.songs) {
                 if (song.artist.id == this.id) {
                     list.add(song)
                 }

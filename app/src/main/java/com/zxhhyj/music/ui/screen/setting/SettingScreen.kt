@@ -61,7 +61,7 @@ fun SettingScreen(
                 title = stringResource(id = R.string.media_lib),
                 subTitle = stringResource(id = R.string.scan_music)
             ) {
-                mainNavController.navigate(ScreenDestination.MediaSource)
+                mainNavController.navigate(ScreenDestination.MediaLibs)
             }
         }
         item {

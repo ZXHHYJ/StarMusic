@@ -22,7 +22,7 @@ fun ScanMusicDialog(
         confirm = {
             Text(text = stringResource(id = R.string.yes), modifier = Modifier.clickable {
                 onDismissRequest.invoke()
-                mainNavController.navigate(ScreenDestination.MediaSource)
+                mainNavController.navigate(ScreenDestination.MediaLibs)
             })
         },
         dismiss = {

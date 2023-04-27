@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.screen.lyric
+package com.zxhhyj.music.ui.screen.hidesongs
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,7 +13,7 @@ import com.zxhhyj.music.ui.common.topbar.bindTopAppBarState
 import com.zxhhyj.music.ui.common.topbar.rememberTopAppBarState
 
 @Composable
-fun LyricScreen(padding: PaddingValues) {
+fun HiddenSongsScreen(padding: PaddingValues) {
     val topAppBarState = rememberTopAppBarState()
     LazyColumn(
         modifier = Modifier
@@ -24,6 +24,6 @@ fun LyricScreen(padding: PaddingValues) {
 
     }
     TopAppBar(
-        state = topAppBarState, modifier = Modifier, title = stringResource(id = R.string.lyric)
+        state = topAppBarState, modifier = Modifier, title = stringResource(id = R.string.hidden_songs)
     )
 }

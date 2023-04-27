@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Album
+import androidx.compose.material.icons.rounded.ColorLens
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -27,9 +28,20 @@ fun ThemeScreen(padding: PaddingValues) {
     ) {
         item {
             SettingSwitchItem(
+                imageVector = Icons.Rounded.ColorLens,
+                title = stringResource(id = R.string.monet_get_color),
+                subTitle = stringResource(id = R.string.monet_get_color_info),
+                checked = SettingRepository.EnableMonet,
+                onCheckedChange = {
+                    SettingRepository.EnableMonet = it
+                }
+            )
+        }
+        item {
+            SettingSwitchItem(
                 imageVector = Icons.Rounded.Album,
-                title = "封面取色",
-                subTitle = "根据当前播放歌曲的封面取色",
+                title = stringResource(id = R.string.album_get_color),
+                subTitle = stringResource(id = R.string.album_get_color_info),
                 checked = SettingRepository.EnableAlbumGetColor,
                 onCheckedChange = {
                     SettingRepository.EnableAlbumGetColor = it

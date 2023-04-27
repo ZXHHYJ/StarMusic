@@ -31,6 +31,12 @@ sealed class ScreenDestination : Parcelable {
     object Lyric : ScreenDestination()
 
     /**
+     * 隐藏的歌曲
+     */
+    @Parcelize
+    object HiddenSongs : ScreenDestination()
+
+    /**
      * 歌手详情
      */
     @Parcelize
@@ -61,10 +67,10 @@ sealed class ScreenDestination : Parcelable {
     object About : ScreenDestination()
 
     /**
-     * 媒体源
+     * 媒体库
      */
     @Parcelize
-    object MediaSource : ScreenDestination()
+    object MediaLibs : ScreenDestination()
 
     /**
      * 歌手

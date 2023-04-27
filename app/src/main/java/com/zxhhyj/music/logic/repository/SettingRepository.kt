@@ -20,7 +20,7 @@ object SettingRepository {
     var EnableAlbumGetColor by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "EnableAlbumGetColor",
-        initialValue = true
+        initialValue = false
     )
 
     /**

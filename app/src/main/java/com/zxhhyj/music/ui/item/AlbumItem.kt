@@ -14,7 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.repository.media.MediaLibsRepository.songs
+import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository.songs
 import com.zxhhyj.music.service.playmanager.bean.SongBean
 import com.zxhhyj.music.ui.common.image.AppAsyncImage
 import com.zxhhyj.music.ui.common.card.AppCard

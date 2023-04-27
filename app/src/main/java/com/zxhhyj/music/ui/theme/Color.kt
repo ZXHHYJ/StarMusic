@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.kyant.monet.a1
 
+val appUnEnabledColor = Color.DarkGray.copy(alpha = 0.7f)
+
 val appAccentColor
     @Composable get() = 45.a1
 
@@ -15,9 +17,6 @@ val appTextAccentColor
 
 val appTextButtonAccentColor
     @Composable get() = appAccentColor
-
-val appButtonAccentColor
-    @Composable get() = appAccentColor.copy(alpha = 0.7f)
 
 /**
  * 标准字体颜色

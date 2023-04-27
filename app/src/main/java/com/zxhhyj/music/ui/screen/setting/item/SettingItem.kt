@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.ui.common.AppDivider
 import com.zxhhyj.music.ui.theme.appIconAccentColor
+import com.zxhhyj.music.ui.theme.appUnEnabledColor
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.roundShape
 import com.zxhhyj.music.ui.theme.textColor
@@ -30,15 +31,14 @@ fun SettingItem(
     imageVector: ImageVector,
     title: String,
     subTitle: String? = null,
+    enabled: Boolean = true,
     onClick: () -> Unit,
 ) {
     Surface(
         color = Color.Transparent,
         shape = roundShape
     ) {
-        Column(modifier = modifier.clickable {
-            onClick.invoke()
-        }) {
+        Column(modifier = modifier.clickable(enabled = enabled, onClick = onClick)) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -48,12 +48,22 @@ fun SettingItem(
                 Icon(
                     imageVector = imageVector,
                     contentDescription = title,
-                    tint = appIconAccentColor
+                    tint = if (enabled) appIconAccentColor else appUnEnabledColor
                 )
                 Spacer(modifier = Modifier.width(vertical))
                 Column {
-                    Text(text = title, fontWeight = FontWeight.Bold, color = textColor)
-                    subTitle?.let { Text(text = subTitle, fontSize = 14.sp, color = textColor) }
+                    Text(
+                        text = title,
+                        fontWeight = FontWeight.Bold,
+                        color = if (enabled) textColor else appUnEnabledColor
+                    )
+                    subTitle?.let {
+                        Text(
+                            text = subTitle,
+                            fontSize = 14.sp,
+                            color = if (enabled) textColor else appUnEnabledColor
+                        )
+                    }
                 }
             }
             AppDivider(

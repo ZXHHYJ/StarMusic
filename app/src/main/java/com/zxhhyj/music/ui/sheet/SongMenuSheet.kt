@@ -27,7 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.repository.media.MediaLibsRepository.rememberMediaLibsManager
+import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository.rememberMediaLibsManager
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.bean.SongBean
 import com.zxhhyj.music.ui.common.button.AppMenuButton

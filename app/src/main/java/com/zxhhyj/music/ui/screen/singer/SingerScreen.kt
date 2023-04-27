@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.repository.media.MediaLibsRepository
+import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.ui.common.topbar.TopAppBar
 import com.zxhhyj.music.ui.common.topbar.bindTopAppBarState
 import com.zxhhyj.music.ui.common.topbar.rememberTopAppBarState
@@ -32,7 +32,7 @@ fun SingerScreen(
             .fillMaxSize(),
         contentPadding = padding
     ) {
-        items(MediaLibsRepository.artists) {
+        items(AndroidMediaLibsRepository.artists) {
             ArtistItem(artist = it) {
                 mainNavController.navigate(ScreenDestination.SingerCnt(it))
             }

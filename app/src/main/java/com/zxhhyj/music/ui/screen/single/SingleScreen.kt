@@ -15,7 +15,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.repository.media.MediaLibsRepository
+import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.icon.AppRoundIcon
@@ -40,8 +40,8 @@ fun SingleScreen(
     dialogNavController: NavController<DialogDestination>,
     padding: PaddingValues
 ) {
-    DisposableEffect(SettingRepository.AgreePrivacyPolicy, MediaLibsRepository.songs) {
-        if (SettingRepository.AgreePrivacyPolicy && MediaLibsRepository.songs.isEmpty()) {
+    DisposableEffect(SettingRepository.AgreePrivacyPolicy, AndroidMediaLibsRepository.songs) {
+        if (SettingRepository.AgreePrivacyPolicy && AndroidMediaLibsRepository.songs.isEmpty()) {
             dialogNavController.navigate(DialogDestination.ScanMusic)
         }
         onDispose {
@@ -83,9 +83,9 @@ fun SingleScreen(
         item {
             SubTitleItem(title = stringResource(id = R.string.single))
         }
-        itemsIndexed(MediaLibsRepository.songs) { index, item ->
+        itemsIndexed(AndroidMediaLibsRepository.songs) { index, item ->
             SongItem(sheetNavController = sheetNavController, song = item) {
-                PlayManager.play(MediaLibsRepository.songs, index)
+                PlayManager.play(AndroidMediaLibsRepository.songs, index)
             }
         }
     }

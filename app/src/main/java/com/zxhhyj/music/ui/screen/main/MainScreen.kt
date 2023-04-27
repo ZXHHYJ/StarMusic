@@ -33,8 +33,9 @@ import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.about.AboutScreen
 import com.zxhhyj.music.ui.screen.album.AlbumScreen
 import com.zxhhyj.music.ui.screen.albumcnt.AlbumCntScreen
+import com.zxhhyj.music.ui.screen.hidesongs.HiddenSongsScreen
 import com.zxhhyj.music.ui.screen.lyric.LyricScreen
-import com.zxhhyj.music.ui.screen.mediasource.MediaSourceScreen
+import com.zxhhyj.music.ui.screen.medialibs.MediaSourceScreen
 import com.zxhhyj.music.ui.screen.play.PlayScreen
 import com.zxhhyj.music.ui.screen.playlist.PlayListScreen
 import com.zxhhyj.music.ui.screen.search.SearchScreen
@@ -328,7 +329,7 @@ fun MainScreen() {
                                 )
                             }
 
-                            ScreenDestination.MediaSource -> {
+                            ScreenDestination.MediaLibs -> {
                                 MediaSourceScreen(
                                     mainNavController = mainNavController,
                                     padding = padding
@@ -357,6 +358,10 @@ fun MainScreen() {
 
                             ScreenDestination.Lyric -> {
                                 LyricScreen(padding = padding)
+                            }
+
+                            ScreenDestination.HiddenSongs -> {
+                                HiddenSongsScreen(padding = padding)
                             }
                         }
                     }
@@ -400,12 +405,7 @@ fun MainScreen() {
     BottomSheetNavHost(
         controller = sheetNavController,
         onDismissRequest = { sheetNavController.pop() },
-        sheetPropertiesSpec = {
-            BottomSheetProperties(
-                confirmValueChange = { true },
-                skipHalfExpanded = true
-            )
-        }
+        sheetPropertiesSpec = { BottomSheetProperties(skipHalfExpanded = true) }
     ) { destination ->
         BackHandler {
             sheetNavController.pop()
