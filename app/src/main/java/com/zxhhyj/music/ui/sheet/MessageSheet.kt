@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.common
+package com.zxhhyj.music.ui.sheet
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,7 +15,7 @@ import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.textColor
 
 @Composable
-fun Message(message: String) {
+fun MessageSheet(message: String) {
     Column(
         modifier = Modifier
             .padding(horizontal = horizontal)

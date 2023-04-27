@@ -2,6 +2,7 @@ package com.zxhhyj.music.service
 
 import android.app.Notification
 import android.content.Context
+import android.os.Build
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import androidx.annotation.DrawableRes
@@ -11,9 +12,6 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.service.playmanager.PlayManager
 
 
-/**
- * 媒体通知
- */
 class MediaNotification(
     private val context: Context,
     mediaSessionCompat: MediaSessionCompat,
@@ -39,11 +37,15 @@ class MediaNotification(
 
     private val skipNext = button(R.drawable.ic_skip_next, PlaybackStateCompat.ACTION_SKIP_TO_NEXT)
 
+    private val stop = button(R.drawable.ic_round_clear_24, PlaybackStateCompat.ACTION_STOP)
+
     override fun build(): Notification {
-        val playing = !PlayManager.isPaused
         clearActions()
-        listOf(skipPrevious, if (playing) pause else play, skipNext).forEach {
+        listOf(skipPrevious, if (PlayManager.isPaused) play else pause, skipNext).forEach {
             addAction(it)
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            addAction(stop)
         }
         return super.build()
     }
@@ -61,7 +63,7 @@ class MediaNotification(
                             PlaybackStateCompat.ACTION_STOP
                         )
                     )
-                    .setShowActionsInCompactView(0, 1, 2)
+                    .setShowActionsInCompactView(0, 1, 2, 3)
                     .setMediaSession(mediaSessionCompat.sessionToken)
             )
         // Enable launching the player by clicking the notification

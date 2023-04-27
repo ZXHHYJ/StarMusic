@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.common
+package com.zxhhyj.music.ui.common.topbar
 
 import android.os.Parcelable
 import androidx.compose.foundation.background
@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.zxhhyj.music.ui.common.AppDivider
 import com.zxhhyj.music.ui.theme.appBackgroundColor
 import com.zxhhyj.music.ui.theme.appIconAccentColor
 import com.zxhhyj.music.ui.theme.horizontal

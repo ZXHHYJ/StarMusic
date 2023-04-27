@@ -15,14 +15,14 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.repository.LocalMediaRepository
+import com.zxhhyj.music.logic.repository.media.MediaLibsRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.icon.AppRoundIcon
 import com.zxhhyj.music.ui.common.button.AppListButton
-import com.zxhhyj.music.ui.common.TopAppBar
-import com.zxhhyj.music.ui.common.bindTopAppBarState
-import com.zxhhyj.music.ui.common.rememberTopAppBarState
+import com.zxhhyj.music.ui.common.topbar.TopAppBar
+import com.zxhhyj.music.ui.common.topbar.bindTopAppBarState
+import com.zxhhyj.music.ui.common.topbar.rememberTopAppBarState
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.item.SubTitleItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
@@ -40,8 +40,8 @@ fun SingleScreen(
     dialogNavController: NavController<DialogDestination>,
     padding: PaddingValues
 ) {
-    DisposableEffect(SettingRepository.AgreePrivacyPolicy, LocalMediaRepository.songs) {
-        if (SettingRepository.AgreePrivacyPolicy && LocalMediaRepository.songs.isEmpty()) {
+    DisposableEffect(SettingRepository.AgreePrivacyPolicy, MediaLibsRepository.songs) {
+        if (SettingRepository.AgreePrivacyPolicy && MediaLibsRepository.songs.isEmpty()) {
             dialogNavController.navigate(DialogDestination.ScanMusic)
         }
         onDispose {
@@ -83,9 +83,9 @@ fun SingleScreen(
         item {
             SubTitleItem(title = stringResource(id = R.string.single))
         }
-        itemsIndexed(LocalMediaRepository.songs) { index, item ->
+        itemsIndexed(MediaLibsRepository.songs) { index, item ->
             SongItem(sheetNavController = sheetNavController, song = item) {
-                PlayManager.play(LocalMediaRepository.songs, index)
+                PlayManager.play(MediaLibsRepository.songs, index)
             }
         }
     }

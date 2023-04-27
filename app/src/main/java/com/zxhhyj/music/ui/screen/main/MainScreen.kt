@@ -43,12 +43,14 @@ import com.zxhhyj.music.ui.screen.singer.SingerScreen
 import com.zxhhyj.music.ui.screen.singercnt.SingerCntScreen
 import com.zxhhyj.music.ui.screen.single.SingleScreen
 import com.zxhhyj.music.ui.screen.theme.ThemeScreen
+import com.zxhhyj.music.ui.sheet.MessageSheet
 import com.zxhhyj.music.ui.sheet.SongMenuSheet
 import com.zxhhyj.music.ui.sheet.songinfo.SongInfoSheet
 import com.zxhhyj.music.ui.theme.appBackgroundColor
 import com.zxhhyj.music.ui.theme.round
 import dev.olshevski.navigation.reimagined.*
 import dev.olshevski.navigation.reimagined.material.BottomSheetNavHost
+import dev.olshevski.navigation.reimagined.material.BottomSheetProperties
 
 /**
  * Happy 22nd Birthday Shuangshengzi
@@ -397,7 +399,13 @@ fun MainScreen() {
 
     BottomSheetNavHost(
         controller = sheetNavController,
-        onDismissRequest = { sheetNavController.pop() }
+        onDismissRequest = { sheetNavController.pop() },
+        sheetPropertiesSpec = {
+            BottomSheetProperties(
+                confirmValueChange = { true },
+                skipHalfExpanded = true
+            )
+        }
     ) { destination ->
         BackHandler {
             sheetNavController.pop()
@@ -424,7 +432,7 @@ fun MainScreen() {
                 }
 
                 is BottomSheetDestination.Message -> {
-                    Message(message = destination.message)
+                    MessageSheet(message = destination.message)
                 }
 
                 is BottomSheetDestination.BottomSheet -> {

@@ -40,10 +40,10 @@ import com.mxalbert.sharedelements.SharedElement
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.ktx.toTime
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.ui.common.image.AppAsyncImage
+import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.common.card.AppCard
 import com.zxhhyj.music.ui.common.icon.AppRoundIcon
-import com.zxhhyj.music.ui.common.BoxWithPercentages
+import com.zxhhyj.music.ui.common.image.AppAsyncImage
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.theme.translucentWhite
 import com.zxhhyj.music.ui.theme.translucentWhiteFixBug
@@ -53,7 +53,6 @@ import kotlin.math.roundToInt
 
 @Composable
 fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
-    val song by PlayManager.changeMusicLiveData().observeAsState()
     BoxWithPercentages(
         modifier = Modifier
             .fillMaxSize()
@@ -65,6 +64,8 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            val song by PlayManager.changeMusicLiveData().observeAsState()
 
             if (100.hp > 100.wp) {
                 //歌曲专辑封面
@@ -127,7 +128,6 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                 )
             }
 
-
             val progress by PlayManager.progressLiveData().map {
                 it
             }.observeAsState(0)
@@ -140,8 +140,8 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
             SliderValueHorizontal(
                 value = progress.toFloat() / duration.toFloat(),
                 onValueChange = {
-                    PlayManager.seekTo((duration * it).roundToInt())
                     PlayManager.pause()
+                    PlayManager.seekTo((duration * it).roundToInt())
                 },
                 onValueChangeFinished = {
                     PlayManager.play()

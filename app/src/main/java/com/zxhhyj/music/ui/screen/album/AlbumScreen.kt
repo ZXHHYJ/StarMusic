@@ -13,11 +13,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.repository.LocalMediaRepository
+import com.zxhhyj.music.logic.repository.media.MediaLibsRepository
 import com.zxhhyj.music.ui.common.BoxWithPercentages
-import com.zxhhyj.music.ui.common.TopAppBar
-import com.zxhhyj.music.ui.common.bindTopAppBarState
-import com.zxhhyj.music.ui.common.rememberTopAppBarState
+import com.zxhhyj.music.ui.common.topbar.TopAppBar
+import com.zxhhyj.music.ui.common.topbar.bindTopAppBarState
+import com.zxhhyj.music.ui.common.topbar.rememberTopAppBarState
 import com.zxhhyj.music.ui.item.AlbumItem
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.theme.horizontal
@@ -43,7 +43,7 @@ fun AlbumScreen(
                 .fillMaxSize(),
             columns = GridCells.Fixed(fixedCount), contentPadding = padding
         ) {
-            itemsIndexed(LocalMediaRepository.albums) { index, item ->
+            itemsIndexed(MediaLibsRepository.albums) { index, item ->
                 val column = index % fixedCount
                 val row: Int = index / fixedCount
                 val p = (2 * horizontal + (fixedCount - 1) * horizontal) * 1f / fixedCount

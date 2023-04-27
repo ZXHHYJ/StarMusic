@@ -17,9 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.config.application
-import com.zxhhyj.music.ui.common.TopAppBar
-import com.zxhhyj.music.ui.common.bindTopAppBarState
-import com.zxhhyj.music.ui.common.rememberTopAppBarState
+import com.zxhhyj.music.ui.common.topbar.TopAppBar
+import com.zxhhyj.music.ui.common.topbar.bindTopAppBarState
+import com.zxhhyj.music.ui.common.topbar.rememberTopAppBarState
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.setting.item.SettingItem
 import dev.olshevski.navigation.reimagined.NavController
@@ -36,6 +36,7 @@ fun SettingScreen(
             PackageManager.PackageInfoFlags.of(0)
         )
     } else {
+        @Suppress("DEPRECATION")
         application.packageManager.getPackageInfo(application.packageName, 0)
     }.versionName
     val topAppBarState = rememberTopAppBarState()

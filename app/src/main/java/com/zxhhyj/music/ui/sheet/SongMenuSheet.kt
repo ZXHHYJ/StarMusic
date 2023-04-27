@@ -21,19 +21,18 @@ import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.repository.LocalMediaRepository
+import com.zxhhyj.music.logic.repository.media.MediaLibsRepository.rememberMediaLibsManager
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.bean.SongBean
-import com.zxhhyj.music.ui.common.image.AppAsyncImage
-import com.zxhhyj.music.ui.common.card.AppCard
 import com.zxhhyj.music.ui.common.button.AppMenuButton
+import com.zxhhyj.music.ui.common.card.AppCard
+import com.zxhhyj.music.ui.common.image.AppAsyncImage
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.theme.horizontal
@@ -43,7 +42,6 @@ import com.zxhhyj.music.ui.theme.vertical
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.popAll
-import kotlinx.coroutines.launch
 
 @Composable
 fun SongMenuSheet(
@@ -52,7 +50,7 @@ fun SongMenuSheet(
     song: SongBean,
 ) {
     val currentSong by PlayManager.changeMusicLiveData().observeAsState()
-    val coroutineScope = rememberCoroutineScope()
+    val mediaLibsManager = rememberMediaLibsManager()
     LazyColumn {
         item {
             Box(
@@ -127,11 +125,10 @@ fun SongMenuSheet(
             )
         }
         item {
-
             AppMenuButton(
                 onClick = {
                     sheetNavController.popAll()
-                    LocalMediaRepository.hide(song)
+                    mediaLibsManager.hide(song)
                 },
                 imageVector = Icons.Rounded.HideSource,
                 text = stringResource(id = R.string.hide),
@@ -139,13 +136,10 @@ fun SongMenuSheet(
             )
         }
         item {
-
             AppMenuButton(
                 onClick = {
                     sheetNavController.popAll()
-                    coroutineScope.launch {
-                        LocalMediaRepository.delete(song)
-                    }
+                    mediaLibsManager.delete(song)
                 },
                 imageVector = Icons.Rounded.Delete,
                 text = stringResource(id = R.string.delete), enabled = currentSong != song

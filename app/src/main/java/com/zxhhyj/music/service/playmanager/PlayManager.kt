@@ -202,18 +202,11 @@ object PlayManager : PlayManagerState, PlayManagerController, Player.Listener {
         }
     }
 
-    override fun onEvents(player: Player, events: Player.Events) {
-        super.onEvents(player, events)
-        if (player.duration.toInt() != mDuration.value) {
-            mDuration.value = player.duration.toInt()
-        }
-    }
-
     override fun onPlaybackStateChanged(playbackState: Int) {
         super.onPlaybackStateChanged(playbackState)
         when (playbackState) {
             Player.STATE_READY -> {
-
+                mDuration.value = mMediaPlayer?.duration?.toInt()
             }
 
             Player.STATE_BUFFERING -> {

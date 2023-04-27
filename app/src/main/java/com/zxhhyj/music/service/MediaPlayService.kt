@@ -72,6 +72,7 @@ class MediaPlayService : LifecycleService() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 stopForeground(STOP_FOREGROUND_DETACH)
             } else {
+                @Suppress("DEPRECATION")
                 stopForeground(false)
             }
             isForeground = false
@@ -232,8 +233,6 @@ class MediaPlayService : LifecycleService() {
             mMediaSession.setCallback(MediaSessionCallback())
             mMediaNotification = MediaNotification(this, mMediaSession, CHANNEL_ID)
         }
-        //fix bug：没有这行代码的话，划掉通知后app会被一同关闭
-        startForeground(ID, mMediaNotification.build())
         MediaButtonReceiver.handleIntent(mMediaSession, intent)
         return super.onStartCommand(intent, flags, startId)
     }

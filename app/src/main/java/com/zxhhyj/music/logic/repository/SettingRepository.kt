@@ -6,6 +6,15 @@ import com.zxhhyj.music.logic.config.DataSaverUtils
 object SettingRepository {
 
     /**
+     * 是否启用Monet
+     */
+    var EnableMonet by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "EnableMonet",
+        initialValue = true
+    )
+
+    /**
      * 是否启用歌曲封面取色
      */
     var EnableAlbumGetColor by mutableDataSaverStateOf(
