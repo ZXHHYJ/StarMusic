@@ -61,7 +61,6 @@ fun MandySaMusicTheme(
                             monetColor = Color(colors.primaryColor.toArgb())
                         }
                     }
-
                 wallpaperManager.addOnColorsChangedListener(
                     colorsChangedListener,
                     handler
@@ -76,17 +75,16 @@ fun MandySaMusicTheme(
     //封面取色
     if (SettingRepository.EnableAlbumGetColor) {
         val context = LocalContext.current
+        val imageLoader = ImageLoader(context)
         val coverUrl by PlayManager.changeMusicLiveData().map {
             it?.album?.coverUrl
         }.observeAsState()
         LaunchedEffect(coverUrl) {
             coverUrl ?: return@LaunchedEffect
-            val imageLoader = ImageLoader(context)
             val request = ImageRequest.Builder(context)
                 .data(coverUrl)
                 .build()
-            val bitmap = imageLoader.execute(request).drawable?.toBitmap()
-            bitmap ?: return@LaunchedEffect
+            val bitmap = imageLoader.execute(request).drawable?.toBitmap() ?: return@LaunchedEffect
             val palette =
                 Palette.from(bitmap.copy(Bitmap.Config.RGB_565, false)).generate()
             monetColor = Color(palette.getDominantColor(Color.Red.toArgb()))

@@ -51,9 +51,16 @@ class MediaPlayService : LifecycleService() {
     )
 
     private fun refreshMediaNotifications() {
-        if (!isForeground) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
             startForeground(ID, mMediaNotification.build())
-            isForeground = true
+            if (PlayManager.isPaused) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    stopForeground(STOP_FOREGROUND_DETACH)
+                } else {
+                    @Suppress("DEPRECATION")
+                    stopForeground(false)
+                }
+            }
         } else {
             if (ActivityCompat.checkSelfPermission(
                     this,
@@ -62,20 +69,7 @@ class MediaPlayService : LifecycleService() {
             ) {
                 return
             }
-            mNotificationManager.notify(
-                ID,
-                mMediaNotification.build()
-            )
-        }
-
-        if (PlayManager.isPaused) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                stopForeground(STOP_FOREGROUND_DETACH)
-            } else {
-                @Suppress("DEPRECATION")
-                stopForeground(false)
-            }
-            isForeground = false
+            mNotificationManager.notify(ID, mMediaNotification.build())
         }
     }
 
@@ -98,11 +92,6 @@ class MediaPlayService : LifecycleService() {
      * 管理音频焦点
      */
     private lateinit var mAudioFocusHelper: AudioFocusHelper
-
-    /**
-     * 判断是否是前台服务
-     */
-    private var isForeground = false
 
     private var state = State(PlaybackStateCompat.STATE_PAUSED, 0, 1.0f)
 
@@ -232,6 +221,9 @@ class MediaPlayService : LifecycleService() {
             )
             mMediaSession.setCallback(MediaSessionCallback())
             mMediaNotification = MediaNotification(this, mMediaSession, CHANNEL_ID)
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            startForeground(ID, mMediaNotification.build())
         }
         MediaButtonReceiver.handleIntent(mMediaSession, intent)
         return super.onStartCommand(intent, flags, startId)
