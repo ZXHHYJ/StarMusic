@@ -21,9 +21,23 @@
 <p align="center"><strong>欢迎贡献代码/问题</strong></p>
 <br>
 
+## 版本更新说明
+
+简单说明一下怎么看版本号：
+第一位：构建时年份，
+第二位：构建时月份，
+第三位：构建时日期，
+第四位：M为月度版本，没有则为不定期更新的版本，
+下面是一个范例：
+
+```
+2023.4.28 D
+```
+
 [//]: # (## 手机界面截图)
 
 [//]: # ()
+
 [//]: # (|![]&#40;https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/手机-主页.png&#41;|![]&#40;https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/手机-播放页.png&#41;|)
 
 [//]: # (|--|--|)
@@ -31,9 +45,11 @@
 [//]: # (|![]&#40;https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/手机-歌词.png&#41;)
 
 [//]: # ()
+
 [//]: # (## 平板界面截图)
 
 [//]: # ()
+
 [//]: # (![]&#40;https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/平板-主页.png&#41;![]&#40;https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/平板-播放页和歌词.png&#41;)
 
 ## License
