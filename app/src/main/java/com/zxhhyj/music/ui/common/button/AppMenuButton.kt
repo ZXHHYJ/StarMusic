@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -17,7 +18,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.zxhhyj.music.ui.common.AppDivider
-import com.zxhhyj.music.ui.common.icon.AppRoundIcon
 import com.zxhhyj.music.ui.theme.appTextButtonAccentColor
 import com.zxhhyj.music.ui.theme.appUnEnabledColor
 import com.zxhhyj.music.ui.theme.horizontal
@@ -54,7 +54,7 @@ fun AppMenuButton(
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1.0f)
                 )
-                AppRoundIcon(imageVector = imageVector, contentDescription = text)
+                Icon(imageVector = imageVector, contentDescription = text)
             }
             AppDivider(
                 modifier = Modifier

@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.AddToQueue
 import androidx.compose.material.icons.rounded.Album
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.HideSource
@@ -106,11 +107,18 @@ fun SongMenuSheet(
         }
         item {
             AppMenuButton(
+                onClick = { sheetNavController.popAll() },
+                imageVector = Icons.Rounded.Add,
+                text = stringResource(id = R.string.add_to_playlist)
+            )
+        }
+        item {
+            AppMenuButton(
                 onClick = {
                     sheetNavController.popAll()
                     PlayManager.addNextPlay(song)
                 },
-                imageVector = Icons.Rounded.Add,
+                imageVector = Icons.Rounded.AddToQueue,
                 text = stringResource(id = R.string.next_play)
             )
         }

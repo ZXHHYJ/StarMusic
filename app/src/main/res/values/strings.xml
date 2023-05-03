@@ -48,4 +48,5 @@
     <string name="monet_get_color_info">莫奈取色</string>
     <string name="version">版本</string>
     <string name="link">链接</string>
+    <string name="add_to_playlist">添加至歌单</string>
 </resources>

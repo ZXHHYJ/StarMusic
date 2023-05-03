@@ -44,6 +44,7 @@ import com.zxhhyj.music.ui.screen.singer.SingerScreen
 import com.zxhhyj.music.ui.screen.singercnt.SingerCntScreen
 import com.zxhhyj.music.ui.screen.single.SingleScreen
 import com.zxhhyj.music.ui.screen.theme.ThemeScreen
+import com.zxhhyj.music.ui.sheet.AddToPlayListSheet
 import com.zxhhyj.music.ui.sheet.MessageSheet
 import com.zxhhyj.music.ui.sheet.SongMenuSheet
 import com.zxhhyj.music.ui.sheet.songinfo.SongInfoSheet
@@ -435,6 +436,10 @@ fun MainScreen() {
 
                 is BottomSheetDestination.BottomSheet -> {
                     destination.content()
+                }
+
+                is BottomSheetDestination.AddToPlayList -> {
+                    AddToPlayListSheet(song = destination.song)
                 }
             }
             Spacer(modifier = Modifier.navigationBarsPadding())
