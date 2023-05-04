@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.common.topbar
+package com.zxhhyj.music.ui.common
 
 import android.os.Parcelable
 import androidx.compose.foundation.background
@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.LocalContentColor
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -26,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -38,7 +36,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.zxhhyj.music.ui.common.AppDivider
 import com.zxhhyj.music.ui.theme.appBackgroundColor
 import com.zxhhyj.music.ui.theme.appIconAccentColor
 import com.zxhhyj.music.ui.theme.horizontal
@@ -46,6 +43,8 @@ import com.zxhhyj.music.ui.theme.textColor
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlin.math.roundToInt
+
+val toolbarHeight = 56.dp
 
 @Stable
 @Parcelize
@@ -89,8 +88,6 @@ fun Modifier.bindTopAppBarState(state: TopAppBarState) = composed {
         }
 }
 
-private val toolbarHeight = 56.dp
-
 @Composable
 fun TopAppBar(
     state: TopAppBarState,
@@ -101,86 +98,79 @@ fun TopAppBar(
     val topAppBarHeightPx =
         with(LocalDensity.current) { toolbarHeight.toPx() }
 
-    Surface(
-        modifier = modifier,
-        color = Color.Transparent,
-        contentColor = textColor,
-        elevation = 0.dp
-    ) {
-        Box(modifier = Modifier.fillMaxWidth()) {
-            Column(
+    Box(modifier = modifier) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .onSizeChanged {
+                    state.topAppBarHeight = it
+                }) {
+            Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .onSizeChanged {
-                        state.topAppBarHeight = it
-                    }) {
-                Row(
-                    modifier = Modifier
-                        .height(toolbarHeight)
-                        .clipToBounds()
-                        .background(appBackgroundColor)
-                        .padding(horizontal = horizontal),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically,
-                    content = {
-                        Text(
-                            text = title,
-                            fontSize = 18.sp,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier
-                                .weight(1.0f)
-                                .offset {
-                                    return@offset IntOffset(
-                                        x = 0,
-                                        y = (topAppBarHeightPx + state.topAppBarOffsetHeightPx)
-                                            .coerceIn(0f, topAppBarHeightPx)
-                                            .roundToInt()
-                                    )
-                                }
-                        )
-                        CompositionLocalProvider(LocalContentColor provides appIconAccentColor) {
-                            actions.invoke(this)
-                        }
-                    }
-                )
-                Column(modifier = Modifier
                     .height(toolbarHeight)
                     .clipToBounds()
-                    .padding(horizontal = horizontal)
-                    .offset {
-                        return@offset IntOffset(
-                            x = 0,
-                            y = state.topAppBarOffsetHeightPx.roundToInt()
-                        )
-                    }) {
+                    .background(appBackgroundColor)
+                    .padding(horizontal = horizontal),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically,
+                content = {
                     Text(
                         text = title,
-                        color = textColor,
-                        fontSize = 26.sp,
-                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier
-                            .fillMaxWidth()
                             .weight(1.0f)
+                            .offset {
+                                return@offset IntOffset(
+                                    x = 0,
+                                    y = (topAppBarHeightPx + state.topAppBarOffsetHeightPx)
+                                        .coerceIn(0f, topAppBarHeightPx)
+                                        .roundToInt()
+                                )
+                            }
                     )
+                    CompositionLocalProvider(LocalContentColor provides appIconAccentColor) {
+                        actions.invoke(this)
+                    }
                 }
+            )
+            Column(modifier = Modifier
+                .height(toolbarHeight)
+                .clipToBounds()
+                .padding(horizontal = horizontal)
+                .offset {
+                    return@offset IntOffset(
+                        x = 0,
+                        y = state.topAppBarOffsetHeightPx.roundToInt()
+                    )
+                }) {
+                Text(
+                    text = title,
+                    color = textColor,
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1.0f)
+                )
             }
-            AppDivider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(alignment = Alignment.BottomCenter)
-                    .padding(horizontal = horizontal)
-                    .offset {
-                        return@offset IntOffset(
-                            x = 0,
-                            y = state.topAppBarOffsetHeightPx
-                                .coerceIn(-topAppBarHeightPx, 0f)
-                                .roundToInt()
-                        )
-                    })
         }
+        AppDivider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(alignment = Alignment.BottomCenter)
+                .padding(horizontal = horizontal)
+                .offset {
+                    return@offset IntOffset(
+                        x = 0,
+                        y = state.topAppBarOffsetHeightPx
+                            .coerceIn(-topAppBarHeightPx, 0f)
+                            .roundToInt()
+                    )
+                })
     }
-}
 
+}

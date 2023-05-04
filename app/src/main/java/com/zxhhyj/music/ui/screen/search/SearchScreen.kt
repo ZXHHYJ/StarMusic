@@ -5,8 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
-import com.zxhhyj.music.ui.common.topbar.TopAppBar
-import com.zxhhyj.music.ui.common.topbar.rememberTopAppBarState
+import com.zxhhyj.music.ui.common.TopAppBar
+import com.zxhhyj.music.ui.common.rememberTopAppBarState
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import dev.olshevski.navigation.reimagined.NavController

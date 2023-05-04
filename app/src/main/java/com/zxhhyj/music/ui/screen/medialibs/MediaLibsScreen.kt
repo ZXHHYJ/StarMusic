@@ -19,11 +19,11 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
-import com.zxhhyj.music.ui.common.topbar.TopAppBar
-import com.zxhhyj.music.ui.common.topbar.bindTopAppBarState
-import com.zxhhyj.music.ui.common.topbar.rememberTopAppBarState
+import com.zxhhyj.music.logic.repository.SettingRepository
+import com.zxhhyj.music.ui.common.TopAppBar
+import com.zxhhyj.music.ui.common.bindTopAppBarState
+import com.zxhhyj.music.ui.common.rememberTopAppBarState
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.setting.item.SettingItem
 import com.zxhhyj.music.ui.screen.setting.item.SettingSwitchItem

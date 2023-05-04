@@ -15,9 +15,9 @@ import androidx.compose.ui.unit.times
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.ui.common.BoxWithPercentages
-import com.zxhhyj.music.ui.common.topbar.TopAppBar
-import com.zxhhyj.music.ui.common.topbar.bindTopAppBarState
-import com.zxhhyj.music.ui.common.topbar.rememberTopAppBarState
+import com.zxhhyj.music.ui.common.TopAppBar
+import com.zxhhyj.music.ui.common.bindTopAppBarState
+import com.zxhhyj.music.ui.common.rememberTopAppBarState
 import com.zxhhyj.music.ui.item.AlbumItem
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.theme.horizontal

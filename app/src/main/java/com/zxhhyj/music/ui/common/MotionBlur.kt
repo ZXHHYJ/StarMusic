@@ -26,7 +26,6 @@ import coil.request.ImageRequest
 import com.flaviofaria.kenburnsview.KenBurnsView
 import com.flaviofaria.kenburnsview.RandomTransitionGenerator
 import com.google.android.renderscript.Toolkit
-import com.zxhhyj.music.ui.common.lifecycle.rememberLifecycle
 
 @Composable
 fun MotionBlur(

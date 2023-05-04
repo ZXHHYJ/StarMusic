@@ -20,7 +20,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.ui.common.AppDivider
 import com.zxhhyj.music.ui.common.AppSwitch
-import com.zxhhyj.music.ui.theme.*
+import com.zxhhyj.music.ui.theme.appIconAccentColor
+import com.zxhhyj.music.ui.theme.horizontal
+import com.zxhhyj.music.ui.theme.roundShape
+import com.zxhhyj.music.ui.theme.vertical
 
 @Composable
 fun SettingSwitchItem(

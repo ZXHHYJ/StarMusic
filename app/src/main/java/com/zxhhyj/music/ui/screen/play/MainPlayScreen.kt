@@ -40,9 +40,9 @@ import com.mxalbert.sharedelements.SharedElement
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.ktx.toTime
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.ui.common.BoxWithPercentages
-import com.zxhhyj.music.ui.common.card.AppCard
+import com.zxhhyj.music.ui.common.AppCard
 import com.zxhhyj.music.ui.common.AppRoundIcon
+import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.common.image.AppAsyncImage
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.theme.translucentWhite
