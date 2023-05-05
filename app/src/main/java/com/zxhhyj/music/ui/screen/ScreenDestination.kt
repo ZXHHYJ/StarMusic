@@ -34,7 +34,7 @@ sealed class ScreenDestination : Parcelable {
      * 隐藏的歌曲
      */
     @Parcelize
-    object HiddenSongs : ScreenDestination()
+    object HiddenSong : ScreenDestination()
 
     /**
      * 歌手详情

@@ -49,4 +49,5 @@
     <string name="version">版本</string>
     <string name="link">链接</string>
     <string name="add_to_playlist">添加至歌单</string>
+    <string name="num_tracks">声道数</string>
 </resources>

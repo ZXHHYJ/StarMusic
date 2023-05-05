@@ -72,7 +72,7 @@ class MediaPlayService : LifecycleService() {
         mMediaSession.setPlaybackState(
             PlaybackStateBuilder.setState(
                 if (PlayManager.isPaused) PlaybackStateCompat.STATE_PAUSED else PlaybackStateCompat.STATE_PLAYING,
-                PlayManager.progressLiveData().value?.toLong() ?: return,
+                PlayManager.progressLiveData().value?.toLong() ?: 0,
                 0F
             ).build()
         )
@@ -90,8 +90,10 @@ class MediaPlayService : LifecycleService() {
             MediaMetadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, artistName)
         }
         if (duration != null && duration > 0) {
-            MediaMetadataCompat.Builder()
-                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, duration.toLong()).build()
+            MediaMetadataBuilder.putLong(
+                MediaMetadataCompat.METADATA_KEY_DURATION,
+                duration.toLong()
+            ).build()
         }
         mMediaSession.setMetadata(MediaMetadataBuilder.build())
     }

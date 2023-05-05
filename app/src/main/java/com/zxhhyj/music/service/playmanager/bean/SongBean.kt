@@ -11,15 +11,17 @@ data class SongBean(
     val data: String,
     val songName: String,
     val size: Long,
-    val id: Long
+    val id: Long,
+    val bitrate: Long,
+    val samplingRate: Long,
 ) : Parcelable {
 
     @Parcelize
-    data class Artist(val id: String, val name: String) : Parcelable
+    data class Artist(val id: Long, val name: String) : Parcelable
 
     @Parcelize
     data class Album(
-        val id: String,
+        val id: Long,
         val name: String,
         val coverUrl: String = "content://media/external/audio/albumart/${id}"
     ) : Parcelable

@@ -22,6 +22,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
+
 object AndroidMediaLibsRepository {
 
     var artists by mutableDataSaverListStateOf(
@@ -113,15 +114,21 @@ object AndroidMediaLibsRepository {
                             query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE))
                         val id =
                             query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.Media._ID))
+                        val bitrate =
+                            query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.Media.BITRATE))
+                        val samplingRate =
+                            query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.Media.CAPTURE_FRAMERATE))
                         songs.add(
                             SongBean(
-                                album = SongBean.Album(albumId.toString(), album),
-                                artist = SongBean.Artist(artistId.toString(), artist),
+                                album = SongBean.Album(albumId, album),
+                                artist = SongBean.Artist(artistId, artist),
                                 duration = duration,
                                 data = data,
                                 songName = songName,
                                 size = size,
-                                id = id
+                                id = id,
+                                bitrate = bitrate,
+                                samplingRate = samplingRate,
                             )
                         )
                     }
@@ -134,7 +141,7 @@ object AndroidMediaLibsRepository {
         }
 
         private fun updateAlbum() {
-            val albumKVHashMap = LinkedHashMap<String, SongBean.Album>()
+            val albumKVHashMap = LinkedHashMap<Long, SongBean.Album>()
             for (song in songs) {
                 if (albumKVHashMap.containsKey(song.album.id)) {
                     continue
@@ -145,7 +152,7 @@ object AndroidMediaLibsRepository {
         }
 
         private fun updateArtist() {
-            val artistKVHashMap = LinkedHashMap<String, SongBean.Artist>()
+            val artistKVHashMap = LinkedHashMap<Long, SongBean.Artist>()
             for (song in songs) {
                 if (artistKVHashMap.containsKey(song.artist.id)) {
                     continue
@@ -169,6 +176,23 @@ object AndroidMediaLibsRepository {
                 hideSongs = hideSongs.toMutableList().also {
                     it.add(song)
                 }
+            }
+        }
+
+        /**
+         * 取消隐藏某个歌曲
+         */
+        fun unHide(song: SongBean) {
+            val index = hideSongs.indexOf(song)
+            if (index != -1) {
+                hideSongs = hideSongs.toMutableList().also {
+                    it.removeAt(index)
+                }
+                songs = songs.toMutableList().also {
+                    it.add(song)
+                }
+                updateAlbum()
+                updateArtist()
             }
         }
 

@@ -92,7 +92,7 @@ fun MediaSourceScreen(
                 subTitle = stringResource(id = R.string.hidden_songs),
                 enabled = SettingRepository.EnableAndroidMediaLibs
             ) {
-                mainNavController.navigate(ScreenDestination.HiddenSongs)
+                mainNavController.navigate(ScreenDestination.HiddenSong)
             }
         }
     }

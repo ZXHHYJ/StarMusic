@@ -5,14 +5,18 @@ plugins {
 }
 
 android {
+    def calendar = Calendar.getInstance()
+
+    def code = String.format("%d%02d%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH))
+
     compileSdk 33
 
     defaultConfig {
         applicationId "com.zxhhyj.music"
         minSdk 23
         targetSdk 33
-        versionCode 2
-        versionName "2023.4.28"
+        versionCode Integer.parseInt(code)
+        versionName "${calendar.get(Calendar.YEAR)}.${calendar.get(Calendar.MONTH) + 1}.${calendar.get(Calendar.DAY_OF_MONTH)}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         ndk {
