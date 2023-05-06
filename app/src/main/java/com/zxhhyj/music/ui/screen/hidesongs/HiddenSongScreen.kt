@@ -28,6 +28,7 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository.rememberMediaLibsManager
 import com.zxhhyj.music.service.playmanager.bean.SongBean
+import com.zxhhyj.music.service.playmanager.ktx.coverUrl
 import com.zxhhyj.music.ui.common.AppCard
 import com.zxhhyj.music.ui.common.AppRoundIcon
 import com.zxhhyj.music.ui.common.TopAppBar

@@ -16,4 +16,10 @@ sealed class DialogDestination : Parcelable {
     @Parcelize
     object ScanMusic : DialogDestination()
 
+    /**
+     * 添加播放列表
+     */
+    @Parcelize
+    object AddPlayList : DialogDestination()
+
 }

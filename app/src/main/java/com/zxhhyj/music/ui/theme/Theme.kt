@@ -32,6 +32,7 @@ import com.kyant.monet.n1
 import com.kyant.monet.rangeTo
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playmanager.ktx.coverUrl
 
 @Composable
 fun MandySaMusicTheme(

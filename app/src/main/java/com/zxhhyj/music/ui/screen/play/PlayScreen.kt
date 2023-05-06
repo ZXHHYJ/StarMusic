@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.map
 import com.mxalbert.sharedelements.*
 import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playmanager.ktx.coverUrl
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.common.BoxWithPercentagesScope
 import com.zxhhyj.music.ui.common.MotionBlur

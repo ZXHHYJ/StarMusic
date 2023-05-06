@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mxalbert.sharedelements.SharedElement
 import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playmanager.ktx.coverUrl
 import com.zxhhyj.music.ui.common.AppRoundIcon
 import com.zxhhyj.music.ui.common.AppCard
 import com.zxhhyj.music.ui.common.image.AppAsyncImage

@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
 import com.zxhhyj.music.R
 import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playmanager.ktx.coverUrl
 import com.zxhhyj.music.ui.common.image.AppAsyncImage
 import com.zxhhyj.music.ui.theme.appBackgroundColor
 import com.zxhhyj.music.ui.theme.horizontal
@@ -62,7 +63,7 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
                             .height(controlBarHeight)
                             .clickable(onClick = onClick)
                             .background(Color.Gray),
-                        url = song?.album?.coverUrl ?: "",
+                        url = song?.album?.coverUrl,
                         paused = panelState != PanelState.COLLAPSED
                     )
                     Row(

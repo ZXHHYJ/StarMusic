@@ -24,6 +24,7 @@ import com.zxhhyj.music.MainActivity
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.helper.AudioFocusHelper
 import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playmanager.ktx.coverUrl
 import kotlinx.coroutines.launch
 
 class MediaPlayService : LifecycleService() {

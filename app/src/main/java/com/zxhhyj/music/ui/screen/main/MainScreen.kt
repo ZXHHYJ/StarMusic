@@ -25,6 +25,7 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.*
+import com.zxhhyj.music.ui.dialog.AddPlayListDialog
 import com.zxhhyj.music.ui.dialog.ScanMusicDialog
 import com.zxhhyj.music.ui.dialog.SplashDialog
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
@@ -38,6 +39,7 @@ import com.zxhhyj.music.ui.screen.lyric.LyricScreen
 import com.zxhhyj.music.ui.screen.medialibs.MediaSourceScreen
 import com.zxhhyj.music.ui.screen.play.PlayScreen
 import com.zxhhyj.music.ui.screen.playlist.PlayListScreen
+import com.zxhhyj.music.ui.screen.playlistcnt.PlayListCntScreen
 import com.zxhhyj.music.ui.screen.search.SearchScreen
 import com.zxhhyj.music.ui.screen.setting.SettingScreen
 import com.zxhhyj.music.ui.screen.singer.SingerScreen
@@ -60,27 +62,18 @@ import dev.olshevski.navigation.reimagined.material.BottomSheetProperties
 
 enum class HomeNavigationDestination {
     Single,
-    Album,
-    Singer,
-    PlayList,
     Search,
 }
 
 val HomeNavigationDestination.tabIcon
     get() = when (this) {
         HomeNavigationDestination.Single -> Icons.Rounded.Source
-        HomeNavigationDestination.Album -> Icons.Rounded.Album
-        HomeNavigationDestination.Singer -> Icons.Rounded.Mic
-        HomeNavigationDestination.PlayList -> Icons.Rounded.List
         HomeNavigationDestination.Search -> Icons.Rounded.Search
     }
 
 val HomeNavigationDestination.tabName
     @Composable get() = when (this) {
         HomeNavigationDestination.Single -> stringResource(id = R.string.media_lib)
-        HomeNavigationDestination.Album -> stringResource(id = R.string.album)
-        HomeNavigationDestination.Singer -> stringResource(id = R.string.singer)
-        HomeNavigationDestination.PlayList -> stringResource(id = R.string.play_list)
         HomeNavigationDestination.Search -> stringResource(id = R.string.search)
     }
 
@@ -249,29 +242,6 @@ fun MainScreen() {
                                             )
                                         }
 
-                                        HomeNavigationDestination.Album -> {
-                                            AlbumScreen(
-                                                mainNavController = mainNavController,
-                                                padding = padding
-                                            )
-                                        }
-
-                                        HomeNavigationDestination.Singer -> {
-                                            SingerScreen(
-                                                mainNavController = mainNavController,
-                                                sheetNavController = sheetNavController,
-                                                padding = padding
-                                            )
-                                        }
-
-                                        HomeNavigationDestination.PlayList -> {
-                                            PlayListScreen(
-                                                mainNavController = mainNavController,
-                                                sheetNavController = sheetNavController,
-                                                padding = padding
-                                            )
-                                        }
-
                                         HomeNavigationDestination.Search -> {
                                             SearchScreen(
                                                 mainNavController = mainNavController,
@@ -347,6 +317,7 @@ fun MainScreen() {
                                 PlayListScreen(
                                     mainNavController = mainNavController,
                                     sheetNavController = sheetNavController,
+                                    dialogNavController = dialogNavController,
                                     padding = padding
                                 )
                             }
@@ -361,6 +332,10 @@ fun MainScreen() {
 
                             ScreenDestination.HiddenSong -> {
                                 HiddenSongScreen(padding = padding)
+                            }
+
+                            is ScreenDestination.PlayListCnt -> {
+                                PlayListCntScreen(padding = padding)
                             }
                         }
                     }
@@ -388,6 +363,10 @@ fun MainScreen() {
 
             DialogDestination.Splash -> {
                 SplashDialog(onDismissRequest = onDismissRequest)
+            }
+
+            DialogDestination.AddPlayList -> {
+                AddPlayListDialog(onDismissRequest = onDismissRequest)
             }
         }
     }

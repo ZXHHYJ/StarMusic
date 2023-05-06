@@ -4,17 +4,32 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.kyant.monet.a1
 
+/**
+ * App禁用控件的颜色
+ */
 val appUnEnabledColor = Color.DarkGray.copy(alpha = 0.7f)
 
+/**
+ * App强调颜色
+ */
 val appAccentColor
     @Composable get() = 45.a1
 
+/**
+ * App图标强调颜色
+ */
 val appIconAccentColor
     @Composable get() = appAccentColor
 
+/**
+ * App字体强调颜色
+ */
 val appTextAccentColor
     @Composable get() = appAccentColor
 
+/**
+ * App文字按钮强调颜色
+ */
 val appTextButtonAccentColor
     @Composable get() = appAccentColor
 

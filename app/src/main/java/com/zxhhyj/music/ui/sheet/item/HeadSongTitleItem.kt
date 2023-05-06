@@ -2,9 +2,11 @@ package com.zxhhyj.music.ui.sheet.item
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -15,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.service.playmanager.bean.SongBean
+import com.zxhhyj.music.service.playmanager.ktx.coverUrl
 import com.zxhhyj.music.ui.common.AppCard
 import com.zxhhyj.music.ui.common.image.AppAsyncImage
 import com.zxhhyj.music.ui.theme.horizontal
@@ -31,13 +34,14 @@ fun HeadSongTitleItem(song: SongBean) {
         )
     ) {
         Row(
-            modifier = Modifier
-                .height(70.dp)
+            modifier = Modifier.fillMaxWidth()
         ) {
-            AppCard(backgroundColor = Color.Transparent, modifier = Modifier.size(70.dp)) {
+            AppCard(backgroundColor = Color.Transparent, modifier = Modifier.size(60.dp)) {
                 AppAsyncImage(modifier = Modifier.fillMaxSize(), url = song.album.coverUrl)
             }
-            Column(modifier = Modifier.padding(vertical)) {
+            Column(modifier = Modifier
+                .height(IntrinsicSize.Max)
+                .padding(vertical)) {
                 Text(
                     text = song.songName,
                     color = textColor,

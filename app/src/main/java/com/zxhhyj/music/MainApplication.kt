@@ -6,6 +6,7 @@ import android.os.Build
 import com.funny.data_saver.core.DataSaverConverter.registerTypeConverters
 import com.google.gson.GsonBuilder
 import com.tencent.mmkv.MMKV
+import com.zxhhyj.music.logic.bean.PlayListModel
 import com.zxhhyj.music.logic.config.application
 import com.zxhhyj.music.service.MediaPlayService
 import com.zxhhyj.music.service.playmanager.PlayManager
@@ -37,6 +38,10 @@ class MainApplication : Application() {
         registerTypeConverters<SongBean.Artist>(
             save = { bean -> gson.toJson(bean) },
             restore = { str -> gson.fromJson(str, SongBean.Artist::class.java) }
+        )
+        registerTypeConverters<PlayListModel>(
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, PlayListModel::class.java) }
         )
         PlayManager.init(this)
         //初始化播放管理器
