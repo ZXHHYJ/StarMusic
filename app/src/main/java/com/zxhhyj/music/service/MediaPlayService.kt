@@ -93,7 +93,7 @@ class MediaPlayService : LifecycleService() {
             MediaMetadataBuilder.putLong(
                 MediaMetadataCompat.METADATA_KEY_DURATION,
                 duration.toLong()
-            ).build()
+            )
         }
         mMediaSession.setMetadata(MediaMetadataBuilder.build())
     }
@@ -174,7 +174,6 @@ class MediaPlayService : LifecycleService() {
                 stopSelf()
             }
         }
-
     }
 
     override fun onDestroy() {
