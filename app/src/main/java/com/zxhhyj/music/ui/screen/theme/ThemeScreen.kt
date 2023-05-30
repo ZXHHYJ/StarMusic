@@ -15,7 +15,7 @@ import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.ui.common.TopAppBar
 import com.zxhhyj.music.ui.common.bindTopAppBarState
 import com.zxhhyj.music.ui.common.rememberTopAppBarState
-import com.zxhhyj.music.ui.screen.setting.item.SettingSwitchItem
+import com.zxhhyj.music.ui.item.SettingSwitchItem
 
 @Composable
 fun ThemeScreen(padding: PaddingValues) {

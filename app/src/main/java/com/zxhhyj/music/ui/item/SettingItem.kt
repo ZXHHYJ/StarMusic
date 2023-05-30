@@ -1,10 +1,10 @@
-package com.zxhhyj.music.ui.screen.setting.item
+package com.zxhhyj.music.ui.item
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
@@ -16,29 +16,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.ui.common.AppDivider
-import com.zxhhyj.music.ui.common.AppSwitch
 import com.zxhhyj.music.ui.theme.appIconAccentColor
+import com.zxhhyj.music.ui.theme.appUnEnabledColor
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.roundShape
+import com.zxhhyj.music.ui.theme.textColor
 import com.zxhhyj.music.ui.theme.vertical
 
 @Composable
-fun SettingSwitchItem(
+fun SettingItem(
     modifier: Modifier = Modifier,
     imageVector: ImageVector,
     title: String,
-    subTitle: String,
-    checked: Boolean,
-    onCheckedChange: ((Boolean) -> Unit),
+    subTitle: String? = null,
+    enabled: Boolean = true,
+    onClick: () -> Unit,
 ) {
     Surface(
         color = Color.Transparent,
         shape = roundShape
     ) {
-        Column(modifier = modifier) {
+        Column(modifier = modifier.clickable(enabled = enabled, onClick = onClick)) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -48,19 +48,23 @@ fun SettingSwitchItem(
                 Icon(
                     imageVector = imageVector,
                     contentDescription = title,
-                    tint = appIconAccentColor
+                    tint = if (enabled) appIconAccentColor else appUnEnabledColor
                 )
                 Spacer(modifier = Modifier.width(vertical))
                 Column {
-                    Text(text = title, fontWeight = FontWeight.Bold)
-                    Text(text = subTitle, fontSize = 14.sp)
+                    Text(
+                        text = title,
+                        fontWeight = FontWeight.Bold,
+                        color = if (enabled) textColor else appUnEnabledColor
+                    )
+                    subTitle?.let {
+                        Text(
+                            text = subTitle,
+                            fontSize = 14.sp,
+                            color = if (enabled) textColor else appUnEnabledColor
+                        )
+                    }
                 }
-                Spacer(modifier = Modifier.weight(1.0f))
-                AppSwitch(
-                    checked = checked,
-                    onCheckedChange = onCheckedChange,
-                    modifier = Modifier.height(24.dp)
-                )
             }
             AppDivider(
                 modifier = Modifier

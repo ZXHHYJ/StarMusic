@@ -18,11 +18,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.scale
 import androidx.lifecycle.map
-import androidx.palette.graphics.Palette
 import coil.ImageLoader
 import coil.request.ImageRequest
 import com.kyant.monet.LocalTonalPalettes
@@ -86,9 +87,7 @@ fun MandySaMusicTheme(
                 .data(coverUrl)
                 .build()
             val bitmap = imageLoader.execute(request).drawable?.toBitmap() ?: return@LaunchedEffect
-            val palette =
-                Palette.from(bitmap.copy(Bitmap.Config.RGB_565, false)).generate()
-            monetColor = Color(palette.getDominantColor(Color.Red.toArgb()))
+            monetColor = bitmap.scale(3, 3).asImageBitmap().toPixelMap()[1, 1]
             bitmap.recycle()
         }
     }

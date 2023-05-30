@@ -18,7 +18,7 @@ import com.zxhhyj.music.ui.common.TopAppBar
 import com.zxhhyj.music.ui.common.bindTopAppBarState
 import com.zxhhyj.music.ui.common.rememberTopAppBarState
 import com.zxhhyj.music.ui.item.SubTitleItem
-import com.zxhhyj.music.ui.screen.setting.item.SettingItem
+import com.zxhhyj.music.ui.item.SettingItem
 
 
 @Composable

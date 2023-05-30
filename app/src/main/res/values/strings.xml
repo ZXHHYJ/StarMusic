@@ -52,4 +52,5 @@
     <string name="num_tracks">声道数</string>
     <string name="add_playlist">创建播放列表</string>
     <string name="create">创建</string>
+    <string name="lyrics_translation">歌词翻译</string>
 </resources>

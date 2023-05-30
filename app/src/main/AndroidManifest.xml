@@ -25,8 +25,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
+        android:enableOnBackInvokedCallback="true"
         android:theme="@style/Theme.Mandysa_music"
-        tools:ignore="DataExtractionRules">
+        tools:ignore="DataExtractionRules"
+        tools:targetApi="tiramisu">
 
         <uses-library
             android:name="renderscript-toolkit-release"

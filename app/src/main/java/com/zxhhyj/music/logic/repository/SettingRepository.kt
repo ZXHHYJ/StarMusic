@@ -41,4 +41,13 @@ object SettingRepository {
         initialValue = false
     )
 
+    /**
+     * 是否启用显示歌词翻译
+     */
+    var EnableLyricsTranslation by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "EnableLyricsTranslation",
+        initialValue = false
+    )
+
 }

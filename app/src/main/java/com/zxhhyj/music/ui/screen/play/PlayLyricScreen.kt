@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
+import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.KeepScreenOn
 import com.zxhhyj.music.ui.common.Lyric
@@ -70,6 +71,7 @@ fun ColumnScope.PlayLyricScreen() {
                 .weight(1.0f),
             lyric = lyric,
             liveTime = liveTime,
+            translation = SettingRepository.EnableLyricsTranslation,
             lyricItem = { modifier: Modifier,
                           model: String,
                           index: Int,

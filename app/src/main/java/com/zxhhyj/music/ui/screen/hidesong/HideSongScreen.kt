@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.screen.hidesongs
+package com.zxhhyj.music.ui.screen.hidesong
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
-import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository.rememberMediaLibsManager
 import com.zxhhyj.music.service.playmanager.bean.SongBean
 import com.zxhhyj.music.service.playmanager.ktx.coverUrl
 import com.zxhhyj.music.ui.common.AppCard
@@ -44,7 +43,6 @@ import com.zxhhyj.music.ui.theme.vertical
 @Composable
 fun HiddenSongScreen(padding: PaddingValues) {
     val topAppBarState = rememberTopAppBarState()
-    val mediaLibsManager = rememberMediaLibsManager()
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -53,7 +51,7 @@ fun HiddenSongScreen(padding: PaddingValues) {
     ) {
         items(AndroidMediaLibsRepository.hideSongs) {
             HideSongItem(song = it) {
-                mediaLibsManager.unHide(it)
+                AndroidMediaLibsRepository.unHide(it)
             }
         }
     }

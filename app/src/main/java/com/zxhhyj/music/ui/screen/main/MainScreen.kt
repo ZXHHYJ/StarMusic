@@ -34,7 +34,7 @@ import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.about.AboutScreen
 import com.zxhhyj.music.ui.screen.album.AlbumScreen
 import com.zxhhyj.music.ui.screen.albumcnt.AlbumCntScreen
-import com.zxhhyj.music.ui.screen.hidesongs.HiddenSongScreen
+import com.zxhhyj.music.ui.screen.hidesong.HiddenSongScreen
 import com.zxhhyj.music.ui.screen.lyric.LyricScreen
 import com.zxhhyj.music.ui.screen.medialibs.MediaSourceScreen
 import com.zxhhyj.music.ui.screen.play.PlayScreen

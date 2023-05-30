@@ -1,6 +1,12 @@
 package com.zxhhyj.music.ui.sheet
 
 
+import android.content.ContentUris
+import android.os.Build
+import android.provider.MediaStore
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
@@ -13,9 +19,12 @@ import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository.rememberMediaLibsManager
+import com.zxhhyj.music.logic.config.application
+import com.zxhhyj.music.logic.helper.ToastHelper
+import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.bean.SongBean
 import com.zxhhyj.music.ui.common.AppMenuButton
@@ -25,6 +34,8 @@ import com.zxhhyj.music.ui.sheet.item.HeadSongTitleItem
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.popAll
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun SongMenuSheet(
@@ -32,8 +43,17 @@ fun SongMenuSheet(
     sheetNavController: NavController<BottomSheetDestination>,
     song: SongBean,
 ) {
+    val deleteLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartIntentSenderForResult(),
+        onResult = {
+            if (it.resultCode == -1) {
+                //mediaLibsManager.delete(song)
+            }
+            ToastHelper.toast("删除了歌曲")
+        }
+    )
+    val coroutineScope = rememberCoroutineScope()
     val currentSong by PlayManager.changeMusicLiveData().observeAsState()
-    val mediaLibsManager = rememberMediaLibsManager()
     LazyColumn {
         item {
             HeadSongTitleItem(song = song)
@@ -92,7 +112,7 @@ fun SongMenuSheet(
             AppMenuButton(
                 onClick = {
                     sheetNavController.popAll()
-                    mediaLibsManager.hide(song)
+                    AndroidMediaLibsRepository.hide(song)
                 },
                 imageVector = Icons.Rounded.HideSource,
                 text = stringResource(id = R.string.hide),
@@ -103,7 +123,22 @@ fun SongMenuSheet(
             AppMenuButton(
                 onClick = {
                     sheetNavController.popAll()
-                    mediaLibsManager.delete(song)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        coroutineScope.launch(Dispatchers.IO) {
+                            val deleteUri =
+                                ContentUris.withAppendedId(
+                                    MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                                    song.id
+                                )
+                            val pendingIntent = MediaStore.createDeleteRequest(
+                                application.contentResolver,
+                                listOf(deleteUri)
+                            )
+                            val request =
+                                IntentSenderRequest.Builder(pendingIntent.intentSender).build()
+                            deleteLauncher.launch(request)
+                        }
+                    }
                 },
                 imageVector = Icons.Rounded.Delete,
                 text = stringResource(id = R.string.delete), enabled = currentSong != song

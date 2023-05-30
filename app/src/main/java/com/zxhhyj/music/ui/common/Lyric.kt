@@ -37,6 +37,7 @@ import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 
+
 /**
  * 部分代码参考了:https://juejin.cn/post/7046235192616779784
  *特别感谢:Kyant
@@ -46,6 +47,7 @@ fun Lyric(
     modifier: Modifier = Modifier,
     lyric: String,
     liveTime: Int,
+    translation: Boolean,
     lyricItem: @Composable (modifier: Modifier, lyric: String, index: Int, position: Int) -> Unit,
     onClick: (Int) -> Unit
 ) {
@@ -70,7 +72,7 @@ fun Lyric(
         mutableStateOf(0)
     }
 
-    var lyrics by rememberSaveable {
+    var lyricList by rememberSaveable {
         mutableStateOf(listOf<Pair<String, Int>>())
     }
 
@@ -114,7 +116,7 @@ fun Lyric(
             item {
                 Spacer(modifier = Modifier.height(maxHeight / 2))
             }
-            itemsIndexed(lyrics) { index, model ->
+            itemsIndexed(lyricList) { index, model ->
                 lyricItem.invoke(Modifier
                     .fillMaxWidth()
                     .clip(roundShape)
@@ -133,24 +135,31 @@ fun Lyric(
             }
         }
         LaunchedEffect(lyric) {
-            val list = arrayListOf<Pair<String, Int>>()
-            for (string in lyric.split("\n")) {
-                val data = string.replace("[", "").split("]")
-                for (i in 0 until data.size - 1) {
-                    try {
-                        data[data.size - 1].trim().let {
-                            if (it.isNotEmpty()) {
-                                list.add(it to timeStr(data[i]))
+            val lyricMap = linkedMapOf<String, String>()
+            val pattern = Regex("""\[(.*?)](.*)""")
+            lyric.replace("//", "").lineSequence().forEach { line ->
+                pattern.matchEntire(line)?.let { matchResult ->
+                    val (timestamp, s) = matchResult.destructured
+                    if (s.trim().isNotEmpty()) {
+                        val hadLyric = lyricMap[timestamp] != null
+                        if (hadLyric) {
+                            //如果出现时间戳重复就是歌词中存在翻译
+                            if (!translation) {
+                                return@forEach
                             }
+                            lyricMap[timestamp] = lyricMap[timestamp] + "\n" + s
+                        } else {
+                            lyricMap[timestamp] = s
                         }
-                    } catch (_: Exception) {
                     }
                 }
             }
-            lyrics = list
+            lyricList = lyricMap.map {
+                it.value to timeStr(it.key)
+            }
         }
         LaunchedEffect(liveTime) {
-            lyrics.forEachIndexed { index, lrcContent ->
+            lyricList.forEachIndexed { index, lrcContent ->
                 if (liveTime >= lrcContent.second) {
                     position = index
                 }
@@ -171,3 +180,4 @@ fun Lyric(
         }
     }
 }
+
