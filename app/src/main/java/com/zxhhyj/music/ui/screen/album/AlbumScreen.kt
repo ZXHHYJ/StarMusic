@@ -15,9 +15,9 @@ import androidx.compose.ui.unit.times
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.ui.common.BoxWithPercentages
-import com.zxhhyj.music.ui.common.TopAppBar
-import com.zxhhyj.music.ui.common.bindTopAppBarState
-import com.zxhhyj.music.ui.common.rememberTopAppBarState
+import com.zxhhyj.music.ui.common.AppTopBar
+import com.zxhhyj.music.ui.common.bindAppTopBarState
+import com.zxhhyj.music.ui.common.rememberAppTopBarState
 import com.zxhhyj.music.ui.item.AlbumItem
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.theme.horizontal
@@ -36,12 +36,13 @@ fun AlbumScreen(
         if (fixedCount < 2) {
             fixedCount = 2
         }
-        val topAppBarState = rememberTopAppBarState()
+        val appTopBarState = rememberAppTopBarState()
         LazyVerticalGrid(
             modifier = Modifier
-                .bindTopAppBarState(topAppBarState)
+                .bindAppTopBarState(appTopBarState)
                 .fillMaxSize(),
-            columns = GridCells.Fixed(fixedCount), contentPadding = padding
+            columns = GridCells.Fixed(fixedCount),
+            contentPadding = padding
         ) {
             itemsIndexed(AndroidMediaLibsRepository.albums) { index, item ->
                 val column = index % fixedCount
@@ -64,8 +65,8 @@ fun AlbumScreen(
                 }
             }
         }
-        TopAppBar(
-            state = topAppBarState,
+        AppTopBar(
+            state = appTopBarState,
             modifier = Modifier.fillMaxWidth(),
             title = stringResource(id = R.string.album)
         )

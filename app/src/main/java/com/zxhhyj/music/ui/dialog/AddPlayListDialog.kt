@@ -1,16 +1,25 @@
 package com.zxhhyj.music.ui.dialog
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.PlayListRepository
 import com.zxhhyj.music.ui.common.AppDialog
+import com.zxhhyj.music.ui.common.AppOutlinedTextField
 
 @Composable
 fun AddPlayListDialog(onDismissRequest: () -> Unit) {
+    var playlistName by remember {
+        mutableStateOf("")
+    }
     AppDialog(
         onDismissRequest = onDismissRequest,
         title = stringResource(id = R.string.add_playlist),
@@ -18,8 +27,10 @@ fun AddPlayListDialog(onDismissRequest: () -> Unit) {
             Text(
                 stringResource(id = R.string.create),
                 modifier = Modifier.clickable {
-                    PlayListRepository.create("测试歌单")
-                    onDismissRequest.invoke()
+                    if (playlistName.isNotEmpty()) {
+                        PlayListRepository.create(playlistName)
+                        onDismissRequest.invoke()
+                    }
                 })
         },
         dismiss = {
@@ -27,6 +38,13 @@ fun AddPlayListDialog(onDismissRequest: () -> Unit) {
                 stringResource(id = R.string.cancel),
                 modifier = Modifier.clickable { onDismissRequest.invoke() })
         }) {
-        Text(text = "我是内容")
+        AppOutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = playlistName,
+            onValueChange = {
+                if (it.length <= 16) {
+                    playlistName = it
+                }
+            })
     }
 }

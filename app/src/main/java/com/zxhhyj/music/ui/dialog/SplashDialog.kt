@@ -39,7 +39,6 @@ fun SplashDialog(onDismissRequest: () -> Unit) {
             })
         })
     {
-
         Text(text = buildAnnotatedString {
             append(stringResource(id = R.string.splash_dialog_text))
             withStyle(style = SpanStyle(color = appTextAccentColor, fontWeight = FontWeight.Bold)) {

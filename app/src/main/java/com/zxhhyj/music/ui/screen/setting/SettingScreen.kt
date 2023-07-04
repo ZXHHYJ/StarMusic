@@ -15,9 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.helper.VersionHelper
-import com.zxhhyj.music.ui.common.TopAppBar
-import com.zxhhyj.music.ui.common.bindTopAppBarState
-import com.zxhhyj.music.ui.common.rememberTopAppBarState
+import com.zxhhyj.music.ui.common.AppTopBar
+import com.zxhhyj.music.ui.common.bindAppTopBarState
+import com.zxhhyj.music.ui.common.rememberAppTopBarState
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.item.SettingItem
 import dev.olshevski.navigation.reimagined.NavController
@@ -28,10 +28,10 @@ fun SettingScreen(
     mainNavController: NavController<ScreenDestination>,
     padding: PaddingValues,
 ) {
-    val topAppBarState = rememberTopAppBarState()
+    val appTopBarState = rememberAppTopBarState()
     LazyColumn(
         modifier = Modifier
-            .bindTopAppBarState(topAppBarState)
+            .bindAppTopBarState(appTopBarState)
             .fillMaxSize()
             .padding(padding)
     ) {
@@ -72,8 +72,8 @@ fun SettingScreen(
             }
         }
     }
-    TopAppBar(
-        state = topAppBarState,
+    AppTopBar(
+        state = appTopBarState,
         modifier = Modifier.fillMaxWidth(),
         title = stringResource(id = R.string.setting)
     )

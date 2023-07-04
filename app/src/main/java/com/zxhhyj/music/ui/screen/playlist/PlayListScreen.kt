@@ -14,9 +14,9 @@ import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.PlayListRepository
 import com.zxhhyj.music.ui.common.AppRoundIcon
-import com.zxhhyj.music.ui.common.TopAppBar
-import com.zxhhyj.music.ui.common.bindTopAppBarState
-import com.zxhhyj.music.ui.common.rememberTopAppBarState
+import com.zxhhyj.music.ui.common.AppTopBar
+import com.zxhhyj.music.ui.common.bindAppTopBarState
+import com.zxhhyj.music.ui.common.rememberAppTopBarState
 import com.zxhhyj.music.ui.item.PlayListItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.DialogDestination
@@ -32,12 +32,12 @@ fun PlayListScreen(
     dialogNavController: NavController<DialogDestination>,
     padding: PaddingValues
 ) {
-    val topAppBarState = rememberTopAppBarState()
+    val appTopBarState = rememberAppTopBarState()
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding)
-            .bindTopAppBarState(topAppBarState)
+            .bindAppTopBarState(appTopBarState)
     ) {
         items(PlayListRepository.playlist) {
             PlayListItem(sheetNavController = sheetNavController, model = it) {
@@ -45,14 +45,16 @@ fun PlayListScreen(
             }
         }
     }
-    TopAppBar(
-        state = topAppBarState, modifier = Modifier, title = stringResource(id = R.string.play_list)
-    ) {
-        AppRoundIcon(
-            imageVector = Icons.Rounded.Add,
-            contentDescription = null,
-            modifier = Modifier.clickable {
-                dialogNavController.navigate(DialogDestination.AddPlayList)
-            })
-    }
+    AppTopBar(
+        state = appTopBarState,
+        modifier = Modifier,
+        title = stringResource(id = R.string.play_list),
+        actions = {
+            AppRoundIcon(
+                imageVector = Icons.Rounded.Add,
+                contentDescription = null,
+                modifier = Modifier.clickable {
+                    dialogNavController.navigate(DialogDestination.AddPlayList)
+                })
+        })
 }

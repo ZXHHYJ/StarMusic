@@ -10,9 +10,12 @@ import com.google.android.exoplayer2.Player
 import com.zxhhyj.music.service.playmanager.bean.SongBean
 import com.zxhhyj.music.service.playmanager.impl.PlayManagerController
 import com.zxhhyj.music.service.playmanager.impl.PlayManagerState
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
-import java.util.*
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @OptIn(DelicateCoroutinesApi::class)

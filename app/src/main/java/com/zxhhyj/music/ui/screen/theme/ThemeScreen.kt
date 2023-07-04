@@ -12,19 +12,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.ui.common.TopAppBar
-import com.zxhhyj.music.ui.common.bindTopAppBarState
-import com.zxhhyj.music.ui.common.rememberTopAppBarState
+import com.zxhhyj.music.ui.common.AppTopBar
+import com.zxhhyj.music.ui.common.bindAppTopBarState
+import com.zxhhyj.music.ui.common.rememberAppTopBarState
 import com.zxhhyj.music.ui.item.SettingSwitchItem
 
 @Composable
 fun ThemeScreen(padding: PaddingValues) {
-    val topAppBarState = rememberTopAppBarState()
+    val appTopBarState = rememberAppTopBarState()
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding)
-            .bindTopAppBarState(topAppBarState)
+            .bindAppTopBarState(appTopBarState)
     ) {
         item {
             SettingSwitchItem(
@@ -49,7 +49,7 @@ fun ThemeScreen(padding: PaddingValues) {
             )
         }
     }
-    TopAppBar(
-        state = topAppBarState, modifier = Modifier, title = stringResource(id = R.string.theme)
+    AppTopBar(
+        state = appTopBarState, modifier = Modifier, title = stringResource(id = R.string.theme)
     )
 }

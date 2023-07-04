@@ -2,6 +2,7 @@ package com.zxhhyj.music.ui.screen.single
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -20,9 +21,9 @@ import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppListButton
 import com.zxhhyj.music.ui.common.AppRoundIcon
-import com.zxhhyj.music.ui.common.TopAppBar
-import com.zxhhyj.music.ui.common.bindTopAppBarState
-import com.zxhhyj.music.ui.common.rememberTopAppBarState
+import com.zxhhyj.music.ui.common.AppTopBar
+import com.zxhhyj.music.ui.common.bindAppTopBarState
+import com.zxhhyj.music.ui.common.rememberAppTopBarState
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.item.SubTitleItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
@@ -48,9 +49,11 @@ fun SingleScreen(
             dialogNavController.pop()
         }
     }
-    val topAppBarState = rememberTopAppBarState()
+    val appTopBarState = rememberAppTopBarState()
     LazyColumn(
-        modifier = Modifier.bindTopAppBarState(topAppBarState),
+        modifier = Modifier
+            .bindAppTopBarState(appTopBarState)
+            .fillMaxSize(),
         contentPadding = padding
     ) {
         item {
@@ -89,18 +92,18 @@ fun SingleScreen(
             }
         }
     }
-    TopAppBar(
-        state = topAppBarState,
+    AppTopBar(
+        state = appTopBarState,
         modifier = Modifier.fillMaxWidth(),
-        title = stringResource(id = R.string.media_lib)
-    ) {
-        AppRoundIcon(
-            imageVector = Icons.Rounded.MoreVert,
-            contentDescription = null,
-            modifier = Modifier.clickable {
-                mainNavController.navigate(ScreenDestination.Setting)
-            }
-        )
-    }
-
+        title = stringResource(id = R.string.media_lib),
+        actions = {
+            AppRoundIcon(
+                imageVector = Icons.Rounded.MoreVert,
+                contentDescription = null,
+                modifier = Modifier.clickable {
+                    mainNavController.navigate(ScreenDestination.Setting)
+                }
+            )
+        }
+    )
 }

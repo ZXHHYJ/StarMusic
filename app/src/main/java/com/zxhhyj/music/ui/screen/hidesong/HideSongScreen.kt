@@ -30,10 +30,10 @@ import com.zxhhyj.music.service.playmanager.bean.SongBean
 import com.zxhhyj.music.service.playmanager.ktx.coverUrl
 import com.zxhhyj.music.ui.common.AppCard
 import com.zxhhyj.music.ui.common.AppRoundIcon
-import com.zxhhyj.music.ui.common.TopAppBar
-import com.zxhhyj.music.ui.common.bindTopAppBarState
+import com.zxhhyj.music.ui.common.AppTopBar
+import com.zxhhyj.music.ui.common.bindAppTopBarState
 import com.zxhhyj.music.ui.common.image.AppAsyncImage
-import com.zxhhyj.music.ui.common.rememberTopAppBarState
+import com.zxhhyj.music.ui.common.rememberAppTopBarState
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.onBackground
 import com.zxhhyj.music.ui.theme.textColor
@@ -42,12 +42,12 @@ import com.zxhhyj.music.ui.theme.vertical
 
 @Composable
 fun HiddenSongScreen(padding: PaddingValues) {
-    val topAppBarState = rememberTopAppBarState()
+    val appTopBarState = rememberAppTopBarState()
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding)
-            .bindTopAppBarState(topAppBarState)
+            .bindAppTopBarState(appTopBarState)
     ) {
         items(AndroidMediaLibsRepository.hideSongs) {
             HideSongItem(song = it) {
@@ -55,8 +55,8 @@ fun HiddenSongScreen(padding: PaddingValues) {
             }
         }
     }
-    TopAppBar(
-        state = topAppBarState,
+    AppTopBar(
+        state = appTopBarState,
         modifier = Modifier,
         title = stringResource(id = R.string.hidden_songs)
     )

@@ -14,9 +14,9 @@ import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.helper.ActivityHelper
 import com.zxhhyj.music.logic.helper.VersionHelper
-import com.zxhhyj.music.ui.common.TopAppBar
-import com.zxhhyj.music.ui.common.bindTopAppBarState
-import com.zxhhyj.music.ui.common.rememberTopAppBarState
+import com.zxhhyj.music.ui.common.AppTopBar
+import com.zxhhyj.music.ui.common.bindAppTopBarState
+import com.zxhhyj.music.ui.common.rememberAppTopBarState
 import com.zxhhyj.music.ui.item.SubTitleItem
 import com.zxhhyj.music.ui.item.SettingItem
 
@@ -26,12 +26,12 @@ fun AboutScreen(
     padding: PaddingValues,
 ) {
     val ctx = LocalContext.current
-    val topAppBarState = rememberTopAppBarState()
+    val appTopBarState = rememberAppTopBarState()
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding)
-            .bindTopAppBarState(topAppBarState)
+            .bindAppTopBarState(appTopBarState)
     ) {
         item {
             SettingItem(
@@ -65,7 +65,7 @@ fun AboutScreen(
             }
         }
     }
-    TopAppBar(
-        state = topAppBarState, modifier = Modifier, title = stringResource(id = R.string.about)
+    AppTopBar(
+        state = appTopBarState, modifier = Modifier, title = stringResource(id = R.string.about)
     )
 }
