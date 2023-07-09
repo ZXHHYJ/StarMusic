@@ -11,6 +11,7 @@ import androidx.compose.material.icons.rounded.Album
 import androidx.compose.material.icons.rounded.Mic
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.PlaylistPlay
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
@@ -97,6 +98,13 @@ fun SingleScreen(
         modifier = Modifier.fillMaxWidth(),
         title = stringResource(id = R.string.media_lib),
         actions = {
+            AppRoundIcon(
+                imageVector = Icons.Rounded.Search,
+                contentDescription = null,
+                modifier = Modifier.clickable {
+                    mainNavController.navigate(ScreenDestination.Search)
+                }
+            )
             AppRoundIcon(
                 imageVector = Icons.Rounded.MoreVert,
                 contentDescription = null,

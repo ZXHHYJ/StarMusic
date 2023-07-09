@@ -15,13 +15,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material.icons.rounded.Source
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -36,16 +32,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.map
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.ui.common.AppBottomNavigationBar
-import com.zxhhyj.music.ui.common.AppBottomNavigationItem
 import com.zxhhyj.music.ui.common.AppDivider
 import com.zxhhyj.music.ui.common.MediaController
 import com.zxhhyj.music.ui.common.PanelState
@@ -81,11 +73,9 @@ import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.DialogNavHost
 import dev.olshevski.navigation.reimagined.NavAction
 import dev.olshevski.navigation.reimagined.NavBackHandler
-import dev.olshevski.navigation.reimagined.NavHost
 import dev.olshevski.navigation.reimagined.NavTransitionSpec
 import dev.olshevski.navigation.reimagined.material.BottomSheetNavHost
 import dev.olshevski.navigation.reimagined.material.BottomSheetProperties
-import dev.olshevski.navigation.reimagined.moveToTop
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop
 import dev.olshevski.navigation.reimagined.rememberNavController
@@ -93,23 +83,6 @@ import dev.olshevski.navigation.reimagined.rememberNavController
 /**
  * Happy 22nd Birthday Shuangshengzi
  */
-
-enum class HomeNavigationDestination {
-    Single,
-    Search,
-}
-
-val HomeNavigationDestination.tabIcon
-    get() = when (this) {
-        HomeNavigationDestination.Single -> Icons.Rounded.Source
-        HomeNavigationDestination.Search -> Icons.Rounded.Search
-    }
-
-val HomeNavigationDestination.tabName
-    @Composable get() = when (this) {
-        HomeNavigationDestination.Single -> stringResource(id = R.string.media_lib)
-        HomeNavigationDestination.Search -> stringResource(id = R.string.search)
-    }
 
 @Composable
 private fun AppScaffold(
@@ -152,9 +125,6 @@ fun MainScreen() {
 
     val mainNavController =
         rememberNavController<ScreenDestination>(startDestination = ScreenDestination.Main)
-
-    val homeNavController =
-        rememberNavController(startDestination = HomeNavigationDestination.Single)
 
     val dialogNavController = rememberNavController<DialogDestination>(
         initialBackstack = emptyList()
@@ -206,37 +176,8 @@ fun MainScreen() {
                     }
                 },
                 navigationBar = {
-                    AnimatedVisibility(
-                        visible = mainNavController.backstack.entries.size <= 1,
-                        enter = expandVertically(),
-                        exit = shrinkVertically()
-                    ) {
-                        AppBottomNavigationBar(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(56.dp),
-                        ) {
-                            val bottomLastDestination =
-                                homeNavController.backstack.entries.last().destination
-                            listOf(
-                                HomeNavigationDestination.Single,
-                                HomeNavigationDestination.Search
-                            ).forEach { item ->
-                                AppBottomNavigationItem(
-                                    selected = item == bottomLastDestination,
-                                    onClick = {
-                                        if (!homeNavController.moveToTop { it == item }) {
-                                            homeNavController.navigate(item)
-                                        }
-                                    },
-                                    imageVector = item.tabIcon,
-                                    title = item.tabName
-                                )
-                            }
-                        }
-                        if (!visibilityMediaController) {
-                            AppDivider(modifier = Modifier.fillMaxWidth())
-                        }
+                    if (!visibilityMediaController) {
+                        AppDivider(modifier = Modifier.fillMaxWidth())
                     }
                 }
             ) { padding ->
@@ -265,26 +206,12 @@ fun MainScreen() {
                     ) { destination ->
                         when (destination) {
                             ScreenDestination.Main -> {
-                                NavHost(homeNavController) {
-                                    when (it) {
-                                        HomeNavigationDestination.Single -> {
-                                            SingleScreen(
-                                                mainNavController = mainNavController,
-                                                sheetNavController = sheetNavController,
-                                                dialogNavController = dialogNavController,
-                                                padding = padding
-                                            )
-                                        }
-
-                                        HomeNavigationDestination.Search -> {
-                                            SearchScreen(
-                                                mainNavController = mainNavController,
-                                                sheetNavController = sheetNavController,
-                                                padding = padding
-                                            )
-                                        }
-                                    }
-                                }
+                                SingleScreen(
+                                    mainNavController = mainNavController,
+                                    sheetNavController = sheetNavController,
+                                    dialogNavController = dialogNavController,
+                                    padding = padding
+                                )
                             }
 
                             ScreenDestination.Search -> {

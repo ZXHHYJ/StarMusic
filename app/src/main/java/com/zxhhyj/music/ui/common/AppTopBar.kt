@@ -2,8 +2,10 @@ package com.zxhhyj.music.ui.common
 
 import android.os.Parcelable
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -142,8 +144,10 @@ fun AppTopBar(
                                 )
                             }
                     )
-                    CompositionLocalProvider(LocalContentColor provides appIconAccentColor) {
-                        actions.invoke()
+                    Row(horizontalArrangement = Arrangement.spacedBy(horizontal / 2)) {
+                        CompositionLocalProvider(LocalContentColor provides appIconAccentColor) {
+                            actions.invoke()
+                        }
                     }
                 }
             )
