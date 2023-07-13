@@ -315,10 +315,10 @@ fun MainScreen() {
         )
     }
 
+    val onDismissRequest: () -> Unit = {
+        dialogNavController.pop()
+    }
     DialogNavHost(controller = dialogNavController) {
-        val onDismissRequest: () -> Unit = {
-            dialogNavController.pop()
-        }
         when (it) {
             DialogDestination.ScanMusic -> {
                 ScanMusicDialog(

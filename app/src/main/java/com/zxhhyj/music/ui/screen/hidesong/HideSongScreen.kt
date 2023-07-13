@@ -32,7 +32,7 @@ import com.zxhhyj.music.ui.common.AppCard
 import com.zxhhyj.music.ui.common.AppRoundIcon
 import com.zxhhyj.music.ui.common.AppTopBar
 import com.zxhhyj.music.ui.common.bindAppTopBarState
-import com.zxhhyj.music.ui.common.image.AppAsyncImage
+import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.rememberAppTopBarState
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.onBackground

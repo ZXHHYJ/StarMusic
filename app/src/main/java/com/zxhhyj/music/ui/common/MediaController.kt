@@ -27,14 +27,13 @@ import androidx.lifecycle.map
 import com.zxhhyj.music.R
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.ktx.coverUrl
-import com.zxhhyj.music.ui.common.image.AppAsyncImage
 import com.zxhhyj.music.ui.theme.appBackgroundColor
 import com.zxhhyj.music.ui.theme.horizontal
 
 @Composable
 fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> Unit) {
     val controlBarHeight = 50.dp
-    val coverSize = 55.dp
+    val coverLength = 56.dp
     Box(modifier = modifier) {
         Box(
             modifier = Modifier
@@ -68,7 +67,7 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
                     )
                     Row(
                         modifier = Modifier
-                            .padding(start = coverSize)
+                            .padding(start = coverLength)
                             .fillMaxSize(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -114,7 +113,7 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
                         Spacer(modifier = Modifier.width(8.dp))
                     }
                 }
-                AppCard(backgroundColor = Color.Transparent, modifier = Modifier.size(coverSize)) {
+                AppCard(backgroundColor = Color.Transparent, modifier = Modifier.size(coverLength)) {
                     AppAsyncImage(
                         modifier = Modifier.fillMaxSize(),
                         url = song?.album?.coverUrl ?: ""
