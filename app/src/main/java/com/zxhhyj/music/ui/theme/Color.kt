@@ -3,6 +3,7 @@ package com.zxhhyj.music.ui.theme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.kyant.monet.a1
+import com.kyant.monet.rangeTo
 
 /**
  * App禁用控件的颜色
@@ -37,13 +38,13 @@ val appTextButtonAccentColor
  * 标准字体颜色
  */
 val textColor: Color
-    @Composable get() = Color.Black
+    @Composable get() = Color.Black..Color.White
 
 /**
  * 标准字体颜色的反色
  */
 val onTextColor: Color
-    @Composable get() = Color.White
+    @Composable get() = Color.White..Color.Black
 
 /**
  * 标准字体颜色的辅助色
@@ -65,16 +66,16 @@ val translucentWhiteFixBug = Color(0x33FFFFFF)
  * app背景色
  */
 val appBackgroundColor
-    @Composable get() = Color.White
+    @Composable get() = Color.White..Color.Black
 
 /**
  * app背景色的反色
  */
 val onBackground
-    @Composable get() = Color.Black
+    @Composable get() = Color.Black..Color.White
 
 /**
  * 默认分割线的颜色
  */
 val appDividerColor
-    @Composable get() = Color(0xd8d8d8d8)
+    @Composable get() = Color(0xd8d8d8d8)..Color(0xD84B4B4B)

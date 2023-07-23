@@ -5,6 +5,8 @@ import android.app.WallpaperManager.FLAG_SYSTEM
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -14,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.kyant.monet.LocalTonalPalettes
@@ -61,11 +64,18 @@ fun MandySaMusicTheme(
                 }
             }
         }
+    } else {
+        monetColor = Color.Red
     }
-    val palettes = TonalPalettes(keyColor = monetColor, style = PaletteStyle.Vibrant)
-    CompositionLocalProvider(LocalTonalPalettes provides palettes) {
-        CompositionLocalProvider(LocalContentColor provides 0.n1..100.n1) {
-            MaterialTheme(colors = MaterialTheme.colors.copy(background = appBackgroundColor)) {
+    CompositionLocalProvider(
+        LocalTonalPalettes provides TonalPalettes(
+            keyColor = monetColor,
+            style = PaletteStyle.Vibrant
+        ),
+        LocalContentColor provides 0.n1..100.n1
+    ) {
+        MaterialTheme {
+            Box(modifier = Modifier.background(appBackgroundColor)) {
                 content.invoke()
             }
         }

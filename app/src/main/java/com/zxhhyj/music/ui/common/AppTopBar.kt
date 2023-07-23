@@ -129,6 +129,7 @@ fun AppTopBar(
                 content = {
                     Text(
                         text = title,
+                        color = textColor,
                         fontSize = 18.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,

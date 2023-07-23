@@ -25,12 +25,8 @@ fun ScanMusicDialog(onDismissRequest: () -> Unit) {
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
         title = stringResource(id = R.string.scan_music),
-        confirm = {
-
-        },
-        dismiss = {
-
-        })
+        confirm = {},
+        dismiss = {})
     {
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator(
