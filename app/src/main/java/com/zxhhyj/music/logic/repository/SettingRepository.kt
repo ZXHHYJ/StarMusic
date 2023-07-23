@@ -15,15 +15,6 @@ object SettingRepository {
     )
 
     /**
-     * 是否启用歌曲封面取色
-     */
-    var EnableAlbumGetColor by mutableDataSaverStateOf(
-        dataSaverInterface = DataSaverUtils,
-        key = "EnableAlbumGetColor",
-        initialValue = false
-    )
-
-    /**
      * 是否启用Android媒体库
      */
     var EnableAndroidMediaLibs by mutableDataSaverStateOf(

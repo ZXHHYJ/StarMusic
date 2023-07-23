@@ -11,10 +11,10 @@ sealed class DialogDestination : Parcelable {
     object Splash : DialogDestination()
 
     /**
-     * 扫描音乐
+     * 媒体库为空时的提示
      */
     @Parcelize
-    object ScanMusic : DialogDestination()
+    object MediaLibsEmpty : DialogDestination()
 
     /**
      * 添加播放列表
@@ -22,4 +22,9 @@ sealed class DialogDestination : Parcelable {
     @Parcelize
     object AddPlayList : DialogDestination()
 
+    /**
+     * 扫描音乐
+     */
+    @Parcelize
+    object ScanMusic : DialogDestination()
 }

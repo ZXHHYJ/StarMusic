@@ -44,7 +44,7 @@ fun SingleScreen(
 ) {
     DisposableEffect(SettingRepository.AgreePrivacyPolicy, AndroidMediaLibsRepository.songs) {
         if (SettingRepository.AgreePrivacyPolicy && AndroidMediaLibsRepository.songs.isEmpty()) {
-            dialogNavController.navigate(DialogDestination.ScanMusic)
+            dialogNavController.navigate(DialogDestination.MediaLibsEmpty)
         }
         onDispose {
             dialogNavController.pop()

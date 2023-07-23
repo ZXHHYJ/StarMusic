@@ -32,11 +32,13 @@ fun SongInfoSheet(
                 info = song.album.name
             )
         }
-        item {
-            SongInfoItem(
-                title = stringResource(id = com.zxhhyj.music.R.string.bit_rate),
-                info = "${song.bitrate.toInt() / 1000} kbps"
-            )
+        song.bitrate?.let {
+            item {
+                SongInfoItem(
+                    title = stringResource(id = com.zxhhyj.music.R.string.bit_rate),
+                    info = "${song.bitrate} kbps"
+                )
+            }
         }
         item {
             SongInfoItem(

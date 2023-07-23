@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Album
 import androidx.compose.material.icons.rounded.ColorLens
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -34,17 +33,6 @@ fun ThemeScreen(padding: PaddingValues) {
                 checked = SettingRepository.EnableMonet,
                 onCheckedChange = {
                     SettingRepository.EnableMonet = it
-                }
-            )
-        }
-        item {
-            SettingSwitchItem(
-                imageVector = Icons.Rounded.Album,
-                title = stringResource(id = R.string.album_get_color),
-                subTitle = stringResource(id = R.string.album_get_color_info),
-                checked = SettingRepository.EnableAlbumGetColor,
-                onCheckedChange = {
-                    SettingRepository.EnableAlbumGetColor = it
                 }
             )
         }

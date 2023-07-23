@@ -6,12 +6,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,30 +21,13 @@ import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.KeepScreenOn
 import com.zxhhyj.music.ui.common.Lyric
 import com.zxhhyj.music.ui.theme.translucentWhite
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import org.jaudiotagger.audio.AudioFileIO
-import org.jaudiotagger.tag.FieldKey
-import java.io.File
 
 @Composable
 fun ColumnScope.PlayLyricScreen() {
     val pause by PlayManager.pauseLiveData().observeAsState(true)
     KeepScreenOn(enable = !pause)
-
     val song by PlayManager.changeMusicLiveData().observeAsState()
-    var lyric by rememberSaveable { mutableStateOf("") }
-    LaunchedEffect(song) {
-        launch(Dispatchers.IO) {
-            lyric = try {
-                val audioFile = AudioFileIO.read(File((song ?: return@launch).data))
-                audioFile.tag.getFirst(FieldKey.LYRICS)
-            } catch (_: Exception) {
-                String()
-            }
-        }
-    }
-    if (lyric.isEmpty()) {
+    if (song?.lyric == null || song?.lyric?.isEmpty() == true) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -69,7 +48,7 @@ fun ColumnScope.PlayLyricScreen() {
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1.0f),
-            lyric = lyric,
+            lyric = song!!.lyric!!,
             liveTime = liveTime,
             translation = SettingRepository.EnableLyricsTranslation,
             lyricItem = { modifier: Modifier,

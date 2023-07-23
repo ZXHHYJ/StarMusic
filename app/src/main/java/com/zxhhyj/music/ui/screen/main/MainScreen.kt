@@ -43,6 +43,7 @@ import com.zxhhyj.music.ui.common.MediaController
 import com.zxhhyj.music.ui.common.PanelState
 import com.zxhhyj.music.ui.common.SlidingPanel
 import com.zxhhyj.music.ui.dialog.AddPlayListDialog
+import com.zxhhyj.music.ui.dialog.MediaLibsEmptyDialog
 import com.zxhhyj.music.ui.dialog.ScanMusicDialog
 import com.zxhhyj.music.ui.dialog.SplashDialog
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
@@ -263,6 +264,7 @@ fun MainScreen() {
                             ScreenDestination.MediaLibs -> {
                                 MediaSourceScreen(
                                     mainNavController = mainNavController,
+                                    dialogNavController = dialogNavController,
                                     padding = padding
                                 )
                             }
@@ -320,8 +322,8 @@ fun MainScreen() {
     }
     DialogNavHost(controller = dialogNavController) {
         when (it) {
-            DialogDestination.ScanMusic -> {
-                ScanMusicDialog(
+            DialogDestination.MediaLibsEmpty -> {
+                MediaLibsEmptyDialog(
                     onDismissRequest = onDismissRequest,
                     mainNavController = mainNavController
                 )
@@ -333,6 +335,10 @@ fun MainScreen() {
 
             DialogDestination.AddPlayList -> {
                 AddPlayListDialog(onDismissRequest = onDismissRequest)
+            }
+
+            DialogDestination.ScanMusic -> {
+                ScanMusicDialog(onDismissRequest = onDismissRequest)
             }
         }
     }

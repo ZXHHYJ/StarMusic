@@ -3,6 +3,7 @@ package com.zxhhyj.music.logic.repository
 import android.annotation.SuppressLint
 import android.provider.MediaStore
 import com.funny.data_saver.core.mutableDataSaverListStateOf
+import com.kyant.tag.Metadata
 import com.zxhhyj.music.logic.config.DataSaverUtils
 import com.zxhhyj.music.logic.config.application
 import com.zxhhyj.music.service.playmanager.bean.SongBean
@@ -75,30 +76,35 @@ object AndroidMediaLibsRepository {
                 null,
                 null
             )
+
             val songs = arrayListOf<SongBean>()
             while (query != null && query.moveToNext()) {
+                // 获取媒体文件的专辑名称
                 val album =
                     query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM))
+                // 获取媒体文件所属专辑的 ID
                 val albumId =
                     query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID))
+                // 获取媒体文件的艺术家名称
                 val artist =
                     query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST))
+                // 获取媒体文件所属艺术家的 ID
                 val artistId =
                     query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST_ID))
+                // 获取媒体文件的时长
                 val duration =
                     query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION))
-                val data =
-                    query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA))
+                // 获取媒体文件的文件路径
+                val data = query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA))
+                // 获取媒体文件的名称
                 val songName =
                     query.getString(query.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE))
-                val size =
-                    query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE))
-                val id =
-                    query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.Media._ID))
-                val bitrate =
-                    query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.Media.BITRATE))
-                val samplingRate =
-                    query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.Media.CAPTURE_FRAMERATE))
+                // 获取媒体文件的大小
+                val size = query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE))
+                // 获取媒体文件的 ID
+                val id = query.getLong(query.getColumnIndexOrThrow(MediaStore.Audio.Media._ID))
+                val metadata = Metadata.getMetadata(data)
+                val lyric = Metadata.getLyrics(data)
                 songs.add(
                     SongBean(
                         album = SongBean.Album(albumId, album),
@@ -108,8 +114,9 @@ object AndroidMediaLibsRepository {
                         songName = songName,
                         size = size,
                         id = id,
-                        bitrate = bitrate,
-                        samplingRate = samplingRate,
+                        bitrate = metadata?.bitrate,
+                        samplingRate = metadata?.sampleRate,
+                        lyric = lyric
                     )
                 )
             }

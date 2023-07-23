@@ -12,8 +12,9 @@ data class SongBean(
     val songName: String,
     val size: Long,
     val id: Long,
-    val bitrate: Long,
-    val samplingRate: Long,
+    val bitrate: Int?,
+    val samplingRate: Int?,
+    val lyric: String?,
 ) : Parcelable {
 
     @Parcelize
