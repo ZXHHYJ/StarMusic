@@ -66,7 +66,7 @@ val translucentWhiteFixBug = Color(0x33FFFFFF)
  * app背景色
  */
 val appBackgroundColor
-    @Composable get() = Color.White..Color.Black
+    @Composable get() = Color.White..Color(0xFF070707)
 
 /**
  * app背景色的反色
@@ -78,4 +78,4 @@ val onBackground
  * 默认分割线的颜色
  */
 val appDividerColor
-    @Composable get() = Color(0xd8d8d8d8)..Color(0xD84B4B4B)
+    @Composable get() = Color(0xd8d8d8d8)..Color(0xFF383838)

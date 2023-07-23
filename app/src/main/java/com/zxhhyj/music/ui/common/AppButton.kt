@@ -29,6 +29,7 @@ import com.zxhhyj.music.ui.theme.appUnEnabledColor
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.onTextColor
 import com.zxhhyj.music.ui.theme.roundShape
+import com.zxhhyj.music.ui.theme.textColor
 import com.zxhhyj.music.ui.theme.vertical
 
 @Composable
@@ -126,9 +127,9 @@ fun AppButton(
             hoveredElevation = 0.dp,
             focusedElevation = 0.dp
         ),
-        contentPadding = PaddingValues(horizontal = horizontal/2)
+        contentPadding = PaddingValues(horizontal = horizontal / 2)
     ) {
-        Icon(imageVector = imageVector, contentDescription = null)
-        Text(text = text, fontSize = 14.sp)
+        Icon(imageVector = imageVector, contentDescription = null, tint = textColor)
+        Text(text = text, fontSize = 14.sp, color = textColor)
     }
 }
