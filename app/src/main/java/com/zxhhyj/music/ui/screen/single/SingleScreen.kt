@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
@@ -22,9 +23,8 @@ import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppListButton
 import com.zxhhyj.music.ui.common.AppRoundIcon
+import com.zxhhyj.music.ui.common.AppScaffold
 import com.zxhhyj.music.ui.common.AppTopBar
-import com.zxhhyj.music.ui.common.bindAppTopBarState
-import com.zxhhyj.music.ui.common.rememberAppTopBarState
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.item.SubTitleItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
@@ -32,8 +32,6 @@ import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
-import dev.olshevski.navigation.reimagined.pop
-
 
 @Composable
 fun SingleScreen(
@@ -46,72 +44,70 @@ fun SingleScreen(
         if (SettingRepository.AgreePrivacyPolicy && AndroidMediaLibsRepository.songs.isEmpty()) {
             dialogNavController.navigate(DialogDestination.MediaLibsEmpty)
         }
-        onDispose {
-            dialogNavController.pop()
-        }
+        onDispose { }
     }
-    val appTopBarState = rememberAppTopBarState()
-    LazyColumn(
+    AppScaffold(
         modifier = Modifier
-            .bindAppTopBarState(appTopBarState)
-            .fillMaxSize(),
-        contentPadding = padding
-    ) {
-        item {
-            AppListButton(
-                onClick = {
-                    mainNavController.navigate(ScreenDestination.PlayList)
-                },
-                imageVector = Icons.Rounded.PlaylistPlay,
-                text = stringResource(id = R.string.play_list)
+            .fillMaxSize()
+            .padding(padding),
+        topBar = {
+            AppTopBar(
+                modifier = Modifier.fillMaxWidth(),
+                title = stringResource(id = R.string.media_lib),
+                actions = {
+                    AppRoundIcon(
+                        imageVector = Icons.Rounded.Search,
+                        contentDescription = null,
+                        modifier = Modifier.clickable {
+                            mainNavController.navigate(ScreenDestination.Search)
+                        }
+                    )
+                    AppRoundIcon(
+                        imageVector = Icons.Rounded.MoreVert,
+                        contentDescription = null,
+                        modifier = Modifier.clickable {
+                            mainNavController.navigate(ScreenDestination.Setting)
+                        }
+                    )
+                }
             )
-        }
-        item {
-            AppListButton(
-                onClick = {
-                    mainNavController.navigate(ScreenDestination.Album)
-                },
-                imageVector = Icons.Rounded.Album,
-                text = stringResource(id = R.string.album)
-            )
-        }
-        item {
-            AppListButton(
-                onClick = {
-                    mainNavController.navigate(ScreenDestination.Singer)
-                },
-                imageVector = Icons.Rounded.Mic,
-                text = stringResource(id = R.string.singer)
-            )
-        }
-        item {
-            SubTitleItem(title = stringResource(id = R.string.single))
-        }
-        itemsIndexed(AndroidMediaLibsRepository.songs) { index, item ->
-            SongItem(sheetNavController = sheetNavController, song = item) {
-                PlayManager.play(AndroidMediaLibsRepository.songs, index)
+        }) {
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            item {
+                AppListButton(
+                    onClick = {
+                        mainNavController.navigate(ScreenDestination.PlayList)
+                    },
+                    imageVector = Icons.Rounded.PlaylistPlay,
+                    text = stringResource(id = R.string.play_list)
+                )
+            }
+            item {
+                AppListButton(
+                    onClick = {
+                        mainNavController.navigate(ScreenDestination.Album)
+                    },
+                    imageVector = Icons.Rounded.Album,
+                    text = stringResource(id = R.string.album)
+                )
+            }
+            item {
+                AppListButton(
+                    onClick = {
+                        mainNavController.navigate(ScreenDestination.Singer)
+                    },
+                    imageVector = Icons.Rounded.Mic,
+                    text = stringResource(id = R.string.singer)
+                )
+            }
+            item {
+                SubTitleItem(title = stringResource(id = R.string.single))
+            }
+            itemsIndexed(AndroidMediaLibsRepository.songs) { index, item ->
+                SongItem(sheetNavController = sheetNavController, song = item) {
+                    PlayManager.play(AndroidMediaLibsRepository.songs, index)
+                }
             }
         }
     }
-    AppTopBar(
-        state = appTopBarState,
-        modifier = Modifier.fillMaxWidth(),
-        title = stringResource(id = R.string.media_lib),
-        actions = {
-            AppRoundIcon(
-                imageVector = Icons.Rounded.Search,
-                contentDescription = null,
-                modifier = Modifier.clickable {
-                    mainNavController.navigate(ScreenDestination.Search)
-                }
-            )
-            AppRoundIcon(
-                imageVector = Icons.Rounded.MoreVert,
-                contentDescription = null,
-                modifier = Modifier.clickable {
-                    mainNavController.navigate(ScreenDestination.Setting)
-                }
-            )
-        }
-    )
 }

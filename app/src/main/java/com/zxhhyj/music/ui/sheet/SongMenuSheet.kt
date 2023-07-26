@@ -1,6 +1,5 @@
 package com.zxhhyj.music.ui.sheet
 
-
 import android.content.ContentUris
 import android.os.Build
 import android.provider.MediaStore
@@ -21,20 +20,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
+import com.zxhhyj.music.MainApplication
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.config.application
-import com.zxhhyj.music.logic.helper.ToastHelper
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.bean.SongBean
-import com.zxhhyj.music.ui.common.AppMenuButton
+import com.zxhhyj.music.ui.common.AppListButton
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
-import com.zxhhyj.music.ui.sheet.item.HeadSongTitleItem
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.popAll
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
@@ -47,19 +43,16 @@ fun SongMenuSheet(
         contract = ActivityResultContracts.StartIntentSenderForResult(),
         onResult = {
             if (it.resultCode == -1) {
-                //mediaLibsManager.delete(song)
+                AndroidMediaLibsRepository.delete(song)
+                sheetNavController.popAll()
             }
-            ToastHelper.toast("删除了歌曲")
         }
     )
     val coroutineScope = rememberCoroutineScope()
     val currentSong by PlayManager.changeMusicLiveData().observeAsState()
     LazyColumn {
         item {
-            HeadSongTitleItem(song = song)
-        }
-        item {
-            AppMenuButton(
+            AppListButton(
                 onClick = {
                     sheetNavController.popAll()
                     mainNavController.navigate(ScreenDestination.AlbumCnt(song.album))
@@ -69,7 +62,7 @@ fun SongMenuSheet(
             )
         }
         item {
-            AppMenuButton(
+            AppListButton(
                 onClick = {
                     sheetNavController.popAll()
                     mainNavController.navigate(ScreenDestination.SingerCnt(song.artist))
@@ -79,7 +72,7 @@ fun SongMenuSheet(
             )
         }
         item {
-            AppMenuButton(
+            AppListButton(
                 onClick = {
                     sheetNavController.popAll()
                     sheetNavController.navigate(BottomSheetDestination.AddToPlayList(song))
@@ -89,7 +82,7 @@ fun SongMenuSheet(
             )
         }
         item {
-            AppMenuButton(
+            AppListButton(
                 onClick = {
                     sheetNavController.popAll()
                     PlayManager.addNextPlay(song)
@@ -99,7 +92,7 @@ fun SongMenuSheet(
             )
         }
         item {
-            AppMenuButton(
+            AppListButton(
                 onClick = {
                     sheetNavController.popAll()
                     sheetNavController.navigate(BottomSheetDestination.SongInfo(song))
@@ -109,7 +102,7 @@ fun SongMenuSheet(
             )
         }
         item {
-            AppMenuButton(
+            AppListButton(
                 onClick = {
                     sheetNavController.popAll()
                     AndroidMediaLibsRepository.hide(song)
@@ -120,18 +113,17 @@ fun SongMenuSheet(
             )
         }
         item {
-            AppMenuButton(
+            AppListButton(
                 onClick = {
-                    sheetNavController.popAll()
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        coroutineScope.launch(Dispatchers.IO) {
+                        coroutineScope.launch {
                             val deleteUri =
                                 ContentUris.withAppendedId(
                                     MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                                     song.id
                                 )
                             val pendingIntent = MediaStore.createDeleteRequest(
-                                application.contentResolver,
+                                MainApplication.context.contentResolver,
                                 listOf(deleteUri)
                             )
                             val request =

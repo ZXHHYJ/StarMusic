@@ -111,7 +111,7 @@ fun PlayScreen(
                         )
                     },
                     selectedContentColor = Color.White,
-                    unselectedContentColor = translucentWhite,
+                    unselectedContentColor = translucentWhiteColor,
                     selected = selected,
                     onClick = {
                         if (selected) {

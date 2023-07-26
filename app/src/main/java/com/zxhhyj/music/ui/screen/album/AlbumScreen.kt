@@ -14,10 +14,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
-import com.zxhhyj.music.ui.common.BoxWithPercentages
+import com.zxhhyj.music.ui.common.AppScaffold
 import com.zxhhyj.music.ui.common.AppTopBar
-import com.zxhhyj.music.ui.common.bindAppTopBarState
-import com.zxhhyj.music.ui.common.rememberAppTopBarState
+import com.zxhhyj.music.ui.common.BoxWithPercentages
+import com.zxhhyj.music.ui.common.stateprompt.StatePrompt
 import com.zxhhyj.music.ui.item.AlbumItem
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.theme.horizontal
@@ -36,39 +36,47 @@ fun AlbumScreen(
         if (fixedCount < 2) {
             fixedCount = 2
         }
-        val appTopBarState = rememberAppTopBarState()
-        LazyVerticalGrid(
+        AppScaffold(
             modifier = Modifier
-                .bindAppTopBarState(appTopBarState)
-                .fillMaxSize(),
-            columns = GridCells.Fixed(fixedCount),
-            contentPadding = padding
-        ) {
-            itemsIndexed(AndroidMediaLibsRepository.albums) { index, item ->
-                val column = index % fixedCount
-                val row: Int = index / fixedCount
-                val p = (2 * horizontal + (fixedCount - 1) * horizontal) * 1f / fixedCount
-                val left = horizontal + column * (horizontal - p)
-                val right = p - left
-                AlbumItem(
+                .fillMaxSize()
+                .padding(padding),
+            topBar = {
+                AppTopBar(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = stringResource(id = R.string.album)
+                )
+            }) {
+            StatePrompt(
+                empty = AndroidMediaLibsRepository.albums.isEmpty(),
+                modifier = Modifier.fillMaxSize()
+            ) {
+                LazyVerticalGrid(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(
-                            PaddingValues.Absolute(
-                                top = if (row == 0) vertical else vertical / 2,
-                                left = left,
-                                right = right
-                            )
-                        ), album = item
+                        .fillMaxSize(),
+                    columns = GridCells.Fixed(fixedCount),
                 ) {
-                    mainNavController.navigate(ScreenDestination.AlbumCnt(item))
+                    itemsIndexed(AndroidMediaLibsRepository.albums) { index, item ->
+                        val column = index % fixedCount
+                        val row: Int = index / fixedCount
+                        val p = (2 * horizontal + (fixedCount - 1) * horizontal) * 1f / fixedCount
+                        val left = horizontal + column * (horizontal - p)
+                        val right = p - left
+                        AlbumItem(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(
+                                    PaddingValues.Absolute(
+                                        top = if (row == 0) vertical else vertical / 2,
+                                        left = left,
+                                        right = right
+                                    )
+                                ), album = item
+                        ) {
+                            mainNavController.navigate(ScreenDestination.AlbumCnt(item))
+                        }
+                    }
                 }
             }
         }
-        AppTopBar(
-            state = appTopBarState,
-            modifier = Modifier.fillMaxWidth(),
-            title = stringResource(id = R.string.album)
-        )
     }
 }

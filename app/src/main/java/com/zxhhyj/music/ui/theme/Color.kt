@@ -55,12 +55,12 @@ val textColorLight
 /**
  * 半透明白色的文字
  */
-val translucentWhite = Color(0x80FFFFFF)
+val translucentWhiteColor = Color(0x80FFFFFF)
 
 /**
  * translucentWhite没有效果时使用
  */
-val translucentWhiteFixBug = Color(0x33FFFFFF)
+val translucentWhiteFixBugColor = Color(0x33FFFFFF)
 
 /**
  * app背景色

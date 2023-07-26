@@ -46,7 +46,7 @@ fun MandySaMusicTheme(
             } catch (e: Exception) {
                 //windows sub system就会报错
             }
-            val handler = Handler.createAsync(Looper.getMainLooper())
+            val handler = Handler(Looper.getMainLooper())
             DisposableEffect(Unit) {
                 val colorsChangedListener =
                     WallpaperManager.OnColorsChangedListener { colors, which ->

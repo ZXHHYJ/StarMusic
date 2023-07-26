@@ -1,21 +1,25 @@
 package com.zxhhyj.music
 
+import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import com.funny.data_saver.core.DataSaverConverter.registerTypeConverters
 import com.google.gson.GsonBuilder
 import com.tencent.mmkv.MMKV
 import com.zxhhyj.music.logic.bean.PlayListModel
-import com.zxhhyj.music.logic.config.application
 import com.zxhhyj.music.service.MediaPlayService
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.bean.SongBean
 
-
 class MainApplication : Application() {
 
     companion object {
+        @SuppressLint("StaticFieldLeak")
+        lateinit var context: Context
+            private set
+
         init {
             System.loadLibrary("monet")
             //loading lib monet
@@ -24,8 +28,11 @@ class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        application = this
-        MMKV.initialize(this)
+        //全局context
+        context = this
+        //初始化MMKV
+        MMKV.initialize(applicationContext)
+        //初始化Gson
         val gson = GsonBuilder().create()
         registerTypeConverters<SongBean>(
             save = { bean -> gson.toJson(bean) },
@@ -39,9 +46,10 @@ class MainApplication : Application() {
             save = { bean -> gson.toJson(bean) },
             restore = { str -> gson.fromJson(str, SongBean.Artist::class.java) }
         )
+        @Suppress("RemoveExplicitTypeArguments")
         registerTypeConverters<PlayListModel>(
-            save = { bean -> gson.toJson(bean) },
-            restore = { str -> gson.fromJson(str, PlayListModel::class.java) }
+            save = { bean -> bean.uuid },
+            restore = { str -> PlayListModel(str) }
         )
         PlayManager.init(this)
         //初始化播放管理器

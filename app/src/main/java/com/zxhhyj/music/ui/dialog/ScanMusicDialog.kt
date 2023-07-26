@@ -16,7 +16,6 @@ import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.ui.common.AppDialog
 import com.zxhhyj.music.ui.theme.appAccentColor
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -38,7 +37,6 @@ fun ScanMusicDialog(onDismissRequest: () -> Unit) {
     }
     LaunchedEffect(Unit) {
         launch(Dispatchers.IO) {
-            delay(100)
             AndroidMediaLibsRepository.scanMedia()
             onDismissRequest.invoke()
         }

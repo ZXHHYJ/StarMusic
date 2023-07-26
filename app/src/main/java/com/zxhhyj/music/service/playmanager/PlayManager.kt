@@ -111,8 +111,12 @@ object PlayManager : PlayManagerState, PlayManagerController, Player.Listener {
         }
     }
 
-    override fun deleteSong(song: SongBean) {
-
+    override fun removeSong(song: SongBean) {
+        val currentSong = mChangeMusic.value
+        if (currentSong == song) {
+            skipToNext()
+        }
+        mPlayList.value = mPlayList.value?.minus(song)
     }
 
     override fun clearPlayList() {
@@ -138,9 +142,9 @@ object PlayManager : PlayManagerState, PlayManagerController, Player.Listener {
 
     @Synchronized
     private fun createExoPlayer(): ExoPlayer {
-        val exoPlayer = ExoPlayer.Builder(mApplication).build()
-        exoPlayer.addListener(this)
-        return exoPlayer
+        return ExoPlayer.Builder(mApplication).build().apply {
+            addListener(this@PlayManager)
+        }
     }
 
     //初始化媒体播放器
@@ -166,7 +170,7 @@ object PlayManager : PlayManagerState, PlayManagerController, Player.Listener {
     }
 
     private fun updateIndex(index: Int) {
-        if (!(index >= 0 && mPlayList.value != null && index <= mPlayList.value!!.size - 1)) {
+        if (index !in 0 until (mPlayList.value?.size ?: 0)) {
             pause()
             return
         }

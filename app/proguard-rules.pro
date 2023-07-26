@@ -1,8 +1,6 @@
 # 混淆时不使用大小写混合，混淆后的类名为小写
 -dontusemixedcaseclassnames
 
--keep class com.zxhhyj.music.logic.bean**{*;}
-
  # 在优化阶段移除相关方法的调用
 -assumenosideeffects class android.util.Log {
     public static boolean isLoggable(java.lang.String, int);

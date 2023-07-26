@@ -15,8 +15,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -42,7 +45,8 @@ import com.zxhhyj.music.ui.common.AppDivider
 import com.zxhhyj.music.ui.common.MediaController
 import com.zxhhyj.music.ui.common.PanelState
 import com.zxhhyj.music.ui.common.SlidingPanel
-import com.zxhhyj.music.ui.dialog.AddPlayListDialog
+import com.zxhhyj.music.ui.dialog.CreatePlayListDialog
+import com.zxhhyj.music.ui.dialog.EditPlayListTitleDialog
 import com.zxhhyj.music.ui.dialog.MediaLibsEmptyDialog
 import com.zxhhyj.music.ui.dialog.ScanMusicDialog
 import com.zxhhyj.music.ui.dialog.SplashDialog
@@ -65,11 +69,13 @@ import com.zxhhyj.music.ui.screen.singercnt.SingerCntScreen
 import com.zxhhyj.music.ui.screen.single.SingleScreen
 import com.zxhhyj.music.ui.screen.theme.ThemeScreen
 import com.zxhhyj.music.ui.sheet.AddToPlayListSheet
-import com.zxhhyj.music.ui.sheet.MessageSheet
+import com.zxhhyj.music.ui.sheet.PlaylistMenuSheet
 import com.zxhhyj.music.ui.sheet.SongMenuSheet
 import com.zxhhyj.music.ui.sheet.songinfo.SongInfoSheet
 import com.zxhhyj.music.ui.theme.appBackgroundColor
 import com.zxhhyj.music.ui.theme.round
+import com.zxhhyj.music.ui.theme.textColorLight
+import com.zxhhyj.music.ui.theme.vertical
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.DialogNavHost
 import dev.olshevski.navigation.reimagined.NavAction
@@ -136,7 +142,7 @@ fun MainScreen() {
     )
 
     var panelState by rememberSaveable {
-        mutableStateOf<PanelState?>(null)
+        mutableStateOf(PanelState.COLLAPSED)
     }
 
     val systemUiController = rememberSystemUiController()
@@ -272,7 +278,6 @@ fun MainScreen() {
                             ScreenDestination.Singer -> {
                                 SingerScreen(
                                     mainNavController = mainNavController,
-                                    sheetNavController = sheetNavController,
                                     padding = padding
                                 )
                             }
@@ -333,12 +338,16 @@ fun MainScreen() {
                 SplashDialog(onDismissRequest = onDismissRequest)
             }
 
-            DialogDestination.AddPlayList -> {
-                AddPlayListDialog(onDismissRequest = onDismissRequest)
+            DialogDestination.CreatePlayList -> {
+                CreatePlayListDialog(onDismissRequest = onDismissRequest)
             }
 
             DialogDestination.ScanMusic -> {
                 ScanMusicDialog(onDismissRequest = onDismissRequest)
+            }
+
+            is DialogDestination.EditPlayListTitle -> {
+                EditPlayListTitleDialog(onDismissRequest = onDismissRequest, model = it.model)
             }
         }
     }
@@ -361,11 +370,21 @@ fun MainScreen() {
             sheetNavController.pop()
         }
         Column(
-            modifier = Modifier.background(
-                appBackgroundColor,
-                shape = RoundedCornerShape(topStart = round, topEnd = round)
-            )
+            modifier = Modifier
+                .background(
+                    appBackgroundColor,
+                    shape = RoundedCornerShape(topStart = round, topEnd = round)
+                )
+                .navigationBarsPadding()
+                .padding(top = vertical)
         ) {
+            Spacer(
+                modifier = Modifier
+                    .width(50.dp)
+                    .height(6.dp)
+                    .background(textColorLight.copy(0.3f), RoundedCornerShape(6.dp))
+                    .align(Alignment.CenterHorizontally)
+            )
             when (destination) {
                 is BottomSheetDestination.SongMenu -> {
                     SongMenuSheet(
@@ -381,19 +400,27 @@ fun MainScreen() {
                     )
                 }
 
-                is BottomSheetDestination.Message -> {
-                    MessageSheet(message = destination.message)
-                }
-
                 is BottomSheetDestination.BottomSheet -> {
                     destination.content()
                 }
 
                 is BottomSheetDestination.AddToPlayList -> {
-                    AddToPlayListSheet(song = destination.song)
+                    AddToPlayListSheet(
+                        dialogNavController = dialogNavController,
+                        sheetNavController = sheetNavController,
+                        song = destination.song
+                    )
+                }
+
+                is BottomSheetDestination.PlaylistMenu -> {
+                    PlaylistMenuSheet(
+                        mainNavController = mainNavController,
+                        dialogNavController = dialogNavController,
+                        sheetNavController = sheetNavController,
+                        model = destination.model
+                    )
                 }
             }
-            Spacer(modifier = Modifier.navigationBarsPadding())
         }
 
     }

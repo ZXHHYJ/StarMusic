@@ -11,33 +11,36 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
+import com.zxhhyj.music.ui.common.AppScaffold
 import com.zxhhyj.music.ui.common.AppTopBar
-import com.zxhhyj.music.ui.common.bindAppTopBarState
-import com.zxhhyj.music.ui.common.rememberAppTopBarState
 import com.zxhhyj.music.ui.item.SettingSwitchItem
 
 @Composable
 fun LyricScreen(padding: PaddingValues) {
-    val appTopBarState = rememberAppTopBarState()
-    LazyColumn(
+    AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding)
-            .bindAppTopBarState(appTopBarState)
-    ) {
-        item {
-            SettingSwitchItem(
-                imageVector = Icons.Rounded.Translate,
-                title = stringResource(id = R.string.lyrics_translation),
-                subTitle = stringResource(id = R.string.lyrics_translation),
-                checked = SettingRepository.EnableLyricsTranslation,
-                onCheckedChange = {
-                    SettingRepository.EnableLyricsTranslation = it
-                }
+            .padding(padding),
+        topBar = {
+            AppTopBar(
+                modifier = Modifier, title = stringResource(id = R.string.lyric)
             )
+        }) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            item {
+                SettingSwitchItem(
+                    imageVector = Icons.Rounded.Translate,
+                    title = stringResource(id = R.string.lyrics_translation),
+                    subTitle = stringResource(id = R.string.lyrics_translation),
+                    checked = SettingRepository.EnableLyricsTranslation,
+                    onCheckedChange = {
+                        SettingRepository.EnableLyricsTranslation = it
+                    }
+                )
+            }
         }
     }
-    AppTopBar(
-        state = appTopBarState, modifier = Modifier, title = stringResource(id = R.string.lyric)
-    )
 }

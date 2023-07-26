@@ -31,9 +31,8 @@ import com.zxhhyj.music.service.playmanager.ktx.coverUrl
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.AppButton
 import com.zxhhyj.music.ui.common.AppCard
+import com.zxhhyj.music.ui.common.AppScaffold
 import com.zxhhyj.music.ui.common.AppTopBar
-import com.zxhhyj.music.ui.common.bindAppTopBarState
-import com.zxhhyj.music.ui.common.rememberAppTopBarState
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
@@ -42,7 +41,6 @@ import com.zxhhyj.music.ui.theme.vertical
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
-
 @Composable
 fun AlbumCntScreen(
     mainNavController: NavController<ScreenDestination>,
@@ -50,62 +48,62 @@ fun AlbumCntScreen(
     padding: PaddingValues,
     album: SongBean.Album
 ) {
-    val appTopBarState = rememberAppTopBarState()
-    LazyColumn(
+    AppScaffold(
         modifier = Modifier
-            .bindAppTopBarState(appTopBarState)
-            .fillMaxSize(),
-        contentPadding = padding
-    ) {
-        itemsIndexed(album.songs) { index, item ->
-            SongItem(song = item, sheetNavController = sheetNavController) {
-                PlayManager.play(album.songs, index)
-            }
-        }
-    }
-    AppTopBar(
-        state = appTopBarState,
-        modifier = Modifier.fillMaxWidth(),
-        title = album.name,
-        actions = {}
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            AppCard(backgroundColor = Color.Transparent) {
-                AppAsyncImage(
-                    url = album.coverUrl,
-                    modifier = Modifier.size(210.dp)
-                )
-            }
-            Spacer(
-                modifier = Modifier.height(vertical)
-            )
-            Text(
-                text = album.name,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = album.songs.first().artist.name,
-                fontSize = 14.sp,
-                color = appTextButtonAccentColor,
-                modifier = Modifier.clickable {
-                    mainNavController.navigate(
-                        ScreenDestination.SingerCnt(
-                            album.songs.first().artist
+            .fillMaxSize()
+            .padding(padding),
+        topBar = {
+            AppTopBar(
+                modifier = Modifier.fillMaxWidth(),
+                title = album.name,
+                actions = {}
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    AppCard(backgroundColor = Color.Transparent) {
+                        AppAsyncImage(
+                            url = album.coverUrl,
+                            modifier = Modifier.size(210.dp)
                         )
+                    }
+                    Spacer(
+                        modifier = Modifier.height(vertical)
+                    )
+                    Text(
+                        text = album.name,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = album.songs.first().artist.name,
+                        fontSize = 14.sp,
+                        color = appTextButtonAccentColor,
+                        modifier = Modifier.clickable {
+                            mainNavController.navigate(
+                                ScreenDestination.SingerCnt(
+                                    album.songs.first().artist
+                                )
+                            )
+                        }
+                    )
+                    AppButton(
+                        onClick = { PlayManager.play(album.songs, 0) },
+                        imageVector = Icons.Rounded.PlayArrow,
+                        text = stringResource(id = R.string.play_all),
+                        modifier = Modifier.padding(vertical = vertical / 2)
                     )
                 }
-            )
-            AppButton(
-                onClick = { PlayManager.play(album.songs, 0) },
-                imageVector = Icons.Rounded.PlayArrow,
-                text = stringResource(id = R.string.play_all),
-                modifier = Modifier.padding(vertical = vertical / 2)
-            )
+            }
+        }) {
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            itemsIndexed(album.songs) { index, item ->
+                SongItem(song = item, sheetNavController = sheetNavController) {
+                    PlayManager.play(album.songs, index)
+                }
+            }
         }
     }
 }

@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -37,10 +38,10 @@ import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.bean.SongBean
+import com.zxhhyj.music.ui.common.AppCard
 import com.zxhhyj.music.ui.common.AppDivider
 import com.zxhhyj.music.ui.common.AppRoundIcon
-import com.zxhhyj.music.ui.common.AppCard
-import com.zxhhyj.music.ui.theme.translucentWhite
+import com.zxhhyj.music.ui.theme.translucentWhiteColor
 import com.zxhhyj.music.ui.theme.vertical
 
 @Composable
@@ -55,7 +56,7 @@ fun ColumnScope.PlayQueueScreen() {
     ) {
         Text(
             text = "${(playlist?.indexOf(song) ?: 0) + 1}/${playlist?.size}",
-            color = translucentWhite,
+            color = translucentWhiteColor,
             fontSize = 14.sp
         )
         Text(
@@ -67,7 +68,7 @@ fun ColumnScope.PlayQueueScreen() {
         )
         Text(
             text = stringResource(id = R.string.clear),
-            color = translucentWhite,
+            color = translucentWhiteColor,
             fontSize = 14.sp,
             modifier = Modifier.clickable {
                 PlayManager.clearPlayList()
@@ -75,7 +76,7 @@ fun ColumnScope.PlayQueueScreen() {
     }
 
     AppDivider(
-        color = translucentWhite,
+        color = translucentWhiteColor,
         modifier = Modifier.padding(horizontal = PlayScreen.PlayScreenContentHorizontal)
     )
 
@@ -92,7 +93,9 @@ fun ColumnScope.PlayQueueScreen() {
         }
 
         LazyColumn(
-            modifier = Modifier.fillMaxSize(), state = lazyListState
+            modifier = Modifier.fillMaxSize(),
+            state = lazyListState,
+            contentPadding = PaddingValues(top = vertical)
         ) {
             playlist?.let { songBeans ->
                 itemsIndexed(songBeans) { index, model ->
@@ -129,8 +132,9 @@ private fun QueueSongItem(
     song: SongBean,
     onClick: () -> Unit
 ) {
+    val currentSong by PlayManager.changeMusicLiveData().observeAsState()
     AppCard(
-        backgroundColor = Color.Transparent,
+        backgroundColor = if (currentSong == song) Color.White.copy(alpha = 0.1f) else Color.Transparent,
         modifier = modifier
             .fillMaxWidth()
             .height(64.dp)
@@ -159,7 +163,7 @@ private fun QueueSongItem(
                 Spacer(modifier = Modifier.weight(1.0f))
                 Text(
                     text = song.artist.name,
-                    color = translucentWhite,
+                    color = translucentWhiteColor,
                     fontSize = 13.sp,
                     maxLines = 1,
                     textAlign = TextAlign.Center,
@@ -169,11 +173,11 @@ private fun QueueSongItem(
             }
             AppRoundIcon(
                 imageVector = Icons.Rounded.Remove,
-                tint = translucentWhite,
+                tint = translucentWhiteColor,
                 contentDescription = null,
                 modifier = Modifier
                     .clickable {
-
+                        PlayManager.removeSong(song)
                     }
             )
         }

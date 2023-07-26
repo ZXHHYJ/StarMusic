@@ -20,4 +20,3 @@ dependencyResolutionManagement {
 }
 rootProject.name = "star_music"
 include ':app'
-include ':monet'

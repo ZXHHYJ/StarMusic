@@ -11,33 +11,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
+import com.zxhhyj.music.ui.common.AppScaffold
 import com.zxhhyj.music.ui.common.AppTopBar
-import com.zxhhyj.music.ui.common.bindAppTopBarState
-import com.zxhhyj.music.ui.common.rememberAppTopBarState
 import com.zxhhyj.music.ui.item.SettingSwitchItem
 
 @Composable
 fun ThemeScreen(padding: PaddingValues) {
-    val appTopBarState = rememberAppTopBarState()
-    LazyColumn(
+    AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding)
-            .bindAppTopBarState(appTopBarState)
+            .padding(padding),
+        topBar = { AppTopBar(modifier = Modifier, title = stringResource(id = R.string.theme)) }
     ) {
-        item {
-            SettingSwitchItem(
-                imageVector = Icons.Rounded.ColorLens,
-                title = stringResource(id = R.string.monet_get_color),
-                subTitle = stringResource(id = R.string.monet_get_color_info),
-                checked = SettingRepository.EnableMonet,
-                onCheckedChange = {
-                    SettingRepository.EnableMonet = it
-                }
-            )
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            item {
+                SettingSwitchItem(
+                    imageVector = Icons.Rounded.ColorLens,
+                    title = stringResource(id = R.string.monet_get_color),
+                    subTitle = stringResource(id = R.string.monet_get_color_info),
+                    checked = SettingRepository.EnableMonet,
+                    onCheckedChange = {
+                        SettingRepository.EnableMonet = it
+                    }
+                )
+            }
         }
     }
-    AppTopBar(
-        state = appTopBarState, modifier = Modifier, title = stringResource(id = R.string.theme)
-    )
 }

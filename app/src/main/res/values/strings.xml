@@ -48,8 +48,13 @@
     <string name="link">链接</string>
     <string name="add_to_playlist">添加至歌单</string>
     <string name="num_tracks">声道数</string>
-    <string name="add_playlist">创建播放列表</string>
+    <string name="create_playlist">创建播放列表</string>
     <string name="create">创建</string>
     <string name="lyrics_translation">歌词翻译</string>
     <string name="play_all">播放全部</string>
+    <string name="mail">电子邮件</string>
+    <string name="input_key">输入关键词</string>
+    <string name="edit_playlist_title">编辑播放列表标题</string>
+    <string name="new_title">新的标题</string>
+    <string name="title">标题</string>
 </resources>

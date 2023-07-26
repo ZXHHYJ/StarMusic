@@ -28,38 +28,36 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.service.playmanager.bean.SongBean
 import com.zxhhyj.music.service.playmanager.ktx.coverUrl
+import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.AppCard
 import com.zxhhyj.music.ui.common.AppRoundIcon
+import com.zxhhyj.music.ui.common.AppScaffold
 import com.zxhhyj.music.ui.common.AppTopBar
-import com.zxhhyj.music.ui.common.bindAppTopBarState
-import com.zxhhyj.music.ui.common.AppAsyncImage
-import com.zxhhyj.music.ui.common.rememberAppTopBarState
 import com.zxhhyj.music.ui.theme.horizontal
-import com.zxhhyj.music.ui.theme.onBackground
 import com.zxhhyj.music.ui.theme.textColor
 import com.zxhhyj.music.ui.theme.textColorLight
 import com.zxhhyj.music.ui.theme.vertical
 
 @Composable
 fun HiddenSongScreen(padding: PaddingValues) {
-    val appTopBarState = rememberAppTopBarState()
-    LazyColumn(
+    AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding)
-            .bindAppTopBarState(appTopBarState)
-    ) {
-        items(AndroidMediaLibsRepository.hideSongs) {
-            HideSongItem(song = it) {
-                AndroidMediaLibsRepository.unHide(it)
+            .padding(padding),
+        topBar = {
+            AppTopBar(
+                modifier = Modifier,
+                title = stringResource(id = R.string.hidden_songs)
+            )
+        }) {
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            items(AndroidMediaLibsRepository.hideSongs) {
+                HideSongItem(song = it) {
+                    AndroidMediaLibsRepository.unHide(it)
+                }
             }
         }
     }
-    AppTopBar(
-        state = appTopBarState,
-        modifier = Modifier,
-        title = stringResource(id = R.string.hidden_songs)
-    )
 }
 
 @Composable
@@ -111,7 +109,7 @@ private fun HideSongItem(
             }
             AppRoundIcon(
                 imageVector = Icons.Rounded.Remove,
-                tint = onBackground,
+                tint = textColorLight,
                 contentDescription = null,
                 modifier = Modifier.clickable(onClick = onClick)
             )

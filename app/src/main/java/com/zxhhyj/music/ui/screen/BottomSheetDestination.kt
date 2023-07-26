@@ -2,6 +2,7 @@ package com.zxhhyj.music.ui.screen
 
 import android.os.Parcelable
 import androidx.compose.runtime.Composable
+import com.zxhhyj.music.logic.bean.PlayListModel
 import com.zxhhyj.music.service.playmanager.bean.SongBean
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
@@ -16,10 +17,10 @@ sealed class BottomSheetDestination : Parcelable {
     data class SongMenu(val song: @RawValue SongBean) : BottomSheetDestination()
 
     @Parcelize
-    data class Message(val message: String) : BottomSheetDestination()
+    data class AddToPlayList(val song: @RawValue SongBean) : BottomSheetDestination()
 
     @Parcelize
-    data class AddToPlayList(val song: @RawValue SongBean) : BottomSheetDestination()
+    data class PlaylistMenu(val model: @RawValue PlayListModel) : BottomSheetDestination()
 
     /**
      * 限定在单个页面的BottomSheet

@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.zxhhyj.music.logic.bean.PlayListModel
 import com.zxhhyj.music.service.playmanager.bean.SongBean
 import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
 
 sealed class ScreenDestination : Parcelable {
@@ -77,19 +78,19 @@ sealed class ScreenDestination : Parcelable {
      * 歌手详情
      */
     @Parcelize
-    data class SingerCnt(val artist: SongBean.Artist) : ScreenDestination()
+    data class SingerCnt(val artist: @RawValue SongBean.Artist) : ScreenDestination()
 
     /**
      * 专辑详情
      */
     @Parcelize
-    data class AlbumCnt(val album: SongBean.Album) : ScreenDestination()
+    data class AlbumCnt(val album: @RawValue SongBean.Album) : ScreenDestination()
 
     /**
      * 专辑详情
      */
     @Parcelize
-    data class PlayListCnt(val model: PlayListModel) : ScreenDestination()
+    data class PlayListCnt(val model: @RawValue PlayListModel) : ScreenDestination()
 
 
 }

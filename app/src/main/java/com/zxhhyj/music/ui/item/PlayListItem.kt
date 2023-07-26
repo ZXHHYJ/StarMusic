@@ -9,10 +9,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,21 +24,17 @@ import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.PlayListModel
 import com.zxhhyj.music.service.playmanager.ktx.coverUrl
-import com.zxhhyj.music.ui.common.AppCard
-import com.zxhhyj.music.ui.common.AppRoundIcon
 import com.zxhhyj.music.ui.common.AppAsyncImage
-import com.zxhhyj.music.ui.screen.BottomSheetDestination
+import com.zxhhyj.music.ui.common.AppCard
 import com.zxhhyj.music.ui.theme.horizontal
-import com.zxhhyj.music.ui.theme.onBackground
 import com.zxhhyj.music.ui.theme.textColor
 import com.zxhhyj.music.ui.theme.textColorLight
 import com.zxhhyj.music.ui.theme.vertical
-import dev.olshevski.navigation.reimagined.NavController
 
 @Composable
 fun PlayListItem(
-    sheetNavController: NavController<BottomSheetDestination>,
     model: PlayListModel,
+    actions: @Composable () -> Unit = {},
     onClick: () -> Unit
 ) {
     AppCard(backgroundColor = Color.Transparent) {
@@ -57,7 +53,7 @@ fun PlayListItem(
             ) {
                 AppAsyncImage(
                     modifier = Modifier.fillMaxSize(),
-                    url = model.songs.getOrNull(0)?.album?.coverUrl
+                    url = model.songs.firstOrNull()?.album?.coverUrl
                 )
             }
             Column(
@@ -84,15 +80,9 @@ fun PlayListItem(
                     overflow = TextOverflow.Ellipsis
                 )
             }
-            AppRoundIcon(
-                imageVector = Icons.Rounded.MoreVert,
-                tint = onBackground,
-                contentDescription = null,
-                modifier = Modifier
-                    .clickable {
-
-                    }
-            )
+            CompositionLocalProvider(LocalContentColor provides textColorLight) {
+                actions.invoke()
+            }
             Spacer(modifier = Modifier.padding(end = horizontal))
         }
     }

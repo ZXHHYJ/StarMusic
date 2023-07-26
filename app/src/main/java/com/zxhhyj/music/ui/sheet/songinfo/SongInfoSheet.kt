@@ -8,18 +8,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.logic.ktx.toTime
 import com.zxhhyj.music.service.playmanager.bean.SongBean
-import com.zxhhyj.music.ui.sheet.item.HeadSongTitleItem
 import com.zxhhyj.music.ui.theme.vertical
-
 
 @Composable
 fun SongInfoSheet(
     song: SongBean,
 ) {
     LazyColumn {
-        item {
-            HeadSongTitleItem(song = song)
-        }
         item {
             SongInfoItem(
                 title = stringResource(id = com.zxhhyj.music.R.string.duration),

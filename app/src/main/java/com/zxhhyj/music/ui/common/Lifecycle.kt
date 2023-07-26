@@ -7,7 +7,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import java.util.UUID
 
 class ComposeLifecycleObserver : DefaultLifecycleObserver {
     private var create: (() -> Unit)? = null
@@ -81,7 +80,7 @@ class ComposeLifecycleObserver : DefaultLifecycleObserver {
 fun rememberLifecycle(): ComposeLifecycleObserver {
     val observer = ComposeLifecycleObserver()
     val owner = LocalLifecycleOwner.current
-    DisposableEffect(UUID.randomUUID()) {
+    DisposableEffect(Unit) {
         owner.lifecycle.addObserver(observer)
         onDispose {
             owner.lifecycle.removeObserver(

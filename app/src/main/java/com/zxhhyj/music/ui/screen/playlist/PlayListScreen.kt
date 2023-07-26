@@ -8,15 +8,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.PlayListRepository
 import com.zxhhyj.music.ui.common.AppRoundIcon
+import com.zxhhyj.music.ui.common.AppScaffold
 import com.zxhhyj.music.ui.common.AppTopBar
-import com.zxhhyj.music.ui.common.bindAppTopBarState
-import com.zxhhyj.music.ui.common.rememberAppTopBarState
+import com.zxhhyj.music.ui.common.stateprompt.StatePrompt
 import com.zxhhyj.music.ui.item.PlayListItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.DialogDestination
@@ -32,29 +33,50 @@ fun PlayListScreen(
     dialogNavController: NavController<DialogDestination>,
     padding: PaddingValues
 ) {
-    val appTopBarState = rememberAppTopBarState()
-    LazyColumn(
+    AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding)
-            .bindAppTopBarState(appTopBarState)
-    ) {
-        items(PlayListRepository.playlist) {
-            PlayListItem(sheetNavController = sheetNavController, model = it) {
-                mainNavController.navigate(ScreenDestination.PlayListCnt(it))
+            .padding(padding),
+        topBar = {
+            AppTopBar(
+                modifier = Modifier,
+                title = stringResource(id = R.string.play_list),
+                actions = {
+                    AppRoundIcon(
+                        imageVector = Icons.Rounded.Add,
+                        contentDescription = null,
+                        modifier = Modifier.clickable {
+                            dialogNavController.navigate(DialogDestination.CreatePlayList)
+                        })
+                })
+        }) {
+        StatePrompt(
+            empty = PlayListRepository.playlist.isEmpty(),
+            modifier = Modifier.fillMaxSize()
+        ) {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                items(PlayListRepository.playlist) {
+                    PlayListItem(
+                        model = it,
+                        actions = {
+                            AppRoundIcon(
+                                imageVector = Icons.Rounded.MoreVert,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .clickable {
+                                        sheetNavController.navigate(
+                                            BottomSheetDestination.PlaylistMenu(
+                                                it
+                                            )
+                                        )
+                                    }
+                            )
+                        },
+                        onClick = {
+                            mainNavController.navigate(ScreenDestination.PlayListCnt(it))
+                        })
+                }
             }
         }
     }
-    AppTopBar(
-        state = appTopBarState,
-        modifier = Modifier,
-        title = stringResource(id = R.string.play_list),
-        actions = {
-            AppRoundIcon(
-                imageVector = Icons.Rounded.Add,
-                contentDescription = null,
-                modifier = Modifier.clickable {
-                    dialogNavController.navigate(DialogDestination.AddPlayList)
-                })
-        })
 }

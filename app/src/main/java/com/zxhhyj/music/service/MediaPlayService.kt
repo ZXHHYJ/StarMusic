@@ -25,15 +25,16 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.helper.AudioFocusHelper
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.ktx.coverUrl
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MediaPlayService : LifecycleService() {
 
     companion object {
 
-        const val CHANNEL_ID = "notification_channel_id"
+        private const val CHANNEL_ID = "notification_channel_id"
 
-        const val ID = 1
+        private const val ID = 1
 
         var isServiceAlive = false
 
@@ -129,7 +130,7 @@ class MediaPlayService : LifecycleService() {
                 .setContentTitle(it.songName)
                 .setContentText(it.artist.name)
             refreshMediaNotifications()
-            lifecycle.coroutineScope.launch {
+            lifecycle.coroutineScope.launch(Dispatchers.IO) {
                 try {
                     val drawable = imageLoader.execute(
                         ImageRequest.Builder(this@MediaPlayService)

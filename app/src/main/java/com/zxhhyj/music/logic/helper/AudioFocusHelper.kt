@@ -25,6 +25,7 @@ import androidx.annotation.RequiresApi
  *
  *
  */
+@Suppress("DEPRECATION")
 class AudioFocusHelper(
     context: Context,
     listener: OnAudioFocusChangeListener

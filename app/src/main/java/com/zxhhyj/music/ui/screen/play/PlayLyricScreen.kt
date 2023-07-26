@@ -20,7 +20,7 @@ import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.KeepScreenOn
 import com.zxhhyj.music.ui.common.Lyric
-import com.zxhhyj.music.ui.theme.translucentWhite
+import com.zxhhyj.music.ui.theme.translucentWhiteColor
 
 @Composable
 fun ColumnScope.PlayLyricScreen() {
@@ -62,7 +62,7 @@ fun ColumnScope.PlayLyricScreen() {
                             horizontal = PlayScreen.PlayScreenContentHorizontal
                         ),
                     text = model,
-                    color = if (position == index) Color.White else translucentWhite,
+                    color = if (position == index) Color.White else translucentWhiteColor,
                     fontSize = 26.sp,
                     fontWeight = FontWeight.Bold
                 )

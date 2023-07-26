@@ -1,7 +1,9 @@
 package com.zxhhyj.music.ui.screen
 
 import android.os.Parcelable
+import com.zxhhyj.music.logic.bean.PlayListModel
 import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
 sealed class DialogDestination : Parcelable {
     /**
@@ -17,14 +19,17 @@ sealed class DialogDestination : Parcelable {
     object MediaLibsEmpty : DialogDestination()
 
     /**
-     * 添加播放列表
+     * 创建播放列表
      */
     @Parcelize
-    object AddPlayList : DialogDestination()
+    object CreatePlayList : DialogDestination()
 
     /**
      * 扫描音乐
      */
     @Parcelize
     object ScanMusic : DialogDestination()
+
+    @Parcelize
+    data class EditPlayListTitle(val model: @RawValue PlayListModel) : DialogDestination()
 }

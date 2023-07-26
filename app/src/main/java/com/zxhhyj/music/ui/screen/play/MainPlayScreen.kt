@@ -46,8 +46,8 @@ import com.zxhhyj.music.ui.common.AppRoundIcon
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
-import com.zxhhyj.music.ui.theme.translucentWhite
-import com.zxhhyj.music.ui.theme.translucentWhiteFixBug
+import com.zxhhyj.music.ui.theme.translucentWhiteColor
+import com.zxhhyj.music.ui.theme.translucentWhiteFixBugColor
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import kotlin.math.roundToInt
@@ -110,7 +110,7 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                     Spacer(modifier = Modifier.padding(top = 2.dp))
                     Text(
                         text = song?.artist?.name ?: "",
-                        color = translucentWhite,
+                        color = translucentWhiteColor,
                         fontSize = 16.sp,
                         maxLines = 1
                     )
@@ -122,7 +122,7 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                     modifier = Modifier
                         .size(32.dp)
                         .clip(RoundedCornerShape(32.dp))
-                        .background(translucentWhiteFixBug)
+                        .background(translucentWhiteFixBugColor)
                         .clickable {
                             sheetNavController.navigate(BottomSheetDestination.SongMenu(song!!))
                         }
@@ -160,7 +160,7 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                     LinearProgressIndicator(
                         progress = fraction,
                         color = Color.White,
-                        backgroundColor = translucentWhiteFixBug,
+                        backgroundColor = translucentWhiteFixBugColor,
                         strokeCap = StrokeCap.Round,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -184,9 +184,9 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                Text(text = progress.toTime(), color = translucentWhite)
+                Text(text = progress.toTime(), color = translucentWhiteColor)
                 Spacer(modifier = Modifier.weight(1f))
-                Text(text = duration.toTime(), color = translucentWhite)
+                Text(text = duration.toTime(), color = translucentWhiteColor)
             }
 
             //上一曲、暂停和下一曲

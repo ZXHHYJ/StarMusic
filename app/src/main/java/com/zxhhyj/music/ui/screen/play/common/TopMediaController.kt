@@ -39,8 +39,8 @@ import com.zxhhyj.music.ui.screen.play.PlayScreen
 import com.zxhhyj.music.ui.screen.play.PlayScreenDestination
 import com.zxhhyj.music.ui.screen.play.ShareAlbumKey
 import com.zxhhyj.music.ui.theme.horizontal
-import com.zxhhyj.music.ui.theme.translucentWhite
-import com.zxhhyj.music.ui.theme.translucentWhiteFixBug
+import com.zxhhyj.music.ui.theme.translucentWhiteColor
+import com.zxhhyj.music.ui.theme.translucentWhiteFixBugColor
 import com.zxhhyj.music.ui.theme.vertical
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.moveToTop
@@ -100,7 +100,7 @@ fun TopMediaController(
             Spacer(modifier = Modifier.weight(1.0f))
             Text(
                 text = song?.artist?.name ?: "",
-                color = translucentWhite,
+                color = translucentWhiteColor,
                 fontSize = 14.sp,
                 maxLines = 1,
                 textAlign = TextAlign.Center,
@@ -114,7 +114,7 @@ fun TopMediaController(
             modifier = Modifier
                 .size(32.dp)
                 .clip(RoundedCornerShape(32.dp))
-                .background(translucentWhiteFixBug)
+                .background(translucentWhiteFixBugColor)
                 .clickable {
                     sheetNavController.navigate(BottomSheetDestination.SongMenu(song!!))
                 }

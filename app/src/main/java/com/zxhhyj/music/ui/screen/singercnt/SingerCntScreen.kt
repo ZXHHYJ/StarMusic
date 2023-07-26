@@ -22,10 +22,8 @@ import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.bean.SongBean
 import com.zxhhyj.music.ui.common.AppRoundCard
 import com.zxhhyj.music.ui.common.AppRoundIcon
+import com.zxhhyj.music.ui.common.AppScaffold
 import com.zxhhyj.music.ui.common.AppTopBar
-import com.zxhhyj.music.ui.common.BoxWithPercentages
-import com.zxhhyj.music.ui.common.bindAppTopBarState
-import com.zxhhyj.music.ui.common.rememberAppTopBarState
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
@@ -42,51 +40,46 @@ fun SingerCntScreen(
     padding: PaddingValues,
     artist: SongBean.Artist
 ) {
-    BoxWithPercentages(
+    AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-    ) {
-        val appTopBarState = rememberAppTopBarState()
-        LazyColumn(
-            modifier = Modifier
-                .bindAppTopBarState(appTopBarState)
-                .fillMaxSize(),
-            contentPadding = padding
-        ) {
+            .padding(padding),
+        topBar = {
+            AppTopBar(
+                modifier = Modifier.fillMaxWidth(),
+                title = artist.name,
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = vertical)
+                ) {
+                    Text(
+                        text = artist.name,
+                        fontSize = 26.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = appTextAccentColor,
+                        modifier = Modifier.weight(1.0f)
+                    )
+                    AppRoundCard(backgroundColor = appAccentColor) {
+                        AppRoundIcon(
+                            imageVector = Icons.Rounded.PlayArrow,
+                            contentDescription = null,
+                            tint = onTextColor,
+                            modifier = Modifier
+                                .size(32.dp)
+                                .clickable {
+                                    PlayManager.play(artist.songs, 0)
+                                }
+                        )
+                    }
+                }
+            }
+        }) {
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
             itemsIndexed(artist.songs) { index, item ->
                 SongItem(sheetNavController = sheetNavController, song = item) {
                     PlayManager.play(artist.songs, index)
-                }
-            }
-        }
-        AppTopBar(
-            state = appTopBarState,
-            modifier = Modifier.fillMaxWidth(),
-            title = artist.name,
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = vertical)
-            ) {
-                Text(
-                    text = artist.name,
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = appTextAccentColor,
-                    modifier = Modifier.weight(1.0f)
-                )
-                AppRoundCard(backgroundColor = appAccentColor) {
-                    AppRoundIcon(
-                        imageVector = Icons.Rounded.PlayArrow,
-                        contentDescription = null,
-                        tint = onTextColor,
-                        modifier = Modifier
-                            .size(32.dp)
-                            .clickable {
-                                PlayManager.play(artist.songs, 0)
-                            }
-                    )
                 }
             }
         }
