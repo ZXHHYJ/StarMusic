@@ -3,7 +3,6 @@ package com.zxhhyj.music.ui.dialog
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -34,18 +33,16 @@ fun CreatePlayListDialog(onDismissRequest: () -> Unit) {
         onDismissRequest = onDismissRequest,
         title = stringResource(id = R.string.create_playlist),
         confirm = {
-            TextButton(onClick = {
+            Text(text = stringResource(id = R.string.create), modifier = Modifier.clickable {
                 if (title.isNotEmpty()) {
                     PlayListRepository.create(title)
                     onDismissRequest.invoke()
                 }
-            }) {
-                Text(stringResource(id = R.string.create))
-            }
+            })
         },
         dismiss = {
             Text(
-                stringResource(id = R.string.cancel),
+                text = stringResource(id = R.string.cancel),
                 modifier = Modifier.clickable { onDismissRequest.invoke() })
         }) {
         AppOutlinedTextField(

@@ -11,7 +11,7 @@ object SettingRepository {
     var EnableMonet by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "EnableMonet",
-        initialValue = true
+        initialValue = false
     )
 
     /**

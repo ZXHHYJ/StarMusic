@@ -7,12 +7,9 @@
     <string name="search">搜索</string>
     <string name="album">专辑</string>
     <string name="next_play">下一首播放</string>
-    <string name="copy">复制</string>
     <string name="single">单曲</string>
     <string name="play_list">播放列表</string>
     <string name="total_n_songs">共%d首</string>
-    <string name="permission_media_lib">授权访问手机媒体以扫描媒体库中的音乐</string>
-    <string name="go_permission">前往授权</string>
     <string name="setting">设置</string>
     <string name="scan_music">扫描音乐</string>
     <string name="not_lyric">无歌词</string>
@@ -23,11 +20,10 @@
     <string name="sample_rate">采样率</string>
     <string name="file_path">文件位置</string>
     <string name="file_size">文件大小</string>
-    <string name="copyed">已复制</string>
     <string name="theme">主题</string>
     <string name="theme_info">配置Monet取色</string>
     <string name="lyric">歌词</string>
-    <string name="lyric_info">歌词样式、状态栏歌词</string>
+    <string name="lyric_info">歌词翻译</string>
     <string name="about">关于</string>
     <string name="about_info">版本：%s</string>
     <string name="clear">清除</string>
@@ -47,10 +43,9 @@
     <string name="version">版本</string>
     <string name="link">链接</string>
     <string name="add_to_playlist">添加至歌单</string>
-    <string name="num_tracks">声道数</string>
     <string name="create_playlist">创建播放列表</string>
     <string name="create">创建</string>
-    <string name="lyrics_translation">歌词翻译</string>
+    <string name="lyrics_translation">歌词翻译(Beta)</string>
     <string name="play_all">播放全部</string>
     <string name="mail">电子邮件</string>
     <string name="input_key">输入关键词</string>

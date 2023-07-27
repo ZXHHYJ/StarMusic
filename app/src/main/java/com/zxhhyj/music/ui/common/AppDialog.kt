@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -46,12 +45,11 @@ fun AppDialog(
                 Spacer(modifier = Modifier.height(vertical))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End,
+                    horizontalArrangement = Arrangement.spacedBy(horizontal, Alignment.End),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     CompositionLocalProvider(LocalContentColor provides appTextAccentColor) {
                         dismiss.invoke()
-                        Spacer(modifier = Modifier.width(horizontal))
                         confirm.invoke()
                     }
                 }
