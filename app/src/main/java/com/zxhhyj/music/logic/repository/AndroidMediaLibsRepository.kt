@@ -1,6 +1,5 @@
 package com.zxhhyj.music.logic.repository
 
-import android.annotation.SuppressLint
 import android.provider.MediaStore
 import com.funny.data_saver.core.mutableDataSaverListStateOf
 import com.kyant.tag.Metadata
@@ -50,7 +49,6 @@ object AndroidMediaLibsRepository {
     /**
      * 扫描媒体
      */
-    @SuppressLint("Range")
     suspend fun scanMedia() {
         songs = suspendCancellableCoroutine {
             val query = MainApplication.context.contentResolver.query(

@@ -7,11 +7,13 @@ import android.content.Intent
 import android.os.Build
 import com.funny.data_saver.core.DataSaverConverter.registerTypeConverters
 import com.google.gson.GsonBuilder
-import com.tencent.mmkv.MMKV
 import com.zxhhyj.music.logic.bean.PlayListModel
 import com.zxhhyj.music.service.MediaPlayService
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.service.playmanager.bean.SongBean
+import io.fastkv.FastKVConfig
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asExecutor
 
 class MainApplication : Application() {
 
@@ -30,8 +32,8 @@ class MainApplication : Application() {
         super.onCreate()
         //全局context
         context = this
-        //初始化MMKV
-        MMKV.initialize(applicationContext)
+        //初始化FastKV
+        FastKVConfig.setExecutor(Dispatchers.Default.asExecutor())
         //初始化Gson
         val gson = GsonBuilder().create()
         registerTypeConverters<SongBean>(

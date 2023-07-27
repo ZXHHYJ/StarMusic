@@ -2,6 +2,7 @@ package com.zxhhyj.music.ui.dialog
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -19,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.PlayListRepository
 import com.zxhhyj.music.ui.common.AppDialog
-import com.zxhhyj.music.ui.common.AppOutlinedTextField
+import com.zxhhyj.music.ui.theme.TextFieldColors
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -45,7 +46,7 @@ fun CreatePlayListDialog(onDismissRequest: () -> Unit) {
                 text = stringResource(id = R.string.cancel),
                 modifier = Modifier.clickable { onDismissRequest.invoke() })
         }) {
-        AppOutlinedTextField(
+        OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .focusRequester(focusRequester),
@@ -57,7 +58,9 @@ fun CreatePlayListDialog(onDismissRequest: () -> Unit) {
             },
             placeholder = {
                 Text(stringResource(id = R.string.title))
-            })
+            },
+            colors = TextFieldColors
+        )
         DisposableEffect(Unit) {
             focusRequester.requestFocus()
             keyboardController?.show()
