@@ -33,6 +33,7 @@ import com.zxhhyj.music.ui.common.AppCard
 import com.zxhhyj.music.ui.common.AppRoundIcon
 import com.zxhhyj.music.ui.common.AppScaffold
 import com.zxhhyj.music.ui.common.AppTopBar
+import com.zxhhyj.music.ui.common.stateprompt.StatePrompt
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.textColor
 import com.zxhhyj.music.ui.theme.textColorLight
@@ -50,10 +51,15 @@ fun HiddenSongScreen(padding: PaddingValues) {
                 title = stringResource(id = R.string.hidden_songs)
             )
         }) {
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(AndroidMediaLibsRepository.hideSongs) {
-                HideSongItem(song = it) {
-                    AndroidMediaLibsRepository.unHide(it)
+        StatePrompt(
+            empty = AndroidMediaLibsRepository.hideSongs.isEmpty(),
+            modifier = Modifier.fillMaxSize()
+        ) {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                items(AndroidMediaLibsRepository.hideSongs) {
+                    HideSongItem(song = it) {
+                        AndroidMediaLibsRepository.unHide(it)
+                    }
                 }
             }
         }

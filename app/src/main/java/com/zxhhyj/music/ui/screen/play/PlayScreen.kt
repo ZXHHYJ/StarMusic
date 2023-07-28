@@ -50,7 +50,7 @@ val PlayScreenDestination.tabIcon
 
 const val ShareAlbumKey = "album"
 
-private const val TransitionDurationMillis = 300
+const val TransitionDurationMillis = 300
 
 object PlayScreen {
     val PlayScreenContentHorizontal = 10.dp
@@ -151,7 +151,7 @@ fun PlayScreen(
                     }
 
                     PlayScreenDestination.Lyric -> {
-                        Column {
+                        Column(modifier = Modifier.fillMaxSize()) {
                             if (visibilityTopMediaBar) {
                                 LazyColumn(userScrollEnabled = false) {
                                     item {
@@ -168,7 +168,7 @@ fun PlayScreen(
                     }
 
                     PlayScreenDestination.PlayQueue -> {
-                        Column {
+                        Column(modifier = Modifier.fillMaxSize()) {
                             if (visibilityTopMediaBar) {
                                 LazyColumn(userScrollEnabled = false) {
                                     item {

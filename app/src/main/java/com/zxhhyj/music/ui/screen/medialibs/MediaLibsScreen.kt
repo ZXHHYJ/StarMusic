@@ -21,6 +21,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
+import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppScaffold
 import com.zxhhyj.music.ui.common.AppTopBar
 import com.zxhhyj.music.ui.item.SettingItem
@@ -53,6 +54,7 @@ fun MediaSourceScreen(
                 }
             }
         } else {
+            PlayManager.clearPlayList()
             AndroidMediaLibsRepository.clear()
         }
     }

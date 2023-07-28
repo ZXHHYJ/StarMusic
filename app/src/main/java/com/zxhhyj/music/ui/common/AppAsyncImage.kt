@@ -17,13 +17,12 @@ fun AppAsyncImage(
     url: String?,
     onClick: (() -> Unit)? = null
 ) {
+    val clickableModifier = onClick?.let { Modifier.clickable(onClick = onClick) } ?: Modifier
     AsyncImage(
         modifier = modifier
             .background(Color.White)
             .background(appAccentColor.copy(0.2f))
-            .run {
-                onClick?.run { clickable(onClick = onClick) } ?: this
-            },
+            .then(clickableModifier),
         model = ImageRequest.Builder(LocalContext.current)
             .data(url)
             .crossfade(300)

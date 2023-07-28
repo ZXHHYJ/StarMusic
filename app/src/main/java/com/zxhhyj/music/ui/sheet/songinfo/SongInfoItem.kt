@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import com.zxhhyj.music.logic.helper.CopyHelper
 import com.zxhhyj.music.ui.theme.appTextAccentColor
 import com.zxhhyj.music.ui.theme.horizontal
@@ -17,7 +16,6 @@ import com.zxhhyj.music.ui.theme.vertical
 
 @Composable
 fun SongInfoItem(title: String, info: String, modifier: Modifier = Modifier) {
-    val context = LocalContext.current
     Row(modifier = modifier.padding(horizontal = horizontal, vertical = vertical)) {
         Text(text = title, color = appTextAccentColor)
         Spacer(modifier = Modifier.width(horizontal))
