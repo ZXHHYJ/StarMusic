@@ -21,40 +21,17 @@
 <p align="center"><strong>欢迎贡献代码/问题</strong></p>
 <br>
 
-## 里程碑
+Star Music是一款基于Android Compose开发的本地音乐播放软件。
 
-暂无
+## 下载地址
 
-## 版本更新说明
+|  [Github release](https://github.com/Moriafly/SaltPlayerSource/releases) |
+|:--:|
+| 正式版本 |
 
-简单说明一下怎么看版本号：
-第一位：构建时年份，
-第二位：构建时月份，
-第三位：构建时日期，
-第四位：M为月度版本，没有则为不定期更新的版本，
-下面是一个范例：
+## 可以通过提交 issue 来反馈你在椒盐音乐使用中遇到的问题
 
-```
-2023.4.28 M
-```
-
-[//]: # (## 手机界面截图)
-
-[//]: # ()
-
-[//]: # (|![]&#40;https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/手机-主页.png&#41;|![]&#40;https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/手机-播放页.png&#41;|)
-
-[//]: # (|--|--|)
-
-[//]: # (|![]&#40;https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/手机-歌词.png&#41;)
-
-[//]: # ()
-
-[//]: # (## 平板界面截图)
-
-[//]: # ()
-
-[//]: # (![]&#40;https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/平板-主页.png&#41;![]&#40;https://gitee.com/ZXHHYJ/mandysa_music/raw/master/screen/平板-播放页和歌词.png&#41;)
+多问题请分开提交多个 issue。
 
 ## License
 

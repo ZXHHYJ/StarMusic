@@ -18,7 +18,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -41,6 +40,7 @@ import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppScaffold
 import com.zxhhyj.music.ui.common.AppTab
 import com.zxhhyj.music.ui.common.AppTabRow
+import com.zxhhyj.music.ui.common.AppTextField
 import com.zxhhyj.music.ui.common.AppTopBar
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.common.TopBarProperties
@@ -50,7 +50,6 @@ import com.zxhhyj.music.ui.item.ArtistItem
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
-import com.zxhhyj.music.ui.theme.TextFieldColors
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
 import dev.olshevski.navigation.reimagined.NavController
@@ -93,7 +92,7 @@ fun SearchScreen(
         },
         content = {
             Column(modifier = Modifier.fillMaxSize()) {
-                OutlinedTextField(
+                AppTextField(
                     value = searchKey,
                     onValueChange = {
                         searchKey = it
@@ -109,7 +108,7 @@ fun SearchScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = horizontal),
-                    colors = TextFieldColors
+                    singleLine = true
                 )
                 val pagerState = rememberPagerState()
                 val scope = rememberCoroutineScope()

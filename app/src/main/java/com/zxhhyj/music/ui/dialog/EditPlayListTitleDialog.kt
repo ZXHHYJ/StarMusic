@@ -2,7 +2,6 @@ package com.zxhhyj.music.ui.dialog
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -21,7 +20,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.PlayListModel
 import com.zxhhyj.music.ui.common.AppDialog
-import com.zxhhyj.music.ui.theme.TextFieldColors
+import com.zxhhyj.music.ui.common.AppTextField
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -49,10 +48,11 @@ fun EditPlayListTitleDialog(onDismissRequest: () -> Unit, model: PlayListModel) 
                 stringResource(id = R.string.cancel),
                 modifier = Modifier.clickable { onDismissRequest.invoke() })
         }) {
-        OutlinedTextField(
+        AppTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .focusRequester(focusRequester),
+            singleLine = true,
             value = titleValue,
             onValueChange = {
                 if (it.text.length <= 16) {
@@ -61,8 +61,7 @@ fun EditPlayListTitleDialog(onDismissRequest: () -> Unit, model: PlayListModel) 
             },
             placeholder = {
                 Text(text = stringResource(id = R.string.new_title))
-            },
-            colors = TextFieldColors
+            }
         )
         DisposableEffect(Unit) {
             focusRequester.requestFocus()

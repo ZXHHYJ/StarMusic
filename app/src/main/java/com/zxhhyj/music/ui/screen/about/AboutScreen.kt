@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
+import com.zxhhyj.music.logic.config.PrivacyPolicyURL
 import com.zxhhyj.music.logic.helper.ActivityHelper
 import com.zxhhyj.music.logic.helper.VersionHelper
 import com.zxhhyj.music.ui.common.AppScaffold
@@ -60,7 +61,7 @@ fun AboutScreen(
                     imageVector = Icons.Rounded.Link,
                     title = stringResource(id = R.string.privacy_policy)
                 ) {
-                    //无需反馈
+                    ActivityHelper.openWeb(ctx, PrivacyPolicyURL)
                 }
             }
             item {
