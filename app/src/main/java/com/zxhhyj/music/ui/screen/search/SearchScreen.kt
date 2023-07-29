@@ -56,15 +56,15 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import kotlinx.coroutines.launch
 
-enum class SearchTypeTabDestination {
+enum class SearchScreenTabs {
     Single, Album, Singer
 }
 
-val SearchTypeTabDestination.tabName: String
+val SearchScreenTabs.tabName: String
     @Composable get() = when (this) {
-        SearchTypeTabDestination.Single -> stringResource(id = R.string.single)
-        SearchTypeTabDestination.Album -> stringResource(id = R.string.album)
-        SearchTypeTabDestination.Singer -> stringResource(id = R.string.singer)
+        SearchScreenTabs.Single -> stringResource(id = R.string.single)
+        SearchScreenTabs.Album -> stringResource(id = R.string.album)
+        SearchScreenTabs.Singer -> stringResource(id = R.string.singer)
     }
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
@@ -73,6 +73,7 @@ fun SearchScreen(
     mainNavController: NavController<ScreenDestination>,
     sheetNavController: NavController<BottomSheetDestination>,
     padding: PaddingValues,
+    start: SearchScreenTabs,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
@@ -110,7 +111,9 @@ fun SearchScreen(
                         .padding(horizontal = horizontal),
                     singleLine = true
                 )
-                val pagerState = rememberPagerState()
+                val pagerState = rememberPagerState(
+                    initialPage = SearchScreenTabs.values().indexOf(start)
+                )
                 val scope = rememberCoroutineScope()
                 AppTabRow(
                     modifier = Modifier
@@ -118,7 +121,7 @@ fun SearchScreen(
                         .height(42.dp),
                     selectedTabIndex = pagerState.currentPage
                 ) {
-                    SearchTypeTabDestination.values()
+                    SearchScreenTabs.values()
                         .forEachIndexed { index, searchTypeTabDestination ->
                             AppTab(
                                 selected = index == pagerState.currentPage,
@@ -140,11 +143,11 @@ fun SearchScreen(
                             }
                             false
                         },
-                    pageCount = SearchTypeTabDestination.values().size,
+                    pageCount = SearchScreenTabs.values().size,
                     state = pagerState
                 ) { t ->
-                    when (SearchTypeTabDestination.values()[t]) {
-                        SearchTypeTabDestination.Single -> {
+                    when (SearchScreenTabs.values()[t]) {
+                        SearchScreenTabs.Single -> {
                             val songs = AndroidMediaLibsRepository.songs.filter {
                                 it.songName.contains(searchKey) || it.artist.name.contains(
                                     searchKey
@@ -167,7 +170,7 @@ fun SearchScreen(
                             }
                         }
 
-                        SearchTypeTabDestination.Album -> {
+                        SearchScreenTabs.Album -> {
                             BoxWithPercentages(modifier = Modifier.fillMaxSize()) {
                                 var fixedCount = (maxWidth / 180.dp).toInt()
                                 if (fixedCount < 2) {
@@ -215,7 +218,7 @@ fun SearchScreen(
                             }
                         }
 
-                        SearchTypeTabDestination.Singer -> {
+                        SearchScreenTabs.Singer -> {
                             val artists = AndroidMediaLibsRepository.artists.filter {
                                 it.name.contains(searchKey)
                             }

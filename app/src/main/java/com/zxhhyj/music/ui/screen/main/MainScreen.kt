@@ -221,11 +221,12 @@ fun MainScreen() {
                                 )
                             }
 
-                            ScreenDestination.Search -> {
+                            is ScreenDestination.Search -> {
                                 SearchScreen(
                                     mainNavController = mainNavController,
                                     sheetNavController = sheetNavController,
-                                    padding = padding
+                                    padding = padding,
+                                    start = destination.start
                                 )
                             }
 

@@ -30,6 +30,7 @@ import com.zxhhyj.music.ui.item.SubTitleItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
+import com.zxhhyj.music.ui.screen.search.SearchScreenTabs
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -59,7 +60,11 @@ fun SingleScreen(
                         imageVector = Icons.Rounded.Search,
                         contentDescription = null,
                         modifier = Modifier.clickable {
-                            mainNavController.navigate(ScreenDestination.Search)
+                            mainNavController.navigate(
+                                ScreenDestination.Search(
+                                    SearchScreenTabs.Single
+                                )
+                            )
                         }
                     )
                     AppRoundIcon(

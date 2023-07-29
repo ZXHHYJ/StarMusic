@@ -3,6 +3,7 @@ package com.zxhhyj.music.ui.screen
 import android.os.Parcelable
 import com.zxhhyj.music.logic.bean.PlayListModel
 import com.zxhhyj.music.service.playmanager.bean.SongBean
+import com.zxhhyj.music.ui.screen.search.SearchScreenTabs
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
@@ -12,67 +13,67 @@ sealed class ScreenDestination : Parcelable {
      * 主页
      */
     @Parcelize
-    object Main : ScreenDestination()
+    data object Main : ScreenDestination()
 
     /**
      * 搜索
      */
     @Parcelize
-    object Search : ScreenDestination()
+    data class Search(val start: SearchScreenTabs) : ScreenDestination()
 
     /**
      * 主题
      */
     @Parcelize
-    object Theme : ScreenDestination()
+    data object Theme : ScreenDestination()
 
     /**
      * 歌词设置
      */
     @Parcelize
-    object Lyric : ScreenDestination()
+    data object Lyric : ScreenDestination()
 
     /**
      * 隐藏的歌曲
      */
     @Parcelize
-    object HiddenSong : ScreenDestination()
+    data object HiddenSong : ScreenDestination()
 
     /**
      * 专辑
      */
     @Parcelize
-    object Album : ScreenDestination()
+    data object Album : ScreenDestination()
 
     /**
      * 设置
      */
     @Parcelize
-    object Setting : ScreenDestination()
+    data object Setting : ScreenDestination()
 
     /**
      * 关于
      */
     @Parcelize
-    object About : ScreenDestination()
+    data object About : ScreenDestination()
 
     /**
      * 媒体库
      */
     @Parcelize
-    object MediaLibs : ScreenDestination()
+    data object MediaLibs : ScreenDestination()
 
     /**
      * 歌手
      */
     @Parcelize
-    object Singer : ScreenDestination()
+    data object Singer : ScreenDestination()
 
     /**
      * 播放列表
      */
     @Parcelize
-    object PlayList : ScreenDestination()
+    data object PlayList : ScreenDestination()
 
     /**
      * 歌手详情

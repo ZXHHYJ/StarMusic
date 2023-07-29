@@ -1,5 +1,6 @@
 package com.zxhhyj.music.ui.screen.album
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,6 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -14,12 +17,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
+import com.zxhhyj.music.ui.common.AppRoundIcon
 import com.zxhhyj.music.ui.common.AppScaffold
 import com.zxhhyj.music.ui.common.AppTopBar
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.common.stateprompt.StatePrompt
 import com.zxhhyj.music.ui.item.AlbumItem
 import com.zxhhyj.music.ui.screen.ScreenDestination
+import com.zxhhyj.music.ui.screen.search.SearchScreenTabs
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
 import dev.olshevski.navigation.reimagined.NavController
@@ -43,7 +48,20 @@ fun AlbumScreen(
             topBar = {
                 AppTopBar(
                     modifier = Modifier.fillMaxWidth(),
-                    title = stringResource(id = R.string.album)
+                    title = stringResource(id = R.string.album),
+                    actions = {
+                        AppRoundIcon(
+                            imageVector = Icons.Rounded.Search,
+                            contentDescription = null,
+                            modifier = Modifier.clickable {
+                                mainNavController.navigate(
+                                    ScreenDestination.Search(
+                                        SearchScreenTabs.Album
+                                    )
+                                )
+                            }
+                        )
+                    }
                 )
             }) {
             StatePrompt(
