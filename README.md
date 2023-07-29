@@ -1,10 +1,11 @@
-<p align="center"><img src="https://gitee.com/ZXHHYJ/mandysa_music/raw/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png"/></p>
+<p align="center"><img src="https://gitee.com/ZXHHYJ/mandysa_music/raw/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png"/></p>
 
 <p align="center">
-    <strong>Hello MandySa Music!</strong>
+    <strong>Hello Star Music!</strong>
     <br>
     <br>
-    <a href="https://gitee.com/ZXHHYJ/mandysa_music/wikis">Wiki</a>
+
+[//]: # (    <a href="https://gitee.com/ZXHHYJ/mandysa_music/wikis">Wiki</a>)
 </p>
 
 <p align="center">
@@ -25,11 +26,11 @@ Star Music是一款基于Android Compose开发的本地音乐播放软件。
 
 ## 下载地址
 
-|  [Github release](https://github.com/Moriafly/SaltPlayerSource/releases) |
+|  [Gitee release](https://gitee.com/ZXHHYJ/star_music) |
 |:--:|
 | 正式版本 |
 
-## 可以通过提交 issue 来反馈你在椒盐音乐使用中遇到的问题
+## 可以通过提交 issue 来反馈你在Star Music使用中遇到的问题
 
 多问题请分开提交多个 issue。
 
