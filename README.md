@@ -1,4 +1,4 @@
-<p align="center"><img src="https://gitee.com/ZXHHYJ/mandysa_music/raw/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png"/></p>
+<p align="center"><img src="https://gitee.com/ZXHHYJ/mandysa_music/raw/master/app/src/main/ic_launcher-playstore.png"/></p>
 
 <p align="center">
     <strong>Hello Star Music!</strong>
@@ -20,7 +20,7 @@
 
 ## 下载地址
 
-|  [Gitee release](https://gitee.com/ZXHHYJ/star_music) |
+|  [Gitee release](https://gitee.com/ZXHHYJ/star_music/releases/) |
 |:--:|
 | 正式版本 |
 
