@@ -15,14 +15,8 @@
 </p>
 
 <br>
-<p align="center"><strong>基于compose实现的音乐播放器</strong></p>
+<p align="center"><strong>基于Android Compose开发的本地音乐播放软件。</strong></p>
 <br>
-
-<br>
-<p align="center"><strong>欢迎贡献代码/问题</strong></p>
-<br>
-
-Star Music是一款基于Android Compose开发的本地音乐播放软件。
 
 ## 下载地址
 
