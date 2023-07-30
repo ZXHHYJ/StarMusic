@@ -37,6 +37,9 @@ fun AppSwitch(
         val blockSizePx = with(LocalDensity.current) { blockSize.toPx() }
         val swipeableState =
             rememberSwipeableState(initialValue = if (checked) Status.OPEN else Status.CLOSE)
+        LaunchedEffect(checked) {
+            swipeableState.animateTo(if (checked) Status.OPEN else Status.CLOSE)
+        }
         var openProgress by rememberSaveable {
             mutableStateOf(0f)
         }

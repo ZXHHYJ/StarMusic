@@ -49,39 +49,34 @@ fun SlidingPanel(
             panelStateChange.invoke(swipeableState.currentValue)
         }
         Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.BottomCenter
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = panelHeight)
+        ) {
+            content.invoke(animateTo)
+        }
+        Box(
+            Modifier
+                .absoluteOffset {
+                    IntOffset(
+                        0,
+                        swipeableState.offset.value.roundToInt()
+                    )
+                }
+                .background(Color.White)
+                .fillMaxSize()
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = panelHeight)
+                    .swipeable(
+                        state = swipeableState,
+                        anchors = anchors,
+                        resistance = null,
+                        orientation = Orientation.Vertical
+                    )
             ) {
-                content.invoke(animateTo)
-            }
-            Box(
-                Modifier
-                    .absoluteOffset {
-                        IntOffset(
-                            0,
-                            swipeableState.offset.value.roundToInt()
-                        )
-                    }
-                    .background(Color.White)
-                    .fillMaxSize()
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .swipeable(
-                            state = swipeableState,
-                            anchors = anchors,
-                            resistance = null,
-                            orientation = Orientation.Vertical
-                        )
-                ) {
-                    panel.invoke(animateTo)
-                }
+                panel.invoke(animateTo)
             }
         }
     }
