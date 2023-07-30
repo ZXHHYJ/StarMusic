@@ -9,12 +9,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ColorLens
 import androidx.compose.material.icons.rounded.FontDownload
 import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.Science
 import androidx.compose.material.icons.rounded.Source
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.helper.VersionHelper
+import com.zxhhyj.music.logic.utils.VersionUtils
 import com.zxhhyj.music.ui.common.AppScaffold
 import com.zxhhyj.music.ui.common.AppTopBar
 import com.zxhhyj.music.ui.item.SettingItem
@@ -67,9 +68,21 @@ fun SettingScreen(
             }
             item {
                 SettingItem(
+                    imageVector = Icons.Rounded.Science,
+                    title = stringResource(id = R.string.lab),
+                    subTitle = stringResource(id = R.string.lab)
+                ) {
+                    mainNavController.navigate(ScreenDestination.Lab)
+                }
+            }
+            item {
+                SettingItem(
                     imageVector = Icons.Rounded.Info,
                     title = stringResource(id = R.string.about),
-                    subTitle = stringResource(id = R.string.about_info, VersionHelper.VersionName)
+                    subTitle = stringResource(
+                        id = R.string.about_info,
+                        VersionUtils.VersionName
+                    )
                 ) {
                     mainNavController.navigate(ScreenDestination.About)
                 }

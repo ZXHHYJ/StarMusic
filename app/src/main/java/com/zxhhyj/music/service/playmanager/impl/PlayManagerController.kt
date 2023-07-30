@@ -1,6 +1,6 @@
 package com.zxhhyj.music.service.playmanager.impl
 
-import com.zxhhyj.music.service.playmanager.bean.SongBean
+import com.zxhhyj.music.logic.bean.SongBean
 
 interface PlayManagerController {
     // 播放指定列表中的指定位置的歌曲

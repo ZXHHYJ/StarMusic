@@ -1,4 +1,4 @@
-package com.zxhhyj.music.logic.helper
+package com.zxhhyj.music.logic.utils
 
 import android.content.Context
 import android.media.AudioAttributes
@@ -26,7 +26,7 @@ import androidx.annotation.RequiresApi
  *
  */
 @Suppress("DEPRECATION")
-class AudioFocusHelper(
+class AudioFocusUtils(
     context: Context,
     listener: OnAudioFocusChangeListener
 ) {

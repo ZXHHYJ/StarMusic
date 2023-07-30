@@ -1,0 +1,82 @@
+package com.zxhhyj.music.ui.lab
+
+import android.content.Intent
+import android.os.Build
+import android.os.Environment
+import android.provider.Settings
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.LibraryMusic
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.zxhhyj.music.R
+import com.zxhhyj.music.logic.repository.SettingRepository
+import com.zxhhyj.music.ui.common.AppScaffold
+import com.zxhhyj.music.ui.common.AppTopBar
+import com.zxhhyj.music.ui.item.SettingSwitchItem
+
+@Composable
+fun LabScreen(
+    padding: PaddingValues
+) {
+    var isExternalStorageManager by rememberSaveable {
+        mutableStateOf(false)
+    }
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        isExternalStorageManager = Environment.isExternalStorageManager()
+    }
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        onResult = {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                isExternalStorageManager = Environment.isExternalStorageManager()
+                if (!isExternalStorageManager) {
+                    SettingRepository.EnableCueSupport = false
+                }
+            }
+        }
+    )
+    LaunchedEffect(SettingRepository.EnableCueSupport) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && SettingRepository.EnableCueSupport && !isExternalStorageManager) {
+            launcher.launch(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
+        }
+    }
+    AppScaffold(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(padding),
+        topBar = {
+            AppTopBar(
+                modifier = Modifier.fillMaxWidth(),
+                title = stringResource(id = R.string.lab)
+            )
+        }) {
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            if (SettingRepository.EnableAndroidMediaLibs) {
+                item {
+                    SettingSwitchItem(
+                        imageVector = Icons.Rounded.LibraryMusic,
+                        title = "分轨文件支持",
+                        subTitle = "启用后支持识别cue分轨文件",
+                        checked = SettingRepository.EnableCueSupport,
+                        onCheckedChange = {
+                            SettingRepository.EnableCueSupport = it
+                        }
+                    )
+                }
+            }
+        }
+    }
+}

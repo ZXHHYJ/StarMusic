@@ -6,8 +6,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.zxhhyj.music.logic.ktx.toTime
-import com.zxhhyj.music.service.playmanager.bean.SongBean
+import com.zxhhyj.music.logic.bean.SongBean
+import com.zxhhyj.music.logic.utils.toTimeString
 import com.zxhhyj.music.ui.theme.vertical
 
 @Composable
@@ -18,7 +18,7 @@ fun SongInfoSheet(
         item {
             SongInfoItem(
                 title = stringResource(id = com.zxhhyj.music.R.string.duration),
-                info = song.duration.toTime()
+                info = song.duration.toTimeString()
             )
         }
         item {
@@ -41,12 +41,6 @@ fun SongInfoSheet(
                 info = "${song.samplingRate} Hz"
             )
         }
-        /*item {
-            SongInfoItem(
-                title = stringResource(id = com.zxhhyj.music.R.string.num_tracks),
-                info = "${song.numTracks}"
-            )
-        }*/
         item {
             Spacer(modifier = Modifier.height(vertical))
         }

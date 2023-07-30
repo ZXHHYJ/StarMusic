@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository.songs
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.service.playmanager.bean.SongBean
+import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.ui.common.AppRoundCard
 import com.zxhhyj.music.ui.common.AppRoundIcon
 import com.zxhhyj.music.ui.common.AppScaffold

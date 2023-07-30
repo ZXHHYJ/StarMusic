@@ -1,4 +1,4 @@
-package com.zxhhyj.music.logic.helper
+package com.zxhhyj.music.logic.utils
 
 import android.app.Activity
 import android.content.Context
@@ -8,7 +8,7 @@ import android.net.Uri
 /**
  * 该对象提供了一些常用的帮助方法，用于执行与 Web 和邮件相关的常见活动。
  */
-object ActivityHelper {
+object ActivityUtils {
 
     /**
      * 在 Web 浏览器中打开指定的 URL。

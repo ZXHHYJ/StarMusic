@@ -15,8 +15,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository.songs
-import com.zxhhyj.music.service.playmanager.bean.SongBean
-import com.zxhhyj.music.service.playmanager.ktx.coverUrl
+import com.zxhhyj.music.logic.bean.SongBean
+import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.AppCard
 import com.zxhhyj.music.ui.common.BoxWithPercentages

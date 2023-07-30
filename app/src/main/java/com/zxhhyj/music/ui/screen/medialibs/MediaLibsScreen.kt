@@ -1,7 +1,6 @@
 package com.zxhhyj.music.ui.screen.medialibs
 
 import android.Manifest
-import android.os.Build
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,8 +37,7 @@ fun MediaSourceScreen(
     dialogNavController: NavController<DialogDestination>,
     padding: PaddingValues
 ) {
-    val permissionState =
-        rememberPermissionState(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) Manifest.permission.READ_MEDIA_AUDIO else Manifest.permission.READ_EXTERNAL_STORAGE)
+    val permissionState = rememberPermissionState(Manifest.permission.READ_EXTERNAL_STORAGE)
     LaunchedEffect(SettingRepository.EnableAndroidMediaLibs, permissionState.status) {
         if (SettingRepository.EnableAndroidMediaLibs) {
             when (permissionState.status) {

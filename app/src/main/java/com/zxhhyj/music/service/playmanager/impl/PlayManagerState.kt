@@ -1,7 +1,7 @@
 package com.zxhhyj.music.service.playmanager.impl
 
 import androidx.lifecycle.LiveData
-import com.zxhhyj.music.service.playmanager.bean.SongBean
+import com.zxhhyj.music.logic.bean.SongBean
 
 interface PlayManagerState {
     // 获取当前播放列表

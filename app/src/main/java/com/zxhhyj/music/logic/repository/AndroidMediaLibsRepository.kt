@@ -4,8 +4,11 @@ import android.provider.MediaStore
 import com.funny.data_saver.core.mutableDataSaverListStateOf
 import com.kyant.tag.Metadata
 import com.zxhhyj.music.MainApplication
+import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.config.DataSaverUtils
-import com.zxhhyj.music.service.playmanager.bean.SongBean
+import com.zxhhyj.music.logic.utils.CueParser
+import com.zxhhyj.music.logic.utils.FileUtils
+import com.zxhhyj.music.logic.utils.toMillis
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
@@ -50,11 +53,11 @@ object AndroidMediaLibsRepository {
      * 扫描媒体
      */
     suspend fun scanMedia() {
-        songs = suspendCancellableCoroutine {
+        songs = suspendCancellableCoroutine { it ->
             val query = MainApplication.context.contentResolver.query(
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 null,
-                "${MediaStore.Audio.Media.IS_MUSIC} != 0",
+                null,
                 null,
                 null
             )
@@ -81,27 +84,66 @@ object AndroidMediaLibsRepository {
                     val size = cursor.getLong(sizeIndex)
                     val id = cursor.getLong(idIndex)
                     val metadata = Metadata.getMetadata(data)
-                    val lyric = Metadata.getLyrics(data)
 
-                    val songBean = SongBean(
-                        album = SongBean.Album(albumId, album),
-                        artist = SongBean.Artist(artistId, artist),
-                        duration = duration,
-                        data = data,
-                        songName = songName,
-                        size = size,
-                        id = id,
-                        bitrate = metadata?.bitrate,
-                        samplingRate = metadata?.sampleRate,
-                        lyric = lyric
-                    )
-
-                    if (!hideSongs.contains(songBean)) {
-                        songs.add(songBean)
+                    if (SettingRepository.EnableCueSupport) {
+                        runCatching {
+                            val cuePath = data.substringBeforeLast(".") + ".cue"
+                            val cueContent = FileUtils.readFromFile(cuePath)
+                            val cueData = CueParser.parseCueContent(cueContent)
+                            cueData.tracks.forEach { track ->
+                                val endPosition =
+                                    track.endPosition.toMillis().takeIf { it != 0L } ?: duration
+                                songs.add(
+                                    SongBean(
+                                        album = SongBean.Album(albumId, album),
+                                        artist = SongBean.Artist(artistId, track.performer),
+                                        duration = endPosition - track.startPosition.toMillis(),
+                                        data = data,
+                                        songName = track.title,
+                                        size = size,
+                                        id = id,
+                                        bitrate = metadata?.bitrate,
+                                        samplingRate = metadata?.sampleRate,
+                                        lyric = metadata?.properties?.get("LYRICS")?.get(0),
+                                    )
+                                )
+                            }
+                        }.getOrElse {
+                            songs.add(
+                                SongBean(
+                                    album = SongBean.Album(albumId, album),
+                                    artist = SongBean.Artist(artistId, artist),
+                                    duration = duration,
+                                    data = data,
+                                    songName = songName,
+                                    size = size,
+                                    id = id,
+                                    bitrate = metadata?.bitrate,
+                                    samplingRate = metadata?.sampleRate,
+                                    lyric = metadata?.properties?.get("LYRICS")?.get(0),
+                                )
+                            )
+                        }
+                    } else {
+                        songs.add(
+                            SongBean(
+                                album = SongBean.Album(albumId, album),
+                                artist = SongBean.Artist(artistId, artist),
+                                duration = duration,
+                                data = data,
+                                songName = songName,
+                                size = size,
+                                id = id,
+                                bitrate = metadata?.bitrate,
+                                samplingRate = metadata?.sampleRate,
+                                lyric = metadata?.properties?.get("LYRICS")?.get(0),
+                            )
+                        )
                     }
                 }
             }
             query?.close()
+            songs.removeAll(hideSongs)
             it.resume(songs)
         }
         dataUpdate()

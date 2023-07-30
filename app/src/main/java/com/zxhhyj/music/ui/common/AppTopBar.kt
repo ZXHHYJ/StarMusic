@@ -2,6 +2,7 @@ package com.zxhhyj.music.ui.common
 
 import android.os.Parcelable
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -121,7 +122,9 @@ fun AppTopBar(
     var contentSize by remember {
         mutableStateOf(IntSize.Zero)
     }
-    Box(modifier = modifier) {
+    Box(modifier = modifier.clickable(enabled = false) {
+        //用户修复点击事件穿透的问题
+    }) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()

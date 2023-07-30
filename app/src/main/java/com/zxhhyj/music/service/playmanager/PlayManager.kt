@@ -7,7 +7,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
-import com.zxhhyj.music.service.playmanager.bean.SongBean
+import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.service.playmanager.impl.PlayManagerController
 import com.zxhhyj.music.service.playmanager.impl.PlayManagerState
 import kotlinx.coroutines.DelicateCoroutinesApi

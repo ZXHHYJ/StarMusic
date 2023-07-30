@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.zxhhyj.music.logic.helper.CopyHelper
+import com.zxhhyj.music.logic.utils.CopyUtils
 import com.zxhhyj.music.ui.theme.appTextAccentColor
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.textColorLight
@@ -21,7 +21,7 @@ fun SongInfoItem(title: String, info: String, modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.width(horizontal))
         Spacer(modifier = Modifier.weight(1.0f))
         Text(text = info, color = textColorLight, modifier = Modifier.clickable {
-            CopyHelper.copyText(info)
+            CopyUtils.copyText(info)
         })
     }
 }

@@ -4,7 +4,6 @@ import android.os.Parcelable
 import com.funny.data_saver.core.mutableDataSaverListStateOf
 import com.funny.data_saver.core.mutableDataSaverStateOf
 import com.zxhhyj.music.logic.config.DataSaverUtils
-import com.zxhhyj.music.service.playmanager.bean.SongBean
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import java.util.UUID

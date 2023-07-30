@@ -1,4 +1,4 @@
-package com.zxhhyj.music.service.playmanager.bean
+package com.zxhhyj.music.logic.bean
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
@@ -24,7 +24,7 @@ data class SongBean(
     // 歌曲采样率
     val samplingRate: Int?,
     // 歌曲歌词
-    val lyric: String?,
+    val lyric: String?
 ) : Parcelable {
 
     // 艺术家信息

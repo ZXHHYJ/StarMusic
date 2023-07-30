@@ -52,4 +52,5 @@
     <string name="edit_playlist_title">编辑播放列表标题</string>
     <string name="new_title">新的标题</string>
     <string name="title">标题</string>
+    <string name="lab">实验室</string>
 </resources>

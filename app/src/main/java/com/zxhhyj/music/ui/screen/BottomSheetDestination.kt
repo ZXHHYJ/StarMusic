@@ -1,9 +1,8 @@
 package com.zxhhyj.music.ui.screen
 
 import android.os.Parcelable
-import androidx.compose.runtime.Composable
 import com.zxhhyj.music.logic.bean.PlayListModel
-import com.zxhhyj.music.service.playmanager.bean.SongBean
+import com.zxhhyj.music.logic.bean.SongBean
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
@@ -21,11 +20,5 @@ sealed class BottomSheetDestination : Parcelable {
 
     @Parcelize
     data class PlaylistMenu(val model: @RawValue PlayListModel) : BottomSheetDestination()
-
-    /**
-     * 限定在单个页面的BottomSheet
-     */
-    @Parcelize
-    data class BottomSheet(val content: @RawValue @Composable () -> Unit) : BottomSheetDestination()
 
 }

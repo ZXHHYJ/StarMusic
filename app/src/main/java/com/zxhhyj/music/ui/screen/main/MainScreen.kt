@@ -50,6 +50,7 @@ import com.zxhhyj.music.ui.dialog.EditPlayListTitleDialog
 import com.zxhhyj.music.ui.dialog.MediaLibsEmptyDialog
 import com.zxhhyj.music.ui.dialog.ScanMusicDialog
 import com.zxhhyj.music.ui.dialog.SplashDialog
+import com.zxhhyj.music.ui.lab.LabScreen
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
@@ -311,6 +312,12 @@ fun MainScreen() {
                                     padding = padding
                                 )
                             }
+
+                            ScreenDestination.Lab -> {
+                                LabScreen(
+                                    padding = padding
+                                )
+                            }
                         }
                     }
                 }
@@ -399,10 +406,6 @@ fun MainScreen() {
                     SongInfoSheet(
                         song = destination.song
                     )
-                }
-
-                is BottomSheetDestination.BottomSheet -> {
-                    destination.content()
                 }
 
                 is BottomSheetDestination.AddToPlayList -> {

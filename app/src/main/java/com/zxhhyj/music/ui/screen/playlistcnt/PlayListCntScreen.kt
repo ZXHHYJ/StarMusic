@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.PlayListModel
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.service.playmanager.ktx.coverUrl
+import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.AppButton
 import com.zxhhyj.music.ui.common.AppCard

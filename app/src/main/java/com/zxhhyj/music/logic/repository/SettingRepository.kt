@@ -24,6 +24,15 @@ object SettingRepository {
     )
 
     /**
+     * 是否启用对cue文件的支持，CUE 文件是一种用于描述音频 CD 的文本文件格式。它通常与一个或多个音频轨道文件
+     */
+    var EnableCueSupport by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "EnableCueSupport",
+        initialValue = false
+    )
+
+    /**
      * 是否首次启动APP(同意隐私政策)
      */
     var AgreePrivacyPolicy by mutableDataSaverStateOf(

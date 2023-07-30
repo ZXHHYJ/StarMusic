@@ -13,7 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.config.PrivacyPolicyURL
-import com.zxhhyj.music.logic.helper.ActivityHelper
+import com.zxhhyj.music.logic.utils.ActivityUtils
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.ui.common.AppDialog
 import com.zxhhyj.music.ui.theme.appTextAccentColor
@@ -45,7 +45,7 @@ fun SplashDialog(onDismissRequest: () -> Unit) {
                 append(stringResource(id = R.string.privacy_policy))
             }
         }, modifier = Modifier.clickable {
-            ActivityHelper.openWeb(activity, PrivacyPolicyURL)
+            ActivityUtils.openWeb(activity, PrivacyPolicyURL)
         })
     }
 }

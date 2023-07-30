@@ -2,7 +2,7 @@ package com.zxhhyj.music.ui.screen
 
 import android.os.Parcelable
 import com.zxhhyj.music.logic.bean.PlayListModel
-import com.zxhhyj.music.service.playmanager.bean.SongBean
+import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.ui.screen.search.SearchScreenTabs
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
@@ -74,6 +74,12 @@ sealed class ScreenDestination : Parcelable {
      */
     @Parcelize
     data object PlayList : ScreenDestination()
+
+    /**
+     * 实验室
+     */
+    @Parcelize
+    data object Lab : ScreenDestination()
 
     /**
      * 歌手详情

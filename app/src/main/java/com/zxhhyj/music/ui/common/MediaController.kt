@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
 import com.zxhhyj.music.R
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.service.playmanager.ktx.coverUrl
+import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.ui.theme.appBackgroundColor
 import com.zxhhyj.music.ui.theme.horizontal
 

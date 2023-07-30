@@ -1,12 +1,12 @@
 @file:Suppress("DEPRECATION")
 
-package com.zxhhyj.music.logic.helper
+package com.zxhhyj.music.logic.utils
 
 import android.content.pm.PackageManager
 import android.os.Build
 import com.zxhhyj.music.MainApplication
 
-object VersionHelper {
+object VersionUtils {
     val VersionName: String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         MainApplication.context.packageManager.getPackageInfo(
             MainApplication.context.packageName,

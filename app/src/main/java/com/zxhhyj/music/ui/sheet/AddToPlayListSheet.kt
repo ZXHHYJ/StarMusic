@@ -14,7 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.PlayListRepository
-import com.zxhhyj.music.service.playmanager.bean.SongBean
+import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.ui.common.AppButton
 import com.zxhhyj.music.ui.common.stateprompt.EmptyContentMessage
 import com.zxhhyj.music.ui.item.PlayListItem

@@ -22,9 +22,9 @@ import coil.imageLoader
 import coil.request.ImageRequest
 import com.zxhhyj.music.MainActivity
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.helper.AudioFocusHelper
+import com.zxhhyj.music.logic.utils.AudioFocusUtils
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.service.playmanager.ktx.coverUrl
+import com.zxhhyj.music.logic.utils.coverUrl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -118,12 +118,12 @@ class MediaPlayService : LifecycleService() {
     /**
      * 管理音频焦点
      */
-    private lateinit var mAudioFocusHelper: AudioFocusHelper
+    private lateinit var mAudioFocusUtils: AudioFocusUtils
 
     override fun onCreate() {
         isServiceAlive = true
         super.onCreate()
-        mAudioFocusHelper = AudioFocusHelper(this, AudioFocusChangeListener())
+        mAudioFocusUtils = AudioFocusUtils(this, AudioFocusChangeListener())
         PlayManager.changeMusicLiveData().observe(this@MediaPlayService) {
             if (it == null) return@observe
             mMediaNotification
@@ -157,12 +157,12 @@ class MediaPlayService : LifecycleService() {
             refreshMediaSession()
 
             if (it == false) {
-                mAudioFocusHelper.requestAudioFocus(
+                mAudioFocusUtils.requestAudioFocus(
                     AudioManager.STREAM_MUSIC,
                     AudioManager.AUDIOFOCUS_GAIN
                 )
             } else {
-                mAudioFocusHelper.abandonAudioFocus()
+                mAudioFocusUtils.abandonAudioFocus()
             }
         }
         PlayManager.durationLiveData().observe(this@MediaPlayService) {
@@ -180,7 +180,7 @@ class MediaPlayService : LifecycleService() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mAudioFocusHelper.abandonAudioFocus()
+        mAudioFocusUtils.abandonAudioFocus()
         mMediaSession.isActive = false
         mMediaSession.release()
         isServiceAlive = false
@@ -261,7 +261,7 @@ class MediaPlayService : LifecycleService() {
     /**
      * 对音频焦点获取与丢失做出反应
      */
-    inner class AudioFocusChangeListener : AudioFocusHelper.OnAudioFocusChangeListener {
+    inner class AudioFocusChangeListener : AudioFocusUtils.OnAudioFocusChangeListener {
 
         override fun onLoss() {
             PlayManager.pause()

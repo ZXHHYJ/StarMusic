@@ -13,8 +13,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.config.PrivacyPolicyURL
-import com.zxhhyj.music.logic.helper.ActivityHelper
-import com.zxhhyj.music.logic.helper.VersionHelper
+import com.zxhhyj.music.logic.utils.ActivityUtils
+import com.zxhhyj.music.logic.utils.VersionUtils
 import com.zxhhyj.music.ui.common.AppScaffold
 import com.zxhhyj.music.ui.common.AppTopBar
 import com.zxhhyj.music.ui.item.SettingItem
@@ -37,7 +37,7 @@ fun AboutScreen(
                 SettingItem(
                     imageVector = Icons.Rounded.Info,
                     title = stringResource(id = R.string.version),
-                    subTitle = VersionHelper.VersionName
+                    subTitle = VersionUtils.VersionName
                 ) {
                     //无需反馈
                 }
@@ -52,7 +52,7 @@ fun AboutScreen(
                     imageVector = Icons.Rounded.Link,
                     title = "Gitee"
                 ) {
-                    ActivityHelper.openWeb(ctx, "https://gitee.com/ZXHHYJ/star_music")
+                    ActivityUtils.openWeb(ctx, "https://gitee.com/ZXHHYJ/star_music")
                 }
             }
 
@@ -61,7 +61,7 @@ fun AboutScreen(
                     imageVector = Icons.Rounded.Link,
                     title = stringResource(id = R.string.privacy_policy)
                 ) {
-                    ActivityHelper.openWeb(ctx, PrivacyPolicyURL)
+                    ActivityUtils.openWeb(ctx, PrivacyPolicyURL)
                 }
             }
             item {
@@ -69,7 +69,7 @@ fun AboutScreen(
                     imageVector = Icons.Rounded.Link,
                     title = stringResource(id = R.string.mail)
                 ) {
-                    ActivityHelper.openMail(ctx, "957447668@qq.com")
+                    ActivityUtils.openMail(ctx, "957447668@qq.com")
                 }
             }
         }

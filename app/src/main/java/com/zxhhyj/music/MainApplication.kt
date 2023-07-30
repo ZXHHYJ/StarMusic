@@ -10,7 +10,7 @@ import com.google.gson.GsonBuilder
 import com.zxhhyj.music.logic.bean.PlayListModel
 import com.zxhhyj.music.service.MediaPlayService
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.service.playmanager.bean.SongBean
+import com.zxhhyj.music.logic.bean.SongBean
 import io.fastkv.FastKVConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor

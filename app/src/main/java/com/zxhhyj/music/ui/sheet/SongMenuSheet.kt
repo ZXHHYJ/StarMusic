@@ -24,7 +24,7 @@ import com.zxhhyj.music.MainApplication
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.service.playmanager.bean.SongBean
+import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.ui.common.AppListButton
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
