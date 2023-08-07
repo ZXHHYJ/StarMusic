@@ -8,9 +8,9 @@ import android.os.Build
 import com.funny.data_saver.core.DataSaverConverter.registerTypeConverters
 import com.google.gson.GsonBuilder
 import com.zxhhyj.music.logic.bean.PlayListModel
+import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.service.MediaPlayService
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.logic.bean.SongBean
 import io.fastkv.FastKVConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
@@ -53,14 +53,13 @@ class MainApplication : Application() {
             save = { bean -> bean.uuid },
             restore = { str -> PlayListModel(str) }
         )
-        PlayManager.init(this)
         //初始化播放管理器
         PlayManager.pauseLiveData()
             .observeForever {
                 if (it == false)
                     startPlayerService()
             }
-        PlayManager.changeMusicLiveData()
+        PlayManager.currentSongLiveData()
             .observeForever {
                 if (it != null)
                     startPlayerService()

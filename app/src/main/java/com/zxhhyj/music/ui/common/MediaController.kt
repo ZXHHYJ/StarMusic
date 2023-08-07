@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
 import com.zxhhyj.music.R
-import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.logic.utils.coverUrl
+import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.theme.appBackgroundColor
 import com.zxhhyj.music.ui.theme.horizontal
 
@@ -46,7 +46,7 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
         }
         Box(modifier = Modifier.padding(horizontal = horizontal)) {
             Box {
-                val song by PlayManager.changeMusicLiveData().observeAsState()
+                val song by PlayManager.currentSongLiveData().observeAsState()
                 AppCard(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -92,8 +92,8 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
                             modifier = Modifier
                                 .size(buttonSize)
                                 .clickable {
-                                    if (PlayManager.isPaused) {
-                                        PlayManager.play()
+                                    if (PlayManager.pauseLiveData().value == true) {
+                                        PlayManager.start()
                                     } else {
                                         PlayManager.pause()
                                     }
@@ -113,7 +113,10 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
                         Spacer(modifier = Modifier.width(8.dp))
                     }
                 }
-                AppCard(backgroundColor = Color.Transparent, modifier = Modifier.size(coverLength)) {
+                AppCard(
+                    backgroundColor = Color.Transparent,
+                    modifier = Modifier.size(coverLength)
+                ) {
                     AppAsyncImage(
                         modifier = Modifier.fillMaxSize(),
                         url = song?.album?.coverUrl ?: ""

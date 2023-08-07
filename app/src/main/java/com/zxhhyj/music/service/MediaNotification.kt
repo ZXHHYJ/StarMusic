@@ -43,7 +43,11 @@ class MediaNotification(
     override fun build(): Notification {
         clearActions()
         // 根据当前的播放状态添加不同的按钮
-        listOf(skipPrevious, if (PlayManager.isPaused) play else pause, skipNext).forEach {
+        listOf(
+            skipPrevious,
+            if (PlayManager.pauseLiveData().value == true) play else pause,
+            skipNext
+        ).forEach {
             addAction(it)
         }
         // Android 12 及以上版本支持停止操作

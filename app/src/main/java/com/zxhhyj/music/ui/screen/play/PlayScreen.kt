@@ -23,8 +23,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.map
 import com.mxalbert.sharedelements.*
-import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.logic.utils.coverUrl
+import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.common.BoxWithPercentagesScope
 import com.zxhhyj.music.ui.common.MotionBlur
@@ -194,7 +194,7 @@ fun PlayScreen(
                 .clipToBounds()
         ) {
 
-            val coverUrl by PlayManager.changeMusicLiveData().map {
+            val coverUrl by PlayManager.currentSongLiveData().map {
                 it?.album?.coverUrl
             }.observeAsState()
             MotionBlur(

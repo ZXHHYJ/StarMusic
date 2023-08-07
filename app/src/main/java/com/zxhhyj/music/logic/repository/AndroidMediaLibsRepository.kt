@@ -93,11 +93,12 @@ object AndroidMediaLibsRepository {
                             cueData.tracks.forEach { track ->
                                 val endPosition =
                                     track.endPosition.toMillis().takeIf { it != 0L } ?: duration
+                                val startPosition = track.startPosition.toMillis()
                                 songs.add(
                                     SongBean(
                                         album = SongBean.Album(albumId, album),
                                         artist = SongBean.Artist(artistId, track.performer),
-                                        duration = endPosition - track.startPosition.toMillis(),
+                                        duration = endPosition - startPosition,
                                         data = data,
                                         songName = track.title,
                                         size = size,
@@ -105,6 +106,8 @@ object AndroidMediaLibsRepository {
                                         bitrate = metadata?.bitrate,
                                         samplingRate = metadata?.sampleRate,
                                         lyric = metadata?.properties?.get("LYRICS")?.get(0),
+                                        startPosition = startPosition,
+                                        endPosition = endPosition,
                                     )
                                 )
                             }
@@ -121,6 +124,8 @@ object AndroidMediaLibsRepository {
                                     bitrate = metadata?.bitrate,
                                     samplingRate = metadata?.sampleRate,
                                     lyric = metadata?.properties?.get("LYRICS")?.get(0),
+                                    startPosition = 0,
+                                    endPosition = duration,
                                 )
                             )
                         }
@@ -137,6 +142,8 @@ object AndroidMediaLibsRepository {
                                 bitrate = metadata?.bitrate,
                                 samplingRate = metadata?.sampleRate,
                                 lyric = metadata?.properties?.get("LYRICS")?.get(0),
+                                startPosition = 0,
+                                endPosition = duration,
                             )
                         )
                     }

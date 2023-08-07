@@ -28,11 +28,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mxalbert.sharedelements.SharedElement
-import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.logic.utils.coverUrl
-import com.zxhhyj.music.ui.common.AppRoundIcon
-import com.zxhhyj.music.ui.common.AppCard
+import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
+import com.zxhhyj.music.ui.common.AppCard
+import com.zxhhyj.music.ui.common.AppRoundIcon
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.play.MaterialFadeInTransitionSpec
 import com.zxhhyj.music.ui.screen.play.PlayScreen
@@ -52,7 +52,7 @@ fun TopMediaController(
     navController: NavController<PlayScreenDestination>,
     sheetNavController: NavController<BottomSheetDestination>,
 ) {
-    val song by PlayManager.changeMusicLiveData().observeAsState()
+    val song by PlayManager.currentSongLiveData().observeAsState()
     Row(
         modifier = modifier
             .heightIn(max = 82.dp),

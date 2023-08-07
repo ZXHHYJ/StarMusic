@@ -161,7 +161,7 @@ fun MainScreen() {
             panelState = it
         },
         content = { function ->
-            val visibilityMediaController by PlayManager.changeMusicLiveData().map {
+            val visibilityMediaController by PlayManager.currentSongLiveData().map {
                 return@map it != null
             }.observeAsState(false)
             if (!visibilityMediaController && panelState == PanelState.EXPANDED) {

@@ -24,7 +24,11 @@ data class SongBean(
     // 歌曲采样率
     val samplingRate: Int?,
     // 歌曲歌词
-    val lyric: String?
+    val lyric: String?,
+    // 开始位置
+    val startPosition: Long,
+    // 结束位置
+    val endPosition: Long
 ) : Parcelable {
 
     // 艺术家信息

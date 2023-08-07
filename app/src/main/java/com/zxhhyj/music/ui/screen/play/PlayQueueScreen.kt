@@ -36,8 +36,8 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
-import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.logic.bean.SongBean
+import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppCard
 import com.zxhhyj.music.ui.common.AppDivider
 import com.zxhhyj.music.ui.common.AppRoundIcon
@@ -46,8 +46,8 @@ import com.zxhhyj.music.ui.theme.vertical
 
 @Composable
 fun ColumnScope.PlayQueueScreen() {
-    val playlist by PlayManager.changePlayListLiveData().observeAsState()
-    val song by PlayManager.changeMusicLiveData().observeAsState()
+    val playlist by PlayManager.playListLiveData().observeAsState()
+    val song by PlayManager.currentSongLiveData().observeAsState()
 
     Row(
         modifier = Modifier
@@ -132,7 +132,7 @@ private fun QueueSongItem(
     song: SongBean,
     onClick: () -> Unit
 ) {
-    val currentSong by PlayManager.changeMusicLiveData().observeAsState()
+    val currentSong by PlayManager.currentSongLiveData().observeAsState()
     AppCard(
         backgroundColor = if (currentSong == song) Color.White.copy(alpha = 0.1f) else Color.Transparent,
         modifier = modifier

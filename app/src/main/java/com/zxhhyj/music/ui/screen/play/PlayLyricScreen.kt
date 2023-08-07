@@ -26,7 +26,7 @@ import com.zxhhyj.music.ui.theme.translucentWhiteColor
 fun ColumnScope.PlayLyricScreen() {
     val pause by PlayManager.pauseLiveData().observeAsState(true)
     KeepScreenOn(enable = !pause)
-    val song by PlayManager.changeMusicLiveData().observeAsState()
+    val song by PlayManager.currentSongLiveData().observeAsState()
     if (song?.lyric == null || song?.lyric?.isEmpty() == true) {
         Box(
             modifier = Modifier
@@ -69,7 +69,7 @@ fun ColumnScope.PlayLyricScreen() {
             }
         ) {
             PlayManager.seekTo(it)
-            PlayManager.play()
+            PlayManager.start()
         }
 
     }

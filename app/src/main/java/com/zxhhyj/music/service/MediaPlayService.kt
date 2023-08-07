@@ -23,8 +23,8 @@ import coil.request.ImageRequest
 import com.zxhhyj.music.MainActivity
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.utils.AudioFocusUtils
-import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.logic.utils.coverUrl
+import com.zxhhyj.music.service.playmanager.PlayManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -47,7 +47,7 @@ class MediaPlayService : LifecycleService() {
     private fun refreshMediaNotifications() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
             startForeground(ID, mMediaNotification.build())
-            if (PlayManager.isPaused) {
+            if (PlayManager.pauseLiveData().value == true) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     stopForeground(STOP_FOREGROUND_DETACH)
                 } else {
@@ -73,7 +73,7 @@ class MediaPlayService : LifecycleService() {
     private fun refreshMediaSession() {
         mMediaSession.setPlaybackState(
             PlaybackStateBuilder.setState(
-                if (PlayManager.isPaused) PlaybackStateCompat.STATE_PAUSED else PlaybackStateCompat.STATE_PLAYING,
+                if (PlayManager.pauseLiveData().value == true) PlaybackStateCompat.STATE_PAUSED else PlaybackStateCompat.STATE_PLAYING,
                 PlayManager.progressLiveData().value?.toLong() ?: 0,
                 0F
             ).build()
@@ -124,7 +124,7 @@ class MediaPlayService : LifecycleService() {
         isServiceAlive = true
         super.onCreate()
         mAudioFocusUtils = AudioFocusUtils(this, AudioFocusChangeListener())
-        PlayManager.changeMusicLiveData().observe(this@MediaPlayService) {
+        PlayManager.currentSongLiveData().observe(this@MediaPlayService) {
             if (it == null) return@observe
             mMediaNotification
                 .setContentTitle(it.songName)
@@ -168,7 +168,7 @@ class MediaPlayService : LifecycleService() {
         PlayManager.durationLiveData().observe(this@MediaPlayService) {
             refreshMetadata(duration = it)
         }
-        PlayManager.changePlayListLiveData().observe(this@MediaPlayService) {
+        PlayManager.playListLiveData().observe(this@MediaPlayService) {
             //播放列表被清空
             //为了避免用户尝试恢复播放
             //直接把服务杀掉
@@ -249,7 +249,7 @@ class MediaPlayService : LifecycleService() {
 
         override fun onPlay() {
             super.onPlay()
-            PlayManager.play()
+            PlayManager.start()
         }
 
         override fun onPause() {
@@ -277,7 +277,7 @@ class MediaPlayService : LifecycleService() {
 
         override fun onGain(lossTransient: Boolean, lossTransientCanDuck: Boolean) {
             if (lossTransient) {
-                PlayManager.play()
+                PlayManager.start()
             }
         }
     }

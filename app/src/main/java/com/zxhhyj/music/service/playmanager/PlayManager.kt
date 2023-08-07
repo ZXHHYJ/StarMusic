@@ -1,30 +1,20 @@
 package com.zxhhyj.music.service.playmanager
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.media3.common.MediaItem
-import androidx.media3.common.PlaybackException
-import androidx.media3.common.Player
-import androidx.media3.exoplayer.ExoPlayer
 import com.zxhhyj.music.logic.bean.SongBean
-import com.zxhhyj.music.service.playmanager.impl.PlayManagerController
-import com.zxhhyj.music.service.playmanager.impl.PlayManagerState
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
+/**
+ * 播放管理器
+ */
+object PlayManager {
 
-@OptIn(DelicateCoroutinesApi::class)
-object PlayManager : PlayManagerState, PlayManagerController, Player.Listener {
+    private var mSongPlayer = SongPlayer()
 
     /**
      * 当前播放的歌曲
      */
-    private val mChangeMusic = MutableLiveData<SongBean?>()
+    private val mCurrentSong = MutableLiveData<SongBean?>()
 
     /**
      * 播放列表
@@ -32,78 +22,92 @@ object PlayManager : PlayManagerState, PlayManagerController, Player.Listener {
     private val mPlayList = MutableLiveData<List<SongBean>?>()
 
     /**
-     * 播放状态
-     */
-    private val mPause = MutableLiveData(true)
-
-    /**
      * 当前播放歌曲的下标
      */
     private val mIndex = MutableLiveData(0)
 
     /**
-     * 当前播放歌曲进度
+     * 获取播放列表的 LiveData
      */
-    private val mProgress = MutableLiveData<Int>()
-
-    /**
-     * 当前播放歌曲时长
-     */
-    private val mDuration = MutableLiveData<Int>()
-
-    override fun changePlayListLiveData(): LiveData<List<SongBean>?> {
+    fun playListLiveData(): LiveData<List<SongBean>?> {
         return mPlayList
     }
 
-    override fun progressLiveData(): LiveData<Int> {
-        return mProgress
+    /**
+     * 获取当前播放进度的 LiveData
+     */
+    fun progressLiveData(): LiveData<Int> {
+        return mSongPlayer.currentProgress
     }
 
-    override fun durationLiveData(): LiveData<Int> {
-        return mDuration
+    /**
+     * 获取当前歌曲时长的 LiveData
+     */
+    fun durationLiveData(): LiveData<Int> {
+        return mSongPlayer.songDuration
     }
 
-    override fun changeMusicLiveData(): LiveData<SongBean?> {
-        return mChangeMusic
+    /**
+     * 获取当前播放的歌曲的 LiveData
+     */
+    fun currentSongLiveData(): LiveData<SongBean?> {
+        return mCurrentSong
     }
 
-    override val isPaused: Boolean
-        get() = pauseLiveData().value ?: true
-
-    override fun pauseLiveData(): LiveData<Boolean> {
-        return mPause
+    /**
+     * 获取暂停状态的 LiveData
+     */
+    fun pauseLiveData(): LiveData<Boolean> {
+        return mSongPlayer.pause
     }
 
-    override fun play(list: List<SongBean>, index: Int) {
+    /**
+     * 播放歌曲列表中的指定歌曲
+     */
+    fun play(list: List<SongBean>, index: Int) {
         mPlayList.value = list
         updateIndex(index)
     }
 
-    override fun seekTo(position: Int) {
-        mProgress.value = position
-        initMediaPlayer()
-        mMediaPlayer?.seekTo(position.toLong())
+    /**
+     * 设置音乐播放进度
+     */
+    fun seekTo(position: Int) {
+        mSongPlayer.seekTo(position)
     }
 
-    override fun skipToPrevious() {
+    /**
+     * 切换到上一首歌曲
+     */
+    fun skipToPrevious() {
         updateIndex(mIndex.value!! - 1)
     }
 
-    override fun skipToNext() {
+    /**
+     * 切换到下一首歌曲
+     */
+    fun skipToNext() {
         updateIndex(mIndex.value!! + 1)
     }
 
-    override fun play() {
-        initMediaPlayer()
-        mMediaPlayer?.play()
+    /**
+     * 开始播放音乐
+     */
+    fun start() {
+        mSongPlayer.start()
     }
 
-    override fun pause() {
-        initMediaPlayer()
-        mMediaPlayer?.pause()
+    /**
+     * 暂停播放音乐
+     */
+    fun pause() {
+        mSongPlayer.pause()
     }
 
-    override fun addNextPlay(song: SongBean) {
+    /**
+     * 添加下一首播放的歌曲
+     */
+    fun addNextPlay(song: SongBean) {
         mPlayList.value?.let {
             mPlayList.value = it.toMutableList().apply {
                 add((mIndex.value ?: return) + 1, song)
@@ -111,126 +115,64 @@ object PlayManager : PlayManagerState, PlayManagerController, Player.Listener {
         }
     }
 
-    override fun removeSong(song: SongBean) {
-        val currentSong = mChangeMusic.value
+    /**
+     * 移除指定歌曲
+     */
+    fun removeSong(song: SongBean) {
+        val currentSong = mCurrentSong.value
         if (currentSong == song) {
             skipToNext()
         }
         mPlayList.value = mPlayList.value?.minus(song)
     }
 
-    override fun clearPlayList() {
+    /**
+     * 清空播放列表
+     */
+    fun clearPlayList() {
         stop()
-        mChangeMusic.value = null
+        mCurrentSong.value = null
         mPlayList.value = null
     }
 
     init {
+        // 观察当前播放歌曲的下标，如果播放列表不为空，则根据下标播放歌曲
         mIndex.observeForever {
             if (mPlayList.value != null) {
                 val song = mPlayList.value!![it]
-                prepareMusic(song)
+                mCurrentSong.value = song
+                mSongPlayer.play(song)
             }
-        }
-    }
-
-    private lateinit var mApplication: Application
-
-    private var mPositionUpdateJob: Job? = null
-
-    private var mMediaPlayer: ExoPlayer? = null
-
-    @Synchronized
-    private fun createExoPlayer(): ExoPlayer {
-        return ExoPlayer.Builder(mApplication).build().apply {
-            addListener(this@PlayManager)
-        }
-    }
-
-    //初始化媒体播放器
-    @Synchronized
-    private fun initMediaPlayer() {
-        if (mMediaPlayer != null) return
-        mMediaPlayer = createExoPlayer()
-        val process = mProgress.value
-        prepareMusic(mChangeMusic.value ?: return)
-        seekTo(process ?: return)
-    }
-
-    private fun prepareMusic(song: SongBean) {
-        initMediaPlayer()
-
-        mProgress.value = 0
-        mChangeMusic.value = song
-        mMediaPlayer?.let {
-            it.setMediaItem(MediaItem.fromUri(song.data))
-            it.prepare()
-            it.playWhenReady = true
         }
     }
 
     private fun updateIndex(index: Int) {
-        if (index !in 0 until (mPlayList.value?.size ?: 0)) {
-            pause()
+        // 根据下标切换歌曲，如果下标越界，则暂停播放
+        mPlayList.value?.getOrNull(index)?.let {
+            mIndex.value = index
             return
         }
-        mIndex.value = index
-    }
-
-    fun init(application: Application) {
-        mApplication = application
-    }
-
-    override fun stop() {
-        mPositionUpdateJob?.cancel()
-        mPositionUpdateJob = null
-        mMediaPlayer?.stop()
-        mMediaPlayer?.release()
-        mMediaPlayer = null
+        pause()
     }
 
     /**
-     * Exoplayer 部分
+     * 停止播放音乐
      */
-
-    override fun onIsPlayingChanged(isPlaying: Boolean) {
-        super.onIsPlayingChanged(isPlaying)
-        mPause.value = !isPlaying
-        if (isPlaying && mPositionUpdateJob == null) {
-            mPositionUpdateJob = GlobalScope.launch(Dispatchers.Main) {
-                while (true) {
-                    mProgress.value = mMediaPlayer?.currentPosition?.toInt()
-                    delay(1000)
-                }
-            }
-        } else {
-            mPositionUpdateJob?.cancel()
-            mPositionUpdateJob = null
-        }
+    fun stop() {
+        mCurrentSong.value = null
+        mSongPlayer.stop()
     }
 
-    override fun onPlaybackStateChanged(playbackState: Int) {
-        super.onPlaybackStateChanged(playbackState)
-        when (playbackState) {
-            Player.STATE_READY -> {
-                mDuration.value = mMediaPlayer?.duration?.toInt()
-            }
-
-            Player.STATE_BUFFERING -> {
-            }
-
-            Player.STATE_ENDED -> {
+    init {
+        // 设置播放器的完成监听器和错误监听器，用于切换到下一首歌曲
+        mSongPlayer.apply {
+            setOnCompletionListener {
                 skipToNext()
             }
-
-            Player.STATE_IDLE -> {
+            setOnErrorListener { _, _, _ ->
+                skipToNext()
+                true
             }
         }
     }
-
-    override fun onPlayerError(error: PlaybackException) {
-        super.onPlayerError(error)
-        skipToNext()
-    }
-
 }

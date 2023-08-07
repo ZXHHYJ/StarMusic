@@ -38,13 +38,13 @@ import androidx.lifecycle.map
 import com.github.krottv.compose.sliders.SliderValueHorizontal
 import com.mxalbert.sharedelements.SharedElement
 import com.zxhhyj.music.R
+import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.logic.utils.toTimeString
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.logic.utils.coverUrl
+import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.AppCard
 import com.zxhhyj.music.ui.common.AppRoundIcon
 import com.zxhhyj.music.ui.common.BoxWithPercentages
-import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
 import com.zxhhyj.music.ui.theme.translucentWhiteFixBugColor
@@ -66,7 +66,7 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            val song by PlayManager.changeMusicLiveData().observeAsState()
+            val song by PlayManager.currentSongLiveData().observeAsState()
 
             if (100.hp > 100.wp) {
                 //歌曲专辑封面
@@ -145,14 +145,14 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                     PlayManager.seekTo((duration * it).roundToInt())
                 },
                 onValueChangeFinished = {
-                    PlayManager.play()
+                    PlayManager.start()
                 },
                 thumbSizeInDp = DpSize(10.dp, 10.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(16.dp),
                 thumbHeightMax = true,
-                track = { _: Modifier,
+                track = { modifier: Modifier,
                           fraction: Float,
                           _: MutableInteractionSource,
                           _: List<Float>,
@@ -162,7 +162,7 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                         color = Color.White,
                         backgroundColor = translucentWhiteFixBugColor,
                         strokeCap = StrokeCap.Round,
-                        modifier = Modifier
+                        modifier = modifier
                             .fillMaxWidth()
                             .height(4.dp)
                     )
@@ -222,8 +222,8 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                         .scale(1.2f)
                         .size(23.wp)
                         .clickable {
-                            if (PlayManager.isPaused)
-                                PlayManager.play()
+                            if (PlayManager.pauseLiveData().value == true)
+                                PlayManager.start()
                             else PlayManager.pause()
                         },
                     tint = Color.White
