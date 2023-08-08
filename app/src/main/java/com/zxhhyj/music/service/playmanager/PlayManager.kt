@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED")
+
 package com.zxhhyj.music.service.playmanager
 
 import androidx.lifecycle.LiveData
@@ -130,7 +132,7 @@ object PlayManager {
      * 清空播放列表
      */
     fun clearPlayList() {
-        stop()
+        mSongPlayer.pause()
         mCurrentSong.value = null
         mPlayList.value = null
     }
@@ -153,14 +155,6 @@ object PlayManager {
             return
         }
         pause()
-    }
-
-    /**
-     * 停止播放音乐
-     */
-    fun stop() {
-        mCurrentSong.value = null
-        mSongPlayer.stop()
     }
 
     init {

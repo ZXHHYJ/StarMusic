@@ -22,11 +22,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.MainApplication
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.logic.bean.SongBean
+import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
+import com.zxhhyj.ui.ListButton
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.popAll
@@ -51,7 +52,7 @@ fun SongMenuSheet(
     val currentSong by PlayManager.currentSongLiveData().observeAsState()
     LazyColumn {
         item {
-            com.zxhhyj.ui.ListButton(
+            ListButton(
                 onClick = {
                     sheetNavController.popAll()
                     mainNavController.navigate(ScreenDestination.AlbumCnt(song.album))
@@ -61,7 +62,7 @@ fun SongMenuSheet(
             )
         }
         item {
-            com.zxhhyj.ui.ListButton(
+            ListButton(
                 onClick = {
                     sheetNavController.popAll()
                     mainNavController.navigate(ScreenDestination.SingerCnt(song.artist))
@@ -71,7 +72,7 @@ fun SongMenuSheet(
             )
         }
         item {
-            com.zxhhyj.ui.ListButton(
+            ListButton(
                 onClick = {
                     sheetNavController.popAll()
                     sheetNavController.navigate(BottomSheetDestination.AddToPlayList(song))
@@ -81,7 +82,7 @@ fun SongMenuSheet(
             )
         }
         item {
-            com.zxhhyj.ui.ListButton(
+            ListButton(
                 onClick = {
                     sheetNavController.popAll()
                     PlayManager.addNextPlay(song)
@@ -91,7 +92,7 @@ fun SongMenuSheet(
             )
         }
         item {
-            com.zxhhyj.ui.ListButton(
+            ListButton(
                 onClick = {
                     sheetNavController.popAll()
                     sheetNavController.navigate(BottomSheetDestination.SongInfo(song))
@@ -100,39 +101,41 @@ fun SongMenuSheet(
                 text = stringResource(id = R.string.song_info)
             )
         }
-        item {
-            com.zxhhyj.ui.ListButton(
-                onClick = {
-                    sheetNavController.popAll()
-                    AndroidMediaLibsRepository.hide(song)
-                },
-                imageVector = Icons.Rounded.HideSource,
-                text = stringResource(id = R.string.hide)
-            )
-        }
-        item {
-            com.zxhhyj.ui.ListButton(
-                onClick = {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        coroutineScope.launch {
-                            val deleteUri =
-                                ContentUris.withAppendedId(
-                                    MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                                    song.id
+        if (currentSong != song) {
+            item {
+                ListButton(
+                    onClick = {
+                        sheetNavController.popAll()
+                        AndroidMediaLibsRepository.hide(song)
+                    },
+                    imageVector = Icons.Rounded.HideSource,
+                    text = stringResource(id = R.string.hide)
+                )
+            }
+            item {
+                ListButton(
+                    onClick = {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                            coroutineScope.launch {
+                                val deleteUri =
+                                    ContentUris.withAppendedId(
+                                        MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                                        song.id
+                                    )
+                                val pendingIntent = MediaStore.createDeleteRequest(
+                                    MainApplication.context.contentResolver,
+                                    listOf(deleteUri)
                                 )
-                            val pendingIntent = MediaStore.createDeleteRequest(
-                                MainApplication.context.contentResolver,
-                                listOf(deleteUri)
-                            )
-                            val request =
-                                IntentSenderRequest.Builder(pendingIntent.intentSender).build()
-                            deleteLauncher.launch(request)
+                                val request =
+                                    IntentSenderRequest.Builder(pendingIntent.intentSender).build()
+                                deleteLauncher.launch(request)
+                            }
                         }
-                    }
-                },
-                imageVector = Icons.Rounded.Delete,
-                text = stringResource(id = R.string.delete)
-            )
+                    },
+                    imageVector = Icons.Rounded.Delete,
+                    text = stringResource(id = R.string.delete)
+                )
+            }
         }
     }
 }

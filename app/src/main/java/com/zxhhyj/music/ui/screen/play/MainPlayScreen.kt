@@ -48,6 +48,7 @@ import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
 import com.zxhhyj.music.ui.theme.translucentWhiteFixBugColor
+import com.zxhhyj.ui.Card
 import com.zxhhyj.ui.roundClickable
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
@@ -70,27 +71,26 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
             val song by PlayManager.currentSongLiveData().observeAsState()
 
             when (SettingRepository.EnableNewPlayerUI) {
-                true -> {}
+                true -> {
+                }
+
                 false -> {
-                    if (100.hp > 100.wp) {
-                        //歌曲专辑封面
-                        SharedElement(
-                            key = ShareAlbumKey,
-                            screenKey = PlayScreenDestination.Main,
-                            transitionSpec = MaterialFadeOutTransitionSpec
+                    SharedElement(
+                        key = ShareAlbumKey,
+                        screenKey = PlayScreenDestination.Main,
+                        transitionSpec = MaterialFadeOutTransitionSpec
+                    ) {
+                        Card(
+                            modifier = Modifier
+                                .padding(bottom = 8.dp)
+                                .size(100.wp),
+                            backgroundColor = Color.LightGray,
+                            elevation = 10.dp,
                         ) {
-                            com.zxhhyj.ui.Card(
-                                modifier = Modifier
-                                    .padding(bottom = 8.dp)
-                                    .size(100.wp),
-                                backgroundColor = Color.LightGray,
-                                elevation = 10.dp,
-                            ) {
-                                AppAsyncImage(
-                                    modifier = Modifier.fillMaxSize(),
-                                    data = song?.album?.coverUrl
-                                )
-                            }
+                            AppAsyncImage(
+                                modifier = Modifier.fillMaxSize(),
+                                data = song?.album?.coverUrl
+                            )
                         }
                     }
                 }

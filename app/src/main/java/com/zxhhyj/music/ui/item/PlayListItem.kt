@@ -27,6 +27,7 @@ import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
+import com.zxhhyj.ui.Card
 import com.zxhhyj.ui.LocalColorScheme
 
 @Composable
@@ -35,7 +36,7 @@ fun PlayListItem(
     actions: @Composable () -> Unit = {},
     onClick: () -> Unit
 ) {
-    com.zxhhyj.ui.Card(backgroundColor = Color.Transparent) {
+    Card(backgroundColor = Color.Transparent) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -43,7 +44,7 @@ fun PlayListItem(
                 .clickable(onClick = onClick),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            com.zxhhyj.ui.Card(
+            Card(
                 backgroundColor = Color.Transparent,
                 modifier = Modifier
                     .padding(horizontal = horizontal, vertical = vertical)

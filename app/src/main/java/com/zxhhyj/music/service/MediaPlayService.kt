@@ -230,7 +230,7 @@ class MediaPlayService : LifecycleService() {
 
         override fun onStop() {
             super.onStop()
-            PlayManager.stop()
+            PlayManager.pause()
             stopSelf()
         }
 

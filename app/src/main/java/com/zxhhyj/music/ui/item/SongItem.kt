@@ -32,6 +32,7 @@ import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
 import com.zxhhyj.ui.Card
 import com.zxhhyj.ui.LocalColorScheme
+import com.zxhhyj.ui.roundClickable
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -92,7 +93,7 @@ fun SongItem(
                         imageVector = Icons.Rounded.MoreVert,
                         contentDescription = null,
                         modifier = Modifier
-                            .clickable {
+                            .roundClickable {
                                 sheetNavController.navigate(BottomSheetDestination.SongMenu(song))
                             }
                     )

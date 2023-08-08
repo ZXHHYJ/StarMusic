@@ -1,6 +1,7 @@
 package com.zxhhyj.music.ui.screen.medialibs
 
 import android.Manifest
+import android.os.Build
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,6 +26,8 @@ import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
+import com.zxhhyj.ui.Scaffold
+import com.zxhhyj.ui.TopBar
 import com.zxhhyj.ui.item.Item
 import com.zxhhyj.ui.item.ItemSwitcher
 import dev.olshevski.navigation.reimagined.NavController
@@ -37,7 +40,8 @@ fun MediaSourceScreen(
     dialogNavController: NavController<DialogDestination>,
     padding: PaddingValues
 ) {
-    val permissionState = rememberPermissionState(Manifest.permission.READ_EXTERNAL_STORAGE)
+    val permissionState =
+        rememberPermissionState(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) Manifest.permission.READ_MEDIA_AUDIO else Manifest.permission.READ_EXTERNAL_STORAGE)
     LaunchedEffect(SettingRepository.EnableAndroidMediaLibs, permissionState.status) {
         if (SettingRepository.EnableAndroidMediaLibs) {
             when (permissionState.status) {
@@ -56,12 +60,12 @@ fun MediaSourceScreen(
             AndroidMediaLibsRepository.clear()
         }
     }
-    com.zxhhyj.ui.Scaffold(
+    Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding),
         topBar = {
-            com.zxhhyj.ui.TopBar(
+            TopBar(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.media_lib)
             )

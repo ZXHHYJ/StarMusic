@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED")
+
 package com.zxhhyj.music.service.playmanager
 
 import android.media.MediaPlayer
@@ -78,7 +80,6 @@ class SongPlayer {
         timer?.stop()
         timer = Timer(0, song.duration.toInt()).apply {
             setOnFinishedListener {
-                stop()
                 completionListener?.onCompletion(mediaPlayer)
             }
             setOnUpdateListener {
@@ -101,12 +102,12 @@ class SongPlayer {
                 preparedListener?.onPrepared(it)
             }
             setOnCompletionListener {
-                this@SongPlayer.stop()
+                this@SongPlayer.pause()
                 timer = null
                 completionListener?.onCompletion(it)
             }
             setOnErrorListener { mediaPlayer, i, i2 ->
-                this@SongPlayer.stop()
+                this@SongPlayer.pause()
                 timer = null
                 errorListener?.onError(mediaPlayer, i, i2) ?: false
             }
@@ -122,15 +123,6 @@ class SongPlayer {
         timer?.start()
         _pause.value = false
         mediaPlayer.start()
-    }
-
-    /**
-     * 停止播放音乐
-     */
-    fun stop() {
-        timer?.stop()
-        _pause.value = true
-        mediaPlayer.stop()
     }
 
     /**
@@ -158,6 +150,9 @@ class SongPlayer {
      * 释放 MediaPlayer 资源
      */
     fun release() {
+        _pause.value = false
+        _currentProgress.value = 0
+        _songDuration.value = 0
         mediaPlayer.release()
     }
 
@@ -204,6 +199,7 @@ class SongPlayer {
                         onUpdateListener?.invoke(time)
                     }
                 onFinishedListener?.invoke()
+                job?.cancel()
             }
         }
 
