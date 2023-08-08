@@ -8,8 +8,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.zxhhyj.music.ui.theme.textColor
 import com.zxhhyj.music.ui.theme.vertical
+import com.zxhhyj.ui.LocalColorScheme
 
 @Composable
 fun EmptyContentMessage(modifier: Modifier = Modifier) {
@@ -18,7 +18,7 @@ fun EmptyContentMessage(modifier: Modifier = Modifier) {
             text = randomEmoji(),
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
-            color = textColor,
+            color = LocalColorScheme.current.text,
             modifier = Modifier
                 .align(Alignment.Center)
                 .padding(vertical = vertical)

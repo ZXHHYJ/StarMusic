@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,8 +28,10 @@ import androidx.lifecycle.map
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.ui.theme.appBackgroundColor
 import com.zxhhyj.music.ui.theme.horizontal
+import com.zxhhyj.ui.Card
+import com.zxhhyj.ui.Divider
+import com.zxhhyj.ui.LocalColorScheme
 
 @Composable
 fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> Unit) {
@@ -40,14 +43,14 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
                 .height(20.dp)
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
-                .background(appBackgroundColor)
+                .background(LocalColorScheme.current.background)
         ) {
-            AppDivider(modifier = Modifier.fillMaxWidth())
+            Divider(modifier = Modifier.fillMaxWidth())
         }
         Box(modifier = Modifier.padding(horizontal = horizontal)) {
             Box {
                 val song by PlayManager.currentSongLiveData().observeAsState()
-                AppCard(
+                Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(controlBarHeight)
@@ -55,14 +58,14 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
                     backgroundColor = Color.Transparent,
                     contentColor = Color.Transparent,
                 ) {
-                    MotionBlur(
+                    ImageMotionBlur(
                         modifier = Modifier
                             .fillMaxWidth()
                             .align(Alignment.BottomCenter)
                             .height(controlBarHeight)
                             .clickable(onClick = onClick)
                             .background(Color.Gray),
-                        url = song?.album?.coverUrl,
+                        imageUrl = song?.album?.coverUrl,
                         paused = panelState != PanelState.COLLAPSED
                     )
                     Row(
@@ -85,7 +88,7 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
                             if (it) R.drawable.ic_play else R.drawable.ic_pause
                         }.observeAsState(R.drawable.ic_play)
                         val buttonSize = 36.dp
-                        AppRoundIcon(
+                        Icon(
                             imageVector = ImageVector.vectorResource(playPauseState),
                             tint = Color.White,
                             contentDescription = null,
@@ -100,7 +103,7 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
                                 }
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        AppRoundIcon(
+                        Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_skip_next),
                             tint = Color.White,
                             contentDescription = null,
@@ -113,13 +116,13 @@ fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> 
                         Spacer(modifier = Modifier.width(8.dp))
                     }
                 }
-                AppCard(
+                Card(
                     backgroundColor = Color.Transparent,
                     modifier = Modifier.size(coverLength)
                 ) {
                     AppAsyncImage(
                         modifier = Modifier.fillMaxSize(),
-                        url = song?.album?.coverUrl ?: ""
+                        data = song?.album?.coverUrl ?: ""
                     )
                 }
             }

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Remove
@@ -38,9 +39,6 @@ import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.ui.common.AppCard
-import com.zxhhyj.music.ui.common.AppDivider
-import com.zxhhyj.music.ui.common.AppRoundIcon
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
 import com.zxhhyj.music.ui.theme.vertical
 
@@ -75,7 +73,7 @@ fun ColumnScope.PlayQueueScreen() {
             })
     }
 
-    AppDivider(
+    com.zxhhyj.ui.Divider(
         color = translucentWhiteColor,
         modifier = Modifier.padding(horizontal = PlayScreen.PlayScreenContentHorizontal)
     )
@@ -133,7 +131,7 @@ private fun QueueSongItem(
     onClick: () -> Unit
 ) {
     val currentSong by PlayManager.currentSongLiveData().observeAsState()
-    AppCard(
+    com.zxhhyj.ui.Card(
         backgroundColor = if (currentSong == song) Color.White.copy(alpha = 0.1f) else Color.Transparent,
         modifier = modifier
             .fillMaxWidth()
@@ -171,7 +169,7 @@ private fun QueueSongItem(
                     TextOverflow.Ellipsis
                 )
             }
-            AppRoundIcon(
+            Icon(
                 imageVector = Icons.Rounded.Remove,
                 tint = translucentWhiteColor,
                 contentDescription = null,

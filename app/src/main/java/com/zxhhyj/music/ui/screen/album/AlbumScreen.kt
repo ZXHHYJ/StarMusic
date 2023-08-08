@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
@@ -17,9 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
-import com.zxhhyj.music.ui.common.AppRoundIcon
-import com.zxhhyj.music.ui.common.AppScaffold
-import com.zxhhyj.music.ui.common.AppTopBar
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.common.stateprompt.StatePrompt
 import com.zxhhyj.music.ui.item.AlbumItem
@@ -41,16 +39,16 @@ fun AlbumScreen(
         if (fixedCount < 2) {
             fixedCount = 2
         }
-        AppScaffold(
+        com.zxhhyj.ui.Scaffold(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
             topBar = {
-                AppTopBar(
+                com.zxhhyj.ui.TopBar(
                     modifier = Modifier.fillMaxWidth(),
                     title = stringResource(id = R.string.album),
                     actions = {
-                        AppRoundIcon(
+                        Icon(
                             imageVector = Icons.Rounded.Search,
                             contentDescription = null,
                             modifier = Modifier.clickable {

@@ -57,6 +57,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.*'], dir: 'libs')
+    implementation project(":ui")
     // https://github.com/BillyWei01/FastKV
     implementation 'io.github.billywei01:fastkv:2.0.3'
     // https://github.com/flavioarfaria/KenBurnsView
@@ -80,7 +81,7 @@ dependencies {
     // https://github.com/krottv/compose-sliders
     implementation "com.github.krottv:compose-sliders:0.1.4"
 
-    implementation 'androidx.core:core-ktx:1.10.0'
+    implementation 'androidx.palette:palette-ktx:1.0.0'
     implementation 'androidx.media:media:1.6.0'
 
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"

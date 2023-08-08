@@ -9,22 +9,22 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.zxhhyj.music.ui.theme.appAccentColor
+import com.zxhhyj.ui.LocalColorScheme
 
 @Composable
 fun AppAsyncImage(
     modifier: Modifier = Modifier,
-    url: String?,
+    data: Any?,
     onClick: (() -> Unit)? = null
 ) {
     val clickableModifier = onClick?.let { Modifier.clickable(onClick = onClick) } ?: Modifier
     AsyncImage(
         modifier = modifier
             .background(Color.White)
-            .background(appAccentColor.copy(0.2f))
+            .background(LocalColorScheme.current.highlight.copy(0.2f))
             .then(clickableModifier),
         model = ImageRequest.Builder(LocalContext.current)
-            .data(url)
+            .data(data)
             .crossfade(300)
             .build(),
         contentScale = ContentScale.Crop,

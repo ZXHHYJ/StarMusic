@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.common
+package com.zxhhyj.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.zxhhyj.music.ui.theme.appAccentColor
 import kotlinx.coroutines.launch
 
 enum class Status {
@@ -27,7 +26,7 @@ enum class Status {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun AppSwitch(
+fun Switch(
     modifier: Modifier = Modifier,
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit),
@@ -69,14 +68,17 @@ fun AppSwitch(
         Card(
             shape = RoundedCornerShape(50),
             backgroundColor = Color.LightGray,
-            border = BorderStroke(1.dp, appAccentColor.copy(alpha = openProgress)),
+            border = BorderStroke(
+                1.dp,
+                LocalColorScheme.current.highlight.copy(alpha = openProgress)
+            ),
             elevation = 0.dp
         ) {
             val coroutineScope = rememberCoroutineScope()
             Box(
                 modifier = Modifier
                     .size(height = blockSize, width = blockSize * 2)
-                    .background(color = appAccentColor.copy(alpha = openProgress))
+                    .background(color = LocalColorScheme.current.highlight.copy(alpha = openProgress))
                     .clickable {
                         coroutineScope.launch {
                             if (!checked) {

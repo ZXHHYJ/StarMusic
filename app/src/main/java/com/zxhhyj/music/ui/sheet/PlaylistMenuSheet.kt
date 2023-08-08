@@ -9,7 +9,6 @@ import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.PlayListModel
 import com.zxhhyj.music.logic.repository.PlayListRepository
-import com.zxhhyj.music.ui.common.AppListButton
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
@@ -27,7 +26,7 @@ fun PlaylistMenuSheet(
 ) {
     LazyColumn {
         item {
-            AppListButton(
+            com.zxhhyj.ui.ListButton(
                 onClick = {
                     sheetNavController.pop()
                     dialogNavController.navigate(DialogDestination.EditPlayListTitle(model))
@@ -37,7 +36,7 @@ fun PlaylistMenuSheet(
             )
         }
         item {
-            AppListButton(
+            com.zxhhyj.ui.ListButton(
                 onClick = {
                     sheetNavController.pop()
                     mainNavController.popUpTo {

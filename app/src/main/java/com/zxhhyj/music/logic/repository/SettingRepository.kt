@@ -6,15 +6,6 @@ import com.zxhhyj.music.logic.config.DataSaverUtils
 object SettingRepository {
 
     /**
-     * 是否启用Monet
-     */
-    var EnableMonet by mutableDataSaverStateOf(
-        dataSaverInterface = DataSaverUtils,
-        key = "EnableMonet",
-        initialValue = false
-    )
-
-    /**
      * 是否启用Android媒体库
      */
     var EnableAndroidMediaLibs by mutableDataSaverStateOf(
@@ -47,6 +38,12 @@ object SettingRepository {
     var EnableLyricsTranslation by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "EnableLyricsTranslation",
+        initialValue = false
+    )
+
+    var EnableNewPlayerUI by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "EnableNewPlayerUI",
         initialValue = false
     )
 

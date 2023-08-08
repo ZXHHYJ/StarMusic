@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Remove
@@ -25,28 +26,26 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.logic.bean.SongBean
+import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.ui.common.AppAsyncImage
-import com.zxhhyj.music.ui.common.AppCard
-import com.zxhhyj.music.ui.common.AppRoundIcon
-import com.zxhhyj.music.ui.common.AppScaffold
-import com.zxhhyj.music.ui.common.AppTopBar
 import com.zxhhyj.music.ui.common.stateprompt.StatePrompt
 import com.zxhhyj.music.ui.theme.horizontal
-import com.zxhhyj.music.ui.theme.textColor
-import com.zxhhyj.music.ui.theme.textColorLight
 import com.zxhhyj.music.ui.theme.vertical
+import com.zxhhyj.ui.Card
+import com.zxhhyj.ui.Scaffold
+import com.zxhhyj.ui.TopBar
+import com.zxhhyj.ui.LocalColorScheme
 
 @Composable
 fun HiddenSongScreen(padding: PaddingValues) {
-    AppScaffold(
+    Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding),
         topBar = {
-            AppTopBar(
+            TopBar(
                 modifier = Modifier,
                 title = stringResource(id = R.string.hidden_songs)
             )
@@ -71,7 +70,7 @@ private fun HideSongItem(
     song: SongBean,
     onClick: () -> Unit
 ) {
-    AppCard(backgroundColor = Color.Transparent) {
+    Card(backgroundColor = Color.Transparent) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -81,13 +80,16 @@ private fun HideSongItem(
                 },
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AppCard(
+            Card(
                 backgroundColor = Color.Transparent,
                 modifier = Modifier
                     .padding(horizontal = horizontal, vertical = vertical)
                     .size(50.dp),
             ) {
-                AppAsyncImage(modifier = Modifier.fillMaxSize(), url = song.album.coverUrl)
+                AppAsyncImage(
+                    modifier = Modifier.fillMaxSize(),
+                    data = song.album.coverUrl
+                )
             }
             Column(
                 modifier = Modifier
@@ -97,7 +99,7 @@ private fun HideSongItem(
             ) {
                 Text(
                     text = song.songName,
-                    color = textColor,
+                    color = LocalColorScheme.current.text,
                     fontSize = 15.sp,
                     maxLines = 1,
                     textAlign = TextAlign.Center,
@@ -106,16 +108,16 @@ private fun HideSongItem(
                 Spacer(modifier = Modifier.weight(1.0f))
                 Text(
                     text = song.artist.name,
-                    color = textColorLight,
+                    color = LocalColorScheme.current.subText,
                     fontSize = 13.sp,
                     maxLines = 1,
                     textAlign = TextAlign.Center,
                     overflow = TextOverflow.Ellipsis
                 )
             }
-            AppRoundIcon(
+            Icon(
                 imageVector = Icons.Rounded.Remove,
-                tint = textColorLight,
+                tint = LocalColorScheme.current.subText,
                 contentDescription = null,
                 modifier = Modifier.clickable(onClick = onClick)
             )

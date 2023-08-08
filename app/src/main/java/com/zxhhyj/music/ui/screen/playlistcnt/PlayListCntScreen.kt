@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
@@ -30,15 +31,11 @@ import com.zxhhyj.music.logic.bean.PlayListModel
 import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
-import com.zxhhyj.music.ui.common.AppButton
-import com.zxhhyj.music.ui.common.AppCard
-import com.zxhhyj.music.ui.common.AppRoundIcon
-import com.zxhhyj.music.ui.common.AppScaffold
-import com.zxhhyj.music.ui.common.AppTopBar
 import com.zxhhyj.music.ui.common.stateprompt.StatePrompt
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.theme.vertical
+import com.zxhhyj.ui.Card
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -48,16 +45,16 @@ fun PlayListCntScreen(
     sheetNavController: NavController<BottomSheetDestination>,
     padding: PaddingValues
 ) {
-    AppScaffold(
+    com.zxhhyj.ui.Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding),
         topBar = {
-            AppTopBar(
+            com.zxhhyj.ui.TopBar(
                 modifier = Modifier.fillMaxWidth(),
                 title = playlist.name,
                 actions = {
-                    AppRoundIcon(
+                    Icon(
                         imageVector = Icons.Rounded.MoreVert,
                         contentDescription = null,
                         modifier = Modifier.clickable {
@@ -70,15 +67,15 @@ fun PlayListCntScreen(
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    AppCard(backgroundColor = Color.Transparent) {
+                    Card(backgroundColor = Color.Transparent) {
                         AppAsyncImage(
-                            url = playlist.songs.firstOrNull()?.album?.coverUrl,
-                            modifier = Modifier.size(210.dp)
+                            modifier = Modifier.size(210.dp),
+                            data = playlist.songs.firstOrNull()?.album?.coverUrl
                         )
                     }
                     Spacer(modifier = Modifier.height(vertical))
                     Text(text = playlist.name, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                    AppButton(
+                    com.zxhhyj.ui.Button(
                         onClick = { PlayManager.play(playlist.songs.toList(), 0) },
                         imageVector = Icons.Rounded.PlayArrow,
                         text = stringResource(id = R.string.play_all),
@@ -94,7 +91,7 @@ fun PlayListCntScreen(
                         song = item,
                         sheetNavController = sheetNavController,
                         actions = {
-                            AppRoundIcon(
+                            Icon(
                                 imageVector = Icons.Rounded.Remove,
                                 contentDescription = null,
                                 modifier = Modifier

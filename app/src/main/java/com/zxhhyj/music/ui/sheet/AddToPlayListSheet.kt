@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.PlayListRepository
 import com.zxhhyj.music.logic.bean.SongBean
-import com.zxhhyj.music.ui.common.AppButton
 import com.zxhhyj.music.ui.common.stateprompt.EmptyContentMessage
 import com.zxhhyj.music.ui.item.PlayListItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
@@ -31,7 +30,7 @@ fun AddToPlayListSheet(
     sheetNavController: NavController<BottomSheetDestination>,
     song: SongBean
 ) {
-    AppButton(
+    com.zxhhyj.ui.Button(
         onClick = { dialogNavController.navigate(DialogDestination.CreatePlayList) },
         imageVector = Icons.Rounded.Add,
         text = stringResource(id = R.string.create_playlist),

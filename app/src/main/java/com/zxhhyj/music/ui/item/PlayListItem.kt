@@ -25,11 +25,9 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.PlayListModel
 import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.ui.common.AppAsyncImage
-import com.zxhhyj.music.ui.common.AppCard
 import com.zxhhyj.music.ui.theme.horizontal
-import com.zxhhyj.music.ui.theme.textColor
-import com.zxhhyj.music.ui.theme.textColorLight
 import com.zxhhyj.music.ui.theme.vertical
+import com.zxhhyj.ui.LocalColorScheme
 
 @Composable
 fun PlayListItem(
@@ -37,7 +35,7 @@ fun PlayListItem(
     actions: @Composable () -> Unit = {},
     onClick: () -> Unit
 ) {
-    AppCard(backgroundColor = Color.Transparent) {
+    com.zxhhyj.ui.Card(backgroundColor = Color.Transparent) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -45,7 +43,7 @@ fun PlayListItem(
                 .clickable(onClick = onClick),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AppCard(
+            com.zxhhyj.ui.Card(
                 backgroundColor = Color.Transparent,
                 modifier = Modifier
                     .padding(horizontal = horizontal, vertical = vertical)
@@ -53,7 +51,7 @@ fun PlayListItem(
             ) {
                 AppAsyncImage(
                     modifier = Modifier.fillMaxSize(),
-                    url = model.songs.firstOrNull()?.album?.coverUrl
+                    data = model.songs.firstOrNull()?.album?.coverUrl
                 )
             }
             Column(
@@ -64,7 +62,7 @@ fun PlayListItem(
             ) {
                 Text(
                     text = model.name,
-                    color = textColor,
+                    color = LocalColorScheme.current.text,
                     fontSize = 15.sp,
                     maxLines = 1,
                     textAlign = TextAlign.Center,
@@ -73,14 +71,14 @@ fun PlayListItem(
                 Spacer(modifier = Modifier.weight(1.0f))
                 Text(
                     text = stringResource(id = R.string.total_n_songs, model.songs.size),
-                    color = textColorLight,
+                    color = LocalColorScheme.current.subText,
                     fontSize = 13.sp,
                     maxLines = 1,
                     textAlign = TextAlign.Center,
                     overflow = TextOverflow.Ellipsis
                 )
             }
-            CompositionLocalProvider(LocalContentColor provides textColorLight) {
+            CompositionLocalProvider(LocalContentColor provides LocalColorScheme.current.subText) {
                 actions.invoke()
             }
             Spacer(modifier = Modifier.padding(end = horizontal))

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
@@ -31,8 +32,6 @@ import com.mxalbert.sharedelements.SharedElement
 import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
-import com.zxhhyj.music.ui.common.AppCard
-import com.zxhhyj.music.ui.common.AppRoundIcon
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.play.MaterialFadeInTransitionSpec
 import com.zxhhyj.music.ui.screen.play.PlayScreen
@@ -61,10 +60,10 @@ fun TopMediaController(
         Spacer(modifier = Modifier.width(PlayScreen.PlayScreenContentHorizontal))
         SharedElement(
             key = ShareAlbumKey,
-            screenKey = PlayScreenDestination.PlayQueue/*不能分别使用PlayQueue和Lyric，会闪退*/,
+            screenKey = PlayScreenDestination.PlayQueue,
             transitionSpec = MaterialFadeInTransitionSpec
         ) {
-            AppCard(
+            com.zxhhyj.ui.Card(
                 backgroundColor = Color.Transparent,
                 modifier = Modifier
                     .padding(
@@ -77,7 +76,10 @@ fun TopMediaController(
                     )
                     .size(56.dp),
             ) {
-                AppAsyncImage(modifier = Modifier.fillMaxSize(), url = song?.album?.coverUrl) {
+                AppAsyncImage(
+                    modifier = Modifier.fillMaxSize(),
+                    data = song?.album?.coverUrl
+                ) {
                     navController.moveToTop {
                         it == PlayScreenDestination.Main
                     }
@@ -107,7 +109,7 @@ fun TopMediaController(
                 overflow = TextOverflow.Ellipsis
             )
         }
-        AppRoundIcon(
+        Icon(
             imageVector = Icons.Rounded.MoreVert,
             tint = Color.White,
             contentDescription = null,

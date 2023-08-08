@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,20 +20,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository.songs
 import com.zxhhyj.music.logic.bean.SongBean
+import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository.songs
 import com.zxhhyj.music.logic.utils.coverUrl
-import com.zxhhyj.music.ui.common.AppCard
-import com.zxhhyj.music.ui.common.AppRoundCard
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.theme.horizontal
-import com.zxhhyj.music.ui.theme.textColor
-import com.zxhhyj.music.ui.theme.textColorLight
 import com.zxhhyj.music.ui.theme.vertical
+import com.zxhhyj.ui.Card
+import com.zxhhyj.ui.LocalColorScheme
 
 @Composable
 fun ArtistItem(artist: SongBean.Artist, onClick: () -> Unit) {
-    AppCard(backgroundColor = Color.Transparent) {
+    com.zxhhyj.ui.Card(backgroundColor = Color.Transparent) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -40,15 +39,16 @@ fun ArtistItem(artist: SongBean.Artist, onClick: () -> Unit) {
                 .clickable(onClick = onClick),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AppRoundCard(
+            Card(
                 backgroundColor = Color.Transparent,
+                shape = RoundedCornerShape(50),
                 modifier = Modifier
                     .padding(horizontal = horizontal, vertical = vertical)
                     .size(50.dp)
             ) {
                 AppAsyncImage(
                     modifier = Modifier.fillMaxSize(),
-                    url = artist.songs.getOrNull(0)?.album?.coverUrl
+                    data = artist.songs.getOrNull(0)?.album?.coverUrl
                 )
             }
             Column(
@@ -59,7 +59,7 @@ fun ArtistItem(artist: SongBean.Artist, onClick: () -> Unit) {
             ) {
                 Text(
                     text = artist.name,
-                    color = textColor,
+                    color = LocalColorScheme.current.text,
                     fontSize = 15.sp,
                     maxLines = 1,
                     textAlign = TextAlign.Center
@@ -67,7 +67,7 @@ fun ArtistItem(artist: SongBean.Artist, onClick: () -> Unit) {
                 Spacer(modifier = Modifier.weight(1.0f))
                 Text(
                     text = stringResource(id = R.string.total_n_songs, artist.songs.size),
-                    color = textColorLight,
+                    color = LocalColorScheme.current.subText,
                     fontSize = 13.sp,
                     maxLines = 1,
                     textAlign = TextAlign.Center

@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.PlayArrow
@@ -17,35 +19,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository.songs
 import com.zxhhyj.music.logic.bean.SongBean
+import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository.songs
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.ui.common.AppRoundCard
-import com.zxhhyj.music.ui.common.AppRoundIcon
-import com.zxhhyj.music.ui.common.AppScaffold
-import com.zxhhyj.music.ui.common.AppTopBar
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
-import com.zxhhyj.music.ui.screen.ScreenDestination
-import com.zxhhyj.music.ui.theme.appAccentColor
-import com.zxhhyj.music.ui.theme.appTextAccentColor
-import com.zxhhyj.music.ui.theme.onTextColor
 import com.zxhhyj.music.ui.theme.vertical
+import com.zxhhyj.ui.Card
+import com.zxhhyj.ui.LocalColorScheme
 import dev.olshevski.navigation.reimagined.NavController
 
 @Composable
 fun SingerCntScreen(
-    mainNavController: NavController<ScreenDestination>,
     sheetNavController: NavController<BottomSheetDestination>,
     padding: PaddingValues,
     artist: SongBean.Artist
 ) {
-    AppScaffold(
+    com.zxhhyj.ui.Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding),
         topBar = {
-            AppTopBar(
+            com.zxhhyj.ui.TopBar(
                 modifier = Modifier.fillMaxWidth(),
                 title = artist.name,
             ) {
@@ -58,14 +53,17 @@ fun SingerCntScreen(
                         text = artist.name,
                         fontSize = 26.sp,
                         fontWeight = FontWeight.Bold,
-                        color = appTextAccentColor,
+                        color = LocalColorScheme.current.highlight,
                         modifier = Modifier.weight(1.0f)
                     )
-                    AppRoundCard(backgroundColor = appAccentColor) {
-                        AppRoundIcon(
+                    Card(
+                        backgroundColor = LocalColorScheme.current.highlight,
+                        shape = RoundedCornerShape(50)
+                    ) {
+                        Icon(
                             imageVector = Icons.Rounded.PlayArrow,
                             contentDescription = null,
-                            tint = onTextColor,
+                            tint = LocalColorScheme.current.onText,
                             modifier = Modifier
                                 .size(32.dp)
                                 .clickable {

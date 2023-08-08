@@ -41,7 +41,6 @@ import androidx.lifecycle.map
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.ui.common.AppDivider
 import com.zxhhyj.music.ui.common.MediaController
 import com.zxhhyj.music.ui.common.PanelState
 import com.zxhhyj.music.ui.common.SlidingPanel
@@ -73,10 +72,9 @@ import com.zxhhyj.music.ui.sheet.AddToPlayListSheet
 import com.zxhhyj.music.ui.sheet.PlaylistMenuSheet
 import com.zxhhyj.music.ui.sheet.SongMenuSheet
 import com.zxhhyj.music.ui.sheet.songinfo.SongInfoSheet
-import com.zxhhyj.music.ui.theme.appBackgroundColor
 import com.zxhhyj.music.ui.theme.round
-import com.zxhhyj.music.ui.theme.textColorLight
 import com.zxhhyj.music.ui.theme.vertical
+import com.zxhhyj.ui.LocalColorScheme
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.DialogNavHost
 import dev.olshevski.navigation.reimagined.NavAction
@@ -119,7 +117,7 @@ private fun AppScaffold(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(appBackgroundColor)
+                    .background(LocalColorScheme.current.background)
             ) {
                 Spacer(modifier = Modifier.navigationBarsPadding())
             }
@@ -185,7 +183,7 @@ fun MainScreen() {
                 },
                 navigationBar = {
                     if (!visibilityMediaController) {
-                        AppDivider(modifier = Modifier.fillMaxWidth())
+                        com.zxhhyj.ui.Divider(modifier = Modifier.fillMaxWidth())
                     }
                 }
             ) { padding ->
@@ -233,7 +231,6 @@ fun MainScreen() {
 
                             is ScreenDestination.SingerCnt -> {
                                 SingerCntScreen(
-                                    mainNavController = mainNavController,
                                     sheetNavController = sheetNavController,
                                     padding = padding,
                                     artist = destination.artist
@@ -380,7 +377,7 @@ fun MainScreen() {
         Column(
             modifier = Modifier
                 .background(
-                    appBackgroundColor,
+                    LocalColorScheme.current.background,
                     shape = RoundedCornerShape(topStart = round, topEnd = round)
                 )
                 .navigationBarsPadding()
@@ -390,7 +387,10 @@ fun MainScreen() {
                 modifier = Modifier
                     .width(50.dp)
                     .height(6.dp)
-                    .background(textColorLight.copy(0.3f), RoundedCornerShape(6.dp))
+                    .background(
+                        LocalColorScheme.current.subText.copy(0.3f),
+                        RoundedCornerShape(6.dp)
+                    )
                     .align(Alignment.CenterHorizontally)
             )
             when (destination) {

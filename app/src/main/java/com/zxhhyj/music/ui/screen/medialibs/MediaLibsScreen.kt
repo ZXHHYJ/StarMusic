@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.HideSource
 import androidx.compose.material.icons.rounded.LibraryMusic
@@ -21,12 +23,10 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.ui.common.AppScaffold
-import com.zxhhyj.music.ui.common.AppTopBar
-import com.zxhhyj.music.ui.item.SettingItem
-import com.zxhhyj.music.ui.item.SettingSwitchItem
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
+import com.zxhhyj.ui.item.Item
+import com.zxhhyj.ui.item.ItemSwitcher
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -56,25 +56,36 @@ fun MediaSourceScreen(
             AndroidMediaLibsRepository.clear()
         }
     }
-    AppScaffold(
+    com.zxhhyj.ui.Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding),
         topBar = {
-            AppTopBar(
+            com.zxhhyj.ui.TopBar(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.media_lib)
             )
         }) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             item {
-                SettingSwitchItem(
-                    imageVector = Icons.Rounded.LibraryMusic,
-                    title = stringResource(id = R.string.android_meida_libs),
-                    subTitle = stringResource(
-                        id = R.string.media_lib_has_songs_size,
-                        AndroidMediaLibsRepository.songs.size
-                    ),
+                ItemSwitcher(
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Rounded.LibraryMusic,
+                            contentDescription = null
+                        )
+                    },
+                    text = {
+                        Text(text = stringResource(id = R.string.android_meida_libs))
+                    },
+                    subText = {
+                        Text(
+                            text = stringResource(
+                                id = R.string.media_lib_has_songs_size,
+                                AndroidMediaLibsRepository.songs.size
+                            )
+                        )
+                    },
                     checked = SettingRepository.EnableAndroidMediaLibs,
                     onCheckedChange = {
                         SettingRepository.EnableAndroidMediaLibs = it
@@ -82,21 +93,28 @@ fun MediaSourceScreen(
                 )
             }
             item {
-                SettingItem(
-                    imageVector = Icons.Rounded.Refresh,
-                    title = stringResource(id = R.string.refresh_media_lib),
-                    enabled = SettingRepository.EnableAndroidMediaLibs
-                ) {
+                Item(
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Rounded.Refresh,
+                            contentDescription = null
+                        )
+                    },
+                    text = { Text(text = stringResource(id = R.string.refresh_media_lib)) },
+                    subText = { }) {
                     dialogNavController.navigate(DialogDestination.ScanMusic)
                 }
             }
             item {
-                SettingItem(
-                    imageVector = Icons.Rounded.HideSource,
-                    title = stringResource(id = R.string.hidden_songs),
-                    subTitle = stringResource(id = R.string.hidden_songs),
-                    enabled = SettingRepository.EnableAndroidMediaLibs
-                ) {
+                Item(
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Rounded.HideSource,
+                            contentDescription = null
+                        )
+                    },
+                    text = { Text(text = stringResource(id = R.string.hidden_songs)) },
+                    subText = { Text(text = stringResource(id = R.string.hidden_songs)) }) {
                     mainNavController.navigate(ScreenDestination.HiddenSong)
                 }
             }

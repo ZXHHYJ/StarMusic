@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.common
+package com.zxhhyj.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,22 +8,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.LocalContentColor
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.zxhhyj.music.ui.theme.appBackgroundColor
-import com.zxhhyj.music.ui.theme.appTextAccentColor
-import com.zxhhyj.music.ui.theme.horizontal
-import com.zxhhyj.music.ui.theme.vertical
 
 @Composable
-fun AppDialog(
+fun YesNoDialog(
     onDismissRequest: () -> Unit,
     properties: DialogProperties = DialogProperties(),
     title: String,
@@ -32,23 +27,33 @@ fun AppDialog(
     content: @Composable () -> Unit
 ) {
     Dialog(onDismissRequest = onDismissRequest, properties = properties) {
-        AppCard(backgroundColor = appBackgroundColor) {
-            Column(modifier = Modifier.padding(horizontal = horizontal, vertical = vertical)) {
+        Card(backgroundColor = LocalColorScheme.current.background) {
+            Column(
+                modifier = Modifier.padding(
+                    horizontal = StarDimens.horizontal,
+                    vertical = StarDimens.vertical
+                )
+            ) {
                 Text(
                     text = title,
-                    color = appTextAccentColor,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 17.sp
+                    color = LocalColorScheme.current.highlight,
+                    style = LocalTextStyles.current.main
                 )
-                Spacer(modifier = Modifier.height(vertical))
+                Spacer(modifier = Modifier.height(StarDimens.vertical))
                 content.invoke()
-                Spacer(modifier = Modifier.height(vertical))
+                Spacer(modifier = Modifier.height(StarDimens.vertical))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(horizontal, Alignment.End),
+                    horizontalArrangement = Arrangement.spacedBy(
+                        StarDimens.horizontal,
+                        Alignment.End
+                    ),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    CompositionLocalProvider(LocalContentColor provides appTextAccentColor) {
+                    CompositionLocalProvider(
+                        LocalContentColor provides LocalColorScheme.current.highlight,
+                        LocalTextStyle provides LocalTextStyles.current.main
+                    ) {
                         dismiss.invoke()
                         confirm.invoke()
                     }

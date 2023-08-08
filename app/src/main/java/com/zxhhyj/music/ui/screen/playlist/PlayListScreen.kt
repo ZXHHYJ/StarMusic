@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.MoreVert
@@ -14,9 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.PlayListRepository
-import com.zxhhyj.music.ui.common.AppRoundIcon
-import com.zxhhyj.music.ui.common.AppScaffold
-import com.zxhhyj.music.ui.common.AppTopBar
 import com.zxhhyj.music.ui.common.stateprompt.StatePrompt
 import com.zxhhyj.music.ui.item.PlayListItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
@@ -33,16 +31,16 @@ fun PlayListScreen(
     dialogNavController: NavController<DialogDestination>,
     padding: PaddingValues
 ) {
-    AppScaffold(
+    com.zxhhyj.ui.Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding),
         topBar = {
-            AppTopBar(
+            com.zxhhyj.ui.TopBar(
                 modifier = Modifier,
                 title = stringResource(id = R.string.play_list),
                 actions = {
-                    AppRoundIcon(
+                    Icon(
                         imageVector = Icons.Rounded.Add,
                         contentDescription = null,
                         modifier = Modifier.clickable {
@@ -59,7 +57,7 @@ fun PlayListScreen(
                     PlayListItem(
                         model = it,
                         actions = {
-                            AppRoundIcon(
+                            Icon(
                                 imageVector = Icons.Rounded.MoreVert,
                                 contentDescription = null,
                                 modifier = Modifier

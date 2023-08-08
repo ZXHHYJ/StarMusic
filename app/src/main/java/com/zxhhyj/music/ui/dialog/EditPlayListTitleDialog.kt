@@ -19,7 +19,6 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.PlayListModel
-import com.zxhhyj.music.ui.common.AppDialog
 import com.zxhhyj.music.ui.common.AppTextField
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -30,7 +29,7 @@ fun EditPlayListTitleDialog(onDismissRequest: () -> Unit, model: PlayListModel) 
     var titleValue by remember {
         mutableStateOf(TextFieldValue(model.name, TextRange(model.name.length)))
     }
-    AppDialog(
+    com.zxhhyj.ui.YesNoDialog(
         onDismissRequest = onDismissRequest,
         title = stringResource(id = R.string.edit_playlist_title),
         confirm = {

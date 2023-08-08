@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -38,16 +39,16 @@ import androidx.lifecycle.map
 import com.github.krottv.compose.sliders.SliderValueHorizontal
 import com.mxalbert.sharedelements.SharedElement
 import com.zxhhyj.music.R
+import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.logic.utils.toTimeString
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
-import com.zxhhyj.music.ui.common.AppCard
-import com.zxhhyj.music.ui.common.AppRoundIcon
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
 import com.zxhhyj.music.ui.theme.translucentWhiteFixBugColor
+import com.zxhhyj.ui.roundClickable
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import kotlin.math.roundToInt
@@ -68,24 +69,29 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
 
             val song by PlayManager.currentSongLiveData().observeAsState()
 
-            if (100.hp > 100.wp) {
-                //歌曲专辑封面
-                SharedElement(
-                    key = ShareAlbumKey,
-                    screenKey = PlayScreenDestination.Main,
-                    transitionSpec = MaterialFadeOutTransitionSpec
-                ) {
-                    AppCard(
-                        modifier = Modifier
-                            .padding(bottom = 8.dp)
-                            .size(100.wp),
-                        backgroundColor = Color.LightGray,
-                        elevation = 10.dp,
-                    ) {
-                        AppAsyncImage(
-                            modifier = Modifier.fillMaxSize(),
-                            url = song?.album?.coverUrl
-                        )
+            when (SettingRepository.EnableNewPlayerUI) {
+                true -> {}
+                false -> {
+                    if (100.hp > 100.wp) {
+                        //歌曲专辑封面
+                        SharedElement(
+                            key = ShareAlbumKey,
+                            screenKey = PlayScreenDestination.Main,
+                            transitionSpec = MaterialFadeOutTransitionSpec
+                        ) {
+                            com.zxhhyj.ui.Card(
+                                modifier = Modifier
+                                    .padding(bottom = 8.dp)
+                                    .size(100.wp),
+                                backgroundColor = Color.LightGray,
+                                elevation = 10.dp,
+                            ) {
+                                AppAsyncImage(
+                                    modifier = Modifier.fillMaxSize(),
+                                    data = song?.album?.coverUrl
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -115,7 +121,7 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                         maxLines = 1
                     )
                 }
-                AppRoundIcon(
+                Icon(
                     imageVector = Icons.Rounded.MoreVert,
                     tint = Color.White,
                     contentDescription = null,
@@ -175,7 +181,7 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                     Spacer(
                         modifier = modifier
                             .size(thumbSize)
-                            .background(Color.White, RoundedCornerShape(50))
+                            .background(Color.White, RoundedCornerShape(thumbSize.width))
                     )
                 }
             )
@@ -204,24 +210,24 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                     if (it) R.drawable.ic_play else R.drawable.ic_pause
                 }.observeAsState(R.drawable.ic_play)
 
-                AppRoundIcon(
+                Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_previous),
                     contentDescription = null,
                     modifier = Modifier
                         .size(buttonSize)
-                        .clickable {
+                        .roundClickable {
                             PlayManager.skipToPrevious()
                         },
                     tint = Color.White
                 )
                 Spacer(modifier = Modifier.width(8.wp))
-                AppRoundIcon(
+                Icon(
                     imageVector = ImageVector.vectorResource(id = playPauseState),
                     contentDescription = null,
                     modifier = Modifier
                         .scale(1.2f)
                         .size(23.wp)
-                        .clickable {
+                        .roundClickable {
                             if (PlayManager.pauseLiveData().value == true)
                                 PlayManager.start()
                             else PlayManager.pause()
@@ -229,12 +235,12 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                     tint = Color.White
                 )
                 Spacer(modifier = Modifier.width(8.wp))
-                AppRoundIcon(
+                Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_next),
                     contentDescription = null,
                     modifier = Modifier
                         .size(buttonSize)
-                        .clickable {
+                        .roundClickable {
                             PlayManager.skipToNext()
                         },
                     tint = Color.White

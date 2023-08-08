@@ -37,13 +37,8 @@ import androidx.compose.ui.unit.times
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.ui.common.AppScaffold
-import com.zxhhyj.music.ui.common.AppTab
-import com.zxhhyj.music.ui.common.AppTabRow
 import com.zxhhyj.music.ui.common.AppTextField
-import com.zxhhyj.music.ui.common.AppTopBar
 import com.zxhhyj.music.ui.common.BoxWithPercentages
-import com.zxhhyj.music.ui.common.TopBarProperties
 import com.zxhhyj.music.ui.common.stateprompt.StatePrompt
 import com.zxhhyj.music.ui.item.AlbumItem
 import com.zxhhyj.music.ui.item.ArtistItem
@@ -52,6 +47,8 @@ import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
+import com.zxhhyj.ui.Tab
+import com.zxhhyj.ui.TabRow
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import kotlinx.coroutines.launch
@@ -80,13 +77,13 @@ fun SearchScreen(
     var searchKey by rememberSaveable {
         mutableStateOf("")
     }
-    AppScaffold(
+    com.zxhhyj.ui.Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding),
         topBar = {
-            AppTopBar(
-                topBarProperties = TopBarProperties(showBottomDivider = false),
+            com.zxhhyj.ui.TopBar(
+                topBarProperties = com.zxhhyj.ui.TopBarProperties(showBottomDivider = false),
                 modifier = Modifier,
                 title = stringResource(id = R.string.search)
             )
@@ -115,7 +112,7 @@ fun SearchScreen(
                     initialPage = SearchScreenTabs.values().indexOf(start)
                 )
                 val scope = rememberCoroutineScope()
-                AppTabRow(
+                TabRow(
                     modifier = Modifier
                         .padding(horizontal = horizontal)
                         .height(42.dp),
@@ -123,7 +120,7 @@ fun SearchScreen(
                 ) {
                     SearchScreenTabs.values()
                         .forEachIndexed { index, searchTypeTabDestination ->
-                            AppTab(
+                            Tab(
                                 selected = index == pagerState.currentPage,
                                 onClick = {
                                     scope.launch { pagerState.animateScrollToPage(index) }

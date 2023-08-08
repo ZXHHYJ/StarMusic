@@ -29,15 +29,13 @@ import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository.songs
 import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
-import com.zxhhyj.music.ui.common.AppButton
-import com.zxhhyj.music.ui.common.AppCard
-import com.zxhhyj.music.ui.common.AppScaffold
-import com.zxhhyj.music.ui.common.AppTopBar
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
-import com.zxhhyj.music.ui.theme.appTextButtonAccentColor
 import com.zxhhyj.music.ui.theme.vertical
+import com.zxhhyj.ui.Button
+import com.zxhhyj.ui.Card
+import com.zxhhyj.ui.LocalColorScheme
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -48,12 +46,12 @@ fun AlbumCntScreen(
     padding: PaddingValues,
     album: SongBean.Album
 ) {
-    AppScaffold(
+    com.zxhhyj.ui.Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding),
         topBar = {
-            AppTopBar(
+            com.zxhhyj.ui.TopBar(
                 modifier = Modifier.fillMaxWidth(),
                 title = album.name,
                 actions = {}
@@ -63,10 +61,10 @@ fun AlbumCntScreen(
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    AppCard(backgroundColor = Color.Transparent) {
+                    Card(backgroundColor = Color.Transparent) {
                         AppAsyncImage(
-                            url = album.coverUrl,
-                            modifier = Modifier.size(210.dp)
+                            modifier = Modifier.size(210.dp),
+                            data = album.coverUrl
                         )
                     }
                     Spacer(
@@ -80,7 +78,7 @@ fun AlbumCntScreen(
                     Text(
                         text = album.songs.first().artist.name,
                         fontSize = 14.sp,
-                        color = appTextButtonAccentColor,
+                        color = LocalColorScheme.current.highlight,
                         modifier = Modifier.clickable {
                             mainNavController.navigate(
                                 ScreenDestination.SingerCnt(
@@ -89,7 +87,7 @@ fun AlbumCntScreen(
                             )
                         }
                     )
-                    AppButton(
+                    Button(
                         onClick = { PlayManager.play(album.songs, 0) },
                         imageVector = Icons.Rounded.PlayArrow,
                         text = stringResource(id = R.string.play_all),

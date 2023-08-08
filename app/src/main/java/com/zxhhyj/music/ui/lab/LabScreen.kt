@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.LibraryMusic
 import androidx.compose.runtime.Composable
@@ -23,9 +25,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.ui.common.AppScaffold
-import com.zxhhyj.music.ui.common.AppTopBar
-import com.zxhhyj.music.ui.item.SettingSwitchItem
+import com.zxhhyj.ui.Scaffold
+import com.zxhhyj.ui.TopBar
+import com.zxhhyj.ui.item.ItemSwitcher
 
 @Composable
 fun LabScreen(
@@ -53,12 +55,12 @@ fun LabScreen(
             launcher.launch(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
         }
     }
-    AppScaffold(
+    Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding),
         topBar = {
-            AppTopBar(
+            TopBar(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.lab)
             )
@@ -66,10 +68,19 @@ fun LabScreen(
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             if (SettingRepository.EnableAndroidMediaLibs) {
                 item {
-                    SettingSwitchItem(
-                        imageVector = Icons.Rounded.LibraryMusic,
-                        title = "分轨文件支持",
-                        subTitle = "启用后支持识别cue分轨文件",
+                    ItemSwitcher(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.LibraryMusic,
+                                contentDescription = null
+                            )
+                        },
+                        text = {
+                            Text(text = stringResource(id = R.string.cue_support))
+                        },
+                        subText = {
+                            Text(text = stringResource(id = R.string.cue_support_info))
+                        },
                         checked = SettingRepository.EnableCueSupport,
                         onCheckedChange = {
                             SettingRepository.EnableCueSupport = it

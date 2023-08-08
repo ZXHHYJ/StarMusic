@@ -26,13 +26,14 @@ import coil.request.ImageRequest
 import com.flaviofaria.kenburnsview.KenBurnsView
 import com.flaviofaria.kenburnsview.RandomTransitionGenerator
 import com.google.android.renderscript.Toolkit
+import com.zxhhyj.music.logic.utils.BitmapUtils
 
 @Composable
-fun MotionBlur(
+fun ImageMotionBlur(
     modifier: Modifier,
     whiteObscuration: Color = Color(0x20FFFFFF),
     blackObscuration: Color = Color(0x3C000000),
-    url: String?,
+    imageUrl: String?,
     paused: Boolean
 ) {
 
@@ -42,12 +43,14 @@ fun MotionBlur(
 
     val context = LocalContext.current
     val imageLoader = ImageLoader(context)
-    LaunchedEffect(url) {
-        if (url == null) return@LaunchedEffect
+    LaunchedEffect(imageUrl) {
+        if (imageUrl == null) return@LaunchedEffect
         val request = ImageRequest.Builder(context)
-            .data(url)
+            .data(imageUrl)
             .build()
-        val bitmap = imageLoader.execute(request).drawable?.toBitmap()
+        val bitmap = imageLoader.execute(request).drawable?.toBitmap()?.run {
+            BitmapUtils.compressBitmap(this)
+        }
         if (bitmap != null) {
             drawable = handleImageBlur(
                 whiteObscuration,
@@ -57,7 +60,6 @@ fun MotionBlur(
             bitmap.recycle()
         }
     }
-    val lifecycle = rememberLifecycle()
     AndroidView(factory = {
         KenBurnsView(it).apply {
             setTransitionGenerator(
@@ -72,15 +74,9 @@ fun MotionBlur(
             it.setImageDrawable(drawable!!)
         }
         if (paused) {
-            it.resume()
+            it.pause()
         } else {
             it.resume()
-        }
-        lifecycle.onLifeResume {
-            it.resume()
-        }
-        lifecycle.onLifePause {
-            it.pause()
         }
     }
 }

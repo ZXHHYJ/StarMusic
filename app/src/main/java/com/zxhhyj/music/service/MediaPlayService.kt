@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.media.AudioManager
 import android.media.session.MediaSession
@@ -23,6 +22,7 @@ import coil.request.ImageRequest
 import com.zxhhyj.music.MainActivity
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.utils.AudioFocusUtils
+import com.zxhhyj.music.logic.utils.BitmapUtils
 import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
 import kotlinx.coroutines.Dispatchers
@@ -32,11 +32,12 @@ class MediaPlayService : LifecycleService() {
 
     companion object {
 
-        private const val CHANNEL_ID = "notification_channel_id"
+        private const val NOTIFICATION_CHANNEL_ID = "notification_channel_id"
 
-        private const val ID = 1
+        private const val NOTIFICATION_ID = 1
 
         var isServiceAlive = false
+            private set
 
         private val PlaybackStateBuilder = PlaybackStateCompat.Builder()
             .setActions(PlaybackStateCompat.ACTION_SEEK_TO or PlaybackStateCompat.ACTION_PLAY_PAUSE or PlaybackStateCompat.ACTION_SKIP_TO_NEXT or PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS or PlaybackStateCompat.ACTION_STOP)
@@ -46,7 +47,7 @@ class MediaPlayService : LifecycleService() {
 
     private fun refreshMediaNotifications() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-            startForeground(ID, mMediaNotification.build())
+            startForeground(NOTIFICATION_ID, mMediaNotification.build())
             if (PlayManager.pauseLiveData().value == true) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     stopForeground(STOP_FOREGROUND_DETACH)
@@ -63,7 +64,7 @@ class MediaPlayService : LifecycleService() {
             ) {
                 return
             }
-            mNotificationManager.notify(ID, mMediaNotification.build())
+            mNotificationManager.notify(NOTIFICATION_ID, mMediaNotification.build())
         }
     }
 
@@ -137,12 +138,7 @@ class MediaPlayService : LifecycleService() {
                             .data(it.album.coverUrl)
                             .build()
                     ).drawable as BitmapDrawable
-                    mMediaNotification.setLargeIcon(
-                        drawable.bitmap.copy(
-                            Bitmap.Config.RGB_565,
-                            false
-                        )
-                    )
+                    mMediaNotification.setLargeIcon(BitmapUtils.compressBitmap(drawable.bitmap))
                     refreshMediaNotifications()
                 } catch (_: Exception) {
                 }
@@ -191,12 +187,13 @@ class MediaPlayService : LifecycleService() {
         if (!::mNotificationManager.isInitialized) {
             mNotificationManager = NotificationManagerCompat.from(this)
             val channel = NotificationChannelCompat.Builder(
-                CHANNEL_ID,
+                NOTIFICATION_CHANNEL_ID,
                 NotificationManagerCompat.IMPORTANCE_LOW
-            )
-            channel.setName(getString(R.string.channel_name))
-            channel.setDescription(getString(R.string.channel_description))
-            channel.setVibrationEnabled(false)
+            ).apply {
+                setName(getString(R.string.channel_name))
+                setDescription(getString(R.string.channel_name))
+                setVibrationEnabled(false)
+            }
             mNotificationManager.createNotificationChannel(channel.build())
         }
         //配置媒体会话
@@ -213,10 +210,10 @@ class MediaPlayService : LifecycleService() {
                 )
             )
             mMediaSession.setCallback(MediaSessionCallback())
-            mMediaNotification = MediaNotification(this, mMediaSession, CHANNEL_ID)
+            mMediaNotification = MediaNotification(this, mMediaSession, NOTIFICATION_CHANNEL_ID)
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            startForeground(ID, mMediaNotification.build())
+            startForeground(NOTIFICATION_ID, mMediaNotification.build())
         }
         MediaButtonReceiver.handleIntent(mMediaSession, intent)
         return super.onStartCommand(intent, flags, startId)

@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.common
+package com.zxhhyj.ui
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -9,12 +9,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.zxhhyj.music.ui.theme.roundShape
 
 @Composable
-fun AppCard(
+fun Card(
     modifier: Modifier = Modifier,
-    shape: Shape = roundShape,
+    shape: Shape = RoundedCornerShape(StarDimens.round),
     backgroundColor: Color,
     contentColor: Color = contentColorFor(backgroundColor = backgroundColor),
     elevation: Dp = 0.dp,
@@ -27,22 +26,6 @@ fun AppCard(
         contentColor = contentColor,
         border = null,
         elevation = elevation,
-        content = content
-    )
-}
-
-@Composable
-fun AppRoundCard(
-    modifier: Modifier = Modifier,
-    backgroundColor: Color,
-    contentColor: Color = contentColorFor(backgroundColor = backgroundColor),
-    content: @Composable () -> Unit
-) {
-    AppCard(
-        modifier = modifier,
-        shape = RoundedCornerShape(50),
-        backgroundColor = backgroundColor,
-        contentColor = contentColor,
         content = content
     )
 }

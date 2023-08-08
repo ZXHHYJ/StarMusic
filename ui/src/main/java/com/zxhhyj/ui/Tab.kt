@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.common
+package com.zxhhyj.ui
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.ColumnScope
@@ -11,30 +11,35 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.zxhhyj.music.ui.theme.appAccentColor
-import com.zxhhyj.music.ui.theme.appBackgroundColor
-import com.zxhhyj.music.ui.theme.textColorLight
 
 @Composable
-fun AppTabRow(
+fun TabRow(
     selectedTabIndex: Int,
     modifier: Modifier = Modifier,
     indicator: @Composable
         (tabPositions: List<TabPosition>) -> Unit = @Composable { tabPositions ->
         TabRowDefaults.Indicator(
             modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
-            color = appAccentColor,
+            color = LocalColorScheme.current.highlight,
             height = 2.dp
         )
     },
     divider: @Composable () -> Unit = {},
     tabs: @Composable () -> Unit
 ) {
-    TabRow(selectedTabIndex, modifier, appBackgroundColor, appAccentColor, indicator, divider, tabs)
+    TabRow(
+        selectedTabIndex,
+        modifier,
+        LocalColorScheme.current.background,
+        LocalColorScheme.current.highlight,
+        indicator,
+        divider,
+        tabs
+    )
 }
 
 @Composable
-fun AppTab(
+fun Tab(
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -48,8 +53,8 @@ fun AppTab(
         modifier,
         enabled,
         interactionSource,
-        appAccentColor,
-        textColorLight,
+        LocalColorScheme.current.highlight,
+        LocalColorScheme.current.subText,
         content
     )
 }

@@ -1,9 +1,9 @@
 package com.zxhhyj.music.ui.common
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -11,22 +11,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
-import com.zxhhyj.music.ui.theme.appBackgroundColor
-import com.zxhhyj.music.ui.theme.appDividerColor
-import com.zxhhyj.music.ui.theme.onBackground
-import com.zxhhyj.music.ui.theme.roundShape
-import com.zxhhyj.music.ui.theme.textColorLight
+import com.zxhhyj.ui.LocalColorScheme
+import com.zxhhyj.ui.LocalTextStyles
+import com.zxhhyj.ui.StarDimens
 
 /**
  * 默认TextField样式
  */
 private val textFieldColors
     @Composable get() = TextFieldDefaults.outlinedTextFieldColors(
-        focusedBorderColor = appDividerColor,
-        unfocusedBorderColor = appDividerColor,
-        cursorColor = onBackground,
-        backgroundColor = appBackgroundColor,
-        placeholderColor = textColorLight
+        focusedBorderColor = LocalColorScheme.current.outline,
+        unfocusedBorderColor = LocalColorScheme.current.outline,
+        cursorColor = LocalColorScheme.current.onBackground,
+        backgroundColor = LocalColorScheme.current.background,
+        placeholderColor = LocalColorScheme.current.subText
     )
 
 @Composable
@@ -54,7 +52,7 @@ fun AppTextField(
         modifier,
         enabled,
         readOnly,
-        LocalTextStyle.current,
+        LocalTextStyles.current.main,
         label,
         placeholder,
         leadingIcon,
@@ -67,7 +65,7 @@ fun AppTextField(
         maxLines,
         minLines,
         remember { MutableInteractionSource() },
-        roundShape,
+        RoundedCornerShape(StarDimens.round),
         textFieldColors
     )
 }
@@ -97,7 +95,7 @@ fun AppTextField(
         modifier,
         enabled,
         readOnly,
-        LocalTextStyle.current,
+        LocalTextStyles.current.main,
         label,
         placeholder,
         leadingIcon,
@@ -110,7 +108,7 @@ fun AppTextField(
         maxLines,
         minLines,
         remember { MutableInteractionSource() },
-        roundShape,
+        RoundedCornerShape(StarDimens.round),
         textFieldColors
     )
 }

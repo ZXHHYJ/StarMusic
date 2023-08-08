@@ -21,11 +21,6 @@ class MainApplication : Application() {
         @SuppressLint("StaticFieldLeak")
         lateinit var context: Context
             private set
-
-        init {
-            System.loadLibrary("monet")
-            //loading lib monet
-        }
     }
 
     override fun onCreate() {

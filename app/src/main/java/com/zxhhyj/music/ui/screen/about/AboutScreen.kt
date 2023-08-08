@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Link
@@ -15,10 +17,8 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.config.PrivacyPolicyURL
 import com.zxhhyj.music.logic.utils.ActivityUtils
 import com.zxhhyj.music.logic.utils.VersionUtils
-import com.zxhhyj.music.ui.common.AppScaffold
-import com.zxhhyj.music.ui.common.AppTopBar
-import com.zxhhyj.music.ui.item.SettingItem
 import com.zxhhyj.music.ui.item.SubTitleItem
+import com.zxhhyj.ui.item.Item
 
 
 @Composable
@@ -26,20 +26,24 @@ fun AboutScreen(
     padding: PaddingValues,
 ) {
     val ctx = LocalContext.current
-    AppScaffold(
+    com.zxhhyj.ui.Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding),
-        topBar = { AppTopBar(modifier = Modifier, title = stringResource(id = R.string.about)) })
+        topBar = {
+            com.zxhhyj.ui.TopBar(
+                modifier = Modifier,
+                title = stringResource(id = R.string.about)
+            )
+        })
     {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             item {
-                SettingItem(
-                    imageVector = Icons.Rounded.Info,
-                    title = stringResource(id = R.string.version),
-                    subTitle = VersionUtils.VersionName
-                ) {
-                    //无需反馈
+                Item(
+                    icon = { Icon(imageVector = Icons.Rounded.Info, contentDescription = null) },
+                    text = { Text(text = stringResource(id = R.string.version)) },
+                    subText = { Text(text = VersionUtils.VersionName) }) {
+                    //不需要反馈
                 }
             }
 
@@ -48,27 +52,27 @@ fun AboutScreen(
             }
 
             item {
-                SettingItem(
-                    imageVector = Icons.Rounded.Link,
-                    title = "Gitee"
-                ) {
+                Item(
+                    icon = { Icon(imageVector = Icons.Rounded.Link, contentDescription = null) },
+                    text = { Text(text = "Gitee") },
+                    subText = { }) {
                     ActivityUtils.openWeb(ctx, "https://gitee.com/ZXHHYJ/star_music")
                 }
             }
 
             item {
-                SettingItem(
-                    imageVector = Icons.Rounded.Link,
-                    title = stringResource(id = R.string.privacy_policy)
-                ) {
+                Item(
+                    icon = { Icon(imageVector = Icons.Rounded.Link, contentDescription = null) },
+                    text = { Text(text = stringResource(id = R.string.privacy_policy)) },
+                    subText = { }) {
                     ActivityUtils.openWeb(ctx, PrivacyPolicyURL)
                 }
             }
             item {
-                SettingItem(
-                    imageVector = Icons.Rounded.Link,
-                    title = stringResource(id = R.string.mail)
-                ) {
+                Item(
+                    icon = { Icon(imageVector = Icons.Rounded.Link, contentDescription = null) },
+                    text = { Text(text = stringResource(id = R.string.mail)) },
+                    subText = { }) {
                     ActivityUtils.openMail(ctx, "957447668@qq.com")
                 }
             }

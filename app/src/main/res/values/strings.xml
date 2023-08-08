@@ -1,6 +1,5 @@
 <resources>
     <string name="channel_name">媒体控制器</string>
-    <string name="channel_description">播放控制</string>
     <string name="app_name">Star Music</string>
     <string name="media_lib">媒体库</string>
     <string name="singer">歌手</string>
@@ -21,9 +20,8 @@
     <string name="file_path">文件位置</string>
     <string name="file_size">文件大小</string>
     <string name="theme">主题</string>
-    <string name="theme_info">配置Monet取色</string>
+    <string name="theme_info">修改主题</string>
     <string name="lyric">歌词</string>
-    <string name="lyric_info">歌词翻译</string>
     <string name="about">关于</string>
     <string name="about_info">版本：%s</string>
     <string name="clear">清除</string>
@@ -38,8 +36,6 @@
     <string name="refresh_media_lib">刷新媒体库</string>
     <string name="media_lib_has_songs_size">当前媒体库包含%d首歌曲</string>
     <string name="hidden_songs">隐藏的歌曲</string>
-    <string name="monet_get_color">Monet取色</string>
-    <string name="monet_get_color_info">莫奈取色</string>
     <string name="version">版本</string>
     <string name="link">链接</string>
     <string name="add_to_playlist">添加至歌单</string>
@@ -53,4 +49,6 @@
     <string name="new_title">新的标题</string>
     <string name="title">标题</string>
     <string name="lab">实验室</string>
+    <string name="cue_support">cue分轨文件支持</string>
+    <string name="cue_support_info">启用后支持识别cue分轨文件</string>
 </resources>

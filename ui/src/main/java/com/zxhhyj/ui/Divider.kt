@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.common
+package com.zxhhyj.ui
 
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
@@ -6,12 +6,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.zxhhyj.music.ui.theme.appDividerColor
 
 @Composable
-fun AppDivider(
+fun Divider(
     modifier: Modifier = Modifier,
-    color: Color = appDividerColor,
+    color: Color = LocalColorScheme.current.outline,
     thickness: Dp = 1.dp,
     startIndent: Dp = 0.dp
 ) {

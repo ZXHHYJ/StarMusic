@@ -13,15 +13,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.config.PrivacyPolicyURL
-import com.zxhhyj.music.logic.utils.ActivityUtils
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.ui.common.AppDialog
-import com.zxhhyj.music.ui.theme.appTextAccentColor
+import com.zxhhyj.music.logic.utils.ActivityUtils
+import com.zxhhyj.ui.LocalColorScheme
 
 @Composable
 fun SplashDialog(onDismissRequest: () -> Unit) {
     val activity = LocalContext.current as Activity
-    AppDialog(
+    com.zxhhyj.ui.YesNoDialog(
         onDismissRequest = onDismissRequest,
         title = stringResource(id = R.string.privacy_policy),
         confirm = {
@@ -41,7 +40,12 @@ fun SplashDialog(onDismissRequest: () -> Unit) {
     {
         Text(text = buildAnnotatedString {
             append(stringResource(id = R.string.splash_dialog_text))
-            withStyle(style = SpanStyle(color = appTextAccentColor, fontWeight = FontWeight.Bold)) {
+            withStyle(
+                style = SpanStyle(
+                    color = LocalColorScheme.current.highlight,
+                    fontWeight = FontWeight.Bold
+                )
+            ) {
                 append(stringResource(id = R.string.privacy_policy))
             }
         }, modifier = Modifier.clickable {

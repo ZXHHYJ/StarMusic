@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.Icon
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -26,13 +27,11 @@ import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.ui.common.AppAsyncImage
-import com.zxhhyj.music.ui.common.AppCard
-import com.zxhhyj.music.ui.common.AppRoundIcon
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.theme.horizontal
-import com.zxhhyj.music.ui.theme.textColor
-import com.zxhhyj.music.ui.theme.textColorLight
 import com.zxhhyj.music.ui.theme.vertical
+import com.zxhhyj.ui.Card
+import com.zxhhyj.ui.LocalColorScheme
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -43,7 +42,7 @@ fun SongItem(
     actions: @Composable () -> Unit = {},
     onClick: () -> Unit
 ) {
-    AppCard(backgroundColor = Color.Transparent) {
+    Card(backgroundColor = Color.Transparent) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -51,13 +50,16 @@ fun SongItem(
                 .clickable(onClick = onClick),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AppCard(
+            Card(
                 backgroundColor = Color.Transparent,
                 modifier = Modifier
                     .padding(horizontal = horizontal, vertical = vertical)
                     .size(50.dp),
             ) {
-                AppAsyncImage(modifier = Modifier.fillMaxSize(), url = song.album.coverUrl)
+                AppAsyncImage(
+                    modifier = Modifier.fillMaxSize(),
+                    data = song.album.coverUrl
+                )
             }
             Column(
                 modifier = Modifier
@@ -67,7 +69,7 @@ fun SongItem(
             ) {
                 Text(
                     text = song.songName,
-                    color = textColor,
+                    color = LocalColorScheme.current.text,
                     fontSize = 15.sp,
                     maxLines = 1,
                     textAlign = TextAlign.Center,
@@ -76,7 +78,7 @@ fun SongItem(
                 Spacer(modifier = Modifier.weight(1.0f))
                 Text(
                     text = song.artist.name,
-                    color = textColorLight,
+                    color = LocalColorScheme.current.subText,
                     fontSize = 13.sp,
                     maxLines = 1,
                     textAlign = TextAlign.Center,
@@ -84,9 +86,9 @@ fun SongItem(
                 )
             }
             Row(horizontalArrangement = Arrangement.spacedBy(horizontal / 2)) {
-                CompositionLocalProvider(LocalContentColor provides textColorLight) {
+                CompositionLocalProvider(LocalContentColor provides LocalColorScheme.current.subText) {
                     actions.invoke()
-                    AppRoundIcon(
+                    Icon(
                         imageVector = Icons.Rounded.MoreVert,
                         contentDescription = null,
                         modifier = Modifier

@@ -8,16 +8,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.ui.theme.horizontal
-import com.zxhhyj.music.ui.theme.textColor
 import com.zxhhyj.music.ui.theme.vertical
+import com.zxhhyj.ui.LocalColorScheme
 
 @Composable
 fun SubTitleItem(modifier: Modifier = Modifier, title: String) {
     Text(
         text = title,
-        color = textColor,
+        color = LocalColorScheme.current.text,
         fontSize = 18.sp,
-        fontWeight = FontWeight.Bold,
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = horizontal, vertical = vertical)

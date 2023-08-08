@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.common
+package com.zxhhyj.ui
 
 import android.os.Parcelable
 import androidx.compose.foundation.background
@@ -30,17 +30,12 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.zxhhyj.music.ui.theme.appBackgroundColor
-import com.zxhhyj.music.ui.theme.appIconAccentColor
-import com.zxhhyj.music.ui.theme.horizontal
-import com.zxhhyj.music.ui.theme.textColor
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlin.math.abs
@@ -50,7 +45,7 @@ val toolbarHeight = 56.dp
 
 @Stable
 @Parcelize
-class AppTopBarState : Parcelable {
+class TopBarState : Parcelable {
 
     /**
      * bar大小
@@ -86,7 +81,7 @@ class AppTopBarState : Parcelable {
         }
 }
 
-fun Modifier.bindAppTopBarState() = composed {
+fun Modifier.bindTopBarState() = composed {
     val topBarState = LocalTopBarState.current
     nestedScroll(connection = topBarState.connection)
         .offset {
@@ -98,7 +93,7 @@ fun Modifier.bindAppTopBarState() = composed {
 }
 
 @Composable
-fun AppTopBar(
+fun TopBar(
     topBarProperties: TopBarProperties = TopBarProperties(),
     modifier: Modifier,
     title: String,
@@ -106,9 +101,8 @@ fun AppTopBar(
     content: @Composable () -> Unit = {
         Text(
             text = title,
-            color = textColor,
+            color = LocalColorScheme.current.text,
             fontSize = 26.sp,
-            fontWeight = FontWeight.Bold,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
@@ -136,13 +130,13 @@ fun AppTopBar(
                     .height(toolbarHeight)
                     .fillMaxWidth()
                     .clipToBounds()
-                    .background(appBackgroundColor)
-                    .padding(horizontal = horizontal),
+                    .background(LocalColorScheme.current.background)
+                    .padding(horizontal = StarDimens.horizontal),
                 contentAlignment = Alignment.CenterEnd,
                 content = {
                     Text(
                         text = title,
-                        color = textColor,
+                        color = LocalColorScheme.current.text,
                         fontSize = 18.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -159,15 +153,15 @@ fun AppTopBar(
                             }
                             .alpha(elementAlpha)
                     )
-                    Row(horizontalArrangement = Arrangement.spacedBy(horizontal / 2)) {
-                        CompositionLocalProvider(LocalContentColor provides appIconAccentColor) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(StarDimens.horizontal / 2)) {
+                        CompositionLocalProvider(LocalContentColor provides LocalColorScheme.current.highlight) {
                             actions.invoke()
                         }
                     }
                 }
             )
             if (topBarProperties.showCenterDivider) {
-                AppDivider(
+                Divider(
                     modifier = Modifier
                         .fillMaxWidth()
                         .alpha(elementAlpha)
@@ -175,7 +169,7 @@ fun AppTopBar(
             }
             Box(modifier = Modifier
                 .clipToBounds()
-                .padding(horizontal = horizontal)
+                .padding(horizontal = StarDimens.horizontal)
                 .onSizeChanged {
                     contentSize = it
                 }
@@ -190,11 +184,11 @@ fun AppTopBar(
             }
         }
         if (topBarProperties.showBottomDivider) {
-            AppDivider(
+            Divider(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(alignment = Alignment.BottomCenter)
-                    .padding(horizontal = horizontal)
+                    .padding(horizontal = StarDimens.horizontal)
                     .offset {
                         return@offset IntOffset(
                             x = 0,

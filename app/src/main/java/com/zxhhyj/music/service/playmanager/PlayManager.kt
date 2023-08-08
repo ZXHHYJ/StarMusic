@@ -138,8 +138,8 @@ object PlayManager {
     init {
         // 观察当前播放歌曲的下标，如果播放列表不为空，则根据下标播放歌曲
         mIndex.observeForever {
-            if (mPlayList.value != null) {
-                val song = mPlayList.value!![it]
+            mPlayList.value?.let { list ->
+                val song = list.getOrNull(it) ?: return@let
                 mCurrentSong.value = song
                 mSongPlayer.play(song)
             }

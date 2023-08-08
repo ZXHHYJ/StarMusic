@@ -13,14 +13,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
-import com.zxhhyj.music.ui.common.AppDialog
-import com.zxhhyj.music.ui.theme.appAccentColor
+import com.zxhhyj.ui.LocalColorScheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
 fun ScanMusicDialog(onDismissRequest: () -> Unit) {
-    AppDialog(
+    com.zxhhyj.ui.YesNoDialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
         title = stringResource(id = R.string.scan_music),
@@ -31,7 +30,7 @@ fun ScanMusicDialog(onDismissRequest: () -> Unit) {
             CircularProgressIndicator(
                 modifier = Modifier.size(48.dp),
                 strokeWidth = 4.dp,
-                color = appAccentColor
+                color = LocalColorScheme.current.highlight
             )
         }
     }

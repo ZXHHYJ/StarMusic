@@ -18,7 +18,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.PlayListRepository
-import com.zxhhyj.music.ui.common.AppDialog
 import com.zxhhyj.music.ui.common.AppTextField
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -29,7 +28,7 @@ fun CreatePlayListDialog(onDismissRequest: () -> Unit) {
     var title by rememberSaveable {
         mutableStateOf("")
     }
-    AppDialog(
+    com.zxhhyj.ui.YesNoDialog(
         onDismissRequest = onDismissRequest,
         title = stringResource(id = R.string.create_playlist),
         confirm = {
