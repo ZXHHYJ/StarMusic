@@ -33,9 +33,11 @@ import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.theme.vertical
-import com.zxhhyj.ui.Button
-import com.zxhhyj.ui.Card
-import com.zxhhyj.ui.LocalColorScheme
+import com.zxhhyj.ui.view.Button
+import com.zxhhyj.ui.view.Card
+import com.zxhhyj.ui.view.Scaffold
+import com.zxhhyj.ui.view.TopBar
+import com.zxhhyj.ui.theme.LocalColorScheme
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -46,12 +48,12 @@ fun AlbumCntScreen(
     padding: PaddingValues,
     album: SongBean.Album
 ) {
-    com.zxhhyj.ui.Scaffold(
+    Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding),
         topBar = {
-            com.zxhhyj.ui.TopBar(
+            TopBar(
                 modifier = Modifier.fillMaxWidth(),
                 title = album.name,
                 actions = {}

@@ -1,4 +1,4 @@
-package com.zxhhyj.ui
+package com.zxhhyj.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

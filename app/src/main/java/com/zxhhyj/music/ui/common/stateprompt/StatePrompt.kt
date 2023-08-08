@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
-import com.zxhhyj.ui.LocalTopBarState
+import com.zxhhyj.ui.view.LocalTopBarState
 
 @Composable
 fun StatePrompt(
@@ -15,7 +15,7 @@ fun StatePrompt(
     content: @Composable () -> Unit
 ) {
     val barHeight = with(LocalDensity.current) {
-        com.zxhhyj.ui.LocalTopBarState.current.barSize.height.toDp()
+        LocalTopBarState.current.barSize.height.toDp()
     }
     BoxWithConstraints(modifier) {
         when (empty) {

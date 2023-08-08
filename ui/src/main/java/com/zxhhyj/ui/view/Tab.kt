@@ -1,4 +1,4 @@
-package com.zxhhyj.ui
+package com.zxhhyj.ui.view
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.ColumnScope
@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.zxhhyj.ui.theme.LocalColorScheme
 
 @Composable
 fun TabRow(

@@ -20,7 +20,7 @@ import com.zxhhyj.music.ui.item.PlayListItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.theme.horizontal
-import com.zxhhyj.ui.Button
+import com.zxhhyj.ui.view.Button
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.popAll

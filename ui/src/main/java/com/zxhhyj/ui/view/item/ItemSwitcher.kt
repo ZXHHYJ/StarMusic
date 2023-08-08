@@ -1,4 +1,4 @@
-package com.zxhhyj.ui.item
+package com.zxhhyj.ui.view.item
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,11 +19,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.zxhhyj.ui.LocalColorScheme
-import com.zxhhyj.ui.LocalTextStyles
-import com.zxhhyj.ui.StarDimens
-import com.zxhhyj.ui.Divider
-import com.zxhhyj.ui.Switch
+import com.zxhhyj.ui.theme.LocalColorScheme
+import com.zxhhyj.ui.theme.LocalTextStyles
+import com.zxhhyj.ui.theme.StarDimens
+import com.zxhhyj.ui.view.Divider
+import com.zxhhyj.ui.view.Switch
 
 @Composable
 fun ItemSwitcher(

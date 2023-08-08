@@ -5,11 +5,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
-import com.zxhhyj.ui.LocalColorScheme
+import com.zxhhyj.ui.theme.LocalColorScheme
 
 @Composable
 fun SubTitleItem(modifier: Modifier = Modifier, title: String) {

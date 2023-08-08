@@ -16,8 +16,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.drawable.toBitmap
 import androidx.palette.graphics.Palette
 import coil.ImageLoader
@@ -44,9 +46,13 @@ fun AlbumCoverGradient(
             .build()
         val bitmap = imageLoader.execute(request).drawable?.toBitmap() ?: return@LaunchedEffect
         val palette = Palette.from(BitmapUtils.compressBitmap(bitmap)).generate()
-        runCatching {
-            keyColor = Color(palette.dominantSwatch!!.rgb)
-        }
+
+        val dominantColor = Color(palette.getDominantColor(Color.DarkGray.toArgb()))
+
+        keyColor = if (ColorUtils.calculateLuminance(dominantColor.toArgb()) > 0.7f) {
+            Color(ColorUtils.blendARGB(Color.Black.toArgb(), dominantColor.toArgb(), 0.7f))
+        } else dominantColor
+
         imageBitmap = bitmap.asImageBitmap()
     }
     BoxWithConstraints(modifier = modifier.background(keyColor)) {
@@ -60,6 +66,9 @@ fun AlbumCoverGradient(
                     drawContent()
                     val gradient = Brush.verticalGradient(
                         colors = listOf(
+                            Color.Transparent,
+                            Color.Transparent,
+                            Color.Transparent,
                             Color.Transparent,
                             Color.Transparent,
                             Color.Transparent,

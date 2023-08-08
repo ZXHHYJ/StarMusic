@@ -9,7 +9,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.zxhhyj.ui.LocalColorScheme
+import com.zxhhyj.ui.theme.LocalColorScheme
 
 @Composable
 fun AppAsyncImage(

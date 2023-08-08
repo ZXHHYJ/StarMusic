@@ -29,9 +29,9 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.theme.horizontal
-import com.zxhhyj.ui.Card
-import com.zxhhyj.ui.Divider
-import com.zxhhyj.ui.LocalColorScheme
+import com.zxhhyj.ui.view.Card
+import com.zxhhyj.ui.view.Divider
+import com.zxhhyj.ui.theme.LocalColorScheme
 
 @Composable
 fun MediaController(panelState: PanelState?, modifier: Modifier, onClick: () -> Unit) {

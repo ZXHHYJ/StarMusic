@@ -1,4 +1,5 @@
-package com.zxhhyj.ui.item
+@file:Suppress("UNUSED")
+package com.zxhhyj.ui.view.item
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,10 +19,10 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.zxhhyj.ui.LocalColorScheme
-import com.zxhhyj.ui.LocalTextStyles
-import com.zxhhyj.ui.StarDimens
-import com.zxhhyj.ui.Divider
+import com.zxhhyj.ui.theme.LocalColorScheme
+import com.zxhhyj.ui.theme.LocalTextStyles
+import com.zxhhyj.ui.theme.StarDimens
+import com.zxhhyj.ui.view.Divider
 
 @Composable
 fun Item(

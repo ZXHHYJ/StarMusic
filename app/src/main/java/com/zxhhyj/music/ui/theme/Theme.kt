@@ -2,8 +2,8 @@ package com.zxhhyj.music.ui.theme
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import com.zxhhyj.ui.StarTheme
-import com.zxhhyj.ui.starTextStyles
+import com.zxhhyj.ui.theme.StarTheme
+import com.zxhhyj.ui.theme.starTextStyles
 
 @Composable
 fun MandySaMusicTheme(

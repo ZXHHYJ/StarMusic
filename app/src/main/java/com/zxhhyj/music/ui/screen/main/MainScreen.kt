@@ -28,7 +28,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,6 +43,7 @@ import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.MediaController
 import com.zxhhyj.music.ui.common.PanelState
 import com.zxhhyj.music.ui.common.SlidingPanel
+import com.zxhhyj.music.ui.common.rememberPanelController
 import com.zxhhyj.music.ui.dialog.CreatePlayListDialog
 import com.zxhhyj.music.ui.dialog.EditPlayListTitleDialog
 import com.zxhhyj.music.ui.dialog.MediaLibsEmptyDialog
@@ -74,7 +74,8 @@ import com.zxhhyj.music.ui.sheet.SongMenuSheet
 import com.zxhhyj.music.ui.sheet.songinfo.SongInfoSheet
 import com.zxhhyj.music.ui.theme.round
 import com.zxhhyj.music.ui.theme.vertical
-import com.zxhhyj.ui.LocalColorScheme
+import com.zxhhyj.ui.view.Divider
+import com.zxhhyj.ui.theme.LocalColorScheme
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.DialogNavHost
 import dev.olshevski.navigation.reimagined.NavAction
@@ -140,30 +141,26 @@ fun MainScreen() {
         initialBackstack = emptyList()
     )
 
-    var panelState by rememberSaveable {
-        mutableStateOf(PanelState.COLLAPSED)
-    }
+    val panelController = rememberPanelController(panelState = PanelState.COLLAPSED)
 
     val systemUiController = rememberSystemUiController()
 
     systemUiController.setSystemBarsColor(
         Color.Transparent,
-        if (panelState == PanelState.EXPANDED) false else !isSystemInDarkTheme(),
+        if (panelController.panelState == PanelState.EXPANDED) false else !isSystemInDarkTheme(),
         isNavigationBarContrastEnforced = false
     )
 
     SlidingPanel(
         modifier = Modifier.fillMaxSize(),
         panelHeight = 0.dp,
-        panelStateChange = {
-            panelState = it
-        },
-        content = { function ->
+        panelController = panelController,
+        content = {
             val visibilityMediaController by PlayManager.currentSongLiveData().map {
                 return@map it != null
             }.observeAsState(false)
-            if (!visibilityMediaController && panelState == PanelState.EXPANDED) {
-                function.invoke(PanelState.COLLAPSED)
+            if (!visibilityMediaController && panelController.panelState == PanelState.EXPANDED) {
+                panelController.swipeTo(PanelState.COLLAPSED)
             }
             AppScaffold(
                 modifier = Modifier.fillMaxSize(),
@@ -175,26 +172,26 @@ fun MainScreen() {
                     ) {
                         MediaController(
                             modifier = Modifier.fillMaxWidth(),
-                            panelState = panelState
+                            panelState = panelController.panelState
                         ) {
-                            function.invoke(PanelState.EXPANDED)
+                            panelController.swipeTo(PanelState.EXPANDED)
                         }
                     }
                 },
                 navigationBar = {
                     if (!visibilityMediaController) {
-                        com.zxhhyj.ui.Divider(modifier = Modifier.fillMaxWidth())
+                        Divider(modifier = Modifier.fillMaxWidth())
                     }
                 }
             ) { padding ->
-                if (panelState != PanelState.EXPANDED) {
+                if (panelController.panelState != PanelState.EXPANDED) {
                     NavBackHandler(controller = mainNavController)
                     //面板展开时返回事件不再分发到这里
                 }
                 //避免导航时面板处于展开状态
                 LaunchedEffect(mainNavController.backstack) {
-                    if (panelState == PanelState.EXPANDED) {
-                        function.invoke(PanelState.COLLAPSED)
+                    if (panelController.panelState == PanelState.EXPANDED) {
+                        panelController.swipeTo(PanelState.COLLAPSED)
                     }
                 }
                 Box(modifier = Modifier.statusBarsPadding()) {
@@ -322,8 +319,7 @@ fun MainScreen() {
         }) {
         PlayScreen(
             sheetNavController = sheetNavController,
-            panelState = panelState,
-            it
+            panelController = panelController
         )
     }
 

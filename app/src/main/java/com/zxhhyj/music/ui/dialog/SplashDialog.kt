@@ -15,12 +15,13 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.config.PrivacyPolicyURL
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.ActivityUtils
-import com.zxhhyj.ui.LocalColorScheme
+import com.zxhhyj.ui.view.YesNoDialog
+import com.zxhhyj.ui.theme.LocalColorScheme
 
 @Composable
 fun SplashDialog(onDismissRequest: () -> Unit) {
     val activity = LocalContext.current as Activity
-    com.zxhhyj.ui.YesNoDialog(
+    YesNoDialog(
         onDismissRequest = onDismissRequest,
         title = stringResource(id = R.string.privacy_policy),
         confirm = {

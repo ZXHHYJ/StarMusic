@@ -1,7 +1,7 @@
 package com.zxhhyj.music.ui.theme
 
 import androidx.compose.ui.graphics.Color
-import com.zxhhyj.ui.ColorScheme
+import com.zxhhyj.ui.theme.ColorScheme
 
 /**
  * 半透明白色的文字

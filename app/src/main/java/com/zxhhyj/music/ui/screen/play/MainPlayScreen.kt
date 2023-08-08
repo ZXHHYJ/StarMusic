@@ -48,7 +48,7 @@ import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
 import com.zxhhyj.music.ui.theme.translucentWhiteFixBugColor
-import com.zxhhyj.ui.Card
+import com.zxhhyj.ui.view.Card
 import com.zxhhyj.ui.roundClickable
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
@@ -158,7 +158,7 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                     .fillMaxWidth()
                     .height(16.dp),
                 thumbHeightMax = true,
-                track = { modifier: Modifier,
+                track = { _: Modifier,
                           fraction: Float,
                           _: MutableInteractionSource,
                           _: List<Float>,
@@ -168,7 +168,7 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                         color = Color.White,
                         backgroundColor = translucentWhiteFixBugColor,
                         strokeCap = StrokeCap.Round,
-                        modifier = modifier
+                        modifier = Modifier
                             .fillMaxWidth()
                             .height(4.dp)
                     )

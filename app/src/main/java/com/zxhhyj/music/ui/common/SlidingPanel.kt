@@ -8,18 +8,37 @@ import androidx.compose.material.rememberSwipeableState
 import androidx.compose.material.swipeable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
-import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 enum class PanelState {
     COLLAPSED, EXPANDED
+}
+
+@Composable
+fun rememberPanelController(panelState: PanelState): PanelController = remember {
+    PanelController(panelState)
+}
+
+@Stable
+class PanelController(panelState: PanelState) {
+
+    var panelState by mutableStateOf(panelState)
+        private set
+
+    fun swipeTo(state: PanelState) {
+        panelState = state
+    }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -27,33 +46,29 @@ enum class PanelState {
 fun SlidingPanel(
     modifier: Modifier = Modifier,
     panelHeight: Dp,
-    panelStateChange: (PanelState) -> Unit,
-    content: @Composable ((PanelState) -> Unit) -> Unit,
-    panel: @Composable ((PanelState) -> Unit) -> Unit
+    panelController: PanelController,
+    content: @Composable () -> Unit,
+    panel: @Composable () -> Unit
 ) {
     BoxWithConstraints(
         modifier = modifier,
         contentAlignment = Alignment.BottomCenter
     ) {
-        val swipeableState = rememberSwipeableState(PanelState.COLLAPSED)
+        val swipeableState = rememberSwipeableState(panelController.panelState)
         val sizePx = with(LocalDensity.current) { (maxHeight - panelHeight).toPx() }
         val anchors = mapOf(0f to PanelState.EXPANDED, sizePx to PanelState.COLLAPSED)
-        val scope = rememberCoroutineScope()
-        val animateTo: (PanelState) -> Unit = {
-            scope.launch {
-                panelStateChange.invoke(it)
-                swipeableState.animateTo(it)
-            }
+        LaunchedEffect(panelController.panelState) {
+            swipeableState.animateTo(panelController.panelState)
         }
-        LaunchedEffect(swipeableState.currentValue) {
-            panelStateChange.invoke(swipeableState.currentValue)
+        LaunchedEffect(swipeableState.targetValue) {
+            panelController.swipeTo(swipeableState.targetValue)
         }
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(bottom = panelHeight)
         ) {
-            content.invoke(animateTo)
+            content.invoke()
         }
         Box(
             Modifier
@@ -76,7 +91,7 @@ fun SlidingPanel(
                         orientation = Orientation.Vertical
                     )
             ) {
-                panel.invoke(animateTo)
+                panel.invoke()
             }
         }
     }

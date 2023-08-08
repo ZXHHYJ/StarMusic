@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.ui.screen.ScreenDestination
+import com.zxhhyj.ui.view.YesNoDialog
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -15,7 +16,7 @@ fun MediaLibsEmptyDialog(
     onDismissRequest: () -> Unit,
     mainNavController: NavController<ScreenDestination>
 ) {
-    com.zxhhyj.ui.YesNoDialog(
+    YesNoDialog(
         onDismissRequest = onDismissRequest,
         title = stringResource(id = R.string.scan_music),
         confirm = {

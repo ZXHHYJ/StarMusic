@@ -19,8 +19,8 @@ import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository.songs
 import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.BoxWithPercentages
-import com.zxhhyj.ui.Card
-import com.zxhhyj.ui.LocalColorScheme
+import com.zxhhyj.ui.view.Card
+import com.zxhhyj.ui.theme.LocalColorScheme
 
 @Composable
 fun AlbumItem(

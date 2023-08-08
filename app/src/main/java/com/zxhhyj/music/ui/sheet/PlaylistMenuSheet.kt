@@ -12,7 +12,7 @@ import com.zxhhyj.music.logic.repository.PlayListRepository
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
-import com.zxhhyj.ui.ListButton
+import com.zxhhyj.ui.view.ListButton
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop

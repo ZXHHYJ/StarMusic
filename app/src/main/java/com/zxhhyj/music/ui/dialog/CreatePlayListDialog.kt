@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.PlayListRepository
 import com.zxhhyj.music.ui.common.AppTextField
+import com.zxhhyj.ui.view.YesNoDialog
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -28,7 +29,7 @@ fun CreatePlayListDialog(onDismissRequest: () -> Unit) {
     var title by rememberSaveable {
         mutableStateOf("")
     }
-    com.zxhhyj.ui.YesNoDialog(
+    YesNoDialog(
         onDismissRequest = onDismissRequest,
         title = stringResource(id = R.string.create_playlist),
         confirm = {

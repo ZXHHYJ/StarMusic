@@ -13,9 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.ui.Scaffold
-import com.zxhhyj.ui.TopBar
-import com.zxhhyj.ui.item.ItemSwitcher
+import com.zxhhyj.ui.view.Scaffold
+import com.zxhhyj.ui.view.TopBar
+import com.zxhhyj.ui.view.item.ItemSwitcher
 
 @Composable
 fun ThemeScreen(padding: PaddingValues) {

@@ -1,4 +1,4 @@
-package com.zxhhyj.ui
+package com.zxhhyj.ui.view
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,7 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.zxhhyj.ui.item.Item
+import com.zxhhyj.ui.view.item.Item
+import com.zxhhyj.ui.theme.LocalColorScheme
+import com.zxhhyj.ui.theme.LocalTextStyles
+import com.zxhhyj.ui.theme.StarDimens
 
 @Composable
 fun ListButton(

@@ -1,4 +1,4 @@
-package com.zxhhyj.ui
+package com.zxhhyj.ui.view
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -18,6 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
+import com.zxhhyj.ui.theme.LocalColorScheme
 import kotlinx.coroutines.launch
 
 enum class Status {
@@ -32,7 +34,7 @@ fun Switch(
     onCheckedChange: ((Boolean) -> Unit),
 ) {
     BoxWithConstraints(modifier = modifier) {
-        val blockSize = androidx.compose.ui.unit.min(maxHeight, maxWidth)
+        val blockSize = min(maxHeight, maxWidth)
         val blockSizePx = with(LocalDensity.current) { blockSize.toPx() }
         val swipeableState =
             rememberSwipeableState(initialValue = if (checked) Status.OPEN else Status.CLOSE)

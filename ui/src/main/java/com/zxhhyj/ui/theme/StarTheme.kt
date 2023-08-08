@@ -1,4 +1,4 @@
-package com.zxhhyj.ui
+package com.zxhhyj.ui.theme
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider

@@ -47,8 +47,11 @@ import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
-import com.zxhhyj.ui.Tab
-import com.zxhhyj.ui.TabRow
+import com.zxhhyj.ui.view.Tab
+import com.zxhhyj.ui.view.TabRow
+import com.zxhhyj.ui.view.Scaffold
+import com.zxhhyj.ui.view.TopBar
+import com.zxhhyj.ui.view.TopBarProperties
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import kotlinx.coroutines.launch
@@ -77,13 +80,13 @@ fun SearchScreen(
     var searchKey by rememberSaveable {
         mutableStateOf("")
     }
-    com.zxhhyj.ui.Scaffold(
+    Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding),
         topBar = {
-            com.zxhhyj.ui.TopBar(
-                topBarProperties = com.zxhhyj.ui.TopBarProperties(showBottomDivider = false),
+            TopBar(
+                topBarProperties = TopBarProperties(showBottomDivider = false),
                 modifier = Modifier,
                 title = stringResource(id = R.string.search)
             )

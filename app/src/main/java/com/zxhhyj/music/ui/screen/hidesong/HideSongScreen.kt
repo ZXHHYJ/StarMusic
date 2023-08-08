@@ -33,10 +33,10 @@ import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.stateprompt.StatePrompt
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
-import com.zxhhyj.ui.Card
-import com.zxhhyj.ui.Scaffold
-import com.zxhhyj.ui.TopBar
-import com.zxhhyj.ui.LocalColorScheme
+import com.zxhhyj.ui.view.Card
+import com.zxhhyj.ui.view.Scaffold
+import com.zxhhyj.ui.view.TopBar
+import com.zxhhyj.ui.theme.LocalColorScheme
 
 @Composable
 fun HiddenSongScreen(padding: PaddingValues) {

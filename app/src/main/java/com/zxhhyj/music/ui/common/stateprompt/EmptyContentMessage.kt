@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.ui.theme.vertical
-import com.zxhhyj.ui.LocalColorScheme
+import com.zxhhyj.ui.theme.LocalColorScheme
 
 @Composable
 fun EmptyContentMessage(modifier: Modifier = Modifier) {

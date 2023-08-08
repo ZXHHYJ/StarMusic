@@ -13,13 +13,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
-import com.zxhhyj.ui.LocalColorScheme
+import com.zxhhyj.ui.view.YesNoDialog
+import com.zxhhyj.ui.theme.LocalColorScheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
 fun ScanMusicDialog(onDismissRequest: () -> Unit) {
-    com.zxhhyj.ui.YesNoDialog(
+    YesNoDialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
         title = stringResource(id = R.string.scan_music),

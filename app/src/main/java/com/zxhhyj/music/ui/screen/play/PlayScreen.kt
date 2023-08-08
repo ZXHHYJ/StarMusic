@@ -5,6 +5,7 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -25,9 +26,10 @@ import com.mxalbert.sharedelements.*
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.ui.common.AlbumCoverGradient
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.common.ImageMotionBlur
-import com.zxhhyj.music.ui.common.AlbumCoverGradient
+import com.zxhhyj.music.ui.common.PanelController
 import com.zxhhyj.music.ui.common.PanelState
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.play.common.TopMediaController
@@ -74,8 +76,7 @@ val MaterialFadeOutTransitionSpec = SharedElementsTransitionSpec(
 @Composable
 fun PlayScreen(
     sheetNavController: NavController<BottomSheetDestination>,
-    panelState: PanelState?,
-    function: (PanelState) -> Unit
+    panelController: PanelController
 ) {
 
     val navController = rememberNavController(startDestination = PlayScreenDestination.Main)
@@ -86,7 +87,7 @@ fun PlayScreen(
         it?.album?.coverUrl
     }.observeAsState()
 
-    if (panelState == PanelState.COLLAPSED) {
+    if (panelController.panelState == PanelState.COLLAPSED) {
         navController.popUpTo {
             it == PlayScreenDestination.Main
         }
@@ -114,7 +115,7 @@ fun PlayScreen(
                         PlayScreenDestination.PlayQueue
                     ).forEach { screen ->
                         val selected = screen == lastDestination
-                        BottomNavigationItem(modifier = Modifier.clip(roundShape),
+                        BottomNavigationItem(modifier = Modifier.clip(RoundedCornerShape(round)),
                             icon = { Icon(screen.tabIcon, contentDescription = screen.name) },
                             selectedContentColor = Color.White,
                             unselectedContentColor = translucentWhiteColor,
@@ -195,7 +196,7 @@ fun PlayScreen(
             ImageMotionBlur(
                 modifier = Modifier.fillMaxSize(),
                 imageUrl = coverUrl,
-                paused = panelState == PanelState.COLLAPSED
+                paused = panelController.panelState == PanelState.COLLAPSED
             )
 
             if (SettingRepository.EnableNewPlayerUI) {
@@ -219,8 +220,8 @@ fun PlayScreen(
                     .navigationBarsPadding(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                BackHandler(panelState == PanelState.EXPANDED) {
-                    function.invoke(PanelState.COLLAPSED)
+                BackHandler(panelController.panelState == PanelState.EXPANDED) {
+                    panelController.swipeTo(PanelState.COLLAPSED)
                 }
                 when {
                     maxWidth >= maxHeight -> {

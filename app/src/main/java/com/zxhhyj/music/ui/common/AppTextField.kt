@@ -11,9 +11,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
-import com.zxhhyj.ui.LocalColorScheme
-import com.zxhhyj.ui.LocalTextStyles
-import com.zxhhyj.ui.StarDimens
+import com.zxhhyj.ui.theme.LocalColorScheme
+import com.zxhhyj.ui.theme.LocalTextStyles
+import com.zxhhyj.ui.theme.StarDimens
 
 /**
  * 默认TextField样式

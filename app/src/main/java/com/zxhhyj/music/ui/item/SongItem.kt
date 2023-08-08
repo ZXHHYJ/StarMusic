@@ -30,8 +30,8 @@ import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
-import com.zxhhyj.ui.Card
-import com.zxhhyj.ui.LocalColorScheme
+import com.zxhhyj.ui.view.Card
+import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.roundClickable
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate

@@ -20,6 +20,8 @@ import com.zxhhyj.music.ui.item.PlayListItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
+import com.zxhhyj.ui.view.Scaffold
+import com.zxhhyj.ui.view.TopBar
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -31,12 +33,12 @@ fun PlayListScreen(
     dialogNavController: NavController<DialogDestination>,
     padding: PaddingValues
 ) {
-    com.zxhhyj.ui.Scaffold(
+    Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding),
         topBar = {
-            com.zxhhyj.ui.TopBar(
+            TopBar(
                 modifier = Modifier,
                 title = stringResource(id = R.string.play_list),
                 actions = {

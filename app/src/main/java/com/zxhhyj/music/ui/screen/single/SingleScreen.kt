@@ -28,8 +28,9 @@ import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.search.SearchScreenTabs
-import com.zxhhyj.ui.ListButton
-import com.zxhhyj.ui.TopBar
+import com.zxhhyj.ui.view.ListButton
+import com.zxhhyj.ui.view.TopBar
+import com.zxhhyj.ui.view.Scaffold
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -46,7 +47,7 @@ fun SingleScreen(
         }
         onDispose { }
     }
-    com.zxhhyj.ui.Scaffold(
+    Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding),

@@ -18,7 +18,9 @@ import com.zxhhyj.music.logic.config.PrivacyPolicyURL
 import com.zxhhyj.music.logic.utils.ActivityUtils
 import com.zxhhyj.music.logic.utils.VersionUtils
 import com.zxhhyj.music.ui.item.SubTitleItem
-import com.zxhhyj.ui.item.Item
+import com.zxhhyj.ui.view.Scaffold
+import com.zxhhyj.ui.view.TopBar
+import com.zxhhyj.ui.view.item.Item
 
 
 @Composable
@@ -26,12 +28,12 @@ fun AboutScreen(
     padding: PaddingValues,
 ) {
     val ctx = LocalContext.current
-    com.zxhhyj.ui.Scaffold(
+    Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding),
         topBar = {
-            com.zxhhyj.ui.TopBar(
+            TopBar(
                 modifier = Modifier,
                 title = stringResource(id = R.string.about)
             )

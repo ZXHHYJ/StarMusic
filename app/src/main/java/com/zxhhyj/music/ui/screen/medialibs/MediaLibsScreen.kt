@@ -26,10 +26,10 @@ import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
-import com.zxhhyj.ui.Scaffold
-import com.zxhhyj.ui.TopBar
-import com.zxhhyj.ui.item.Item
-import com.zxhhyj.ui.item.ItemSwitcher
+import com.zxhhyj.ui.view.Scaffold
+import com.zxhhyj.ui.view.TopBar
+import com.zxhhyj.ui.view.item.Item
+import com.zxhhyj.ui.view.item.ItemSwitcher
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 

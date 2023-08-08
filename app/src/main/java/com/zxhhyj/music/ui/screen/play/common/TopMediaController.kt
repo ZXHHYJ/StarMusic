@@ -41,6 +41,7 @@ import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
 import com.zxhhyj.music.ui.theme.translucentWhiteFixBugColor
 import com.zxhhyj.music.ui.theme.vertical
+import com.zxhhyj.ui.view.Card
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.moveToTop
 import dev.olshevski.navigation.reimagined.navigate
@@ -63,7 +64,7 @@ fun TopMediaController(
             screenKey = PlayScreenDestination.PlayQueue,
             transitionSpec = MaterialFadeInTransitionSpec
         ) {
-            com.zxhhyj.ui.Card(
+            Card(
                 backgroundColor = Color.Transparent,
                 modifier = Modifier
                     .padding(

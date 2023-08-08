@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import com.zxhhyj.music.logic.utils.CopyUtils
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
-import com.zxhhyj.ui.LocalColorScheme
+import com.zxhhyj.ui.theme.LocalColorScheme
 
 @Composable
 fun SongInfoItem(title: String, info: String, modifier: Modifier = Modifier) {

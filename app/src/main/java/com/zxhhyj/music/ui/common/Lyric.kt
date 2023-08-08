@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -29,7 +30,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntSize
-import com.zxhhyj.music.ui.theme.roundShape
+import com.zxhhyj.music.ui.theme.round
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
@@ -119,7 +120,7 @@ fun Lyric(
             itemsIndexed(lyricList) { index, model ->
                 lyricItem.invoke(Modifier
                     .fillMaxWidth()
-                    .clip(roundShape)
+                    .clip(RoundedCornerShape(round))
                     .clickable {
                         onClick.invoke(model.second)
                     }
