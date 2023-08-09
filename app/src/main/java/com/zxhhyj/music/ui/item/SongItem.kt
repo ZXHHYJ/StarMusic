@@ -30,9 +30,9 @@ import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
-import com.zxhhyj.ui.view.Card
 import com.zxhhyj.ui.theme.LocalColorScheme
-import com.zxhhyj.ui.roundClickable
+import com.zxhhyj.ui.view.Card
+import com.zxhhyj.ui.view.IconButton
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -51,17 +51,12 @@ fun SongItem(
                 .clickable(onClick = onClick),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Card(
-                backgroundColor = Color.Transparent,
+            AppAsyncImage(
                 modifier = Modifier
                     .padding(horizontal = horizontal, vertical = vertical)
                     .size(50.dp),
-            ) {
-                AppAsyncImage(
-                    modifier = Modifier.fillMaxSize(),
-                    data = song.album.coverUrl
-                )
-            }
+                data = song.album.coverUrl
+            )
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -89,14 +84,15 @@ fun SongItem(
             Row(horizontalArrangement = Arrangement.spacedBy(horizontal / 2)) {
                 CompositionLocalProvider(LocalContentColor provides LocalColorScheme.current.subText) {
                     actions.invoke()
-                    Icon(
-                        imageVector = Icons.Rounded.MoreVert,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .roundClickable {
-                                sheetNavController.navigate(BottomSheetDestination.SongMenu(song))
-                            }
-                    )
+                    IconButton(onClick = {
+                        sheetNavController.navigate(
+                            BottomSheetDestination.SongMenu(
+                                song
+                            )
+                        )
+                    }) {
+                        Icon(imageVector = Icons.Rounded.MoreVert, contentDescription = null)
+                    }
                 }
             }
             Spacer(modifier = Modifier.padding(end = horizontal))

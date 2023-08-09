@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.PlayListRepository
 import com.zxhhyj.music.logic.bean.SongBean
-import com.zxhhyj.music.ui.common.stateprompt.EmptyContentMessage
+import com.zxhhyj.music.ui.common.statelayout.RandomEmoji
 import com.zxhhyj.music.ui.item.PlayListItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.DialogDestination
@@ -40,7 +40,7 @@ fun AddToPlayListSheet(
             .padding(horizontal = horizontal)
     )
     if (PlayListRepository.playlist.isEmpty()) {
-        EmptyContentMessage(
+        RandomEmoji(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(100.dp)

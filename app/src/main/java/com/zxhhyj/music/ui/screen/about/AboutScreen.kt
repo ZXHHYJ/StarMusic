@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.config.PrivacyPolicyURL
 import com.zxhhyj.music.logic.utils.ActivityUtils
+import com.zxhhyj.music.logic.utils.CopyUtils
 import com.zxhhyj.music.logic.utils.VersionUtils
 import com.zxhhyj.music.ui.item.SubTitleItem
 import com.zxhhyj.ui.view.Scaffold
@@ -48,11 +49,9 @@ fun AboutScreen(
                     //不需要反馈
                 }
             }
-
             item {
                 SubTitleItem(title = stringResource(id = R.string.link))
             }
-
             item {
                 Item(
                     icon = { Icon(imageVector = Icons.Rounded.Link, contentDescription = null) },
@@ -61,7 +60,14 @@ fun AboutScreen(
                     ActivityUtils.openWeb(ctx, "https://gitee.com/ZXHHYJ/star_music")
                 }
             }
-
+            item {
+                Item(
+                    icon = { Icon(imageVector = Icons.Rounded.Link, contentDescription = null) },
+                    text = { Text(text = "Github") },
+                    subText = { }) {
+                    ActivityUtils.openWeb(ctx, "https://github.com/ZXHHYJ/StarMusic")
+                }
+            }
             item {
                 Item(
                     icon = { Icon(imageVector = Icons.Rounded.Link, contentDescription = null) },
@@ -76,6 +82,14 @@ fun AboutScreen(
                     text = { Text(text = stringResource(id = R.string.mail)) },
                     subText = { }) {
                     ActivityUtils.openMail(ctx, "957447668@qq.com")
+                }
+            }
+            item {
+                Item(
+                    icon = { Icon(imageVector = Icons.Rounded.Link, contentDescription = null) },
+                    text = { Text(text = stringResource(id = R.string.qq_group)) },
+                    subText = { }) {
+                    CopyUtils.copyText("584136207")
                 }
             }
         }

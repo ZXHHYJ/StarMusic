@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -41,7 +40,6 @@ import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
 import com.zxhhyj.music.ui.theme.translucentWhiteFixBugColor
 import com.zxhhyj.music.ui.theme.vertical
-import com.zxhhyj.ui.view.Card
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.moveToTop
 import dev.olshevski.navigation.reimagined.navigate
@@ -64,8 +62,7 @@ fun TopMediaController(
             screenKey = PlayScreenDestination.PlayQueue,
             transitionSpec = MaterialFadeInTransitionSpec
         ) {
-            Card(
-                backgroundColor = Color.Transparent,
+            AppAsyncImage(
                 modifier = Modifier
                     .padding(
                         PaddingValues.Absolute(
@@ -76,16 +73,13 @@ fun TopMediaController(
                         )
                     )
                     .size(56.dp),
+                data = song?.album?.coverUrl
             ) {
-                AppAsyncImage(
-                    modifier = Modifier.fillMaxSize(),
-                    data = song?.album?.coverUrl
-                ) {
-                    navController.moveToTop {
-                        it == PlayScreenDestination.Main
-                    }
+                navController.moveToTop {
+                    it == PlayScreenDestination.Controller
                 }
             }
+
         }
         Column(
             modifier = Modifier

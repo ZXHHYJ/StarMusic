@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.lab
+package com.zxhhyj.music.ui.screen.lab
 
 import android.content.Intent
 import android.os.Build

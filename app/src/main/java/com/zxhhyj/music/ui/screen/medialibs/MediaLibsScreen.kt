@@ -106,6 +106,7 @@ fun MediaSourceScreen(
                     },
                     text = { Text(text = stringResource(id = R.string.refresh_media_lib)) },
                     subText = { }) {
+                    PlayManager.clearPlayList()
                     dialogNavController.navigate(DialogDestination.ScanMusic)
                 }
             }

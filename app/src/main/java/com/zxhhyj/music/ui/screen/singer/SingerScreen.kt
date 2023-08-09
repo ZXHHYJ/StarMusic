@@ -1,6 +1,5 @@
 package com.zxhhyj.music.ui.screen.singer
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,10 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
-import com.zxhhyj.music.ui.common.stateprompt.StatePrompt
+import com.zxhhyj.music.ui.common.statelayout.StateLayout
 import com.zxhhyj.music.ui.item.ArtistItem
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.search.SearchScreenTabs
+import com.zxhhyj.ui.view.IconButton
 import com.zxhhyj.ui.view.Scaffold
 import com.zxhhyj.ui.view.TopBar
 import dev.olshevski.navigation.reimagined.NavController
@@ -38,20 +38,21 @@ fun SingerScreen(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.singer),
                 actions = {
-                    Icon(
-                        imageVector = Icons.Rounded.Search,
-                        contentDescription = null,
-                        modifier = Modifier.clickable {
-                            mainNavController.navigate(
-                                ScreenDestination.Search(
-                                    SearchScreenTabs.Singer
-                                )
+                    IconButton(onClick = {
+                        mainNavController.navigate(
+                            ScreenDestination.Search(
+                                SearchScreenTabs.Singer
                             )
-                        }
-                    )
+                        )
+                    }) {
+                        Icon(
+                            imageVector = Icons.Rounded.Search,
+                            contentDescription = null
+                        )
+                    }
                 })
         }) {
-        StatePrompt(
+        StateLayout(
             empty = AndroidMediaLibsRepository.artists.isEmpty(),
             modifier = Modifier.fillMaxSize()
         ) {

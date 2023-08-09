@@ -1,6 +1,5 @@
 package com.zxhhyj.music.ui.screen.album
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,12 +18,13 @@ import androidx.compose.ui.unit.times
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.ui.common.BoxWithPercentages
-import com.zxhhyj.music.ui.common.stateprompt.StatePrompt
+import com.zxhhyj.music.ui.common.statelayout.StateLayout
 import com.zxhhyj.music.ui.item.AlbumItem
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.search.SearchScreenTabs
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
+import com.zxhhyj.ui.view.IconButton
 import com.zxhhyj.ui.view.Scaffold
 import com.zxhhyj.ui.view.TopBar
 import dev.olshevski.navigation.reimagined.NavController
@@ -50,21 +50,19 @@ fun AlbumScreen(
                     modifier = Modifier.fillMaxWidth(),
                     title = stringResource(id = R.string.album),
                     actions = {
-                        Icon(
-                            imageVector = Icons.Rounded.Search,
-                            contentDescription = null,
-                            modifier = Modifier.clickable {
-                                mainNavController.navigate(
-                                    ScreenDestination.Search(
-                                        SearchScreenTabs.Album
-                                    )
+                        IconButton(onClick = {
+                            mainNavController.navigate(
+                                ScreenDestination.Search(
+                                    SearchScreenTabs.Album
                                 )
-                            }
-                        )
+                            )
+                        }) {
+                            Icon(imageVector = Icons.Rounded.Search, contentDescription = null)
+                        }
                     }
                 )
             }) {
-            StatePrompt(
+            StateLayout(
                 empty = AndroidMediaLibsRepository.albums.isEmpty(),
                 modifier = Modifier.fillMaxSize()
             ) {

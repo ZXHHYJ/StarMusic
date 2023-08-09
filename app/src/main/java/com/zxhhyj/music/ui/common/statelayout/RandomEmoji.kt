@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.common.stateprompt
+package com.zxhhyj.music.ui.common.statelayout
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -12,7 +12,7 @@ import com.zxhhyj.music.ui.theme.vertical
 import com.zxhhyj.ui.theme.LocalColorScheme
 
 @Composable
-fun EmptyContentMessage(modifier: Modifier = Modifier) {
+fun RandomEmoji(modifier: Modifier = Modifier) {
     Box(modifier = modifier) {
         Text(
             text = randomEmoji(),

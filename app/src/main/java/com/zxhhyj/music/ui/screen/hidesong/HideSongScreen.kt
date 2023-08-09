@@ -30,13 +30,13 @@ import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.ui.common.AppAsyncImage
-import com.zxhhyj.music.ui.common.stateprompt.StatePrompt
+import com.zxhhyj.music.ui.common.statelayout.StateLayout
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
+import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.Card
 import com.zxhhyj.ui.view.Scaffold
 import com.zxhhyj.ui.view.TopBar
-import com.zxhhyj.ui.theme.LocalColorScheme
 
 @Composable
 fun HiddenSongScreen(padding: PaddingValues) {
@@ -50,7 +50,7 @@ fun HiddenSongScreen(padding: PaddingValues) {
                 title = stringResource(id = R.string.hidden_songs)
             )
         }) {
-        StatePrompt(
+        StateLayout(
             empty = AndroidMediaLibsRepository.hideSongs.isEmpty(),
             modifier = Modifier.fillMaxSize()
         ) {
@@ -80,17 +80,12 @@ private fun HideSongItem(
                 },
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Card(
-                backgroundColor = Color.Transparent,
+            AppAsyncImage(
                 modifier = Modifier
                     .padding(horizontal = horizontal, vertical = vertical)
                     .size(50.dp),
-            ) {
-                AppAsyncImage(
-                    modifier = Modifier.fillMaxSize(),
-                    data = song.album.coverUrl
-                )
-            }
+                data = song.album.coverUrl
+            )
             Column(
                 modifier = Modifier
                     .fillMaxSize()

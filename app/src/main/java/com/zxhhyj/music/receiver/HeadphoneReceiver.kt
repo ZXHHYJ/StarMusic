@@ -6,7 +6,6 @@ import android.content.Intent
 import com.zxhhyj.music.service.playmanager.PlayManager
 
 class HeadphoneReceiver : BroadcastReceiver() {
-
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Intent.ACTION_HEADSET_PLUG) {
             val state = intent.getIntExtra("state", -1)

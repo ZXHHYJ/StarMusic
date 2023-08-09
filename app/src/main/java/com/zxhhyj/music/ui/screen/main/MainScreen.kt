@@ -8,19 +8,24 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.with
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -32,15 +37,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
+import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.ui.common.MediaController
+import com.zxhhyj.music.ui.common.AlbumMotionBlur
+import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.PanelState
 import com.zxhhyj.music.ui.common.SlidingPanel
 import com.zxhhyj.music.ui.common.rememberPanelController
@@ -49,7 +61,6 @@ import com.zxhhyj.music.ui.dialog.EditPlayListTitleDialog
 import com.zxhhyj.music.ui.dialog.MediaLibsEmptyDialog
 import com.zxhhyj.music.ui.dialog.ScanMusicDialog
 import com.zxhhyj.music.ui.dialog.SplashDialog
-import com.zxhhyj.music.ui.lab.LabScreen
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
@@ -57,6 +68,7 @@ import com.zxhhyj.music.ui.screen.about.AboutScreen
 import com.zxhhyj.music.ui.screen.album.AlbumScreen
 import com.zxhhyj.music.ui.screen.albumcnt.AlbumCntScreen
 import com.zxhhyj.music.ui.screen.hidesong.HiddenSongScreen
+import com.zxhhyj.music.ui.screen.lab.LabScreen
 import com.zxhhyj.music.ui.screen.lyric.LyricScreen
 import com.zxhhyj.music.ui.screen.medialibs.MediaSourceScreen
 import com.zxhhyj.music.ui.screen.play.PlayScreen
@@ -72,10 +84,13 @@ import com.zxhhyj.music.ui.sheet.AddToPlayListSheet
 import com.zxhhyj.music.ui.sheet.PlaylistMenuSheet
 import com.zxhhyj.music.ui.sheet.SongMenuSheet
 import com.zxhhyj.music.ui.sheet.songinfo.SongInfoSheet
+import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.round
 import com.zxhhyj.music.ui.theme.vertical
-import com.zxhhyj.ui.view.Divider
 import com.zxhhyj.ui.theme.LocalColorScheme
+import com.zxhhyj.ui.view.Card
+import com.zxhhyj.ui.view.Divider
+import com.zxhhyj.ui.view.IconButton
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.DialogNavHost
 import dev.olshevski.navigation.reimagined.NavAction
@@ -170,11 +185,94 @@ fun MainScreen() {
                         enter = expandVertically(),
                         exit = shrinkVertically()
                     ) {
-                        MediaController(
-                            modifier = Modifier.fillMaxWidth(),
-                            panelState = panelController.panelState
-                        ) {
-                            panelController.swipeTo(PanelState.EXPANDED)
+                        val controlBarHeight = 50.dp
+                        val coverLength = 56.dp
+                        Box(modifier = Modifier.fillMaxWidth()) {
+                            Box(
+                                modifier = Modifier
+                                    .height(controlBarHeight / 2)
+                                    .fillMaxWidth()
+                                    .align(Alignment.BottomCenter)
+                                    .background(LocalColorScheme.current.background)
+                            ) {
+                                Divider(modifier = Modifier.fillMaxWidth())
+                            }
+                            Box(modifier = Modifier.padding(horizontal = horizontal)) {
+                                val song by PlayManager.currentSongLiveData().observeAsState()
+                                Card(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(controlBarHeight)
+                                        .align(Alignment.BottomCenter),
+                                    backgroundColor = Color.Transparent,
+                                    contentColor = Color.Transparent,
+                                ) {
+                                    AlbumMotionBlur(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .align(Alignment.BottomCenter)
+                                            .height(controlBarHeight)
+                                            .background(Color.DarkGray)
+                                            .clickable {
+                                                panelController.swipeTo(PanelState.EXPANDED)
+                                            },
+                                        albumUrl = song?.album?.coverUrl,
+                                        paused = panelController.panelState != PanelState.COLLAPSED
+                                    )
+                                    Row(
+                                        modifier = Modifier
+                                            .padding(start = coverLength)
+                                            .fillMaxSize(),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(
+                                            modifier = Modifier
+                                                .padding(start = horizontal)
+                                                .weight(1.0f),
+                                            text = song?.songName ?: "",
+                                            fontSize = 16.sp,
+                                            maxLines = 1,
+                                            fontWeight = FontWeight.Bold,
+                                            color = Color.White
+                                        )
+                                        val playPauseState by PlayManager.pauseLiveData().map {
+                                            if (it) R.drawable.ic_play else R.drawable.ic_pause
+                                        }.observeAsState(R.drawable.ic_play)
+                                        val buttonSize = 36.dp
+                                        IconButton(onClick = {
+                                            if (PlayManager.pauseLiveData().value == true) {
+                                                PlayManager.start()
+                                            } else {
+                                                PlayManager.pause()
+                                            }
+                                        }) {
+                                            Icon(
+                                                imageVector = ImageVector.vectorResource(
+                                                    playPauseState
+                                                ),
+                                                tint = Color.White,
+                                                contentDescription = null,
+                                                modifier = Modifier.size(buttonSize)
+                                            )
+                                        }
+                                        Spacer(modifier = Modifier.width(horizontal / 2))
+                                        IconButton(onClick = { PlayManager.skipToNext() }) {
+                                            Icon(
+                                                imageVector = ImageVector.vectorResource(R.drawable.ic_skip_next),
+                                                tint = Color.White,
+                                                contentDescription = null,
+                                                modifier = Modifier
+                                                    .size(buttonSize)
+                                            )
+                                        }
+                                        Spacer(modifier = Modifier.width(horizontal / 2))
+                                    }
+                                }
+                                AppAsyncImage(
+                                    modifier = Modifier.size(coverLength),
+                                    data = song?.album?.coverUrl ?: ""
+                                )
+                            }
                         }
                     }
                 },

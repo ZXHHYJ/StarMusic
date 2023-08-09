@@ -21,7 +21,6 @@ import androidx.compose.material.icons.rounded.Remove
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -31,11 +30,10 @@ import com.zxhhyj.music.logic.bean.PlayListModel
 import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
-import com.zxhhyj.music.ui.common.stateprompt.StatePrompt
+import com.zxhhyj.music.ui.common.statelayout.StateLayout
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.theme.vertical
-import com.zxhhyj.ui.view.Card
 import com.zxhhyj.ui.view.Button
 import com.zxhhyj.ui.view.Scaffold
 import com.zxhhyj.ui.view.TopBar
@@ -70,12 +68,10 @@ fun PlayListCntScreen(
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Card(backgroundColor = Color.Transparent) {
-                        AppAsyncImage(
-                            modifier = Modifier.size(210.dp),
-                            data = playlist.songs.firstOrNull()?.album?.coverUrl
-                        )
-                    }
+                    AppAsyncImage(
+                        modifier = Modifier.size(210.dp),
+                        data = playlist.songs.firstOrNull()?.album?.coverUrl
+                    )
                     Spacer(modifier = Modifier.height(vertical))
                     Text(text = playlist.name, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                     Button(
@@ -87,7 +83,7 @@ fun PlayListCntScreen(
                 }
             }
         }) {
-        StatePrompt(empty = playlist.songs.isEmpty(), modifier = Modifier.fillMaxSize()) {
+        StateLayout(empty = playlist.songs.isEmpty(), modifier = Modifier.fillMaxSize()) {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 itemsIndexed(playlist.songs) { index, item ->
                     SongItem(

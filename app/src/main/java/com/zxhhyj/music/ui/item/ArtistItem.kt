@@ -14,9 +14,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
@@ -26,8 +28,8 @@ import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
-import com.zxhhyj.ui.view.Card
 import com.zxhhyj.ui.theme.LocalColorScheme
+import com.zxhhyj.ui.view.Card
 
 @Composable
 fun ArtistItem(artist: SongBean.Artist, onClick: () -> Unit) {
@@ -39,18 +41,13 @@ fun ArtistItem(artist: SongBean.Artist, onClick: () -> Unit) {
                 .clickable(onClick = onClick),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Card(
-                backgroundColor = Color.Transparent,
-                shape = RoundedCornerShape(50),
+            AppAsyncImage(
                 modifier = Modifier
                     .padding(horizontal = horizontal, vertical = vertical)
                     .size(50.dp)
-            ) {
-                AppAsyncImage(
-                    modifier = Modifier.fillMaxSize(),
-                    data = artist.songs.getOrNull(0)?.album?.coverUrl
-                )
-            }
+                    .clip(RoundedCornerShape(50)),
+                data = artist.songs.getOrNull(0)?.album?.coverUrl
+            )
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -62,7 +59,8 @@ fun ArtistItem(artist: SongBean.Artist, onClick: () -> Unit) {
                     color = LocalColorScheme.current.text,
                     fontSize = 15.sp,
                     maxLines = 1,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.weight(1.0f))
                 Text(

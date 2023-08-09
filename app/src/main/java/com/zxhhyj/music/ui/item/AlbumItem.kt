@@ -19,8 +19,8 @@ import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository.songs
 import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.BoxWithPercentages
-import com.zxhhyj.ui.view.Card
 import com.zxhhyj.ui.theme.LocalColorScheme
+import com.zxhhyj.ui.view.Card
 
 @Composable
 fun AlbumItem(
@@ -31,16 +31,11 @@ fun AlbumItem(
     Card(backgroundColor = Color.Transparent) {
         BoxWithPercentages(modifier = modifier) {
             Column(modifier = Modifier.fillMaxSize()) {
-                Card(
-                    backgroundColor = Color.Transparent,
-                    modifier = Modifier.size(maxWidth)
-                ) {
-                    AppAsyncImage(
-                        modifier = Modifier.fillMaxSize(),
-                        data = album.coverUrl,
-                        onClick = onClick
-                    )
-                }
+                AppAsyncImage(
+                    modifier = Modifier.size(maxWidth),
+                    data = album.coverUrl,
+                    onClick = onClick
+                )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = album.name,

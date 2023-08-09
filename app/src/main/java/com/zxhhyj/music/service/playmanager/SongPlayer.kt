@@ -77,9 +77,11 @@ class SongPlayer {
         this.currentSong = song
         _currentProgress.value = 0
         _songDuration.value = song.duration.toInt()
-        timer?.stop()
-        timer = Timer(0, song.duration.toInt()).apply {
+        timer?.pause()
+        timer = null
+        timer = Timer(0, currentSong.duration.toInt()).apply {
             setOnFinishedListener {
+                this@SongPlayer.seekTo(song.startPosition.toInt())
                 completionListener?.onCompletion(mediaPlayer)
             }
             setOnUpdateListener {
@@ -102,13 +104,10 @@ class SongPlayer {
                 preparedListener?.onPrepared(it)
             }
             setOnCompletionListener {
-                this@SongPlayer.pause()
-                timer = null
-                completionListener?.onCompletion(it)
+                _currentProgress.value = _songDuration.value
             }
             setOnErrorListener { mediaPlayer, i, i2 ->
                 this@SongPlayer.pause()
-                timer = null
                 errorListener?.onError(mediaPlayer, i, i2) ?: false
             }
             setDataSource(song.data)
@@ -129,7 +128,7 @@ class SongPlayer {
      * 暂停播放音乐
      */
     fun pause() {
-        timer?.stop()
+        timer?.pause()
         _pause.value = true
         mediaPlayer.pause()
     }
@@ -150,6 +149,8 @@ class SongPlayer {
      * 释放 MediaPlayer 资源
      */
     fun release() {
+        timer?.pause()
+        timer = null
         _pause.value = false
         _currentProgress.value = 0
         _songDuration.value = 0
@@ -193,7 +194,7 @@ class SongPlayer {
                         time += 1000
                         emit(time)
                     }
-                }.flowOn(Dispatchers.Default)
+                }.flowOn(Dispatchers.Main)
                     .collect { time ->
                         currentTime = time
                         onUpdateListener?.invoke(time)
@@ -204,20 +205,25 @@ class SongPlayer {
         }
 
         /**
-         * 停止定时器
+         * 暂停定时器
          */
-        fun stop() {
+        fun pause() {
             job?.cancel()
+            job = null
         }
 
         /**
          * 设置当前时间并重新启动定时器
          */
         fun setCurrentTime(newTime: Int) {
-            job?.cancel()
-            currentTime = newTime
+            if (job !== null) {
+                job?.cancel()
+                currentTime = newTime
+                start()
+            } else {
+                currentTime = newTime
+            }
             onUpdateListener?.invoke(newTime)
-            start()
         }
     }
 }

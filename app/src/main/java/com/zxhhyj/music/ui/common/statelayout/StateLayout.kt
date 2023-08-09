@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.common.stateprompt
+package com.zxhhyj.music.ui.common.statelayout
 
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,7 +9,7 @@ import androidx.compose.ui.platform.LocalDensity
 import com.zxhhyj.ui.view.LocalTopBarState
 
 @Composable
-fun StatePrompt(
+fun StateLayout(
     modifier: Modifier = Modifier,
     empty: Boolean,
     content: @Composable () -> Unit
@@ -20,7 +20,7 @@ fun StatePrompt(
     BoxWithConstraints(modifier) {
         when (empty) {
             true -> {
-                EmptyContentMessage(
+                RandomEmoji(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(maxHeight - barHeight)

@@ -15,11 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.PlayListRepository
-import com.zxhhyj.music.ui.common.stateprompt.StatePrompt
+import com.zxhhyj.music.ui.common.statelayout.StateLayout
 import com.zxhhyj.music.ui.item.PlayListItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
+import com.zxhhyj.ui.view.IconButton
 import com.zxhhyj.ui.view.Scaffold
 import com.zxhhyj.ui.view.TopBar
 import dev.olshevski.navigation.reimagined.NavController
@@ -42,15 +43,15 @@ fun PlayListScreen(
                 modifier = Modifier,
                 title = stringResource(id = R.string.play_list),
                 actions = {
-                    Icon(
-                        imageVector = Icons.Rounded.Add,
-                        contentDescription = null,
-                        modifier = Modifier.clickable {
-                            dialogNavController.navigate(DialogDestination.CreatePlayList)
-                        })
+                    IconButton(onClick = { dialogNavController.navigate(DialogDestination.CreatePlayList) }) {
+                        Icon(
+                            imageVector = Icons.Rounded.Add,
+                            contentDescription = null
+                        )
+                    }
                 })
         }) {
-        StatePrompt(
+        StateLayout(
             empty = PlayListRepository.playlist.isEmpty(),
             modifier = Modifier.fillMaxSize()
         ) {

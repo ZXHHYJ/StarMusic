@@ -3,6 +3,7 @@ package com.zxhhyj.music.ui.screen.play
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,7 +29,7 @@ import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AlbumCoverGradient
 import com.zxhhyj.music.ui.common.BoxWithPercentages
-import com.zxhhyj.music.ui.common.ImageMotionBlur
+import com.zxhhyj.music.ui.common.AlbumMotionBlur
 import com.zxhhyj.music.ui.common.PanelController
 import com.zxhhyj.music.ui.common.PanelState
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
@@ -38,14 +39,14 @@ import dev.olshevski.navigation.reimagined.*
 
 
 enum class PlayScreenDestination {
-    Main,
+    Controller,
     Lyric,
     PlayQueue,
 }
 
 val PlayScreenDestination.tabIcon
     get() = when (this) {
-        PlayScreenDestination.Main -> throw RuntimeException()
+        PlayScreenDestination.Controller -> throw RuntimeException()
         PlayScreenDestination.Lyric -> Icons.Rounded.FontDownload
         PlayScreenDestination.PlayQueue -> Icons.Rounded.FormatListBulleted
     }
@@ -79,7 +80,7 @@ fun PlayScreen(
     panelController: PanelController
 ) {
 
-    val navController = rememberNavController(startDestination = PlayScreenDestination.Main)
+    val navController = rememberNavController(startDestination = PlayScreenDestination.Controller)
 
     val lastDestination = navController.backstack.entries.last().destination
 
@@ -89,7 +90,7 @@ fun PlayScreen(
 
     if (panelController.panelState == PanelState.COLLAPSED) {
         navController.popUpTo {
-            it == PlayScreenDestination.Main
+            it == PlayScreenDestination.Controller
         }
     }
 
@@ -123,7 +124,7 @@ fun PlayScreen(
                             onClick = {
                                 if (selected) {
                                     navController.popUpTo {
-                                        it == PlayScreenDestination.Main
+                                        it == PlayScreenDestination.Controller
                                     }
                                     return@BottomNavigationItem
                                 }
@@ -153,8 +154,8 @@ fun PlayScreen(
                         }
                     ) {
                         when (it) {
-                            PlayScreenDestination.Main -> {
-                                NowPlayScreen(sheetNavController)
+                            PlayScreenDestination.Controller -> {
+                                PlayControllerScreen(sheetNavController)
                             }
 
                             PlayScreenDestination.Lyric -> {
@@ -193,9 +194,11 @@ fun PlayScreen(
                 }
             }
 
-            ImageMotionBlur(
-                modifier = Modifier.fillMaxSize(),
-                imageUrl = coverUrl,
+            AlbumMotionBlur(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.DarkGray),
+                albumUrl = coverUrl,
                 paused = panelController.panelState == PanelState.COLLAPSED
             )
 
@@ -203,13 +206,13 @@ fun PlayScreen(
                 val tween = tween<Float>(durationMillis = AnimDurationMillis)
                 val enter = fadeIn(tween)
                 val exit = fadeOut(tween)
-                val isMainScreen = lastDestination == PlayScreenDestination.Main
+                val isControllerScreen = lastDestination == PlayScreenDestination.Controller
                 AnimatedVisibility(
-                    visible = isMainScreen,
+                    visible = isControllerScreen,
                     enter = enter,
                     exit = exit
                 ) {
-                    AlbumCoverGradient(modifier = Modifier.fillMaxSize(), url = coverUrl)
+                    AlbumCoverGradient(modifier = Modifier.fillMaxSize(), albumUrl = coverUrl)
                 }
             }
 
@@ -239,12 +242,12 @@ fun PlayScreen(
                                     modifier = Modifier
                                         .weight(1.0f)
                                 ) {
-                                    NowPlayScreen(sheetNavController)
+                                    PlayControllerScreen(sheetNavController)
                                 }
                                 BottomNavigationBar()
                             }
                             Spacer(modifier = Modifier.width(6.wp))
-                            if (lastDestination == PlayScreenDestination.Main) {
+                            if (lastDestination == PlayScreenDestination.Controller) {
                                 navController.navigate(PlayScreenDestination.Lyric)
                             }
                             MainNavHost()
@@ -259,8 +262,8 @@ fun PlayScreen(
                                 .weight(1.0f),
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            BackHandler(lastDestination != PlayScreenDestination.Main) {
-                                navController.popUpTo { it == PlayScreenDestination.Main }
+                            BackHandler(lastDestination != PlayScreenDestination.Controller) {
+                                navController.popUpTo { it == PlayScreenDestination.Controller }
                             }
                             MainNavHost()
                         }

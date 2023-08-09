@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 
+
 /**
  * 该对象提供了一些常用的帮助方法，用于执行与 Web 和邮件相关的常见活动。
  */

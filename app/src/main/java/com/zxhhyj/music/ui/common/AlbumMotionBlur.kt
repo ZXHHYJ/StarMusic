@@ -29,11 +29,11 @@ import com.google.android.renderscript.Toolkit
 import com.zxhhyj.music.logic.utils.BitmapUtils
 
 @Composable
-fun ImageMotionBlur(
+fun AlbumMotionBlur(
     modifier: Modifier,
     whiteObscuration: Color = Color(0x20FFFFFF),
     blackObscuration: Color = Color(0x3C000000),
-    imageUrl: String?,
+    albumUrl: String?,
     paused: Boolean
 ) {
 
@@ -43,10 +43,10 @@ fun ImageMotionBlur(
 
     val context = LocalContext.current
     val imageLoader = ImageLoader(context)
-    LaunchedEffect(imageUrl) {
-        if (imageUrl == null) return@LaunchedEffect
+    LaunchedEffect(albumUrl) {
+        if (albumUrl == null) return@LaunchedEffect
         val request = ImageRequest.Builder(context)
-            .data(imageUrl)
+            .data(albumUrl)
             .build()
         val bitmap = imageLoader.execute(request).drawable?.toBitmap()?.run {
             BitmapUtils.compressBitmap(this)

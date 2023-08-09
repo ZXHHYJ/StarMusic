@@ -18,7 +18,6 @@ import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -33,11 +32,10 @@ import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.theme.vertical
+import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.Button
-import com.zxhhyj.ui.view.Card
 import com.zxhhyj.ui.view.Scaffold
 import com.zxhhyj.ui.view.TopBar
-import com.zxhhyj.ui.theme.LocalColorScheme
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -63,12 +61,10 @@ fun AlbumCntScreen(
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Card(backgroundColor = Color.Transparent) {
-                        AppAsyncImage(
-                            modifier = Modifier.size(210.dp),
-                            data = album.coverUrl
-                        )
-                    }
+                    AppAsyncImage(
+                        modifier = Modifier.size(210.dp),
+                        data = album.coverUrl
+                    )
                     Spacer(
                         modifier = Modifier.height(vertical)
                     )

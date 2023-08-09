@@ -49,13 +49,13 @@ import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
 import com.zxhhyj.music.ui.theme.translucentWhiteFixBugColor
 import com.zxhhyj.ui.view.Card
-import com.zxhhyj.ui.roundClickable
+import com.zxhhyj.ui.view.IconButton
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import kotlin.math.roundToInt
 
 @Composable
-fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
+fun PlayControllerScreen(sheetNavController: NavController<BottomSheetDestination>) {
     BoxWithPercentages(
         modifier = Modifier
             .fillMaxSize()
@@ -77,18 +77,19 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                 false -> {
                     SharedElement(
                         key = ShareAlbumKey,
-                        screenKey = PlayScreenDestination.Main,
+                        screenKey = PlayScreenDestination.Controller,
                         transitionSpec = MaterialFadeOutTransitionSpec
                     ) {
                         Card(
                             modifier = Modifier
                                 .padding(bottom = 8.dp)
                                 .size(100.wp),
-                            backgroundColor = Color.LightGray,
+                            backgroundColor = Color.Transparent,
                             elevation = 10.dp,
                         ) {
                             AppAsyncImage(
                                 modifier = Modifier.fillMaxSize(),
+                                backgroundColor = Color.DarkGray,
                                 data = song?.album?.coverUrl
                             )
                         }
@@ -210,41 +211,38 @@ fun NowPlayScreen(sheetNavController: NavController<BottomSheetDestination>) {
                     if (it) R.drawable.ic_play else R.drawable.ic_pause
                 }.observeAsState(R.drawable.ic_play)
 
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_previous),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(buttonSize)
-                        .roundClickable {
-                            PlayManager.skipToPrevious()
-                        },
-                    tint = Color.White
-                )
+                IconButton(onClick = { PlayManager.skipToPrevious() }) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_previous),
+                        contentDescription = null,
+                        modifier = Modifier.size(buttonSize),
+                        tint = Color.White
+                    )
+                }
                 Spacer(modifier = Modifier.width(8.wp))
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = playPauseState),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .scale(1.2f)
-                        .size(23.wp)
-                        .roundClickable {
-                            if (PlayManager.pauseLiveData().value == true)
-                                PlayManager.start()
-                            else PlayManager.pause()
-                        },
-                    tint = Color.White
-                )
+                IconButton(onClick = {
+                    if (PlayManager.pauseLiveData().value == true)
+                        PlayManager.start()
+                    else PlayManager.pause()
+                }) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = playPauseState),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .scale(1.2f)
+                            .size(23.wp),
+                        tint = Color.White
+                    )
+                }
                 Spacer(modifier = Modifier.width(8.wp))
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_next),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(buttonSize)
-                        .roundClickable {
-                            PlayManager.skipToNext()
-                        },
-                    tint = Color.White
-                )
+                IconButton(onClick = { PlayManager.skipToNext() }) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_next),
+                        contentDescription = null,
+                        modifier = Modifier.size(buttonSize),
+                        tint = Color.White
+                    )
+                }
             }
         }
     }

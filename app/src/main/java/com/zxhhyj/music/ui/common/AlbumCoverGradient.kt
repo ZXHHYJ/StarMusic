@@ -29,7 +29,7 @@ import com.zxhhyj.music.logic.utils.BitmapUtils
 @Composable
 fun AlbumCoverGradient(
     modifier: Modifier,
-    url: String?,
+    albumUrl: String?,
 ) {
     var keyColor by remember {
         mutableStateOf(Color.LightGray)
@@ -39,10 +39,10 @@ fun AlbumCoverGradient(
     }
     val context = LocalContext.current
     val imageLoader = ImageLoader(context)
-    LaunchedEffect(url) {
-        if (url == null) return@LaunchedEffect
+    LaunchedEffect(albumUrl) {
+        if (albumUrl == null) return@LaunchedEffect
         val request = ImageRequest.Builder(context)
-            .data(url)
+            .data(albumUrl)
             .build()
         val bitmap = imageLoader.execute(request).drawable?.toBitmap() ?: return@LaunchedEffect
         val palette = Palette.from(BitmapUtils.compressBitmap(bitmap)).generate()

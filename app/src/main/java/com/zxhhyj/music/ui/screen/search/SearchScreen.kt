@@ -39,7 +39,7 @@ import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppTextField
 import com.zxhhyj.music.ui.common.BoxWithPercentages
-import com.zxhhyj.music.ui.common.stateprompt.StatePrompt
+import com.zxhhyj.music.ui.common.statelayout.StateLayout
 import com.zxhhyj.music.ui.item.AlbumItem
 import com.zxhhyj.music.ui.item.ArtistItem
 import com.zxhhyj.music.ui.item.SongItem
@@ -153,7 +153,7 @@ fun SearchScreen(
                                     searchKey
                                 )
                             }
-                            StatePrompt(
+                            StateLayout(
                                 empty = searchKey.isBlank() || songs.isEmpty(),
                                 modifier = Modifier.fillMaxSize()
                             ) {
@@ -179,7 +179,7 @@ fun SearchScreen(
                                 val albums = AndroidMediaLibsRepository.albums.filter {
                                     it.name.contains(searchKey)
                                 }
-                                StatePrompt(
+                                StateLayout(
                                     empty = searchKey.isBlank() || albums.isEmpty(),
                                     modifier = Modifier.fillMaxSize()
                                 ) {
@@ -222,7 +222,7 @@ fun SearchScreen(
                             val artists = AndroidMediaLibsRepository.artists.filter {
                                 it.name.contains(searchKey)
                             }
-                            StatePrompt(
+                            StateLayout(
                                 empty = searchKey.isBlank() || artists.isEmpty(),
                                 modifier = Modifier.fillMaxSize()
                             ) {

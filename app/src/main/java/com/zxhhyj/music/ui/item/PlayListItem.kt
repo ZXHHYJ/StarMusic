@@ -27,8 +27,8 @@ import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
-import com.zxhhyj.ui.view.Card
 import com.zxhhyj.ui.theme.LocalColorScheme
+import com.zxhhyj.ui.view.Card
 
 @Composable
 fun PlayListItem(
@@ -44,17 +44,12 @@ fun PlayListItem(
                 .clickable(onClick = onClick),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Card(
-                backgroundColor = Color.Transparent,
+            AppAsyncImage(
                 modifier = Modifier
                     .padding(horizontal = horizontal, vertical = vertical)
                     .size(50.dp),
-            ) {
-                AppAsyncImage(
-                    modifier = Modifier.fillMaxSize(),
-                    data = model.songs.firstOrNull()?.album?.coverUrl
-                )
-            }
+                data = model.songs.firstOrNull()?.album?.coverUrl
+            )
             Column(
                 modifier = Modifier
                     .fillMaxSize()

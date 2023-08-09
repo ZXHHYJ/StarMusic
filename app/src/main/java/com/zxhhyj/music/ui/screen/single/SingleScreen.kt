@@ -1,6 +1,5 @@
 package com.zxhhyj.music.ui.screen.single
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,9 +27,10 @@ import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.search.SearchScreenTabs
+import com.zxhhyj.ui.view.IconButton
 import com.zxhhyj.ui.view.ListButton
-import com.zxhhyj.ui.view.TopBar
 import com.zxhhyj.ui.view.Scaffold
+import com.zxhhyj.ui.view.TopBar
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -56,24 +56,22 @@ fun SingleScreen(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.media_lib),
                 actions = {
-                    Icon(
-                        imageVector = Icons.Rounded.Search,
-                        contentDescription = null,
-                        modifier = Modifier.clickable {
-                            mainNavController.navigate(
-                                ScreenDestination.Search(
-                                    SearchScreenTabs.Single
-                                )
+                    IconButton(onClick = {
+                        mainNavController.navigate(
+                            ScreenDestination.Search(
+                                SearchScreenTabs.Single
                             )
-                        }
-                    )
-                    Icon(
-                        imageVector = Icons.Rounded.MoreVert,
-                        contentDescription = null,
-                        modifier = Modifier.clickable {
-                            mainNavController.navigate(ScreenDestination.Setting)
-                        }
-                    )
+                        )
+                    }) {
+                        Icon(imageVector = Icons.Rounded.Search, contentDescription = null)
+                    }
+                    IconButton(onClick = {
+                        mainNavController.navigate(
+                            ScreenDestination.Setting
+                        )
+                    }) {
+                        Icon(imageVector = Icons.Rounded.MoreVert, contentDescription = null)
+                    }
                 }
             )
         }) {
