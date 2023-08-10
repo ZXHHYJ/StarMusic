@@ -49,7 +49,10 @@ fun ItemSwitcher(
                 }
                 Spacer(modifier = Modifier.width(StarDimens.vertical))
                 Column(verticalArrangement = Arrangement.Center) {
-                    CompositionLocalProvider(LocalTextStyle provides LocalTextStyles.current.main) {
+                    CompositionLocalProvider(
+                        LocalTextStyle provides LocalTextStyles.current.main,
+                        LocalContentColor provides LocalColorScheme.current.text
+                    ) {
                         text()
                     }
                     CompositionLocalProvider(

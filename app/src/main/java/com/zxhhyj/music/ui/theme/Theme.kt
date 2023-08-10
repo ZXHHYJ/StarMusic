@@ -1,7 +1,12 @@
 package com.zxhhyj.music.ui.theme
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.theme.StarTheme
 import com.zxhhyj.ui.theme.starTextStyles
 
@@ -9,9 +14,14 @@ import com.zxhhyj.ui.theme.starTextStyles
 fun MandySaMusicTheme(
     content: @Composable () -> Unit
 ) {
-    StarTheme(colorScheme = lightColorScheme, textStyles = starTextStyles()) {
+    StarTheme(
+        colorScheme = if (isSystemInDarkTheme()) nightColorScheme else lightColorScheme,
+        textStyles = starTextStyles()
+    ) {
         MaterialTheme {
-            content.invoke()
+            Box(modifier = Modifier.background(LocalColorScheme.current.background)) {
+                content.invoke()
+            }
         }
     }
 }

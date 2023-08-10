@@ -25,6 +25,7 @@ fun AppAsyncImage(
         AsyncImage(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.White)
                 .background(backgroundColor)
                 .then(clickableModifier),
             model = ImageRequest.Builder(LocalContext.current)

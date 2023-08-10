@@ -61,7 +61,7 @@ fun SettingScreen(
                 Item(
                     icon = { Icon(imageVector = Icons.Rounded.FontDownload, null) },
                     text = { Text(text = stringResource(id = R.string.lyric)) },
-                    subText = { Text(text = stringResource(id = R.string.scan_music)) }) {
+                    subText = { Text(text = stringResource(id = R.string.lyric)) }) {
                     mainNavController.navigate(ScreenDestination.Lyric)
                 }
             }
