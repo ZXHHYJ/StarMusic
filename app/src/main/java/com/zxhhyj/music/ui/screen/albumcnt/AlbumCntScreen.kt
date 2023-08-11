@@ -43,13 +43,13 @@ import dev.olshevski.navigation.reimagined.navigate
 fun AlbumCntScreen(
     mainNavController: NavController<ScreenDestination>,
     sheetNavController: NavController<BottomSheetDestination>,
-    padding: PaddingValues,
+    paddingValues: PaddingValues,
     album: SongBean.Album
 ) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding),
+            .padding(paddingValues),
         topBar = {
             TopBar(
                 modifier = Modifier.fillMaxWidth(),

@@ -26,13 +26,13 @@ import com.zxhhyj.ui.view.item.Item
 
 @Composable
 fun AboutScreen(
-    padding: PaddingValues,
+    paddingValues: PaddingValues,
 ) {
     val ctx = LocalContext.current
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding),
+            .padding(paddingValues),
         topBar = {
             TopBar(
                 modifier = Modifier,

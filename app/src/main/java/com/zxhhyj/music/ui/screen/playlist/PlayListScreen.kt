@@ -32,12 +32,12 @@ fun PlayListScreen(
     mainNavController: NavController<ScreenDestination>,
     sheetNavController: NavController<BottomSheetDestination>,
     dialogNavController: NavController<DialogDestination>,
-    padding: PaddingValues
+    paddingValues: PaddingValues
 ) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding),
+            .padding(paddingValues),
         topBar = {
             TopBar(
                 modifier = Modifier,

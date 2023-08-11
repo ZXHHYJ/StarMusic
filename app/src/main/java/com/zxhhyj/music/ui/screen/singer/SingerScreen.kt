@@ -27,12 +27,12 @@ import dev.olshevski.navigation.reimagined.navigate
 @Composable
 fun SingerScreen(
     mainNavController: NavController<ScreenDestination>,
-    padding: PaddingValues
+    paddingValues: PaddingValues
 ) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding),
+            .padding(paddingValues),
         topBar = {
             TopBar(
                 modifier = Modifier.fillMaxWidth(),

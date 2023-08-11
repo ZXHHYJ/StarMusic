@@ -39,7 +39,7 @@ fun SingleScreen(
     mainNavController: NavController<ScreenDestination>,
     sheetNavController: NavController<BottomSheetDestination>,
     dialogNavController: NavController<DialogDestination>,
-    padding: PaddingValues
+    paddingValues: PaddingValues
 ) {
     DisposableEffect(SettingRepository.AgreePrivacyPolicy, AndroidMediaLibsRepository.songs) {
         if (SettingRepository.AgreePrivacyPolicy && AndroidMediaLibsRepository.songs.isEmpty()) {
@@ -50,7 +50,7 @@ fun SingleScreen(
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding),
+            .padding(paddingValues),
         topBar = {
             TopBar(
                 modifier = Modifier.fillMaxWidth(),

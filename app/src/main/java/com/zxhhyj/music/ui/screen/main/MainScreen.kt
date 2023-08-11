@@ -281,7 +281,7 @@ fun MainScreen() {
                         Divider(modifier = Modifier.fillMaxWidth())
                     }
                 }
-            ) { padding ->
+            ) { paddingValues ->
                 if (panelController.panelState != PanelState.EXPANDED) {
                     NavBackHandler(controller = mainNavController)
                     //面板展开时返回事件不再分发到这里
@@ -292,7 +292,9 @@ fun MainScreen() {
                         panelController.swipeTo(PanelState.COLLAPSED)
                     }
                 }
-                Box(modifier = Modifier.statusBarsPadding()) {
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .statusBarsPadding()) {
                     val customTransitionSpec = NavTransitionSpec<Any?> { action, _, _ ->
                         val direction = if (action == NavAction.Pop) {
                             AnimatedContentScope.SlideDirection.End
@@ -311,7 +313,7 @@ fun MainScreen() {
                                     mainNavController = mainNavController,
                                     sheetNavController = sheetNavController,
                                     dialogNavController = dialogNavController,
-                                    padding = padding
+                                    paddingValues = paddingValues
                                 )
                             }
 
@@ -319,7 +321,7 @@ fun MainScreen() {
                                 SearchScreen(
                                     mainNavController = mainNavController,
                                     sheetNavController = sheetNavController,
-                                    padding = padding,
+                                    paddingValues = paddingValues,
                                     start = destination.start
                                 )
                             }
@@ -327,7 +329,7 @@ fun MainScreen() {
                             is ScreenDestination.SingerCnt -> {
                                 SingerCntScreen(
                                     sheetNavController = sheetNavController,
-                                    padding = padding,
+                                    paddingValues = paddingValues,
                                     artist = destination.artist
                                 )
                             }
@@ -336,28 +338,28 @@ fun MainScreen() {
                                 AlbumCntScreen(
                                     mainNavController = mainNavController,
                                     sheetNavController = sheetNavController,
-                                    padding = padding,
+                                    paddingValues = paddingValues,
                                     album = destination.album
                                 )
                             }
 
                             ScreenDestination.About -> {
                                 AboutScreen(
-                                    padding = padding
+                                    paddingValues = paddingValues
                                 )
                             }
 
                             ScreenDestination.Setting -> {
                                 SettingScreen(
                                     mainNavController = mainNavController,
-                                    padding = padding
+                                    paddingValues = paddingValues
                                 )
                             }
 
                             ScreenDestination.Album -> {
                                 AlbumScreen(
                                     mainNavController = mainNavController,
-                                    padding = padding
+                                    paddingValues = paddingValues
                                 )
                             }
 
@@ -365,14 +367,14 @@ fun MainScreen() {
                                 MediaSourceScreen(
                                     mainNavController = mainNavController,
                                     dialogNavController = dialogNavController,
-                                    padding = padding
+                                    paddingValues = paddingValues
                                 )
                             }
 
                             ScreenDestination.Singer -> {
                                 SingerScreen(
                                     mainNavController = mainNavController,
-                                    padding = padding
+                                    paddingValues = paddingValues
                                 )
                             }
 
@@ -381,33 +383,33 @@ fun MainScreen() {
                                     mainNavController = mainNavController,
                                     sheetNavController = sheetNavController,
                                     dialogNavController = dialogNavController,
-                                    padding = padding
+                                    paddingValues = paddingValues
                                 )
                             }
 
                             ScreenDestination.Theme -> {
-                                ThemeScreen(padding = padding)
+                                ThemeScreen(paddingValues = paddingValues)
                             }
 
                             ScreenDestination.Lyric -> {
-                                LyricScreen(padding = padding)
+                                LyricScreen(paddingValues = paddingValues)
                             }
 
                             ScreenDestination.HiddenSong -> {
-                                HiddenSongScreen(padding = padding)
+                                HiddenSongScreen(paddingValues = paddingValues)
                             }
 
                             is ScreenDestination.PlayListCnt -> {
                                 PlayListCntScreen(
                                     playlist = destination.model,
                                     sheetNavController = sheetNavController,
-                                    padding = padding
+                                    paddingValues = paddingValues
                                 )
                             }
 
                             ScreenDestination.Lab -> {
                                 LabScreen(
-                                    padding = padding
+                                    paddingValues = paddingValues
                                 )
                             }
                         }

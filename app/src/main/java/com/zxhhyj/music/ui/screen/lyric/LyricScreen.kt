@@ -18,11 +18,11 @@ import com.zxhhyj.ui.view.TopBar
 import com.zxhhyj.ui.view.item.ItemSwitcher
 
 @Composable
-fun LyricScreen(padding: PaddingValues) {
+fun LyricScreen(paddingValues: PaddingValues) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding),
+            .padding(paddingValues),
         topBar = {
             TopBar(
                 modifier = Modifier, title = stringResource(id = R.string.lyric)

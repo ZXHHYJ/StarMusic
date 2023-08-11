@@ -31,7 +31,7 @@ import com.zxhhyj.ui.view.item.ItemSwitcher
 
 @Composable
 fun LabScreen(
-    padding: PaddingValues
+    paddingValues: PaddingValues
 ) {
     var isExternalStorageManager by rememberSaveable {
         mutableStateOf(false)
@@ -58,7 +58,7 @@ fun LabScreen(
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding),
+            .padding(paddingValues),
         topBar = {
             TopBar(
                 modifier = Modifier.fillMaxWidth(),

@@ -18,11 +18,11 @@ import com.zxhhyj.ui.view.TopBar
 import com.zxhhyj.ui.view.item.ItemSwitcher
 
 @Composable
-fun ThemeScreen(padding: PaddingValues) {
+fun ThemeScreen(paddingValues: PaddingValues) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding),
+            .padding(paddingValues),
         topBar = { TopBar(modifier = Modifier, title = stringResource(id = R.string.theme)) }
     ) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {

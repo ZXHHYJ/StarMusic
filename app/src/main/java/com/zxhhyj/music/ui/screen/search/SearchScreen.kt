@@ -72,7 +72,7 @@ val SearchScreenTabs.tabName: String
 fun SearchScreen(
     mainNavController: NavController<ScreenDestination>,
     sheetNavController: NavController<BottomSheetDestination>,
-    padding: PaddingValues,
+    paddingValues: PaddingValues,
     start: SearchScreenTabs,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -83,7 +83,7 @@ fun SearchScreen(
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding),
+            .padding(paddingValues),
         topBar = {
             TopBar(
                 topBarProperties = TopBarProperties(showBottomDivider = false),

@@ -44,12 +44,12 @@ import dev.olshevski.navigation.reimagined.navigate
 fun PlayListCntScreen(
     playlist: PlayListModel,
     sheetNavController: NavController<BottomSheetDestination>,
-    padding: PaddingValues
+    paddingValues: PaddingValues
 ) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding),
+            .padding(paddingValues),
         topBar = {
             TopBar(
                 modifier = Modifier.fillMaxWidth(),

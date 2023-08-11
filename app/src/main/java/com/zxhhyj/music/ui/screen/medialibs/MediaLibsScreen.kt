@@ -38,7 +38,7 @@ import dev.olshevski.navigation.reimagined.navigate
 fun MediaSourceScreen(
     mainNavController: NavController<ScreenDestination>,
     dialogNavController: NavController<DialogDestination>,
-    padding: PaddingValues
+    paddingValues: PaddingValues
 ) {
     val permissionState =
         rememberPermissionState(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) Manifest.permission.READ_MEDIA_AUDIO else Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -63,7 +63,7 @@ fun MediaSourceScreen(
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding),
+            .padding(paddingValues),
         topBar = {
             TopBar(
                 modifier = Modifier.fillMaxWidth(),

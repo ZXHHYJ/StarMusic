@@ -34,7 +34,7 @@ import dev.olshevski.navigation.reimagined.navigate
 @Composable
 fun AlbumScreen(
     mainNavController: NavController<ScreenDestination>,
-    padding: PaddingValues
+    paddingValues: PaddingValues
 ) {
     BoxWithPercentages(modifier = Modifier.fillMaxSize()) {
         var fixedCount = (maxWidth / 180.dp).toInt()
@@ -44,7 +44,7 @@ fun AlbumScreen(
         Scaffold(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding),
+                .padding(paddingValues),
             topBar = {
                 TopBar(
                     modifier = Modifier.fillMaxWidth(),

@@ -39,11 +39,11 @@ import com.zxhhyj.ui.view.Scaffold
 import com.zxhhyj.ui.view.TopBar
 
 @Composable
-fun HiddenSongScreen(padding: PaddingValues) {
+fun HiddenSongScreen(paddingValues: PaddingValues) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding),
+            .padding(paddingValues),
         topBar = {
             TopBar(
                 modifier = Modifier,

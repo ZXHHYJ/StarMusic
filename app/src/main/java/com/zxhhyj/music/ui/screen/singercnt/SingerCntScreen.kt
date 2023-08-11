@@ -34,13 +34,13 @@ import dev.olshevski.navigation.reimagined.NavController
 @Composable
 fun SingerCntScreen(
     sheetNavController: NavController<BottomSheetDestination>,
-    padding: PaddingValues,
+    paddingValues: PaddingValues,
     artist: SongBean.Artist
 ) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding),
+            .padding(paddingValues),
         topBar = {
             TopBar(
                 modifier = Modifier.fillMaxWidth(),
