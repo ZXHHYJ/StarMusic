@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.zxhhyj.ui.theme.LocalColorScheme
-import com.zxhhyj.ui.view.Card
+import com.zxhhyj.ui.view.AppCard
 
 @Composable
 fun AppAsyncImage(
@@ -21,7 +21,7 @@ fun AppAsyncImage(
     onClick: (() -> Unit)? = null
 ) {
     val clickableModifier = onClick?.let { Modifier.clickable(onClick = onClick) } ?: Modifier
-    Card(backgroundColor = LocalColorScheme.current.background, modifier = modifier) {
+    AppCard(backgroundColor = LocalColorScheme.current.background, modifier = modifier) {
         AsyncImage(
             modifier = Modifier
                 .fillMaxSize()

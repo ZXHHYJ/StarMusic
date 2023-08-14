@@ -1,9 +1,11 @@
 package com.zxhhyj.music.ui.screen.single
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Icon
@@ -27,10 +29,11 @@ import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.search.SearchScreenTabs
-import com.zxhhyj.ui.view.IconButton
-import com.zxhhyj.ui.view.ListButton
-import com.zxhhyj.ui.view.Scaffold
-import com.zxhhyj.ui.view.TopBar
+import com.zxhhyj.ui.theme.LocalColorScheme
+import com.zxhhyj.ui.view.AppIconButton
+import com.zxhhyj.ui.view.AppListButton
+import com.zxhhyj.ui.view.AppScaffold
+import com.zxhhyj.ui.view.AppTopBar
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -47,16 +50,18 @@ fun SingleScreen(
         }
         onDispose { }
     }
-    Scaffold(
+    AppScaffold(
         modifier = Modifier
             .fillMaxSize()
+            .background(LocalColorScheme.current.background)
+            .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
-            TopBar(
+            AppTopBar(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.media_lib),
                 actions = {
-                    IconButton(onClick = {
+                    AppIconButton(onClick = {
                         mainNavController.navigate(
                             ScreenDestination.Search(
                                 SearchScreenTabs.Single
@@ -65,7 +70,7 @@ fun SingleScreen(
                     }) {
                         Icon(imageVector = Icons.Rounded.Search, contentDescription = null)
                     }
-                    IconButton(onClick = {
+                    AppIconButton(onClick = {
                         mainNavController.navigate(
                             ScreenDestination.Setting
                         )
@@ -77,7 +82,7 @@ fun SingleScreen(
         }) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             item {
-                ListButton(
+                AppListButton(
                     onClick = {
                         mainNavController.navigate(ScreenDestination.PlayList)
                     },
@@ -86,7 +91,7 @@ fun SingleScreen(
                 )
             }
             item {
-                ListButton(
+                AppListButton(
                     onClick = {
                         mainNavController.navigate(ScreenDestination.Album)
                     },
@@ -95,7 +100,7 @@ fun SingleScreen(
                 )
             }
             item {
-                ListButton(
+                AppListButton(
                     onClick = {
                         mainNavController.navigate(ScreenDestination.Singer)
                     },

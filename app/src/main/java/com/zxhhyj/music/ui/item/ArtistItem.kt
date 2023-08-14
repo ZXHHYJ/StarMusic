@@ -29,11 +29,11 @@ import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
 import com.zxhhyj.ui.theme.LocalColorScheme
-import com.zxhhyj.ui.view.Card
+import com.zxhhyj.ui.view.AppCard
 
 @Composable
 fun ArtistItem(artist: SongBean.Artist, onClick: () -> Unit) {
-    Card(backgroundColor = Color.Transparent) {
+    AppCard(backgroundColor = Color.Transparent) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()

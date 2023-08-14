@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -79,7 +78,7 @@ import com.zxhhyj.music.ui.screen.setting.SettingScreen
 import com.zxhhyj.music.ui.screen.singer.SingerScreen
 import com.zxhhyj.music.ui.screen.singercnt.SingerCntScreen
 import com.zxhhyj.music.ui.screen.single.SingleScreen
-import com.zxhhyj.music.ui.screen.theme.ThemeScreen
+import com.zxhhyj.music.ui.screen.webdav.WebDavScreen
 import com.zxhhyj.music.ui.sheet.AddToPlayListSheet
 import com.zxhhyj.music.ui.sheet.PlaylistMenuSheet
 import com.zxhhyj.music.ui.sheet.SongMenuSheet
@@ -88,9 +87,9 @@ import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.round
 import com.zxhhyj.music.ui.theme.vertical
 import com.zxhhyj.ui.theme.LocalColorScheme
-import com.zxhhyj.ui.view.Card
-import com.zxhhyj.ui.view.Divider
-import com.zxhhyj.ui.view.IconButton
+import com.zxhhyj.ui.view.AppCard
+import com.zxhhyj.ui.view.AppDivider
+import com.zxhhyj.ui.view.AppIconButton
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.DialogNavHost
 import dev.olshevski.navigation.reimagined.NavAction
@@ -195,11 +194,11 @@ fun MainScreen() {
                                     .align(Alignment.BottomCenter)
                                     .background(LocalColorScheme.current.background)
                             ) {
-                                Divider(modifier = Modifier.fillMaxWidth())
+                                AppDivider(modifier = Modifier.fillMaxWidth())
                             }
                             Box(modifier = Modifier.padding(horizontal = horizontal)) {
                                 val song by PlayManager.currentSongLiveData().observeAsState()
-                                Card(
+                                AppCard(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .height(controlBarHeight)
@@ -239,7 +238,7 @@ fun MainScreen() {
                                             if (it) R.drawable.ic_play else R.drawable.ic_pause
                                         }.observeAsState(R.drawable.ic_play)
                                         val buttonSize = 36.dp
-                                        IconButton(onClick = {
+                                        AppIconButton(onClick = {
                                             if (PlayManager.pauseLiveData().value == true) {
                                                 PlayManager.start()
                                             } else {
@@ -256,7 +255,7 @@ fun MainScreen() {
                                             )
                                         }
                                         Spacer(modifier = Modifier.width(horizontal / 2))
-                                        IconButton(onClick = { PlayManager.skipToNext() }) {
+                                        AppIconButton(onClick = { PlayManager.skipToNext() }) {
                                             Icon(
                                                 imageVector = ImageVector.vectorResource(R.drawable.ic_skip_next),
                                                 tint = Color.White,
@@ -278,7 +277,7 @@ fun MainScreen() {
                 },
                 navigationBar = {
                     if (!visibilityMediaController) {
-                        Divider(modifier = Modifier.fillMaxWidth())
+                        AppDivider(modifier = Modifier.fillMaxWidth())
                     }
                 }
             ) { paddingValues ->
@@ -292,126 +291,122 @@ fun MainScreen() {
                         panelController.swipeTo(PanelState.COLLAPSED)
                     }
                 }
-                Box(modifier = Modifier
-                    .fillMaxSize()
-                    .statusBarsPadding()) {
-                    val customTransitionSpec = NavTransitionSpec<Any?> { action, _, _ ->
-                        val direction = if (action == NavAction.Pop) {
-                            AnimatedContentScope.SlideDirection.End
-                        } else {
-                            AnimatedContentScope.SlideDirection.Start
-                        }
-                        slideIntoContainer(direction) with slideOutOfContainer(direction)
+                val customTransitionSpec = NavTransitionSpec<Any?> { action, _, _ ->
+                    val direction = if (action == NavAction.Pop) {
+                        AnimatedContentScope.SlideDirection.End
+                    } else {
+                        AnimatedContentScope.SlideDirection.Start
                     }
-                    AnimatedNavHost(
-                        controller = mainNavController,
-                        transitionSpec = customTransitionSpec
-                    ) { destination ->
-                        when (destination) {
-                            ScreenDestination.Main -> {
-                                SingleScreen(
-                                    mainNavController = mainNavController,
-                                    sheetNavController = sheetNavController,
-                                    dialogNavController = dialogNavController,
-                                    paddingValues = paddingValues
-                                )
-                            }
+                    slideIntoContainer(direction) with slideOutOfContainer(direction)
+                }
+                AnimatedNavHost(
+                    controller = mainNavController,
+                    transitionSpec = customTransitionSpec
+                ) { destination ->
+                    when (destination) {
+                        ScreenDestination.Main -> {
+                            SingleScreen(
+                                mainNavController = mainNavController,
+                                sheetNavController = sheetNavController,
+                                dialogNavController = dialogNavController,
+                                paddingValues = paddingValues
+                            )
+                        }
 
-                            is ScreenDestination.Search -> {
-                                SearchScreen(
-                                    mainNavController = mainNavController,
-                                    sheetNavController = sheetNavController,
-                                    paddingValues = paddingValues,
-                                    start = destination.start
-                                )
-                            }
+                        is ScreenDestination.Search -> {
+                            SearchScreen(
+                                mainNavController = mainNavController,
+                                sheetNavController = sheetNavController,
+                                paddingValues = paddingValues,
+                                start = destination.start
+                            )
+                        }
 
-                            is ScreenDestination.SingerCnt -> {
-                                SingerCntScreen(
-                                    sheetNavController = sheetNavController,
-                                    paddingValues = paddingValues,
-                                    artist = destination.artist
-                                )
-                            }
+                        is ScreenDestination.SingerCnt -> {
+                            SingerCntScreen(
+                                sheetNavController = sheetNavController,
+                                paddingValues = paddingValues,
+                                artist = destination.artist
+                            )
+                        }
 
-                            is ScreenDestination.AlbumCnt -> {
-                                AlbumCntScreen(
-                                    mainNavController = mainNavController,
-                                    sheetNavController = sheetNavController,
-                                    paddingValues = paddingValues,
-                                    album = destination.album
-                                )
-                            }
+                        is ScreenDestination.AlbumCnt -> {
+                            AlbumCntScreen(
+                                mainNavController = mainNavController,
+                                sheetNavController = sheetNavController,
+                                paddingValues = paddingValues,
+                                album = destination.album
+                            )
+                        }
 
-                            ScreenDestination.About -> {
-                                AboutScreen(
-                                    paddingValues = paddingValues
-                                )
-                            }
+                        ScreenDestination.About -> {
+                            AboutScreen(
+                                paddingValues = paddingValues
+                            )
+                        }
 
-                            ScreenDestination.Setting -> {
-                                SettingScreen(
-                                    mainNavController = mainNavController,
-                                    paddingValues = paddingValues
-                                )
-                            }
+                        ScreenDestination.Setting -> {
+                            SettingScreen(
+                                mainNavController = mainNavController,
+                                paddingValues = paddingValues
+                            )
+                        }
 
-                            ScreenDestination.Album -> {
-                                AlbumScreen(
-                                    mainNavController = mainNavController,
-                                    paddingValues = paddingValues
-                                )
-                            }
+                        ScreenDestination.Album -> {
+                            AlbumScreen(
+                                mainNavController = mainNavController,
+                                paddingValues = paddingValues
+                            )
+                        }
 
-                            ScreenDestination.MediaLibs -> {
-                                MediaSourceScreen(
-                                    mainNavController = mainNavController,
-                                    dialogNavController = dialogNavController,
-                                    paddingValues = paddingValues
-                                )
-                            }
+                        ScreenDestination.MediaLibs -> {
+                            MediaSourceScreen(
+                                mainNavController = mainNavController,
+                                dialogNavController = dialogNavController,
+                                paddingValues = paddingValues
+                            )
+                        }
 
-                            ScreenDestination.Singer -> {
-                                SingerScreen(
-                                    mainNavController = mainNavController,
-                                    paddingValues = paddingValues
-                                )
-                            }
+                        ScreenDestination.Singer -> {
+                            SingerScreen(
+                                mainNavController = mainNavController,
+                                paddingValues = paddingValues
+                            )
+                        }
 
-                            ScreenDestination.PlayList -> {
-                                PlayListScreen(
-                                    mainNavController = mainNavController,
-                                    sheetNavController = sheetNavController,
-                                    dialogNavController = dialogNavController,
-                                    paddingValues = paddingValues
-                                )
-                            }
+                        ScreenDestination.PlayList -> {
+                            PlayListScreen(
+                                mainNavController = mainNavController,
+                                sheetNavController = sheetNavController,
+                                dialogNavController = dialogNavController,
+                                paddingValues = paddingValues
+                            )
+                        }
 
-                            ScreenDestination.Theme -> {
-                                ThemeScreen(paddingValues = paddingValues)
-                            }
+                        ScreenDestination.Lyric -> {
+                            LyricScreen(paddingValues = paddingValues)
+                        }
 
-                            ScreenDestination.Lyric -> {
-                                LyricScreen(paddingValues = paddingValues)
-                            }
+                        ScreenDestination.HiddenSong -> {
+                            HiddenSongScreen(paddingValues = paddingValues)
+                        }
 
-                            ScreenDestination.HiddenSong -> {
-                                HiddenSongScreen(paddingValues = paddingValues)
-                            }
+                        is ScreenDestination.PlayListCnt -> {
+                            PlayListCntScreen(
+                                playlist = destination.model,
+                                sheetNavController = sheetNavController,
+                                paddingValues = paddingValues
+                            )
+                        }
 
-                            is ScreenDestination.PlayListCnt -> {
-                                PlayListCntScreen(
-                                    playlist = destination.model,
-                                    sheetNavController = sheetNavController,
-                                    paddingValues = paddingValues
-                                )
-                            }
+                        ScreenDestination.Lab -> {
+                            LabScreen(
+                                paddingValues = paddingValues
+                            )
+                        }
 
-                            ScreenDestination.Lab -> {
-                                LabScreen(
-                                    paddingValues = paddingValues
-                                )
-                            }
+                        ScreenDestination.WebDav -> {
+                            WebDavScreen(paddingValues = paddingValues)
                         }
                     }
                 }

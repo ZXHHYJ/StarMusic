@@ -20,7 +20,7 @@ import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.ui.theme.LocalColorScheme
-import com.zxhhyj.ui.view.Card
+import com.zxhhyj.ui.view.AppCard
 
 @Composable
 fun AlbumItem(
@@ -28,7 +28,7 @@ fun AlbumItem(
     album: SongBean.Album,
     onClick: () -> Unit
 ) {
-    Card(backgroundColor = Color.Transparent) {
+    AppCard(backgroundColor = Color.Transparent) {
         BoxWithPercentages(modifier = modifier) {
             Column(modifier = Modifier.fillMaxSize()) {
                 AppAsyncImage(

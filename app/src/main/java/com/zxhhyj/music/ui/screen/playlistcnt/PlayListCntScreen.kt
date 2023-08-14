@@ -34,9 +34,9 @@ import com.zxhhyj.music.ui.common.statelayout.StateLayout
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.theme.vertical
-import com.zxhhyj.ui.view.Button
-import com.zxhhyj.ui.view.Scaffold
-import com.zxhhyj.ui.view.TopBar
+import com.zxhhyj.ui.view.AppButton
+import com.zxhhyj.ui.view.AppScaffold
+import com.zxhhyj.ui.view.AppTopBar
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -46,12 +46,12 @@ fun PlayListCntScreen(
     sheetNavController: NavController<BottomSheetDestination>,
     paddingValues: PaddingValues
 ) {
-    Scaffold(
+    AppScaffold(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues),
         topBar = {
-            TopBar(
+            AppTopBar(
                 modifier = Modifier.fillMaxWidth(),
                 title = playlist.name,
                 actions = {
@@ -74,7 +74,7 @@ fun PlayListCntScreen(
                     )
                     Spacer(modifier = Modifier.height(vertical))
                     Text(text = playlist.name, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                    Button(
+                    AppButton(
                         onClick = { PlayManager.play(playlist.songs.toList(), 0) },
                         imageVector = Icons.Rounded.PlayArrow,
                         text = stringResource(id = R.string.play_all),

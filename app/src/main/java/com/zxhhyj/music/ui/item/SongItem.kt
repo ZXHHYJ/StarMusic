@@ -31,8 +31,8 @@ import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
 import com.zxhhyj.ui.theme.LocalColorScheme
-import com.zxhhyj.ui.view.Card
-import com.zxhhyj.ui.view.IconButton
+import com.zxhhyj.ui.view.AppCard
+import com.zxhhyj.ui.view.AppIconButton
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -43,7 +43,7 @@ fun SongItem(
     actions: @Composable () -> Unit = {},
     onClick: () -> Unit
 ) {
-    Card(backgroundColor = Color.Transparent) {
+    AppCard(backgroundColor = Color.Transparent) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -84,7 +84,7 @@ fun SongItem(
             Row(horizontalArrangement = Arrangement.spacedBy(horizontal / 2)) {
                 CompositionLocalProvider(LocalContentColor provides LocalColorScheme.current.subText) {
                     actions.invoke()
-                    IconButton(onClick = {
+                    AppIconButton(onClick = {
                         sheetNavController.navigate(
                             BottomSheetDestination.SongMenu(
                                 song

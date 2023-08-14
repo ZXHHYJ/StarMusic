@@ -22,12 +22,6 @@ sealed class ScreenDestination : Parcelable {
     data class Search(val start: SearchScreenTabs) : ScreenDestination()
 
     /**
-     * 主题
-     */
-    @Parcelize
-    data object Theme : ScreenDestination()
-
-    /**
      * 歌词设置
      */
     @Parcelize
@@ -80,6 +74,12 @@ sealed class ScreenDestination : Parcelable {
      */
     @Parcelize
     data object Lab : ScreenDestination()
+
+    /**
+     * WebDav设置
+     */
+    @Parcelize
+    data object WebDav : ScreenDestination()
 
     /**
      * 歌手详情

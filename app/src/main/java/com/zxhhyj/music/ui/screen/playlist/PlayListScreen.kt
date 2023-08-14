@@ -1,9 +1,11 @@
 package com.zxhhyj.music.ui.screen.playlist
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
@@ -20,9 +22,10 @@ import com.zxhhyj.music.ui.item.PlayListItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
-import com.zxhhyj.ui.view.IconButton
-import com.zxhhyj.ui.view.Scaffold
-import com.zxhhyj.ui.view.TopBar
+import com.zxhhyj.ui.theme.LocalColorScheme
+import com.zxhhyj.ui.view.AppIconButton
+import com.zxhhyj.ui.view.AppScaffold
+import com.zxhhyj.ui.view.AppTopBar
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -34,16 +37,18 @@ fun PlayListScreen(
     dialogNavController: NavController<DialogDestination>,
     paddingValues: PaddingValues
 ) {
-    Scaffold(
+    AppScaffold(
         modifier = Modifier
             .fillMaxSize()
+            .background(LocalColorScheme.current.background)
+            .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
-            TopBar(
+            AppTopBar(
                 modifier = Modifier,
                 title = stringResource(id = R.string.play_list),
                 actions = {
-                    IconButton(onClick = { dialogNavController.navigate(DialogDestination.CreatePlayList) }) {
+                    AppIconButton(onClick = { dialogNavController.navigate(DialogDestination.CreatePlayList) }) {
                         Icon(
                             imageVector = Icons.Rounded.Add,
                             contentDescription = null

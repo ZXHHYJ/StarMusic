@@ -6,10 +6,12 @@ import android.os.Environment
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -25,8 +27,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.ui.view.Scaffold
-import com.zxhhyj.ui.view.TopBar
+import com.zxhhyj.ui.theme.LocalColorScheme
+import com.zxhhyj.ui.view.AppCenterTopBar
+import com.zxhhyj.ui.view.AppScaffold
+import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.ItemSwitcher
 
 @Composable
@@ -55,19 +59,21 @@ fun LabScreen(
             launcher.launch(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
         }
     }
-    Scaffold(
+    AppScaffold(
         modifier = Modifier
             .fillMaxSize()
+            .background(LocalColorScheme.current.subBackground)
+            .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
-            TopBar(
+            AppCenterTopBar(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.lab)
             )
         }) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            if (SettingRepository.EnableAndroidMediaLibs) {
-                item {
+            item {
+                RoundColumn(modifier = Modifier.fillMaxWidth()) {
                     ItemSwitcher(
                         icon = {
                             Icon(

@@ -1,9 +1,11 @@
 package com.zxhhyj.music.ui.screen.album
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
@@ -24,9 +26,10 @@ import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.search.SearchScreenTabs
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
-import com.zxhhyj.ui.view.IconButton
-import com.zxhhyj.ui.view.Scaffold
-import com.zxhhyj.ui.view.TopBar
+import com.zxhhyj.ui.theme.LocalColorScheme
+import com.zxhhyj.ui.view.AppIconButton
+import com.zxhhyj.ui.view.AppScaffold
+import com.zxhhyj.ui.view.AppTopBar
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -41,16 +44,18 @@ fun AlbumScreen(
         if (fixedCount < 2) {
             fixedCount = 2
         }
-        Scaffold(
+        AppScaffold(
             modifier = Modifier
                 .fillMaxSize()
+                .background(LocalColorScheme.current.background)
+                .statusBarsPadding()
                 .padding(paddingValues),
             topBar = {
-                TopBar(
+                AppTopBar(
                     modifier = Modifier.fillMaxWidth(),
                     title = stringResource(id = R.string.album),
                     actions = {
-                        IconButton(onClick = {
+                        AppIconButton(onClick = {
                             mainNavController.navigate(
                                 ScreenDestination.Search(
                                     SearchScreenTabs.Album

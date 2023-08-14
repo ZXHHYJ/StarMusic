@@ -9,8 +9,8 @@ import androidx.compose.ui.unit.dp
 import com.zxhhyj.ui.theme.LocalColorScheme
 
 @Composable
-fun Divider(
-    modifier: Modifier = Modifier,
+fun AppDivider(
+    modifier: Modifier,
     color: Color = LocalColorScheme.current.outline,
     thickness: Dp = 1.dp,
     startIndent: Dp = 0.dp

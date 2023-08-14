@@ -1,5 +1,6 @@
 package com.zxhhyj.music.ui.screen.singercnt
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,9 +27,9 @@ import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.theme.vertical
-import com.zxhhyj.ui.view.Card
-import com.zxhhyj.ui.view.Scaffold
-import com.zxhhyj.ui.view.TopBar
+import com.zxhhyj.ui.view.AppCard
+import com.zxhhyj.ui.view.AppScaffold
+import com.zxhhyj.ui.view.AppTopBar
 import com.zxhhyj.ui.theme.LocalColorScheme
 import dev.olshevski.navigation.reimagined.NavController
 
@@ -37,12 +39,14 @@ fun SingerCntScreen(
     paddingValues: PaddingValues,
     artist: SongBean.Artist
 ) {
-    Scaffold(
+    AppScaffold(
         modifier = Modifier
             .fillMaxSize()
+            .background(LocalColorScheme.current.background)
+            .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
-            TopBar(
+            AppTopBar(
                 modifier = Modifier.fillMaxWidth(),
                 title = artist.name,
             ) {
@@ -58,7 +62,7 @@ fun SingerCntScreen(
                         color = LocalColorScheme.current.highlight,
                         modifier = Modifier.weight(1.0f)
                     )
-                    Card(
+                    AppCard(
                         backgroundColor = LocalColorScheme.current.highlight,
                         shape = RoundedCornerShape(50)
                     ) {

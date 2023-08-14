@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.zxhhyj.ui.theme.StarDimens
 
 @Composable
-fun Card(
+fun AppCard(
     modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(StarDimens.round),
     backgroundColor: Color,

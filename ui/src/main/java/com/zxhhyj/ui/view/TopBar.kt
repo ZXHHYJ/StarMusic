@@ -95,7 +95,53 @@ fun Modifier.bindTopBarState() = composed {
 }
 
 @Composable
-fun TopBar(
+fun AppCenterTopBar(
+    modifier: Modifier,
+    title: String
+) {
+    val topBarState = LocalTopBarState.current
+    Box(modifier = modifier.clickable(enabled = false) {
+        //用户修复点击事件穿透的问题
+    }) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .onSizeChanged {
+                    topBarState.barSize = it
+                }) {
+            Box(
+                modifier = Modifier
+                    .height(toolbarHeight)
+                    .fillMaxWidth()
+                    .clipToBounds()
+                    .background(LocalColorScheme.current.subBackground)
+                    .padding(horizontal = StarDimens.horizontal),
+                contentAlignment = Alignment.CenterEnd,
+                content = {
+                    Text(
+                        text = title,
+                        color = LocalColorScheme.current.text,
+                        fontSize = 18.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+                    /*Row(horizontalArrangement = Arrangement.spacedBy(StarDimens.horizontal / 2)) {
+                        CompositionLocalProvider(LocalContentColor provides LocalColorScheme.current.highlight) {
+                            actions.invoke()
+                        }
+                    }*/
+                }
+            )
+            //AppDivider(modifier = Modifier.fillMaxWidth())
+        }
+    }
+}
+
+@Composable
+fun AppTopBar(
     topBarProperties: TopBarProperties = TopBarProperties(),
     modifier: Modifier,
     title: String,
@@ -163,7 +209,7 @@ fun TopBar(
                 }
             )
             if (topBarProperties.showCenterDivider) {
-                Divider(
+                AppDivider(
                     modifier = Modifier
                         .fillMaxWidth()
                         .alpha(elementAlpha)
@@ -186,7 +232,7 @@ fun TopBar(
             }
         }
         if (topBarProperties.showBottomDivider) {
-            Divider(
+            AppDivider(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(alignment = Alignment.BottomCenter)
@@ -203,4 +249,7 @@ fun TopBar(
     }
 }
 
-class TopBarProperties(val showCenterDivider: Boolean = true, val showBottomDivider: Boolean = true)
+class TopBarProperties(
+    val showCenterDivider: Boolean = true,
+    val showBottomDivider: Boolean = true
+)

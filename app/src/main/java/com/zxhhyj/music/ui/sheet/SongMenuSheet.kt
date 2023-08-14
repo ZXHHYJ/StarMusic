@@ -27,7 +27,7 @@ import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
-import com.zxhhyj.ui.view.ListButton
+import com.zxhhyj.ui.view.AppListButton
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.popAll
@@ -52,7 +52,7 @@ fun SongMenuSheet(
     val currentSong by PlayManager.currentSongLiveData().observeAsState()
     LazyColumn {
         item {
-            ListButton(
+            AppListButton(
                 onClick = {
                     sheetNavController.popAll()
                     mainNavController.navigate(ScreenDestination.AlbumCnt(song.album))
@@ -62,7 +62,7 @@ fun SongMenuSheet(
             )
         }
         item {
-            ListButton(
+            AppListButton(
                 onClick = {
                     sheetNavController.popAll()
                     mainNavController.navigate(ScreenDestination.SingerCnt(song.artist))
@@ -72,7 +72,7 @@ fun SongMenuSheet(
             )
         }
         item {
-            ListButton(
+            AppListButton(
                 onClick = {
                     sheetNavController.popAll()
                     sheetNavController.navigate(BottomSheetDestination.AddToPlayList(song))
@@ -82,7 +82,7 @@ fun SongMenuSheet(
             )
         }
         item {
-            ListButton(
+            AppListButton(
                 onClick = {
                     sheetNavController.popAll()
                     PlayManager.addNextPlay(song)
@@ -92,7 +92,7 @@ fun SongMenuSheet(
             )
         }
         item {
-            ListButton(
+            AppListButton(
                 onClick = {
                     sheetNavController.popAll()
                     sheetNavController.navigate(BottomSheetDestination.SongInfo(song))
@@ -103,7 +103,7 @@ fun SongMenuSheet(
         }
         if (currentSong != song) {
             item {
-                ListButton(
+                AppListButton(
                     onClick = {
                         sheetNavController.popAll()
                         AndroidMediaLibsRepository.hide(song)
@@ -113,7 +113,7 @@ fun SongMenuSheet(
                 )
             }
             item {
-                ListButton(
+                AppListButton(
                     onClick = {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                             coroutineScope.launch {

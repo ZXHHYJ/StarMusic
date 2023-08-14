@@ -28,7 +28,7 @@ enum class Status {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Switch(
+fun AppSwitch(
     modifier: Modifier = Modifier,
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit),

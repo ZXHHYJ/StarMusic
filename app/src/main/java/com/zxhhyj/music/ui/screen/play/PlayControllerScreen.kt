@@ -48,8 +48,8 @@ import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
 import com.zxhhyj.music.ui.theme.translucentWhiteFixBugColor
-import com.zxhhyj.ui.view.Card
-import com.zxhhyj.ui.view.IconButton
+import com.zxhhyj.ui.view.AppCard
+import com.zxhhyj.ui.view.AppIconButton
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import kotlin.math.roundToInt
@@ -80,7 +80,7 @@ fun PlayControllerScreen(sheetNavController: NavController<BottomSheetDestinatio
                         screenKey = PlayScreenDestination.Controller,
                         transitionSpec = MaterialFadeOutTransitionSpec
                     ) {
-                        Card(
+                        AppCard(
                             modifier = Modifier
                                 .padding(bottom = 8.dp)
                                 .size(100.wp),
@@ -211,7 +211,7 @@ fun PlayControllerScreen(sheetNavController: NavController<BottomSheetDestinatio
                     if (it) R.drawable.ic_play else R.drawable.ic_pause
                 }.observeAsState(R.drawable.ic_play)
 
-                IconButton(onClick = { PlayManager.skipToPrevious() }) {
+                AppIconButton(onClick = { PlayManager.skipToPrevious() }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_previous),
                         contentDescription = null,
@@ -220,7 +220,7 @@ fun PlayControllerScreen(sheetNavController: NavController<BottomSheetDestinatio
                     )
                 }
                 Spacer(modifier = Modifier.width(8.wp))
-                IconButton(onClick = {
+                AppIconButton(onClick = {
                     if (PlayManager.pauseLiveData().value == true)
                         PlayManager.start()
                     else PlayManager.pause()
@@ -235,7 +235,7 @@ fun PlayControllerScreen(sheetNavController: NavController<BottomSheetDestinatio
                     )
                 }
                 Spacer(modifier = Modifier.width(8.wp))
-                IconButton(onClick = { PlayManager.skipToNext() }) {
+                AppIconButton(onClick = { PlayManager.skipToNext() }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_next),
                         contentDescription = null,

@@ -41,8 +41,8 @@ import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
 import com.zxhhyj.music.ui.theme.vertical
-import com.zxhhyj.ui.view.Card
-import com.zxhhyj.ui.view.Divider
+import com.zxhhyj.ui.view.AppCard
+import com.zxhhyj.ui.view.AppDivider
 
 @Composable
 fun ColumnScope.PlayQueueScreen() {
@@ -75,7 +75,7 @@ fun ColumnScope.PlayQueueScreen() {
             })
     }
 
-    Divider(
+    AppDivider(
         color = translucentWhiteColor,
         modifier = Modifier.padding(horizontal = PlayScreen.PlayScreenContentHorizontal)
     )
@@ -133,7 +133,7 @@ private fun QueueSongItem(
     onClick: () -> Unit
 ) {
     val currentSong by PlayManager.currentSongLiveData().observeAsState()
-    Card(
+    AppCard(
         backgroundColor = if (currentSong == song) Color.White.copy(alpha = 0.1f) else Color.Transparent,
         modifier = modifier
             .fillMaxWidth()

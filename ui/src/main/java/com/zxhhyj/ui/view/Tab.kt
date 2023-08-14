@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.zxhhyj.ui.theme.LocalColorScheme
 
 @Composable
-fun TabRow(
+fun AppTabRow(
     selectedTabIndex: Int,
     modifier: Modifier = Modifier,
     indicator: @Composable
@@ -40,7 +40,7 @@ fun TabRow(
 }
 
 @Composable
-fun Tab(
+fun AppTab(
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,

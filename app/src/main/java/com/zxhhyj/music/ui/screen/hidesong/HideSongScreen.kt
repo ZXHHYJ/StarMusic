@@ -1,5 +1,6 @@
 package com.zxhhyj.music.ui.screen.hidesong
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
@@ -34,18 +36,20 @@ import com.zxhhyj.music.ui.common.statelayout.StateLayout
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
 import com.zxhhyj.ui.theme.LocalColorScheme
-import com.zxhhyj.ui.view.Card
-import com.zxhhyj.ui.view.Scaffold
-import com.zxhhyj.ui.view.TopBar
+import com.zxhhyj.ui.view.AppCard
+import com.zxhhyj.ui.view.AppCenterTopBar
+import com.zxhhyj.ui.view.AppScaffold
 
 @Composable
 fun HiddenSongScreen(paddingValues: PaddingValues) {
-    Scaffold(
+    AppScaffold(
         modifier = Modifier
             .fillMaxSize()
+            .background(LocalColorScheme.current.subBackground)
+            .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
-            TopBar(
+            AppCenterTopBar(
                 modifier = Modifier,
                 title = stringResource(id = R.string.hidden_songs)
             )
@@ -70,7 +74,7 @@ private fun HideSongItem(
     song: SongBean,
     onClick: () -> Unit
 ) {
-    Card(backgroundColor = Color.Transparent) {
+    AppCard(backgroundColor = Color.Transparent) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()

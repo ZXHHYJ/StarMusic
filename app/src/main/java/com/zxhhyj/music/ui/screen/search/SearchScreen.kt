@@ -2,12 +2,14 @@ package com.zxhhyj.music.ui.screen.search
 
 import android.view.MotionEvent
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -47,10 +49,11 @@ import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
-import com.zxhhyj.ui.view.Tab
-import com.zxhhyj.ui.view.TabRow
-import com.zxhhyj.ui.view.Scaffold
-import com.zxhhyj.ui.view.TopBar
+import com.zxhhyj.ui.theme.LocalColorScheme
+import com.zxhhyj.ui.view.AppScaffold
+import com.zxhhyj.ui.view.AppTab
+import com.zxhhyj.ui.view.AppTabRow
+import com.zxhhyj.ui.view.AppTopBar
 import com.zxhhyj.ui.view.TopBarProperties
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
@@ -80,12 +83,14 @@ fun SearchScreen(
     var searchKey by rememberSaveable {
         mutableStateOf("")
     }
-    Scaffold(
+    AppScaffold(
         modifier = Modifier
             .fillMaxSize()
+            .background(LocalColorScheme.current.background)
+            .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
-            TopBar(
+            AppTopBar(
                 topBarProperties = TopBarProperties(showBottomDivider = false),
                 modifier = Modifier,
                 title = stringResource(id = R.string.search)
@@ -115,7 +120,7 @@ fun SearchScreen(
                     initialPage = SearchScreenTabs.values().indexOf(start)
                 )
                 val scope = rememberCoroutineScope()
-                TabRow(
+                AppTabRow(
                     modifier = Modifier
                         .padding(horizontal = horizontal)
                         .height(42.dp),
@@ -123,7 +128,7 @@ fun SearchScreen(
                 ) {
                     SearchScreenTabs.values()
                         .forEachIndexed { index, searchTypeTabDestination ->
-                            Tab(
+                            AppTab(
                                 selected = index == pagerState.currentPage,
                                 onClick = {
                                     scope.launch { pagerState.animateScrollToPage(index) }

@@ -75,10 +75,8 @@ dependencies {
     implementation "dev.olshevski.navigation:reimagined-material:$reimagined_version"
     // https://github.com/mxalbert1996/compose-shared-elements
     implementation "com.mxalbert.sharedelements:shared-elements:0.1.0-SNAPSHOT"
-
     // https://github.com/FunnySaltyFish/ComposeDataSaver
     implementation "com.github.FunnySaltyFish.ComposeDataSaver:data-saver:1.1.6"
-
     // https://github.com/krottv/compose-sliders
     implementation "com.github.krottv:compose-sliders:0.1.4"
 

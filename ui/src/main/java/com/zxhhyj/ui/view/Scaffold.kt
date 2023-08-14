@@ -1,6 +1,7 @@
 package com.zxhhyj.ui.view
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
@@ -10,15 +11,19 @@ import androidx.compose.ui.Modifier
 val LocalTopBarState = compositionLocalOf { TopBarState() }
 
 @Composable
-fun Scaffold(
+fun AppScaffold(
     modifier: Modifier = Modifier,
     topBar: @Composable () -> Unit,
     content: @Composable () -> Unit
 ) {
     CompositionLocalProvider(LocalTopBarState provides rememberSaveable { TopBarState() }) {
-        Box(modifier = modifier.bindTopBarState()) {
-            content.invoke()
+        Box(modifier = modifier) {
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .bindTopBarState()) {
+                content.invoke()
+            }
+            topBar.invoke()
         }
-        topBar.invoke()
     }
 }

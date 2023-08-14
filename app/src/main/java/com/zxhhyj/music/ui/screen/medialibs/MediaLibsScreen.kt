@@ -2,10 +2,12 @@ package com.zxhhyj.music.ui.screen.medialibs
 
 import android.Manifest
 import android.os.Build
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -26,9 +28,13 @@ import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
-import com.zxhhyj.ui.view.Scaffold
-import com.zxhhyj.ui.view.TopBar
+import com.zxhhyj.ui.theme.LocalColorScheme
+import com.zxhhyj.ui.view.AppCenterTopBar
+import com.zxhhyj.ui.view.AppScaffold
+import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.Item
+import com.zxhhyj.ui.view.item.ItemDivider
+import com.zxhhyj.ui.view.item.ItemSpacer
 import com.zxhhyj.ui.view.item.ItemSwitcher
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
@@ -60,67 +66,75 @@ fun MediaSourceScreen(
             AndroidMediaLibsRepository.clear()
         }
     }
-    Scaffold(
+    AppScaffold(
         modifier = Modifier
             .fillMaxSize()
+            .background(LocalColorScheme.current.subBackground)
+            .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
-            TopBar(
+            AppCenterTopBar(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.media_lib)
             )
         }) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             item {
-                ItemSwitcher(
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Rounded.LibraryMusic,
-                            contentDescription = null
-                        )
-                    },
-                    text = {
-                        Text(text = stringResource(id = R.string.android_meida_libs))
-                    },
-                    subText = {
-                        Text(
-                            text = stringResource(
-                                id = R.string.media_lib_has_songs_size,
-                                AndroidMediaLibsRepository.songs.size
+                RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                    ItemSwitcher(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.LibraryMusic,
+                                contentDescription = null
                             )
-                        )
-                    },
-                    checked = SettingRepository.EnableAndroidMediaLibs,
-                    onCheckedChange = {
-                        SettingRepository.EnableAndroidMediaLibs = it
+                        },
+                        text = {
+                            Text(text = stringResource(id = R.string.android_meida_libs))
+                        },
+                        subText = {
+                            Text(
+                                text = stringResource(
+                                    id = R.string.media_lib_has_songs_size,
+                                    AndroidMediaLibsRepository.songs.size
+                                )
+                            )
+                        },
+                        checked = SettingRepository.EnableAndroidMediaLibs,
+                        onCheckedChange = {
+                            SettingRepository.EnableAndroidMediaLibs = it
+                        }
+                    )
+                    ItemDivider()
+                    Item(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.Refresh,
+                                contentDescription = null
+                            )
+                        },
+                        text = { Text(text = stringResource(id = R.string.refresh_media_lib)) },
+                        subText = { }) {
+                        PlayManager.clearPlayList()
+                        dialogNavController.navigate(DialogDestination.ScanMusic)
                     }
-                )
-            }
-            item {
-                Item(
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Rounded.Refresh,
-                            contentDescription = null
-                        )
-                    },
-                    text = { Text(text = stringResource(id = R.string.refresh_media_lib)) },
-                    subText = { }) {
-                    PlayManager.clearPlayList()
-                    dialogNavController.navigate(DialogDestination.ScanMusic)
                 }
             }
             item {
-                Item(
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Rounded.HideSource,
-                            contentDescription = null
-                        )
-                    },
-                    text = { Text(text = stringResource(id = R.string.hidden_songs)) },
-                    subText = { Text(text = stringResource(id = R.string.hidden_songs)) }) {
-                    mainNavController.navigate(ScreenDestination.HiddenSong)
+                ItemSpacer()
+            }
+            item {
+                RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                    Item(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.HideSource,
+                                contentDescription = null
+                            )
+                        },
+                        text = { Text(text = stringResource(id = R.string.hidden_songs)) },
+                        subText = { Text(text = stringResource(id = R.string.hidden_songs)) }) {
+                        mainNavController.navigate(ScreenDestination.HiddenSong)
+                    }
                 }
             }
         }
