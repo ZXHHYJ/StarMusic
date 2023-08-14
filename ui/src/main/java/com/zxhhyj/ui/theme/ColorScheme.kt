@@ -11,5 +11,6 @@ data class ColorScheme(
     val onBackground: Color = Color.Black,
     val subBackground: Color = Color(0xfff1f0f5),
     val onSubBackground: Color = Color.White,
-    val outline: Color = Color(0xFFDFDFDF)
+    val outline: Color = Color(0xFFDFDFDF),
+    val disabled: Color = Color(0xFF8D8D8D)
 )

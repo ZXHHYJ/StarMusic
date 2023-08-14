@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -468,19 +469,18 @@ fun MainScreen() {
         Column(
             modifier = Modifier
                 .background(
-                    LocalColorScheme.current.background,
+                    LocalColorScheme.current.subBackground,
                     shape = RoundedCornerShape(topStart = round, topEnd = round)
                 )
-                .navigationBarsPadding()
-                .padding(top = vertical)
         ) {
             Spacer(
                 modifier = Modifier
+                    .padding(vertical = vertical)
                     .width(50.dp)
                     .height(6.dp)
                     .background(
                         LocalColorScheme.current.subText.copy(0.3f),
-                        RoundedCornerShape(6.dp)
+                        RoundedCornerShape(50)
                     )
                     .align(Alignment.CenterHorizontally)
             )
@@ -515,6 +515,9 @@ fun MainScreen() {
                         model = destination.model
                     )
                 }
+            }
+            Box(modifier = Modifier.heightIn(min = vertical)) {
+                Spacer(modifier = Modifier.navigationBarsPadding())
             }
         }
 

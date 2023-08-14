@@ -12,15 +12,24 @@ import com.zxhhyj.music.logic.utils.CopyUtils
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
 import com.zxhhyj.ui.theme.LocalColorScheme
+import com.zxhhyj.ui.theme.LocalTextStyles
 
 @Composable
 fun SongInfoItem(title: String, info: String, modifier: Modifier = Modifier) {
     Row(modifier = modifier.padding(horizontal = horizontal, vertical = vertical)) {
-        Text(text = title, color = LocalColorScheme.current.highlight)
+        Text(
+            text = title,
+            color = LocalColorScheme.current.highlight,
+            style = LocalTextStyles.current.main
+        )
         Spacer(modifier = Modifier.width(horizontal))
         Spacer(modifier = Modifier.weight(1.0f))
-        Text(text = info, color = LocalColorScheme.current.subText, modifier = Modifier.clickable {
-            CopyUtils.copyText(info)
-        })
+        Text(
+            text = info,
+            color = LocalColorScheme.current.subText,
+            style = LocalTextStyles.current.main,
+            modifier = Modifier.clickable {
+                CopyUtils.copyText(info)
+            })
     }
 }

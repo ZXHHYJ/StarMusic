@@ -28,8 +28,8 @@ import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AlbumCoverGradient
-import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.common.AlbumMotionBlur
+import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.common.PanelController
 import com.zxhhyj.music.ui.common.PanelState
 import com.zxhhyj.music.ui.screen.BottomSheetDestination

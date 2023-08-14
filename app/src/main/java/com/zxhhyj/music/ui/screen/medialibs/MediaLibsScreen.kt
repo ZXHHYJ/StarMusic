@@ -113,7 +113,9 @@ fun MediaSourceScreen(
                             )
                         },
                         text = { Text(text = stringResource(id = R.string.refresh_media_lib)) },
-                        subText = { }) {
+                        subText = { },
+                        enabled = SettingRepository.EnableAndroidMediaLibs
+                    ) {
                         PlayManager.clearPlayList()
                         dialogNavController.navigate(DialogDestination.ScanMusic)
                     }
@@ -132,7 +134,9 @@ fun MediaSourceScreen(
                             )
                         },
                         text = { Text(text = stringResource(id = R.string.hidden_songs)) },
-                        subText = { Text(text = stringResource(id = R.string.hidden_songs)) }) {
+                        subText = { Text(text = stringResource(id = R.string.hidden_songs)) },
+                        enabled = SettingRepository.EnableAndroidMediaLibs
+                    ) {
                         mainNavController.navigate(ScreenDestination.HiddenSong)
                     }
                 }

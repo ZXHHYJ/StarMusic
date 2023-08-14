@@ -128,14 +128,8 @@ fun AppCenterTopBar(
                         modifier = Modifier
                             .fillMaxWidth()
                     )
-                    /*Row(horizontalArrangement = Arrangement.spacedBy(StarDimens.horizontal / 2)) {
-                        CompositionLocalProvider(LocalContentColor provides LocalColorScheme.current.highlight) {
-                            actions.invoke()
-                        }
-                    }*/
                 }
             )
-            //AppDivider(modifier = Modifier.fillMaxWidth())
         }
     }
 }
