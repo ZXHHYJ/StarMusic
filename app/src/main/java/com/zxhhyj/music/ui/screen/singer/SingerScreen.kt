@@ -16,14 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
-import com.zxhhyj.music.ui.common.statelayout.StateLayout
 import com.zxhhyj.music.ui.item.ArtistItem
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.search.SearchScreenTabs
 import com.zxhhyj.ui.theme.LocalColorScheme
+import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppIconButton
 import com.zxhhyj.ui.view.AppScaffold
-import com.zxhhyj.ui.view.AppTopBar
+import com.zxhhyj.ui.view.RoundColumn
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -35,11 +35,11 @@ fun SingerScreen(
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(LocalColorScheme.current.background)
+            .background(LocalColorScheme.current.subBackground)
             .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
-            AppTopBar(
+            AppCenterTopBar(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.singer),
                 actions = {
@@ -57,11 +57,8 @@ fun SingerScreen(
                     }
                 })
         }) {
-        StateLayout(
-            empty = AndroidMediaLibsRepository.artists.isEmpty(),
-            modifier = Modifier.fillMaxSize()
-        ) {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
+        RoundColumn(modifier = Modifier.fillMaxWidth()) {
+            LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 items(AndroidMediaLibsRepository.artists) {
                     ArtistItem(artist = it) {
                         mainNavController.navigate(ScreenDestination.SingerCnt(it))

@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material.icons.rounded.FontDownload
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Science
@@ -26,6 +27,7 @@ import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.Item
 import com.zxhhyj.ui.view.item.ItemDivider
+import com.zxhhyj.ui.view.item.ItemSpacer
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -47,6 +49,21 @@ fun SettingScreen(
             )
         }) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
+            item {
+                RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                    Item(
+                        icon = {
+                            Icon(imageVector = Icons.Filled.StarRate, null)
+                        },
+                        text = { Text(text = stringResource(id = R.string.star_music_pro)) },
+                        subText = { Text(text = "已禁用") }) {
+                        mainNavController.navigate(ScreenDestination.Vip)
+                    }
+                }
+            }
+            item {
+                ItemSpacer()
+            }
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
                     Item(

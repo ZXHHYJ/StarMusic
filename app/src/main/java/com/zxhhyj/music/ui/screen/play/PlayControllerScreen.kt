@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -112,13 +113,15 @@ fun PlayControllerScreen(sheetNavController: NavController<BottomSheetDestinatio
                         color = Color.White,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
+                        overflow = TextOverflow.Ellipsis,
                         maxLines = 1
                     )
-                    Spacer(modifier = Modifier.padding(top = 2.dp))
+                    Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = song?.artist?.name ?: "",
                         color = translucentWhiteColor,
                         fontSize = 16.sp,
+                        overflow = TextOverflow.Ellipsis,
                         maxLines = 1
                     )
                 }

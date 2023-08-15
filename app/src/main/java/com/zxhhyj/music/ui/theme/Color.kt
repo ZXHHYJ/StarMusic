@@ -13,22 +13,14 @@ val translucentWhiteColor = Color(0x80FFFFFF)
  */
 val translucentWhiteFixBugColor = Color(0x33FFFFFF)
 
-val lightColorScheme = ColorScheme(
-    highlight = Color(0xFFE41308),
-    text = Color.Black,
-    onText = Color.White,
-    subText = Color(0xFF7A7A7A),
-    background = Color.White,
-    onBackground = Color.Black,
-    outline = Color(0xFFDFDFDF)
-)
+val lightColorScheme = ColorScheme(highlight = Color(0xFFE41308))
 
 val nightColorScheme = ColorScheme(
     highlight = Color(0xFFE41308),
     text = Color.White,
     onText = Color.Black,
     subText = Color(0xFF7A7A7A),
-    background = Color(0xFF070707),
-    onBackground = Color.White,
+    subBackground = Color(0xFF070707),
+    background = Color.White,
     outline = Color(0xFF383838)
 )

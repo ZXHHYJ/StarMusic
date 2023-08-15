@@ -81,6 +81,10 @@ sealed class ScreenDestination : Parcelable {
     @Parcelize
     data object WebDav : ScreenDestination()
 
+
+    @Parcelize
+    data object Vip : ScreenDestination()
+
     /**
      * 歌手详情
      */

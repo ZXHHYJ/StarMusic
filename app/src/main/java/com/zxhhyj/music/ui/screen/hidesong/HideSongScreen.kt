@@ -32,7 +32,6 @@ import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.ui.common.AppAsyncImage
-import com.zxhhyj.music.ui.common.statelayout.StateLayout
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
 import com.zxhhyj.ui.theme.LocalColorScheme
@@ -54,15 +53,10 @@ fun HiddenSongScreen(paddingValues: PaddingValues) {
                 title = stringResource(id = R.string.hidden_songs)
             )
         }) {
-        StateLayout(
-            empty = AndroidMediaLibsRepository.hideSongs.isEmpty(),
-            modifier = Modifier.fillMaxSize()
-        ) {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(AndroidMediaLibsRepository.hideSongs) {
-                    HideSongItem(song = it) {
-                        AndroidMediaLibsRepository.unHide(it)
-                    }
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            items(AndroidMediaLibsRepository.hideSongs) {
+                HideSongItem(song = it) {
+                    AndroidMediaLibsRepository.unHide(it)
                 }
             }
         }

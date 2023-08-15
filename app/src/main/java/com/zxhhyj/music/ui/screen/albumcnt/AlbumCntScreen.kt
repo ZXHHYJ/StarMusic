@@ -38,6 +38,7 @@ import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppButton
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.AppTopBar
+import com.zxhhyj.ui.view.RoundColumn
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -51,7 +52,7 @@ fun AlbumCntScreen(
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(LocalColorScheme.current.background)
+            .background(LocalColorScheme.current.subBackground)
             .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
@@ -98,10 +99,12 @@ fun AlbumCntScreen(
                 }
             }
         }) {
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            itemsIndexed(album.songs) { index, item ->
-                SongItem(song = item, sheetNavController = sheetNavController) {
-                    PlayManager.play(album.songs, index)
+        RoundColumn(modifier = Modifier.fillMaxSize()) {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                itemsIndexed(album.songs) { index, item ->
+                    SongItem(song = item, sheetNavController = sheetNavController) {
+                        PlayManager.play(album.songs, index)
+                    }
                 }
             }
         }

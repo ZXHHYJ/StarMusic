@@ -41,7 +41,6 @@ import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppTextField
 import com.zxhhyj.music.ui.common.BoxWithPercentages
-import com.zxhhyj.music.ui.common.statelayout.StateLayout
 import com.zxhhyj.music.ui.item.AlbumItem
 import com.zxhhyj.music.ui.item.ArtistItem
 import com.zxhhyj.music.ui.item.SongItem
@@ -50,11 +49,12 @@ import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
 import com.zxhhyj.ui.theme.LocalColorScheme
+import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.AppTab
 import com.zxhhyj.ui.view.AppTabRow
-import com.zxhhyj.ui.view.AppTopBar
-import com.zxhhyj.ui.view.TopBarProperties
+import com.zxhhyj.ui.view.RoundColumn
+import com.zxhhyj.ui.view.item.ItemSpacer
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import kotlinx.coroutines.launch
@@ -86,13 +86,12 @@ fun SearchScreen(
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(LocalColorScheme.current.background)
+            .background(LocalColorScheme.current.subBackground)
             .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
-            AppTopBar(
-                topBarProperties = TopBarProperties(showBottomDivider = false),
-                modifier = Modifier,
+            AppCenterTopBar(
+                modifier = Modifier.fillMaxWidth(),
                 title = stringResource(id = R.string.search)
             )
         },
@@ -116,52 +115,55 @@ fun SearchScreen(
                         .padding(horizontal = horizontal),
                     singleLine = true
                 )
-                val pagerState = rememberPagerState(
-                    initialPage = SearchScreenTabs.values().indexOf(start)
-                )
+                val pagerState =
+                    rememberPagerState(initialPage = SearchScreenTabs.values().indexOf(start))
                 val scope = rememberCoroutineScope()
-                AppTabRow(
-                    modifier = Modifier
-                        .padding(horizontal = horizontal)
-                        .height(42.dp),
-                    selectedTabIndex = pagerState.currentPage
-                ) {
-                    SearchScreenTabs.values()
-                        .forEachIndexed { index, searchTypeTabDestination ->
-                            AppTab(
-                                selected = index == pagerState.currentPage,
-                                onClick = {
-                                    scope.launch { pagerState.animateScrollToPage(index) }
+                RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                    AppTabRow(
+                        modifier = Modifier
+                            .padding(horizontal = horizontal)
+                            .height(42.dp),
+                        selectedTabIndex = pagerState.currentPage
+                    ) {
+                        SearchScreenTabs.values()
+                            .forEachIndexed { index, searchTypeTabDestination ->
+                                AppTab(
+                                    selected = index == pagerState.currentPage,
+                                    onClick = {
+                                        scope.launch { pagerState.animateScrollToPage(index) }
+                                    }
+                                ) {
+                                    Text(text = searchTypeTabDestination.tabName)
                                 }
-                            ) {
-                                Text(text = searchTypeTabDestination.tabName)
                             }
-                        }
+                    }
                 }
-                HorizontalPager(
+                ItemSpacer()
+                RoundColumn(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .pointerInteropFilter { event ->
-                            if (event.action == MotionEvent.ACTION_DOWN) {
-                                focusManager.clearFocus()
-                                keyboardController?.hide()
-                            }
-                            false
-                        },
-                    pageCount = SearchScreenTabs.values().size,
-                    state = pagerState
-                ) { t ->
-                    when (SearchScreenTabs.values()[t]) {
-                        SearchScreenTabs.Single -> {
-                            val songs = AndroidMediaLibsRepository.songs.filter {
-                                it.songName.contains(searchKey) || it.artist.name.contains(
-                                    searchKey
-                                )
-                            }
-                            StateLayout(
-                                empty = searchKey.isBlank() || songs.isEmpty(),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
+                        .fillMaxWidth()
+                        .weight(1.0f)
+                ) {
+                    HorizontalPager(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .pointerInteropFilter { event ->
+                                if (event.action == MotionEvent.ACTION_DOWN) {
+                                    focusManager.clearFocus()
+                                    keyboardController?.hide()
+                                }
+                                false
+                            },
+                        pageCount = SearchScreenTabs.values().size,
+                        state = pagerState
+                    ) { t ->
+                        when (SearchScreenTabs.values()[t]) {
+                            SearchScreenTabs.Single -> {
+                                val songs = AndroidMediaLibsRepository.songs.filter {
+                                    it.songName.contains(searchKey) || it.artist.name.contains(
+                                        searchKey
+                                    )
+                                }
                                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                                     itemsIndexed(songs) { index, item ->
                                         SongItem(
@@ -173,21 +175,16 @@ fun SearchScreen(
                                     }
                                 }
                             }
-                        }
 
-                        SearchScreenTabs.Album -> {
-                            BoxWithPercentages(modifier = Modifier.fillMaxSize()) {
-                                var fixedCount = (maxWidth / 180.dp).toInt()
-                                if (fixedCount < 2) {
-                                    fixedCount = 2
-                                }
-                                val albums = AndroidMediaLibsRepository.albums.filter {
-                                    it.name.contains(searchKey)
-                                }
-                                StateLayout(
-                                    empty = searchKey.isBlank() || albums.isEmpty(),
-                                    modifier = Modifier.fillMaxSize()
-                                ) {
+                            SearchScreenTabs.Album -> {
+                                BoxWithPercentages(modifier = Modifier.fillMaxSize()) {
+                                    var fixedCount = (maxWidth / 180.dp).toInt()
+                                    if (fixedCount < 2) {
+                                        fixedCount = 2
+                                    }
+                                    val albums = AndroidMediaLibsRepository.albums.filter {
+                                        it.name.contains(searchKey)
+                                    }
                                     LazyVerticalGrid(
                                         modifier = Modifier
                                             .fillMaxSize(),
@@ -219,18 +216,14 @@ fun SearchScreen(
                                             }
                                         }
                                     }
+
                                 }
                             }
-                        }
 
-                        SearchScreenTabs.Singer -> {
-                            val artists = AndroidMediaLibsRepository.artists.filter {
-                                it.name.contains(searchKey)
-                            }
-                            StateLayout(
-                                empty = searchKey.isBlank() || artists.isEmpty(),
-                                modifier = Modifier.fillMaxSize()
-                            ) {
+                            SearchScreenTabs.Singer -> {
+                                val artists = AndroidMediaLibsRepository.artists.filter {
+                                    it.name.contains(searchKey)
+                                }
                                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                                     items(artists) {
                                         ArtistItem(artist = it) {
@@ -242,10 +235,12 @@ fun SearchScreen(
                                         }
                                     }
                                 }
+
                             }
                         }
                     }
                 }
+
             }
         })
 }

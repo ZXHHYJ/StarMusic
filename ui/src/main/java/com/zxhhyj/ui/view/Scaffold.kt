@@ -18,9 +18,11 @@ fun AppScaffold(
 ) {
     CompositionLocalProvider(LocalTopBarState provides rememberSaveable { TopBarState() }) {
         Box(modifier = modifier) {
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .bindTopBarState()) {
+            Box(
+                modifier = Modifier
+                    .bindTopBarState()
+                    .fillMaxSize()
+            ) {
                 content.invoke()
             }
             topBar.invoke()

@@ -10,13 +10,13 @@ android {
     def code = String.format("%d%02d%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH))
 
     namespace 'com.zxhhyj.music'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.zxhhyj.music"
         minSdk 23
         //noinspection OldTargetApi
-        targetSdk 33
+        targetSdk 34
         versionCode Integer.parseInt(code)
         versionName "${calendar.get(Calendar.YEAR)}.${calendar.get(Calendar.MONTH) + 1}.${calendar.get(Calendar.DAY_OF_MONTH)}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

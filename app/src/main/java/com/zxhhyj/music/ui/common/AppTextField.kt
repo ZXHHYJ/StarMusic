@@ -22,7 +22,7 @@ private val textFieldColors
     @Composable get() = TextFieldDefaults.outlinedTextFieldColors(
         focusedBorderColor = LocalColorScheme.current.outline,
         unfocusedBorderColor = LocalColorScheme.current.outline,
-        cursorColor = LocalColorScheme.current.onBackground,
+        cursorColor = LocalColorScheme.current.background,
         backgroundColor = LocalColorScheme.current.background,
         placeholderColor = LocalColorScheme.current.subText
     )

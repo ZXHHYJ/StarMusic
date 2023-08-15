@@ -79,6 +79,7 @@ import com.zxhhyj.music.ui.screen.setting.SettingScreen
 import com.zxhhyj.music.ui.screen.singer.SingerScreen
 import com.zxhhyj.music.ui.screen.singercnt.SingerCntScreen
 import com.zxhhyj.music.ui.screen.single.SingleScreen
+import com.zxhhyj.music.ui.screen.vip.VipScreen
 import com.zxhhyj.music.ui.screen.webdav.WebDavScreen
 import com.zxhhyj.music.ui.sheet.AddToPlayListSheet
 import com.zxhhyj.music.ui.sheet.PlaylistMenuSheet
@@ -95,7 +96,6 @@ import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.DialogNavHost
 import dev.olshevski.navigation.reimagined.NavAction
 import dev.olshevski.navigation.reimagined.NavBackHandler
-import dev.olshevski.navigation.reimagined.NavTransitionSpec
 import dev.olshevski.navigation.reimagined.material.BottomSheetNavHost
 import dev.olshevski.navigation.reimagined.material.BottomSheetProperties
 import dev.olshevski.navigation.reimagined.navigate
@@ -193,7 +193,7 @@ fun MainScreen() {
                                     .height(controlBarHeight / 2)
                                     .fillMaxWidth()
                                     .align(Alignment.BottomCenter)
-                                    .background(LocalColorScheme.current.background)
+                                    .background(LocalColorScheme.current.subBackground)
                             ) {
                                 AppDivider(modifier = Modifier.fillMaxWidth())
                             }
@@ -292,17 +292,16 @@ fun MainScreen() {
                         panelController.swipeTo(PanelState.COLLAPSED)
                     }
                 }
-                val customTransitionSpec = NavTransitionSpec<Any?> { action, _, _ ->
-                    val direction = if (action == NavAction.Pop) {
-                        AnimatedContentScope.SlideDirection.End
-                    } else {
-                        AnimatedContentScope.SlideDirection.Start
-                    }
-                    slideIntoContainer(direction) with slideOutOfContainer(direction)
-                }
                 AnimatedNavHost(
                     controller = mainNavController,
-                    transitionSpec = customTransitionSpec
+                    transitionSpec = { action, _, _ ->
+                        val direction = if (action == NavAction.Pop) {
+                            AnimatedContentScope.SlideDirection.End
+                        } else {
+                            AnimatedContentScope.SlideDirection.Start
+                        }
+                        slideIntoContainer(direction) with slideOutOfContainer(direction)
+                    }
                 ) { destination ->
                     when (destination) {
                         ScreenDestination.Main -> {
@@ -408,6 +407,10 @@ fun MainScreen() {
 
                         ScreenDestination.WebDav -> {
                             WebDavScreen(paddingValues = paddingValues)
+                        }
+
+                        ScreenDestination.Vip -> {
+                            VipScreen(paddingValues = paddingValues)
                         }
                     }
                 }

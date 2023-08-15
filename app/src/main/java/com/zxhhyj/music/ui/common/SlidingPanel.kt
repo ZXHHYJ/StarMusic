@@ -21,9 +21,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import kotlin.math.roundToInt
 
-enum class PanelState {
-    COLLAPSED, EXPANDED
-}
+enum class PanelState { COLLAPSED, EXPANDED }
 
 @Composable
 fun rememberPanelController(panelState: PanelState): PanelController = remember {
@@ -40,6 +38,7 @@ class PanelController(panelState: PanelState) {
         panelState = state
     }
 }
+
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

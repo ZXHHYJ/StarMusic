@@ -10,6 +10,7 @@ import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.zxhhyj.ui.theme.LocalColorScheme
 
@@ -31,7 +32,7 @@ fun AppTabRow(
     TabRow(
         selectedTabIndex,
         modifier,
-        LocalColorScheme.current.background,
+        Color.Transparent,
         LocalColorScheme.current.highlight,
         indicator,
         divider,

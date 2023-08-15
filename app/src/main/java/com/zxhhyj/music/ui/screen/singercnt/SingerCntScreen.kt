@@ -26,11 +26,13 @@ import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository.songs
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.BottomSheetDestination
+import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
+import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppCard
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.AppTopBar
-import com.zxhhyj.ui.theme.LocalColorScheme
+import com.zxhhyj.ui.view.RoundColumn
 import dev.olshevski.navigation.reimagined.NavController
 
 @Composable
@@ -42,7 +44,7 @@ fun SingerCntScreen(
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(LocalColorScheme.current.background)
+            .background(LocalColorScheme.current.subBackground)
             .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
@@ -53,6 +55,7 @@ fun SingerCntScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .padding(horizontal = horizontal)
                         .padding(bottom = vertical)
                 ) {
                     Text(
@@ -80,10 +83,12 @@ fun SingerCntScreen(
                 }
             }
         }) {
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            itemsIndexed(artist.songs) { index, item ->
-                SongItem(sheetNavController = sheetNavController, song = item) {
-                    PlayManager.play(artist.songs, index)
+        RoundColumn(modifier = Modifier.fillMaxSize()) {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                itemsIndexed(artist.songs) { index, item ->
+                    SongItem(sheetNavController = sheetNavController, song = item) {
+                        PlayManager.play(artist.songs, index)
+                    }
                 }
             }
         }

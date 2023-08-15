@@ -97,39 +97,45 @@ fun Modifier.bindTopBarState() = composed {
 @Composable
 fun AppCenterTopBar(
     modifier: Modifier,
-    title: String
+    title: String,
+    actions: @Composable () -> Unit = {}
 ) {
     val topBarState = LocalTopBarState.current
-    Box(modifier = modifier.clickable(enabled = false) {
-        //用户修复点击事件穿透的问题
-    }) {
-        Column(
+    Box(modifier = modifier
+        .onSizeChanged {
+            topBarState.barSize = it
+        }
+        .clickable(enabled = false) {
+            //用户修复点击事件穿透的问题
+        }
+        .background(LocalColorScheme.current.subBackground)
+        .padding(horizontal = StarDimens.horizontal)
+    ) {
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .onSizeChanged {
-                    topBarState.barSize = it
-                }) {
-            Box(
-                modifier = Modifier
-                    .height(toolbarHeight)
-                    .fillMaxWidth()
-                    .clipToBounds()
-                    .background(LocalColorScheme.current.subBackground)
-                    .padding(horizontal = StarDimens.horizontal),
-                contentAlignment = Alignment.CenterEnd,
-                content = {
-                    Text(
-                        text = title,
-                        color = LocalColorScheme.current.text,
-                        fontSize = 18.sp,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    )
-                }
-            )
+                .height(toolbarHeight)
+                .fillMaxWidth(),
+            contentAlignment = Alignment.CenterEnd,
+            content = {
+                Text(
+                    text = title,
+                    color = LocalColorScheme.current.text,
+                    fontSize = 18.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            }
+        )
+        Row(
+            modifier = Modifier.align(Alignment.CenterEnd),
+            horizontalArrangement = Arrangement.spacedBy(StarDimens.horizontal / 2)
+        ) {
+            CompositionLocalProvider(LocalContentColor provides LocalColorScheme.current.highlight) {
+                actions.invoke()
+            }
         }
     }
 }
@@ -149,6 +155,7 @@ fun AppTopBar(
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(horizontal = StarDimens.horizontal)
                 .height(toolbarHeight)
         )
     }
@@ -158,9 +165,7 @@ fun AppTopBar(
     var contentSize by remember {
         mutableStateOf(IntSize.Zero)
     }
-    Box(modifier = modifier.clickable(enabled = false) {
-        //用户修复点击事件穿透的问题
-    }) {
+    Box(modifier = modifier) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -169,10 +174,13 @@ fun AppTopBar(
                 }) {
             Box(
                 modifier = Modifier
+                    .clickable(enabled = false) {
+                        //用户修复点击事件穿透的问题
+                    }
                     .height(toolbarHeight)
                     .fillMaxWidth()
                     .clipToBounds()
-                    .background(LocalColorScheme.current.background)
+                    .background(LocalColorScheme.current.subBackground)
                     .padding(horizontal = StarDimens.horizontal),
                 contentAlignment = Alignment.CenterEnd,
                 content = {
@@ -211,7 +219,6 @@ fun AppTopBar(
             }
             Box(modifier = Modifier
                 .clipToBounds()
-                .padding(horizontal = StarDimens.horizontal)
                 .onSizeChanged {
                     contentSize = it
                 }
@@ -220,6 +227,9 @@ fun AppTopBar(
                         x = 0,
                         y = topBarState.barOffsetHeightPx.roundToInt()
                     )
+                }
+                .clickable(enabled = false) {
+                    //用户修复点击事件穿透的问题
                 }
             ) {
                 content.invoke()
@@ -245,5 +255,5 @@ fun AppTopBar(
 
 class TopBarProperties(
     val showCenterDivider: Boolean = true,
-    val showBottomDivider: Boolean = true
+    val showBottomDivider: Boolean = false
 )

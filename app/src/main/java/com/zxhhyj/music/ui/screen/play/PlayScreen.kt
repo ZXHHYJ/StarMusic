@@ -158,7 +158,7 @@ fun PlayScreen(
                                 PlayControllerScreen(sheetNavController)
                             }
 
-                            PlayScreenDestination.Lyric -> {
+                            else -> {
                                 Column(modifier = Modifier.fillMaxSize()) {
                                     if (visibilityTopMediaBar) {
                                         LazyColumn(userScrollEnabled = false) {
@@ -170,23 +170,11 @@ fun PlayScreen(
                                             }
                                         }
                                     }
-                                    PlayLyricScreen()
-                                }
-                            }
-
-                            PlayScreenDestination.PlayQueue -> {
-                                Column(modifier = Modifier.fillMaxSize()) {
-                                    if (visibilityTopMediaBar) {
-                                        LazyColumn(userScrollEnabled = false) {
-                                            item {
-                                                TopMediaController(
-                                                    navController = navController,
-                                                    sheetNavController = sheetNavController
-                                                )
-                                            }
-                                        }
+                                    when (it) {
+                                        PlayScreenDestination.Lyric -> PlayLyricScreen()
+                                        PlayScreenDestination.PlayQueue -> PlayQueueScreen()
+                                        else -> {}
                                     }
-                                    PlayQueueScreen()
                                 }
                             }
                         }
