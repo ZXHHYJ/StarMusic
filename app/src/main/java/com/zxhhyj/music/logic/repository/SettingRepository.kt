@@ -41,6 +41,12 @@ object SettingRepository {
         initialValue = false
     )
 
+    var EnableStarMusicPro by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "EnableStarMusicPro",
+        initialValue = false
+    )
+
     var EnableNewPlayerUI by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "EnableNewPlayerUI",

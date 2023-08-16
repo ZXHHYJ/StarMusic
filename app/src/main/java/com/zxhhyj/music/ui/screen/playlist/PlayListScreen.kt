@@ -1,7 +1,6 @@
 package com.zxhhyj.music.ui.screen.playlist
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -63,18 +62,18 @@ fun PlayListScreen(
                     PlayListItem(
                         model = it,
                         actions = {
-                            Icon(
-                                imageVector = Icons.Rounded.MoreVert,
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .clickable {
-                                        sheetNavController.navigate(
-                                            BottomSheetDestination.PlaylistMenu(
-                                                it
-                                            )
-                                        )
-                                    }
-                            )
+                            AppIconButton(onClick = {
+                                sheetNavController.navigate(
+                                    BottomSheetDestination.PlaylistMenu(
+                                        it
+                                    )
+                                )
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Rounded.MoreVert,
+                                    contentDescription = null,
+                                )
+                            }
                         },
                         onClick = {
                             mainNavController.navigate(ScreenDestination.PlayListCnt(it))

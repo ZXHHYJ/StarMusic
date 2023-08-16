@@ -90,11 +90,11 @@ class TopBarState : Parcelable {
                 } else {
                     barOffsetHeightPx = newOffset.coerceIn(-maxOffsetPx, barOffsetHeightPx)
                     when {
-                        newOffset <= barOffsetHeightPx -> {
+                        newOffset < barOffsetHeightPx -> {
                             Offset.Zero
                         }
 
-                        newOffset >= -maxOffsetPx -> {
+                        newOffset > -maxOffsetPx -> {
                             available
                         }
 
