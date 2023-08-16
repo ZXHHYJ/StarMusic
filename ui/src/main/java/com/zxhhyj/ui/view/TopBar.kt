@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -59,7 +60,7 @@ class TopBarState : Parcelable {
      * bar当前偏移高度（单位Px）
      */
     @IgnoredOnParcel
-    var barOffsetHeightPx by mutableStateOf(0f)
+    var barOffsetHeightPx by mutableFloatStateOf(0f)
 
     val connection
         @Composable get() = object : NestedScrollConnection {
@@ -69,16 +70,39 @@ class TopBarState : Parcelable {
              */
             val maxOffsetPx = barSize.height.toFloat()
 
+            override fun onPostScroll(
+                consumed: Offset,
+                available: Offset,
+                source: NestedScrollSource
+            ): Offset {
+                val newOffset = barOffsetHeightPx + available.y
+                barOffsetHeightPx = newOffset.coerceIn(barOffsetHeightPx, 0f)
+                return available
+            }
+
             override fun onPreScroll(
                 available: Offset,
                 source: NestedScrollSource
             ): Offset {
                 val newOffset = barOffsetHeightPx + available.y
-                barOffsetHeightPx = newOffset.coerceIn(-maxOffsetPx, 0f)
-                if (newOffset >= -maxOffsetPx && newOffset <= 0f) {
-                    return available
+                return if (available.y > 0) {
+                    Offset.Zero
+                } else {
+                    barOffsetHeightPx = newOffset.coerceIn(-maxOffsetPx, barOffsetHeightPx)
+                    when {
+                        newOffset <= barOffsetHeightPx -> {
+                            Offset.Zero
+                        }
+
+                        newOffset >= -maxOffsetPx -> {
+                            available
+                        }
+
+                        else -> {
+                            available
+                        }
+                    }
                 }
-                return Offset.Zero
             }
         }
 }
@@ -108,14 +132,14 @@ fun AppCenterTopBar(
         .clickable(enabled = false) {
             //用户修复点击事件穿透的问题
         }
-        .background(LocalColorScheme.current.subBackground)
+        .background(LocalColorScheme.current.background)
         .padding(horizontal = StarDimens.horizontal)
     ) {
         Box(
             modifier = Modifier
                 .height(toolbarHeight)
                 .fillMaxWidth(),
-            contentAlignment = Alignment.CenterEnd,
+            contentAlignment = Alignment.Center,
             content = {
                 Text(
                     text = title,
@@ -180,7 +204,7 @@ fun AppTopBar(
                     .height(toolbarHeight)
                     .fillMaxWidth()
                     .clipToBounds()
-                    .background(LocalColorScheme.current.subBackground)
+                    .background(LocalColorScheme.current.background)
                     .padding(horizontal = StarDimens.horizontal),
                 contentAlignment = Alignment.CenterEnd,
                 content = {

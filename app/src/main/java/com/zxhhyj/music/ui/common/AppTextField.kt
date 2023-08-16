@@ -4,11 +4,12 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import com.zxhhyj.ui.theme.LocalColorScheme
@@ -19,12 +20,12 @@ import com.zxhhyj.ui.theme.StarDimens
  * 默认TextField样式
  */
 private val textFieldColors
-    @Composable get() = TextFieldDefaults.outlinedTextFieldColors(
-        focusedBorderColor = LocalColorScheme.current.outline,
-        unfocusedBorderColor = LocalColorScheme.current.outline,
-        cursorColor = LocalColorScheme.current.background,
+    @Composable get() = TextFieldDefaults.textFieldColors(
+        cursorColor = LocalColorScheme.current.text,
         backgroundColor = LocalColorScheme.current.background,
-        placeholderColor = LocalColorScheme.current.subText
+        placeholderColor = LocalColorScheme.current.subText,
+        focusedIndicatorColor = Color.Transparent,
+        unfocusedIndicatorColor = Color.Transparent
     )
 
 @Composable
@@ -46,7 +47,7 @@ fun AppTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1
 ) {
-    OutlinedTextField(
+    TextField(
         value,
         onValueChange,
         modifier,
@@ -89,7 +90,7 @@ fun AppTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1
 ) {
-    OutlinedTextField(
+    TextField(
         value,
         onValueChange,
         modifier,

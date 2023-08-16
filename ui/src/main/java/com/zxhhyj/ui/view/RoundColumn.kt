@@ -10,7 +10,7 @@ import com.zxhhyj.ui.theme.StarDimens
 @Composable
 fun RoundColumn(modifier: Modifier, content: @Composable () -> Unit) {
     AppCard(
-        backgroundColor = LocalColorScheme.current.background,
+        backgroundColor = LocalColorScheme.current.highBackground,
         modifier = modifier.padding(horizontal = StarDimens.horizontal)
     ) {
         Column(modifier = modifier) {

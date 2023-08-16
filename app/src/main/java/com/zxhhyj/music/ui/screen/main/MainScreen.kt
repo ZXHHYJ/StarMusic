@@ -1,12 +1,11 @@
 package com.zxhhyj.music.ui.screen.main
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.with
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -133,7 +132,7 @@ private fun AppScaffold(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(LocalColorScheme.current.background)
+                    .background(LocalColorScheme.current.highBackground)
             ) {
                 Spacer(modifier = Modifier.navigationBarsPadding())
             }
@@ -141,7 +140,6 @@ private fun AppScaffold(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainScreen() {
 
@@ -193,7 +191,7 @@ fun MainScreen() {
                                     .height(controlBarHeight / 2)
                                     .fillMaxWidth()
                                     .align(Alignment.BottomCenter)
-                                    .background(LocalColorScheme.current.subBackground)
+                                    .background(LocalColorScheme.current.highBackground)
                             ) {
                                 AppDivider(modifier = Modifier.fillMaxWidth())
                             }
@@ -296,11 +294,11 @@ fun MainScreen() {
                     controller = mainNavController,
                     transitionSpec = { action, _, _ ->
                         val direction = if (action == NavAction.Pop) {
-                            AnimatedContentScope.SlideDirection.End
+                            AnimatedContentTransitionScope.SlideDirection.End
                         } else {
-                            AnimatedContentScope.SlideDirection.Start
+                            AnimatedContentTransitionScope.SlideDirection.Start
                         }
-                        slideIntoContainer(direction) with slideOutOfContainer(direction)
+                        slideIntoContainer(direction) togetherWith slideOutOfContainer(direction)
                     }
                 ) { destination ->
                     when (destination) {
@@ -472,7 +470,7 @@ fun MainScreen() {
         Column(
             modifier = Modifier
                 .background(
-                    LocalColorScheme.current.subBackground,
+                    LocalColorScheme.current.background,
                     shape = RoundedCornerShape(topStart = round, topEnd = round)
                 )
         ) {

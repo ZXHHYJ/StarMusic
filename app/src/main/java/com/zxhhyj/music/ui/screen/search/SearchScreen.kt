@@ -86,7 +86,7 @@ fun SearchScreen(
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(LocalColorScheme.current.subBackground)
+            .background(LocalColorScheme.current.background)
             .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
@@ -97,31 +97,32 @@ fun SearchScreen(
         },
         content = {
             Column(modifier = Modifier.fillMaxSize()) {
-                AppTextField(
-                    value = searchKey,
-                    onValueChange = {
-                        searchKey = it
-                    },
-                    placeholder = {
-                        Text(text = stringResource(id = R.string.input_key))
-                    },
-                    keyboardActions = KeyboardActions(onSearch = {
-                        focusManager.clearFocus()
-                        keyboardController?.hide()
-                    }),
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = horizontal),
-                    singleLine = true
-                )
-                val pagerState =
-                    rememberPagerState(initialPage = SearchScreenTabs.values().indexOf(start))
+                val pagerState = rememberPagerState(
+                    initialPage = SearchScreenTabs.values().indexOf(start),
+                ) { SearchScreenTabs.values().size }
                 val scope = rememberCoroutineScope()
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                    ItemSpacer()
+                    AppTextField(
+                        value = searchKey,
+                        onValueChange = {
+                            searchKey = it
+                        },
+                        placeholder = {
+                            Text(text = stringResource(id = R.string.input_key))
+                        },
+                        keyboardActions = KeyboardActions(onSearch = {
+                            focusManager.clearFocus()
+                            keyboardController?.hide()
+                        }),
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = horizontal),
+                        singleLine = true
+                    )
                     AppTabRow(
                         modifier = Modifier
-                            .padding(horizontal = horizontal)
                             .height(42.dp),
                         selectedTabIndex = pagerState.currentPage
                     ) {
@@ -137,13 +138,6 @@ fun SearchScreen(
                                 }
                             }
                     }
-                }
-                ItemSpacer()
-                RoundColumn(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1.0f)
-                ) {
                     HorizontalPager(
                         modifier = Modifier
                             .fillMaxSize()
@@ -154,7 +148,6 @@ fun SearchScreen(
                                 }
                                 false
                             },
-                        pageCount = SearchScreenTabs.values().size,
                         state = pagerState
                     ) { t ->
                         when (SearchScreenTabs.values()[t]) {
@@ -235,12 +228,10 @@ fun SearchScreen(
                                         }
                                     }
                                 }
-
                             }
                         }
                     }
                 }
-
             }
         })
 }

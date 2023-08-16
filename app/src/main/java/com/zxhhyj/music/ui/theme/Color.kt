@@ -20,7 +20,7 @@ val nightColorScheme = ColorScheme(
     text = Color.White,
     onText = Color.Black,
     subText = Color(0xFF7A7A7A),
-    subBackground = Color(0xFF070707),
-    background = Color.White,
+    background = Color(0xFF070707),
+    highBackground = Color.White,
     outline = Color(0xFF383838)
 )

@@ -21,7 +21,7 @@ fun AppAsyncImage(
     onClick: (() -> Unit)? = null
 ) {
     val clickableModifier = onClick?.let { Modifier.clickable(onClick = onClick) } ?: Modifier
-    AppCard(backgroundColor = LocalColorScheme.current.subBackground, modifier = modifier) {
+    AppCard(backgroundColor = LocalColorScheme.current.background, modifier = modifier) {
         AsyncImage(
             modifier = Modifier
                 .fillMaxSize()
