@@ -1,7 +1,5 @@
 package com.zxhhyj.music.ui.screen.playlistcnt
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,9 +31,8 @@ import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.item.SongItem
-import com.zxhhyj.music.ui.screen.BottomSheetDestination
+import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.music.ui.theme.vertical
-import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppButton
 import com.zxhhyj.ui.view.AppIconButton
 import com.zxhhyj.ui.view.AppScaffold
@@ -47,13 +44,12 @@ import dev.olshevski.navigation.reimagined.navigate
 @Composable
 fun PlayListCntScreen(
     playlist: PlayListModel,
-    sheetNavController: NavController<BottomSheetDestination>,
+    sheetNavController: NavController<SheetDestination>,
     paddingValues: PaddingValues
 ) {
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(LocalColorScheme.current.background)
             .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
@@ -63,7 +59,7 @@ fun PlayListCntScreen(
                 actions = {
                     AppIconButton(onClick = {
                         sheetNavController.navigate(
-                            BottomSheetDestination.PlaylistMenu(
+                            SheetDestination.PlaylistMenu(
                                 playlist
                             )
                         )
@@ -95,21 +91,16 @@ fun PlayListCntScreen(
                 }
             }
         }) {
-        RoundColumn(modifier = Modifier.fillMaxSize()) {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
+        RoundColumn(modifier = Modifier.fillMaxWidth()) {
+            LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 itemsIndexed(playlist.songs) { index, item ->
                     SongItem(
                         song = item,
                         sheetNavController = sheetNavController,
                         actions = {
-                            Icon(
-                                imageVector = Icons.Rounded.Remove,
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .clickable {
-                                        playlist.removeSong(item)
-                                    }
-                            )
+                            AppIconButton(onClick = { playlist.removeSong(item) }) {
+                                Icon(imageVector = Icons.Rounded.Remove, contentDescription = null)
+                            }
                         },
                         onClick = {
                             PlayManager.play(playlist.songs.toList(), index)

@@ -1,6 +1,5 @@
 package com.zxhhyj.music.ui.screen.singercnt
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -25,7 +24,7 @@ import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository.songs
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.item.SongItem
-import com.zxhhyj.music.ui.screen.BottomSheetDestination
+import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
 import com.zxhhyj.ui.theme.LocalColorScheme
@@ -37,14 +36,13 @@ import dev.olshevski.navigation.reimagined.NavController
 
 @Composable
 fun SingerCntScreen(
-    sheetNavController: NavController<BottomSheetDestination>,
+    sheetNavController: NavController<SheetDestination>,
     paddingValues: PaddingValues,
     artist: SongBean.Artist
 ) {
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(LocalColorScheme.current.background)
             .statusBarsPadding()
             .padding(paddingValues),
         topBar = {

@@ -11,18 +11,27 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.window.DialogProperties
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.config.PrivacyPolicyURL
+import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.ActivityUtils
-import com.zxhhyj.ui.view.YesNoDialog
+import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.ui.theme.LocalColorScheme
+import com.zxhhyj.ui.view.YesNoDialog
+import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.navigate
 
 @Composable
-fun SplashDialog(onDismissRequest: () -> Unit) {
+fun SplashDialog(
+    onDismissRequest: () -> Unit,
+    dialogNavController: NavController<DialogDestination>
+) {
     val activity = LocalContext.current as Activity
     YesNoDialog(
         onDismissRequest = onDismissRequest,
+        properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
         title = stringResource(id = R.string.privacy_policy),
         confirm = {
             Text(
@@ -30,6 +39,9 @@ fun SplashDialog(onDismissRequest: () -> Unit) {
                 modifier = Modifier.clickable {
                     onDismissRequest.invoke()
                     SettingRepository.AgreePrivacyPolicy = true
+                    if (AndroidMediaLibsRepository.songs.isEmpty()) {
+                        dialogNavController.navigate(DialogDestination.MediaLibsEmpty)
+                    }
                 })
         },
         dismiss = {

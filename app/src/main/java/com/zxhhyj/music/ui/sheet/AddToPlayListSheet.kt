@@ -16,8 +16,8 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.PlayListRepository
 import com.zxhhyj.music.ui.item.PlayListItem
-import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.DialogDestination
+import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.Item
 import com.zxhhyj.ui.view.item.ItemSpacer
@@ -28,7 +28,7 @@ import dev.olshevski.navigation.reimagined.popAll
 @Composable
 fun AddToPlayListSheet(
     dialogNavController: NavController<DialogDestination>,
-    sheetNavController: NavController<BottomSheetDestination>,
+    sheetNavController: NavController<SheetDestination>,
     song: SongBean
 ) {
     RoundColumn(modifier = Modifier.fillMaxWidth()) {

@@ -1,6 +1,5 @@
 package com.zxhhyj.music.ui.screen.singer
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,7 +18,6 @@ import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.ui.item.ArtistItem
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.search.SearchScreenTabs
-import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppIconButton
 import com.zxhhyj.ui.view.AppScaffold
@@ -35,7 +33,6 @@ fun SingerScreen(
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(LocalColorScheme.current.background)
             .statusBarsPadding()
             .padding(paddingValues),
         topBar = {

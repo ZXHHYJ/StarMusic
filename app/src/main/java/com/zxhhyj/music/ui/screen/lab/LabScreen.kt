@@ -1,6 +1,5 @@
 package com.zxhhyj.music.ui.screen.lab
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
@@ -29,7 +27,6 @@ fun LabScreen(
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(LocalColorScheme.current.background)
             .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
@@ -48,11 +45,11 @@ fun LabScreen(
                                 contentDescription = null
                             )
                         },
-                        text = { Text(text = "实验性的播放器UI") },
-                        subText = { Text(text = "实验性的播放器UI") },
-                        checked = SettingRepository.EnableNewPlayerUI,
+                        text = { Text(text = "适配墨水屏") },
+                        subText = { Text(text = "单独为墨水屏设计的UI模式") },
+                        checked = SettingRepository.EnableLinkUI,
                         onCheckedChange = {
-                            SettingRepository.EnableNewPlayerUI = it
+                            SettingRepository.EnableLinkUI = it
                         }
                     )
                 }

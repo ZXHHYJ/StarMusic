@@ -1,6 +1,5 @@
 package com.zxhhyj.music.ui.screen.playlist
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,10 +17,9 @@ import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.PlayListRepository
 import com.zxhhyj.music.ui.item.PlayListItem
-import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
-import com.zxhhyj.ui.theme.LocalColorScheme
+import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppIconButton
 import com.zxhhyj.ui.view.AppScaffold
@@ -33,14 +31,13 @@ import dev.olshevski.navigation.reimagined.navigate
 @Composable
 fun PlayListScreen(
     mainNavController: NavController<ScreenDestination>,
-    sheetNavController: NavController<BottomSheetDestination>,
+    sheetNavController: NavController<SheetDestination>,
     dialogNavController: NavController<DialogDestination>,
     paddingValues: PaddingValues
 ) {
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(LocalColorScheme.current.background)
             .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
@@ -64,7 +61,7 @@ fun PlayListScreen(
                         actions = {
                             AppIconButton(onClick = {
                                 sheetNavController.navigate(
-                                    BottomSheetDestination.PlaylistMenu(
+                                    SheetDestination.PlaylistMenu(
                                         it
                                     )
                                 )

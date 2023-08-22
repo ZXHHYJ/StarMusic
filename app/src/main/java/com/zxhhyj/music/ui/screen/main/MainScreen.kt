@@ -3,6 +3,8 @@ package com.zxhhyj.music.ui.screen.main
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
@@ -23,8 +25,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.MoreHoriz
+import androidx.compose.material.icons.rounded.Source
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -39,6 +46,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntSize
@@ -60,9 +68,9 @@ import com.zxhhyj.music.ui.dialog.EditPlayListTitleDialog
 import com.zxhhyj.music.ui.dialog.MediaLibsEmptyDialog
 import com.zxhhyj.music.ui.dialog.ScanMusicDialog
 import com.zxhhyj.music.ui.dialog.SplashDialog
-import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
+import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.music.ui.screen.about.AboutScreen
 import com.zxhhyj.music.ui.screen.album.AlbumScreen
 import com.zxhhyj.music.ui.screen.albumcnt.AlbumCntScreen
@@ -74,7 +82,7 @@ import com.zxhhyj.music.ui.screen.play.PlayScreen
 import com.zxhhyj.music.ui.screen.playlist.PlayListScreen
 import com.zxhhyj.music.ui.screen.playlistcnt.PlayListCntScreen
 import com.zxhhyj.music.ui.screen.search.SearchScreen
-import com.zxhhyj.music.ui.screen.setting.SettingScreen
+import com.zxhhyj.music.ui.screen.more.MoreScreen
 import com.zxhhyj.music.ui.screen.singer.SingerScreen
 import com.zxhhyj.music.ui.screen.singercnt.SingerCntScreen
 import com.zxhhyj.music.ui.screen.single.SingleScreen
@@ -83,6 +91,7 @@ import com.zxhhyj.music.ui.screen.webdav.WebDavScreen
 import com.zxhhyj.music.ui.sheet.AddToPlayListSheet
 import com.zxhhyj.music.ui.sheet.PlaylistMenuSheet
 import com.zxhhyj.music.ui.sheet.SongMenuSheet
+import com.zxhhyj.music.ui.sheet.SongSortSheet
 import com.zxhhyj.music.ui.sheet.songinfo.SongInfoSheet
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.round
@@ -95,18 +104,38 @@ import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.DialogNavHost
 import dev.olshevski.navigation.reimagined.NavAction
 import dev.olshevski.navigation.reimagined.NavBackHandler
+import dev.olshevski.navigation.reimagined.NavHost
 import dev.olshevski.navigation.reimagined.material.BottomSheetNavHost
 import dev.olshevski.navigation.reimagined.material.BottomSheetProperties
+import dev.olshevski.navigation.reimagined.moveToTop
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop
+import dev.olshevski.navigation.reimagined.popAll
 import dev.olshevski.navigation.reimagined.rememberNavController
 
 /**
  * Happy 22nd Birthday Shuangshengzi
  */
 
+enum class HomeNavigationDestination {
+    Single,
+    More,
+}
+
+val HomeNavigationDestination.tabIcon
+    get() = when (this) {
+        HomeNavigationDestination.Single -> Icons.Rounded.Source
+        HomeNavigationDestination.More -> Icons.Rounded.MoreHoriz
+    }
+
+val HomeNavigationDestination.tabName
+    @Composable get() = when (this) {
+        HomeNavigationDestination.Single -> stringResource(id = R.string.media_lib)
+        HomeNavigationDestination.More -> stringResource(id = R.string.more)
+    }
+
 @Composable
-private fun AppScaffold(
+private fun Scaffold(
     modifier: Modifier = Modifier,
     controllerBar: @Composable () -> Unit,
     navigationBar: @Composable () -> Unit,
@@ -146,11 +175,14 @@ fun MainScreen() {
     val mainNavController =
         rememberNavController<ScreenDestination>(startDestination = ScreenDestination.Main)
 
+    val homeNavController =
+        rememberNavController(startDestination = HomeNavigationDestination.Single)
+
     val dialogNavController = rememberNavController<DialogDestination>(
         initialBackstack = emptyList()
     )
 
-    val sheetNavController = rememberNavController<BottomSheetDestination>(
+    val sheetNavController = rememberNavController<SheetDestination>(
         initialBackstack = emptyList()
     )
 
@@ -175,13 +207,13 @@ fun MainScreen() {
             if (!visibilityMediaController && panelController.panelState == PanelState.EXPANDED) {
                 panelController.swipeTo(PanelState.COLLAPSED)
             }
-            AppScaffold(
+            Scaffold(
                 modifier = Modifier.fillMaxSize(),
                 controllerBar = {
                     AnimatedVisibility(
                         visible = visibilityMediaController,
-                        enter = expandVertically(),
-                        exit = shrinkVertically()
+                        enter = if (SettingRepository.EnableLinkUI) EnterTransition.None else expandVertically(),
+                        exit = if (SettingRepository.EnableLinkUI) ExitTransition.None else shrinkVertically(),
                     ) {
                         val controlBarHeight = 50.dp
                         val coverLength = 56.dp
@@ -205,18 +237,35 @@ fun MainScreen() {
                                     backgroundColor = Color.Transparent,
                                     contentColor = Color.Transparent,
                                 ) {
-                                    AlbumMotionBlur(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .align(Alignment.BottomCenter)
-                                            .height(controlBarHeight)
-                                            .background(Color.DarkGray)
-                                            .clickable {
-                                                panelController.swipeTo(PanelState.EXPANDED)
-                                            },
-                                        albumUrl = song?.album?.coverUrl,
-                                        paused = panelController.panelState != PanelState.COLLAPSED
-                                    )
+                                    when (SettingRepository.EnableLinkUI) {
+                                        true -> {
+                                            Box(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .align(Alignment.BottomCenter)
+                                                    .height(controlBarHeight)
+                                                    .background(Color.DarkGray)
+                                                    .clickable {
+                                                        panelController.swipeTo(PanelState.EXPANDED)
+                                                    }
+                                            )
+                                        }
+
+                                        false -> {
+                                            AlbumMotionBlur(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .align(Alignment.BottomCenter)
+                                                    .height(controlBarHeight)
+                                                    .background(Color.DarkGray)
+                                                    .clickable {
+                                                        panelController.swipeTo(PanelState.EXPANDED)
+                                                    },
+                                                albumUrl = song?.album?.coverUrl,
+                                                paused = panelController.panelState != PanelState.COLLAPSED
+                                            )
+                                        }
+                                    }
                                     Row(
                                         modifier = Modifier
                                             .padding(start = coverLength)
@@ -275,8 +324,36 @@ fun MainScreen() {
                     }
                 },
                 navigationBar = {
-                    if (!visibilityMediaController) {
-                        AppDivider(modifier = Modifier.fillMaxWidth())
+                    AnimatedVisibility(
+                        visible = mainNavController.backstack.entries.size <= 1,
+                        enter = expandVertically(),
+                        exit = shrinkVertically()
+                    ) {
+                        BottomNavigation(
+                            modifier = Modifier.fillMaxWidth(),
+                            backgroundColor = LocalColorScheme.current.highBackground,
+                            contentColor = LocalColorScheme.current.highlight,
+                            elevation = 0.dp
+                        ) {
+                            val bottomLastDestination =
+                                homeNavController.backstack.entries.last().destination
+                            HomeNavigationDestination.values().forEach { item ->
+                                BottomNavigationItem(
+                                    icon = { Icon(item.tabIcon, contentDescription = item.name) },
+                                    label = { Text(text = item.tabName) },
+                                    selected = item == bottomLastDestination,
+                                    unselectedContentColor = LocalColorScheme.current.disabled,
+                                    onClick = {
+                                        if (!homeNavController.moveToTop { it == item }) {
+                                            homeNavController.navigate(item)
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                        if (!visibilityMediaController) {
+                            AppDivider(modifier = Modifier.fillMaxWidth())
+                        }
                     }
                 }
             ) { paddingValues ->
@@ -293,6 +370,9 @@ fun MainScreen() {
                 AnimatedNavHost(
                     controller = mainNavController,
                     transitionSpec = { action, _, _ ->
+                        if (SettingRepository.EnableLinkUI) {
+                            return@AnimatedNavHost EnterTransition.None togetherWith ExitTransition.None
+                        }
                         val direction = if (action == NavAction.Pop) {
                             AnimatedContentTransitionScope.SlideDirection.End
                         } else {
@@ -303,12 +383,25 @@ fun MainScreen() {
                 ) { destination ->
                     when (destination) {
                         ScreenDestination.Main -> {
-                            SingleScreen(
-                                mainNavController = mainNavController,
-                                sheetNavController = sheetNavController,
-                                dialogNavController = dialogNavController,
-                                paddingValues = paddingValues
-                            )
+                            NavHost(controller = homeNavController) {
+                                when (it) {
+                                    HomeNavigationDestination.Single -> {
+                                        SingleScreen(
+                                            mainNavController = mainNavController,
+                                            sheetNavController = sheetNavController,
+                                            paddingValues = paddingValues
+                                        )
+                                    }
+
+                                    HomeNavigationDestination.More -> {
+                                        MoreScreen(
+                                            mainNavController = mainNavController,
+                                            paddingValues = paddingValues
+                                        )
+                                    }
+                                }
+                            }
+
                         }
 
                         is ScreenDestination.Search -> {
@@ -344,7 +437,7 @@ fun MainScreen() {
                         }
 
                         ScreenDestination.Setting -> {
-                            SettingScreen(
+                            MoreScreen(
                                 mainNavController = mainNavController,
                                 paddingValues = paddingValues
                             )
@@ -433,7 +526,10 @@ fun MainScreen() {
             }
 
             DialogDestination.Splash -> {
-                SplashDialog(onDismissRequest = onDismissRequest)
+                SplashDialog(
+                    onDismissRequest = onDismissRequest,
+                    dialogNavController = dialogNavController
+                )
             }
 
             DialogDestination.CreatePlayList -> {
@@ -455,14 +551,16 @@ fun MainScreen() {
             dialogNavController.navigate(DialogDestination.Splash)
         }
         onDispose {
-            dialogNavController.pop()
+            dialogNavController.popAll()
         }
     }
 
     BottomSheetNavHost(
         controller = sheetNavController,
         onDismissRequest = { sheetNavController.pop() },
-        sheetPropertiesSpec = { BottomSheetProperties(skipHalfExpanded = true) }
+        sheetPropertiesSpec = {
+            BottomSheetProperties(skipHalfExpanded = true)
+        }
     ) { destination ->
         BackHandler {
             sheetNavController.pop()
@@ -486,7 +584,7 @@ fun MainScreen() {
                     .align(Alignment.CenterHorizontally)
             )
             when (destination) {
-                is BottomSheetDestination.SongMenu -> {
+                is SheetDestination.SongMenu -> {
                     SongMenuSheet(
                         mainNavController = mainNavController,
                         sheetNavController = sheetNavController,
@@ -494,13 +592,13 @@ fun MainScreen() {
                     )
                 }
 
-                is BottomSheetDestination.SongInfo -> {
+                is SheetDestination.SongInfo -> {
                     SongInfoSheet(
                         song = destination.song
                     )
                 }
 
-                is BottomSheetDestination.AddToPlayList -> {
+                is SheetDestination.AddToPlayList -> {
                     AddToPlayListSheet(
                         dialogNavController = dialogNavController,
                         sheetNavController = sheetNavController,
@@ -508,13 +606,17 @@ fun MainScreen() {
                     )
                 }
 
-                is BottomSheetDestination.PlaylistMenu -> {
+                is SheetDestination.PlaylistMenu -> {
                     PlaylistMenuSheet(
                         mainNavController = mainNavController,
                         dialogNavController = dialogNavController,
                         sheetNavController = sheetNavController,
                         model = destination.model
                     )
+                }
+
+                SheetDestination.SongSort -> {
+                    SongSortSheet()
                 }
             }
             Box(modifier = Modifier.heightIn(min = vertical)) {

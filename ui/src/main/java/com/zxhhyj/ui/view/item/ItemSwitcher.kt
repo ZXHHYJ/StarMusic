@@ -1,5 +1,6 @@
 package com.zxhhyj.ui.view.item
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,6 +31,9 @@ fun ItemSwitcher(
 ) {
     Row(
         modifier = Modifier
+            .clickable {
+                onCheckedChange.invoke(!checked)
+            }
             .fillMaxWidth()
             .padding(horizontal = StarDimens.horizontal, vertical = StarDimens.vertical),
         verticalAlignment = Alignment.CenterVertically

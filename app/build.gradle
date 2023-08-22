@@ -68,7 +68,7 @@ dependencies {
     // https://github.com/google/gson
     implementation 'com.google.code.gson:gson:2.10.1'
     // https://github.com/Kyant0/Tag
-    implementation "com.github.Kyant0:Tag:2023.7.7"
+    implementation "com.github.Kyant0:Tag:2023.8.1"
     // https://github.com/olshevski/compose-navigation-reimagined
     def reimagined_version = "1.5.0"
     implementation "dev.olshevski.navigation:reimagined:$reimagined_version"
@@ -80,11 +80,11 @@ dependencies {
     // https://github.com/krottv/compose-sliders
     implementation "com.github.krottv:compose-sliders:0.1.4"
 
-    implementation 'androidx.palette:palette-ktx:1.0.0'
     implementation 'androidx.media:media:1.6.0'
 
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
     implementation "com.google.accompanist:accompanist-permissions:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-webview:$accompanist_version"
 
     def kotlinx_coroutines_version = '1.7.3'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_coroutines_version"

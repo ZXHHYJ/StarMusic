@@ -67,10 +67,9 @@ fun AlbumScreen(
                     }
                 )
             }) {
-            RoundColumn(modifier = Modifier.fillMaxSize()) {
+            RoundColumn(modifier = Modifier.fillMaxWidth()) {
                 LazyVerticalGrid(
-                    modifier = Modifier
-                        .fillMaxSize(),
+                    modifier = Modifier.fillMaxWidth(),
                     columns = GridCells.Fixed(fixedCount),
                 ) {
                     itemsIndexed(AndroidMediaLibsRepository.albums) { index, item ->

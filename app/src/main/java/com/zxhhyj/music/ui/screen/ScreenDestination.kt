@@ -9,6 +9,7 @@ import kotlinx.parcelize.RawValue
 
 
 sealed class ScreenDestination : Parcelable {
+
     /**
      * 主页
      */
@@ -102,6 +103,5 @@ sealed class ScreenDestination : Parcelable {
      */
     @Parcelize
     data class PlayListCnt(val model: @RawValue PlayListModel) : ScreenDestination()
-
 
 }

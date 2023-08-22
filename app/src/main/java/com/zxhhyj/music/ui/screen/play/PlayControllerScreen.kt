@@ -40,13 +40,12 @@ import androidx.lifecycle.map
 import com.github.krottv.compose.sliders.SliderValueHorizontal
 import com.mxalbert.sharedelements.SharedElement
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.logic.utils.toTimeString
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.BoxWithPercentages
-import com.zxhhyj.music.ui.screen.BottomSheetDestination
+import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
 import com.zxhhyj.music.ui.theme.translucentWhiteFixBugColor
 import com.zxhhyj.ui.view.AppCard
@@ -56,7 +55,7 @@ import dev.olshevski.navigation.reimagined.navigate
 import kotlin.math.roundToInt
 
 @Composable
-fun PlayControllerScreen(sheetNavController: NavController<BottomSheetDestination>) {
+fun PlayControllerScreen(sheetNavController: NavController<SheetDestination>) {
     BoxWithPercentages(
         modifier = Modifier
             .fillMaxSize()
@@ -71,30 +70,23 @@ fun PlayControllerScreen(sheetNavController: NavController<BottomSheetDestinatio
 
             val song by PlayManager.currentSongLiveData().observeAsState()
 
-            when (SettingRepository.EnableNewPlayerUI) {
-                true -> {
-                }
-
-                false -> {
-                    SharedElement(
-                        key = ShareAlbumKey,
-                        screenKey = PlayScreenDestination.Controller,
-                        transitionSpec = MaterialFadeOutTransitionSpec
-                    ) {
-                        AppCard(
-                            modifier = Modifier
-                                .padding(bottom = 8.dp)
-                                .size(100.wp),
-                            backgroundColor = Color.Transparent,
-                            elevation = 10.dp,
-                        ) {
-                            AppAsyncImage(
-                                modifier = Modifier.fillMaxSize(),
-                                backgroundColor = Color.DarkGray,
-                                data = song?.album?.coverUrl
-                            )
-                        }
-                    }
+            SharedElement(
+                key = ShareAlbumKey,
+                screenKey = PlayScreenDestination.Controller,
+                transitionSpec = MaterialFadeOutTransitionSpec
+            ) {
+                AppCard(
+                    modifier = Modifier
+                        .padding(bottom = 8.dp)
+                        .size(100.wp),
+                    backgroundColor = Color.Transparent,
+                    elevation = 10.dp,
+                ) {
+                    AppAsyncImage(
+                        modifier = Modifier.fillMaxSize(),
+                        backgroundColor = Color.DarkGray,
+                        data = song?.album?.coverUrl
+                    )
                 }
             }
 
@@ -134,7 +126,7 @@ fun PlayControllerScreen(sheetNavController: NavController<BottomSheetDestinatio
                         .clip(RoundedCornerShape(32.dp))
                         .background(translucentWhiteFixBugColor)
                         .clickable {
-                            sheetNavController.navigate(BottomSheetDestination.SongMenu(song!!))
+                            sheetNavController.navigate(SheetDestination.SongMenu(song!!))
                         }
                 )
             }

@@ -1,6 +1,5 @@
 package com.zxhhyj.music.ui.screen.about
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,7 +21,6 @@ import com.zxhhyj.music.logic.utils.ActivityUtils
 import com.zxhhyj.music.logic.utils.CopyUtils
 import com.zxhhyj.music.logic.utils.VersionUtils
 import com.zxhhyj.music.ui.item.SubTitleItem
-import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
@@ -38,7 +36,6 @@ fun AboutScreen(
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(LocalColorScheme.current.background)
             .statusBarsPadding()
             .padding(paddingValues),
         topBar = {

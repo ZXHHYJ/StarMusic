@@ -13,9 +13,9 @@ import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.PlayListModel
 import com.zxhhyj.music.logic.repository.PlayListRepository
-import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
+import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.Item
 import com.zxhhyj.ui.view.item.ItemDivider
@@ -28,7 +28,7 @@ import dev.olshevski.navigation.reimagined.popUpTo
 fun PlaylistMenuSheet(
     mainNavController: NavController<ScreenDestination>,
     dialogNavController: NavController<DialogDestination>,
-    sheetNavController: NavController<BottomSheetDestination>,
+    sheetNavController: NavController<SheetDestination>,
     model: PlayListModel
 ) {
     LazyColumn {

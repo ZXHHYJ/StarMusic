@@ -30,7 +30,7 @@ fun YesNoDialog(
     content: @Composable () -> Unit
 ) {
     Dialog(onDismissRequest = onDismissRequest, properties = properties) {
-        AppCard(backgroundColor = LocalColorScheme.current.background) {
+        AppCard(backgroundColor = LocalColorScheme.current.highBackground) {
             Column(
                 modifier = Modifier.padding(
                     horizontal = StarDimens.horizontal,

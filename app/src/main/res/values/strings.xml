@@ -9,7 +9,6 @@
     <string name="single">单曲</string>
     <string name="play_list">播放列表</string>
     <string name="total_n_songs">共%d首</string>
-    <string name="setting">设置</string>
     <string name="scan_music">扫描音乐</string>
     <string name="not_lyric">无歌词</string>
     <string name="delete">删除</string>
@@ -53,4 +52,7 @@
     <string name="cue_support_info">启用后支持识别cue分轨文件</string>
     <string name="qq_group">QQ群</string>
     <string name="star_music_pro">StarMusic Pro</string>
+    <string name="enable">无事绊心弦，所念皆如愿<!--2023/8/16日晚 李丹 选--></string>
+    <string name="not_enable">未启用</string>
+    <string name="more">更多</string>
 </resources>

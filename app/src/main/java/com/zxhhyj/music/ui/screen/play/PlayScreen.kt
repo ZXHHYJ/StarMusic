@@ -1,10 +1,25 @@
 package com.zxhhyj.music.ui.screen.play
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.*
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
@@ -23,19 +38,27 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.map
-import com.mxalbert.sharedelements.*
+import com.mxalbert.sharedelements.FadeMode
+import com.mxalbert.sharedelements.MaterialArcMotionFactory
+import com.mxalbert.sharedelements.SharedElementsRoot
+import com.mxalbert.sharedelements.SharedElementsTransitionSpec
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.ui.common.AlbumCoverGradient
 import com.zxhhyj.music.ui.common.AlbumMotionBlur
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.common.PanelController
 import com.zxhhyj.music.ui.common.PanelState
-import com.zxhhyj.music.ui.screen.BottomSheetDestination
+import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.music.ui.screen.play.common.TopMediaController
-import com.zxhhyj.music.ui.theme.*
-import dev.olshevski.navigation.reimagined.*
+import com.zxhhyj.music.ui.theme.round
+import com.zxhhyj.music.ui.theme.translucentWhiteColor
+import dev.olshevski.navigation.reimagined.AnimatedNavHost
+import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.moveToTop
+import dev.olshevski.navigation.reimagined.navigate
+import dev.olshevski.navigation.reimagined.popUpTo
+import dev.olshevski.navigation.reimagined.rememberNavController
 
 
 enum class PlayScreenDestination {
@@ -53,7 +76,8 @@ val PlayScreenDestination.tabIcon
 
 const val ShareAlbumKey = "album"
 
-const val AnimDurationMillis = 300
+val AnimDurationMillis
+    get() = if (!SettingRepository.EnableLinkUI) 300 else 0
 
 object PlayScreen {
     val PlayScreenContentHorizontal = 10.dp
@@ -61,22 +85,23 @@ object PlayScreen {
     val PlayScreenMaxWidth = 360.dp
 }
 
-val MaterialFadeInTransitionSpec = SharedElementsTransitionSpec(
-    pathMotionFactory = MaterialArcMotionFactory,
-    durationMillis = AnimDurationMillis,
-    fadeMode = FadeMode.In
-)
+val MaterialFadeInTransitionSpec
+    get() = SharedElementsTransitionSpec(
+        pathMotionFactory = MaterialArcMotionFactory,
+        durationMillis = AnimDurationMillis,
+        fadeMode = FadeMode.In
+    )
 
-val MaterialFadeOutTransitionSpec = SharedElementsTransitionSpec(
-    pathMotionFactory = MaterialArcMotionFactory,
-    durationMillis = AnimDurationMillis,
-    fadeMode = FadeMode.Out
-)
+val MaterialFadeOutTransitionSpec
+    get() = SharedElementsTransitionSpec(
+        pathMotionFactory = MaterialArcMotionFactory,
+        durationMillis = AnimDurationMillis,
+        fadeMode = FadeMode.Out
+    )
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun PlayScreen(
-    sheetNavController: NavController<BottomSheetDestination>,
+    sheetNavController: NavController<SheetDestination>,
     panelController: PanelController
 ) {
 
@@ -149,8 +174,11 @@ fun PlayScreen(
                     AnimatedNavHost(
                         controller = navController,
                         transitionSpec = { _, _, _ ->
+                            if (SettingRepository.EnableLinkUI) {
+                                return@AnimatedNavHost EnterTransition.None togetherWith ExitTransition.None
+                            }
                             val tween = tween<Float>(durationMillis = AnimDurationMillis)
-                            fadeIn(tween) with fadeOut(tween)
+                            fadeIn(tween) togetherWith fadeOut(tween)
                         }
                     ) {
                         when (it) {
@@ -182,25 +210,25 @@ fun PlayScreen(
                 }
             }
 
-            AlbumMotionBlur(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.DarkGray),
-                albumUrl = coverUrl,
-                paused = panelController.panelState == PanelState.COLLAPSED
-            )
 
-            if (SettingRepository.EnableNewPlayerUI) {
-                val tween = tween<Float>(durationMillis = AnimDurationMillis)
-                val enter = fadeIn(tween)
-                val exit = fadeOut(tween)
-                val isControllerScreen = lastDestination == PlayScreenDestination.Controller
-                AnimatedVisibility(
-                    visible = isControllerScreen,
-                    enter = enter,
-                    exit = exit
-                ) {
-                    AlbumCoverGradient(modifier = Modifier.fillMaxSize(), albumUrl = coverUrl)
+
+            when (SettingRepository.EnableLinkUI) {
+                true -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.DarkGray)
+                    )
+                }
+
+                false -> {
+                    AlbumMotionBlur(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.DarkGray),
+                        albumUrl = coverUrl,
+                        paused = panelController.panelState == PanelState.COLLAPSED
+                    )
                 }
             }
 

@@ -41,16 +41,35 @@ object SettingRepository {
         initialValue = false
     )
 
+    /**
+     * 诚信付费了属于是
+     */
     var EnableStarMusicPro by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "EnableStarMusicPro",
         initialValue = false
     )
 
-    var EnableNewPlayerUI by mutableDataSaverStateOf(
+    /**
+     * 启用墨水屏支持
+     */
+    var EnableLinkUI by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
-        key = "EnableNewPlayerUI",
+        key = "EnableLinkUI",
         initialValue = false
     )
+
+    /**
+     * 歌曲排序方式
+     */
+    var SongSort by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "SongSort",
+        initialValue = SongSortType.EDIT_TIME.value
+    )
+
+    enum class SongSortType(val value: Int) {
+        EDIT_TIME(0), NAME(1), DURATION(2)
+    }
 
 }

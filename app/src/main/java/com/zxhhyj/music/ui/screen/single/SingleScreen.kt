@@ -1,6 +1,5 @@
 package com.zxhhyj.music.ui.screen.single
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,20 +18,17 @@ import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.PlaylistPlay
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
-import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.item.SubTitleItem
-import com.zxhhyj.music.ui.screen.BottomSheetDestination
-import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
+import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.music.ui.screen.search.SearchScreenTabs
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.ui.theme.LocalColorScheme
@@ -49,20 +45,12 @@ import dev.olshevski.navigation.reimagined.navigate
 @Composable
 fun SingleScreen(
     mainNavController: NavController<ScreenDestination>,
-    sheetNavController: NavController<BottomSheetDestination>,
-    dialogNavController: NavController<DialogDestination>,
+    sheetNavController: NavController<SheetDestination>,
     paddingValues: PaddingValues
 ) {
-    DisposableEffect(SettingRepository.AgreePrivacyPolicy, AndroidMediaLibsRepository.songs) {
-        if (SettingRepository.AgreePrivacyPolicy && AndroidMediaLibsRepository.songs.isEmpty()) {
-            dialogNavController.navigate(DialogDestination.MediaLibsEmpty)
-        }
-        onDispose { }
-    }
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(LocalColorScheme.current.background)
             .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
@@ -133,9 +121,7 @@ fun SingleScreen(
                         Icon(imageVector = Icons.Rounded.Search, contentDescription = null)
                     }
                     AppIconButton(onClick = {
-                        mainNavController.navigate(
-                            ScreenDestination.Setting
-                        )
+                        sheetNavController.navigate(SheetDestination.SongSort)
                     }) {
                         Icon(imageVector = Icons.Rounded.MoreVert, contentDescription = null)
                     }
@@ -144,12 +130,8 @@ fun SingleScreen(
         }) {
         Column(modifier = Modifier.fillMaxSize()) {
             SubTitleItem(title = stringResource(id = R.string.single))
-            RoundColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1.0f)
-            ) {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
+            RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                LazyColumn(modifier = Modifier.fillMaxWidth()) {
                     itemsIndexed(AndroidMediaLibsRepository.songs) { index, item ->
                         SongItem(sheetNavController = sheetNavController, song = item) {
                             PlayManager.play(AndroidMediaLibsRepository.songs, index)

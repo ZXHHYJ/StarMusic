@@ -1,6 +1,5 @@
 package com.zxhhyj.music.ui.screen.albumcnt
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,8 +30,8 @@ import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.item.SongItem
-import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
+import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.music.ui.theme.vertical
 import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppButton
@@ -45,14 +44,13 @@ import dev.olshevski.navigation.reimagined.navigate
 @Composable
 fun AlbumCntScreen(
     mainNavController: NavController<ScreenDestination>,
-    sheetNavController: NavController<BottomSheetDestination>,
+    sheetNavController: NavController<SheetDestination>,
     paddingValues: PaddingValues,
     album: SongBean.Album
 ) {
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(LocalColorScheme.current.background)
             .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
@@ -99,8 +97,8 @@ fun AlbumCntScreen(
                 }
             }
         }) {
-        RoundColumn(modifier = Modifier.fillMaxSize()) {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
+        RoundColumn(modifier = Modifier.fillMaxWidth()) {
+            LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 itemsIndexed(album.songs) { index, item ->
                     SongItem(song = item, sheetNavController = sheetNavController) {
                         PlayManager.play(album.songs, index)

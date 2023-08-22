@@ -31,7 +31,7 @@ import com.mxalbert.sharedelements.SharedElement
 import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
-import com.zxhhyj.music.ui.screen.BottomSheetDestination
+import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.music.ui.screen.play.MaterialFadeInTransitionSpec
 import com.zxhhyj.music.ui.screen.play.PlayScreen
 import com.zxhhyj.music.ui.screen.play.PlayScreenDestination
@@ -48,7 +48,7 @@ import dev.olshevski.navigation.reimagined.navigate
 fun TopMediaController(
     modifier: Modifier = Modifier,
     navController: NavController<PlayScreenDestination>,
-    sheetNavController: NavController<BottomSheetDestination>,
+    sheetNavController: NavController<SheetDestination>,
 ) {
     val song by PlayManager.currentSongLiveData().observeAsState()
     Row(
@@ -113,7 +113,7 @@ fun TopMediaController(
                 .clip(RoundedCornerShape(32.dp))
                 .background(translucentWhiteFixBugColor)
                 .clickable {
-                    sheetNavController.navigate(BottomSheetDestination.SongMenu(song!!))
+                    sheetNavController.navigate(SheetDestination.SongMenu(song!!))
                 }
         )
         Spacer(modifier = Modifier.width(PlayScreen.PlayScreenContentHorizontal))

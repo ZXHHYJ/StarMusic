@@ -29,8 +29,8 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.ui.screen.BottomSheetDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
+import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.Item
 import com.zxhhyj.ui.view.item.ItemDivider
@@ -43,7 +43,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SongMenuSheet(
     mainNavController: NavController<ScreenDestination>,
-    sheetNavController: NavController<BottomSheetDestination>,
+    sheetNavController: NavController<SheetDestination>,
     song: SongBean,
 ) {
     val deleteLauncher = rememberLauncherForActivityResult(
@@ -85,9 +85,9 @@ fun SongMenuSheet(
                 Item(
                     icon = { Icon(imageVector = Icons.Rounded.Add, contentDescription = null) },
                     text = { Text(text = stringResource(id = R.string.add_to_playlist)) },
-                    subText = { /*TODO*/ }) {
+                    subText = { }) {
                     sheetNavController.popAll()
-                    sheetNavController.navigate(BottomSheetDestination.AddToPlayList(song))
+                    sheetNavController.navigate(SheetDestination.AddToPlayList(song))
                 }
                 ItemDivider()
                 Item(
@@ -110,9 +110,9 @@ fun SongMenuSheet(
                             text = stringResource(id = R.string.song_info)
                         )
                     },
-                    subText = { /*TODO*/ }) {
+                    subText = { }) {
                     sheetNavController.popAll()
-                    sheetNavController.navigate(BottomSheetDestination.SongInfo(song))
+                    sheetNavController.navigate(SheetDestination.SongInfo(song))
                 }
                 ItemDivider()
                 Item(

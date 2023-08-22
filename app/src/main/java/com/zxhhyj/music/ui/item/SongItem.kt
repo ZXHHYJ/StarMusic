@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.ui.common.AppAsyncImage
-import com.zxhhyj.music.ui.screen.BottomSheetDestination
+import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
 import com.zxhhyj.ui.theme.LocalColorScheme
@@ -36,7 +36,7 @@ import dev.olshevski.navigation.reimagined.navigate
 
 @Composable
 fun SongItem(
-    sheetNavController: NavController<BottomSheetDestination>,
+    sheetNavController: NavController<SheetDestination>,
     song: SongBean,
     actions: @Composable () -> Unit = {},
     onClick: () -> Unit
@@ -83,7 +83,7 @@ fun SongItem(
                 actions.invoke()
                 AppIconButton(onClick = {
                     sheetNavController.navigate(
-                        BottomSheetDestination.SongMenu(
+                        SheetDestination.SongMenu(
                             song
                         )
                     )
