@@ -1,6 +1,5 @@
-package com.zxhhyj.music.ui.screen.setting
+package com.zxhhyj.music.ui.screen.more
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
+import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.VersionUtils
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.ui.theme.LocalColorScheme
@@ -32,20 +32,19 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
 @Composable
-fun SettingScreen(
+fun MoreScreen(
     mainNavController: NavController<ScreenDestination>,
     paddingValues: PaddingValues,
 ) {
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(LocalColorScheme.current.background)
             .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
             AppCenterTopBar(
                 modifier = Modifier.fillMaxWidth(),
-                title = stringResource(id = R.string.setting)
+                title = stringResource(id = R.string.more)
             )
         }) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
@@ -56,7 +55,16 @@ fun SettingScreen(
                             Icon(imageVector = Icons.Filled.StarRate, null)
                         },
                         text = { Text(text = stringResource(id = R.string.star_music_pro)) },
-                        subText = { Text(text = "已禁用") }) {
+                        subText = {
+                            when (SettingRepository.EnableStarMusicPro) {
+                                true -> Text(
+                                    text = stringResource(id = R.string.enable),
+                                    color = LocalColorScheme.current.highlight
+                                )
+
+                                false -> Text(text = stringResource(id = R.string.not_enable))
+                            }
+                        }) {
                         mainNavController.navigate(ScreenDestination.Vip)
                     }
                 }
