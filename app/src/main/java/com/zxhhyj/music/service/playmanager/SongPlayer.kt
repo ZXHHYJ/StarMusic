@@ -107,7 +107,8 @@ class SongPlayer {
                 _currentProgress.value = _songDuration.value
             }
             setOnErrorListener { mediaPlayer, i, i2 ->
-                this@SongPlayer.pause()
+                timer?.pause()
+                _pause.value = true
                 errorListener?.onError(mediaPlayer, i, i2) ?: false
             }
             setDataSource(song.data)

@@ -2,7 +2,6 @@ package com.zxhhyj.music.ui.screen.play
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
-import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
@@ -27,17 +25,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
-import com.github.krottv.compose.sliders.SliderValueHorizontal
 import com.mxalbert.sharedelements.SharedElement
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.utils.coverUrl
@@ -46,6 +40,7 @@ import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.screen.SheetDestination
+import com.zxhhyj.music.ui.screen.play.common.IosSlider
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
 import com.zxhhyj.music.ui.theme.translucentWhiteFixBugColor
 import com.zxhhyj.ui.view.AppCard
@@ -131,64 +126,34 @@ fun PlayControllerScreen(sheetNavController: NavController<SheetDestination>) {
                 )
             }
 
-            val progress by PlayManager.progressLiveData().map {
-                it
-            }.observeAsState(0)
+            val progress by PlayManager.progressLiveData().map { it.toFloat() }.observeAsState(0f)
 
-            val duration by PlayManager.durationLiveData().map {
-                it
-            }.observeAsState(1)
+            val duration by PlayManager.durationLiveData().map { it.toFloat() }.observeAsState(0f)
 
             //歌曲进度条
-            SliderValueHorizontal(
-                value = progress.toFloat() / duration.toFloat(),
+            IosSlider(
+                value = progress / duration,
                 onValueChange = {
-                    PlayManager.pause()
                     PlayManager.seekTo((duration * it).roundToInt())
                 },
-                onValueChangeFinished = {
+                onDragStart = {
+                    PlayManager.pause()
+                },
+                onDragEnd = {
                     PlayManager.start()
                 },
-                thumbSizeInDp = DpSize(10.dp, 10.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(16.dp),
-                thumbHeightMax = true,
-                track = { _: Modifier,
-                          fraction: Float,
-                          _: MutableInteractionSource,
-                          _: List<Float>,
-                          _: Boolean ->
-                    LinearProgressIndicator(
-                        progress = fraction,
-                        color = Color.White,
-                        backgroundColor = translucentWhiteFixBugColor,
-                        strokeCap = StrokeCap.Round,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(4.dp)
-                    )
-                },
-                thumb = { modifier: Modifier,
-                          _: Dp,
-                          _: MutableInteractionSource,
-                          _: Boolean,
-                          thumbSize: DpSize ->
-                    Spacer(
-                        modifier = modifier
-                            .size(thumbSize)
-                            .background(Color.White, RoundedCornerShape(thumbSize.width))
-                    )
-                }
             )
             //当前歌曲播放进度和歌曲时长
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                Text(text = progress.toTimeString(), color = translucentWhiteColor)
+                Text(text = progress.toInt().toTimeString(), color = translucentWhiteColor)
                 Spacer(modifier = Modifier.weight(1f))
-                Text(text = duration.toTimeString(), color = translucentWhiteColor)
+                Text(text = duration.toInt().toTimeString(), color = translucentWhiteColor)
             }
 
             //上一曲、暂停和下一曲

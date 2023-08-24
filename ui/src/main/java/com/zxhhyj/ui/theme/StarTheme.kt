@@ -6,9 +6,9 @@ import androidx.compose.runtime.compositionLocalOf
 
 
 val LocalColorScheme =
-    compositionLocalOf<ColorScheme> { TODO() }
+    compositionLocalOf<ColorScheme> { throw RuntimeException() }
 
-val LocalTextStyles = compositionLocalOf<StarTextStyles> { TODO() }
+val LocalTextStyles = compositionLocalOf<StarTextStyles> { throw RuntimeException() }
 
 @Composable
 fun StarTheme(

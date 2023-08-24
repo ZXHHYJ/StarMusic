@@ -15,15 +15,13 @@ android {
     defaultConfig {
         applicationId "com.zxhhyj.music"
         minSdk 23
-        //noinspection OldTargetApi
         targetSdk 34
         versionCode Integer.parseInt(code)
         versionName "${calendar.get(Calendar.YEAR)}.${calendar.get(Calendar.MONTH) + 1}.${calendar.get(Calendar.DAY_OF_MONTH)}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         ndk {
-            //noinspection ChromeOsAbiSupport
-            abiFilters "arm64-v8a"
+            //abiFilters "arm64-v8a"
         }
     }
 
@@ -77,14 +75,11 @@ dependencies {
     implementation "com.mxalbert.sharedelements:shared-elements:0.1.0-SNAPSHOT"
     // https://github.com/FunnySaltyFish/ComposeDataSaver
     implementation "com.github.FunnySaltyFish.ComposeDataSaver:data-saver:1.1.6"
-    // https://github.com/krottv/compose-sliders
-    implementation "com.github.krottv:compose-sliders:0.1.4"
 
     implementation 'androidx.media:media:1.6.0'
 
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
     implementation "com.google.accompanist:accompanist-permissions:$accompanist_version"
-    implementation "com.google.accompanist:accompanist-webview:$accompanist_version"
 
     def kotlinx_coroutines_version = '1.7.3'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_coroutines_version"

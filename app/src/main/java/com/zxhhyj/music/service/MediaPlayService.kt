@@ -45,6 +45,7 @@ class MediaPlayService : LifecycleService() {
         private val MediaMetadataBuilder = MediaMetadataCompat.Builder()
     }
 
+    @Synchronized
     private fun refreshMediaNotifications() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
             startForeground(NOTIFICATION_ID, mMediaNotification.build())

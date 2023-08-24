@@ -65,11 +65,11 @@ object SettingRepository {
     var SongSort by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "SongSort",
-        initialValue = SongSortType.EDIT_TIME.value
+        initialValue = SongSortType.NAME.value
     )
 
     enum class SongSortType(val value: Int) {
-        EDIT_TIME(0), NAME(1), DURATION(2)
+        NAME(0), DURATION(1)
     }
 
 }

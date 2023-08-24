@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
+import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.item.SubTitleItem
@@ -132,9 +133,23 @@ fun SingleScreen(
             SubTitleItem(title = stringResource(id = R.string.single))
             RoundColumn(modifier = Modifier.fillMaxWidth()) {
                 LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                    itemsIndexed(AndroidMediaLibsRepository.songs) { index, item ->
+                    val list = when (SettingRepository.SongSort) {
+
+                        SettingRepository.SongSortType.NAME.value -> {
+                            AndroidMediaLibsRepository.songs.sortedBy { it.songName }
+                        }
+
+                        SettingRepository.SongSortType.DURATION.value -> {
+                            AndroidMediaLibsRepository.songs.sortedBy { it.duration }
+                        }
+
+                        else -> {
+                            AndroidMediaLibsRepository.songs
+                        }
+                    }
+                    itemsIndexed(list) { index, item ->
                         SongItem(sheetNavController = sheetNavController, song = item) {
-                            PlayManager.play(AndroidMediaLibsRepository.songs, index)
+                            PlayManager.play(list, index)
                         }
                     }
                 }
