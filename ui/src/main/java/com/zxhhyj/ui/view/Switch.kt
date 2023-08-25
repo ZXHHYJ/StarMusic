@@ -42,7 +42,7 @@ fun AppSwitch(
             swipeableState.animateTo(if (checked) Status.OPEN else Status.CLOSE)
         }
         var openProgress by rememberSaveable {
-            mutableStateOf(0f)
+            mutableFloatStateOf(0f)
         }
         LaunchedEffect(swipeableState.progress) {
             swipeableState.progress.run {

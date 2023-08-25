@@ -81,8 +81,8 @@ fun SingerCntScreen(
                 }
             }
         }) {
-        RoundColumn(modifier = Modifier.fillMaxSize()) {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
+        RoundColumn(modifier = Modifier.fillMaxWidth()) {
+            LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 itemsIndexed(artist.songs) { index, item ->
                     SongItem(sheetNavController = sheetNavController, song = item) {
                         PlayManager.play(artist.songs, index)

@@ -19,7 +19,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.PlayListModel
-import com.zxhhyj.music.ui.common.AppTextField
+import com.zxhhyj.ui.view.AppTextField
 import com.zxhhyj.ui.view.YesNoDialog
 
 @OptIn(ExperimentalComposeUiApi::class)

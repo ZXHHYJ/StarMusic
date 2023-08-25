@@ -2,6 +2,7 @@ package com.zxhhyj.music.ui.screen.search
 
 import android.view.MotionEvent
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,7 +20,11 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Clear
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,7 +43,7 @@ import androidx.compose.ui.unit.times
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.ui.common.AppTextField
+import com.zxhhyj.ui.view.AppTextField
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.item.AlbumItem
 import com.zxhhyj.music.ui.item.ArtistItem
@@ -112,7 +117,19 @@ fun SearchScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = horizontal),
-                singleLine = true
+                singleLine = true,
+                leadingIcon = {
+                    Icon(imageVector = Icons.Rounded.Search, contentDescription = null)
+                }, trailingIcon = {
+                    if (searchKey.isNotEmpty()) {
+                        Icon(
+                            imageVector = Icons.Rounded.Clear,
+                            contentDescription = null,
+                            modifier = Modifier.clickable {
+                                searchKey = ""
+                            })
+                    }
+                }
             )
             AppTabRow(
                 modifier = Modifier

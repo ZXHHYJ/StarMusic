@@ -2,7 +2,6 @@ package com.zxhhyj.music.ui.dialog
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -17,10 +16,9 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.PlayListRepository
-import com.zxhhyj.music.ui.common.AppTextField
+import com.zxhhyj.ui.view.AppTextField
 import com.zxhhyj.ui.view.YesNoDialog
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -50,7 +48,6 @@ fun CreatePlayListDialog(onDismissRequest: () -> Unit) {
         AppTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp)
                 .focusRequester(focusRequester),
             singleLine = true,
             value = title,
