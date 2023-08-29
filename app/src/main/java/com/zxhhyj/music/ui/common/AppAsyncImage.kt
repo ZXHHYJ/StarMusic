@@ -10,6 +10,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppCard
 
@@ -30,7 +31,7 @@ fun AppAsyncImage(
                 .then(clickableModifier),
             model = ImageRequest.Builder(LocalContext.current)
                 .data(data)
-                .crossfade(300)
+                .crossfade(if (SettingRepository.EnableLinkUI) 0 else 300)
                 .build(),
             contentScale = ContentScale.Crop,
             contentDescription = null,

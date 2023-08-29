@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material.icons.rounded.FontDownload
 import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.MiscellaneousServices
 import androidx.compose.material.icons.rounded.Science
 import androidx.compose.material.icons.rounded.Source
 import androidx.compose.runtime.Composable
@@ -58,11 +59,11 @@ fun MoreScreen(
                         subText = {
                             when (SettingRepository.EnableStarMusicPro) {
                                 true -> Text(
-                                    text = stringResource(id = R.string.enable),
+                                    text = stringResource(id = R.string.slogo),
                                     color = LocalColorScheme.current.highlight
                                 )
 
-                                false -> Text(text = stringResource(id = R.string.not_enable))
+                                false -> Text(text = stringResource(id = R.string.slogo))
                             }
                         }) {
                         mainNavController.navigate(ScreenDestination.Vip)
@@ -93,6 +94,13 @@ fun MoreScreen(
                         text = { Text(text = stringResource(id = R.string.lab)) },
                         subText = { Text(text = stringResource(id = R.string.lab)) }) {
                         mainNavController.navigate(ScreenDestination.Lab)
+                    }
+                    ItemDivider()
+                    Item(
+                        icon = { Icon(imageVector = Icons.Rounded.MiscellaneousServices, null) },
+                        text = { Text(text = stringResource(id = R.string.misc)) },
+                        subText = { Text(text = stringResource(id = R.string.misc)) }) {
+                        mainNavController.navigate(ScreenDestination.Misc)
                     }
                     ItemDivider()
                     Item(

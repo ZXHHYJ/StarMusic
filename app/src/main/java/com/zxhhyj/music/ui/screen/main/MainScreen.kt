@@ -78,11 +78,12 @@ import com.zxhhyj.music.ui.screen.hidesong.HiddenSongScreen
 import com.zxhhyj.music.ui.screen.lab.LabScreen
 import com.zxhhyj.music.ui.screen.lyric.LyricScreen
 import com.zxhhyj.music.ui.screen.medialibs.MediaSourceScreen
+import com.zxhhyj.music.ui.screen.misc.MiscScreen
+import com.zxhhyj.music.ui.screen.more.MoreScreen
 import com.zxhhyj.music.ui.screen.play.PlayScreen
 import com.zxhhyj.music.ui.screen.playlist.PlayListScreen
 import com.zxhhyj.music.ui.screen.playlistcnt.PlayListCntScreen
 import com.zxhhyj.music.ui.screen.search.SearchScreen
-import com.zxhhyj.music.ui.screen.more.MoreScreen
 import com.zxhhyj.music.ui.screen.singer.SingerScreen
 import com.zxhhyj.music.ui.screen.singercnt.SingerCntScreen
 import com.zxhhyj.music.ui.screen.single.SingleScreen
@@ -326,8 +327,8 @@ fun MainScreen() {
                 navigationBar = {
                     AnimatedVisibility(
                         visible = mainNavController.backstack.entries.size <= 1,
-                        enter = expandVertically(),
-                        exit = shrinkVertically()
+                        enter = if (SettingRepository.EnableLinkUI) EnterTransition.None else expandVertically(),
+                        exit = if (SettingRepository.EnableLinkUI) ExitTransition.None else shrinkVertically()
                     ) {
                         BottomNavigation(
                             modifier = Modifier.fillMaxWidth(),
@@ -502,6 +503,10 @@ fun MainScreen() {
 
                         ScreenDestination.Vip -> {
                             VipScreen(paddingValues = paddingValues)
+                        }
+
+                        ScreenDestination.Misc -> {
+                            MiscScreen(paddingValues = paddingValues)
                         }
                     }
                 }

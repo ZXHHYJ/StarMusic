@@ -21,11 +21,14 @@ import com.zxhhyj.ui.theme.StarDimens
  */
 private val textFieldColors
     @Composable get() = TextFieldDefaults.textFieldColors(
+        textColor = LocalColorScheme.current.text,
         cursorColor = LocalColorScheme.current.text,
         backgroundColor = LocalColorScheme.current.background,
         placeholderColor = LocalColorScheme.current.subText,
         focusedIndicatorColor = LocalColorScheme.current.outline,
-        unfocusedIndicatorColor = LocalColorScheme.current.outline
+        unfocusedIndicatorColor = LocalColorScheme.current.outline,
+        leadingIconColor = LocalColorScheme.current.text,
+        trailingIconColor = LocalColorScheme.current.text
     )
 
 @Composable

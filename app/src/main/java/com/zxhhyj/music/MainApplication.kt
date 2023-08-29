@@ -9,6 +9,8 @@ import com.funny.data_saver.core.DataSaverConverter.registerTypeConverters
 import com.google.gson.GsonBuilder
 import com.zxhhyj.music.logic.bean.PlayListModel
 import com.zxhhyj.music.logic.bean.SongBean
+import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
+import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.MediaPlayService
 import com.zxhhyj.music.service.playmanager.PlayManager
 import io.fastkv.FastKVConfig
@@ -54,14 +56,21 @@ class MainApplication : Application() {
                 if (it == false)
                     startPlayerService()
             }
+        //确保播放音乐时播放启动服务
         PlayManager.currentSongLiveData()
             .observeForever {
                 if (it != null)
                     startPlayerService()
             }
-        //确保播放音乐时播放启动服务
+        //app启动后自动播放音乐功能
+        if (SettingRepository.EnableAutoPlayMusic) {
+            AndroidMediaLibsRepository.songs.takeIf { it.isNotEmpty() }?.run {
+                PlayManager.play(this, 0)
+            }
+        }
     }
 
+    @Synchronized
     private fun startPlayerService() {
         if (!MediaPlayService.isServiceAlive) {
             val intent = Intent(this, MediaPlayService::class.java)

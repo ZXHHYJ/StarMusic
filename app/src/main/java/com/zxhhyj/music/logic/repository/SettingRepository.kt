@@ -59,6 +59,12 @@ object SettingRepository {
         initialValue = false
     )
 
+    var EnableAutoPlayMusic by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "EnableAutoPlayMusic",
+        initialValue = false
+    )
+
     /**
      * 歌曲排序方式
      */

@@ -82,6 +82,8 @@ sealed class ScreenDestination : Parcelable {
     @Parcelize
     data object WebDav : ScreenDestination()
 
+    @Parcelize
+    data object Misc : ScreenDestination()
 
     @Parcelize
     data object Vip : ScreenDestination()

@@ -36,6 +36,7 @@ class MediaPlayService : LifecycleService() {
 
         private const val NOTIFICATION_ID = 1
 
+        @Volatile
         var isServiceAlive = false
             private set
 
