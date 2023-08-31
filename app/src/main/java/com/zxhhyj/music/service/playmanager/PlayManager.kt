@@ -154,7 +154,7 @@ object PlayManager {
             mIndex.value = index
             return
         }
-        //pause()
+        pause()
     }
 
     init {

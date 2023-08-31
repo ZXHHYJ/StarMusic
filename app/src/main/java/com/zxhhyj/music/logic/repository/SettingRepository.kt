@@ -59,6 +59,9 @@ object SettingRepository {
         initialValue = false
     )
 
+    /**
+     * app启动后自动播放音乐
+     */
     var EnableAutoPlayMusic by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "EnableAutoPlayMusic",

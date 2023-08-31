@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.common
+package com.zxhhyj.music.ui.common.lyric
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -30,13 +31,10 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntSize
+import com.zxhhyj.music.ui.common.lyric.SyncedLyrics.Companion.toSyncedLyrics
 import com.zxhhyj.music.ui.theme.round
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.Duration.Companion.minutes
-import kotlin.time.Duration.Companion.seconds
-import kotlin.time.DurationUnit
 
 
 /**
@@ -52,29 +50,17 @@ fun Lyric(
     lyricItem: @Composable (modifier: Modifier, lyric: String, index: Int, position: Int) -> Unit,
     onClick: (Int) -> Unit
 ) {
-    /**
-     * 处理时间
-     * 时间转换为毫秒millisecond
-     */
-    fun timeStr(timeStr: String): Int {
-        val timeData =
-            timeStr
-                .replace(".", ":")
-                .split(":")
-        val minute = timeData[0].toInt()
-        val second = timeData[1].toInt()
-        val millisecond = timeData[2].toInt()
-        return (minute.minutes + second.seconds + millisecond.milliseconds).toInt(DurationUnit.MILLISECONDS)
-    }
 
     val lazyListState = rememberLazyListState()
 
     var position by rememberSaveable {
-        mutableStateOf(0)
+        mutableIntStateOf(0)
     }
 
-    var lyricList by rememberSaveable {
-        mutableStateOf(listOf<Pair<String, Int>>())
+    val lyricList = if (translation) {
+        lyric.split("\n").toSyncedLyrics().all
+    } else {
+        lyric.split("\n").toSyncedLyrics().main
     }
 
     var selectLyricItemSize by remember {
@@ -122,46 +108,22 @@ fun Lyric(
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(round))
                     .clickable {
-                        onClick.invoke(model.second)
+                        onClick.invoke(model.first.toInt())
                     }
                     .onSizeChanged {
                         if (position == index) {
                             selectLyricItemSize = it
                         }
-                    }, model.first, index, position
+                    }, model.second, index, position
                 )
             }
             item {
                 Spacer(modifier = Modifier.height(maxHeight / 2))
             }
         }
-        LaunchedEffect(lyric) {
-            val lyricMap = linkedMapOf<String, String>()
-            val pattern = Regex("""\[(.*?)](.*)""")
-            lyric.replace("//", "").lineSequence().forEach { line ->
-                pattern.matchEntire(line)?.let { matchResult ->
-                    val (timestamp, s) = matchResult.destructured
-                    if (s.trim().isNotEmpty()) {
-                        val hadLyric = lyricMap[timestamp] != null
-                        if (hadLyric) {
-                            //如果出现时间戳重复就是歌词中存在翻译
-                            if (!translation) {
-                                return@forEach
-                            }
-                            lyricMap[timestamp] = lyricMap[timestamp] + "\n" + s
-                        } else {
-                            lyricMap[timestamp] = s
-                        }
-                    }
-                }
-            }
-            lyricList = lyricMap.map {
-                it.value to timeStr(it.key)
-            }
-        }
         LaunchedEffect(liveTime) {
             lyricList.forEachIndexed { index, lrcContent ->
-                if (liveTime >= lrcContent.second) {
+                if (liveTime >= lrcContent.first) {
                     position = index
                 }
             }
