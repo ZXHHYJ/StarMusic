@@ -1,8 +1,6 @@
 package com.zxhhyj.music
 
-import android.annotation.SuppressLint
 import android.app.Application
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import com.funny.data_saver.core.DataSaverConverter.registerTypeConverters
@@ -20,8 +18,7 @@ import kotlinx.coroutines.asExecutor
 class MainApplication : Application() {
 
     companion object {
-        @SuppressLint("StaticFieldLeak")
-        lateinit var context: Context
+        lateinit var context: Application
             private set
     }
 

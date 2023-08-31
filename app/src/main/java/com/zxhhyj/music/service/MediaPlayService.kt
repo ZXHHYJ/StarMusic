@@ -11,6 +11,7 @@ import android.os.Build
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.view.KeyEvent
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationManagerCompat
@@ -230,6 +231,42 @@ class MediaPlayService : LifecycleService() {
             PlayManager.seekTo(pos.toInt())
         }
 
+        override fun onMediaButtonEvent(mediaButtonEvent: Intent): Boolean {
+            val action = mediaButtonEvent.action
+            if (Intent.ACTION_MEDIA_BUTTON == action) {
+                val event = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    mediaButtonEvent.getParcelableExtra(
+                        Intent.EXTRA_KEY_EVENT,
+                        KeyEvent::class.java
+                    )
+                } else {
+                    @Suppress("DEPRECATION")
+                    mediaButtonEvent.getParcelableExtra(Intent.EXTRA_KEY_EVENT)
+                }
+                if (event != null && event.action == KeyEvent.ACTION_DOWN) {
+                    // 处理媒体按钮按下事件
+                    when (event.keyCode) {
+                        KeyEvent.KEYCODE_MEDIA_PLAY -> {
+                            onPlay()
+                        }
+
+                        KeyEvent.KEYCODE_MEDIA_PAUSE -> {
+                            onPause()
+                        }
+
+                        KeyEvent.KEYCODE_MEDIA_NEXT -> {
+                            onSkipToNext()
+                        }
+
+                        KeyEvent.KEYCODE_MEDIA_PREVIOUS -> {
+                            onSkipToPrevious()
+                        }
+                    }
+                }
+            }
+            return super.onMediaButtonEvent(mediaButtonEvent)
+        }
+
         override fun onStop() {
             super.onStop()
             PlayManager.pause()
@@ -255,6 +292,7 @@ class MediaPlayService : LifecycleService() {
             super.onPause()
             PlayManager.pause()
         }
+
     }
 
     /**
