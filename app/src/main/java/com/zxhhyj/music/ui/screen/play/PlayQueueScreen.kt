@@ -11,13 +11,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Remove
+import androidx.compose.material.icons.rounded.Repeat
+import androidx.compose.material.icons.rounded.RepeatOne
+import androidx.compose.material.icons.rounded.Shuffle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -52,27 +58,58 @@ fun ColumnScope.PlayQueueScreen() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = PlayScreen.PlayScreenContentHorizontal, vertical = vertical)
+            .padding(horizontal = PlayScreen.PlayScreenContentHorizontal, vertical = vertical),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "${(playlist?.indexOf(song) ?: 0) + 1}/${playlist?.size}",
-            color = translucentWhiteColor,
-            fontSize = 14.sp
-        )
-        Text(
             text = stringResource(id = R.string.play_list),
-            modifier = Modifier.weight(1.0f),
             color = Color.White,
-            fontSize = 15.sp,
+            fontSize = 18.sp,
             textAlign = TextAlign.Center
         )
-        Text(
-            text = stringResource(id = R.string.clear),
-            color = translucentWhiteColor,
-            fontSize = 14.sp,
-            modifier = Modifier.clickable {
-                PlayManager.clearPlayList()
-            })
+        Spacer(modifier = Modifier.weight(1.0f))
+        BottomNavigation(
+            modifier = Modifier
+                .width(28.dp * 4)
+                .height(28.dp),
+            backgroundColor = Color.Transparent,
+            elevation = 0.dp
+        ) {
+            val playMode by PlayManager.playModeLiveData().observeAsState()
+            PlayManager.PlayMode.values().forEach {
+                BottomNavigationItem(
+                    selected = it == playMode,
+                    onClick = { PlayManager.setPlayMode(it) },
+                    icon = {
+                        when (it) {
+                            PlayManager.PlayMode.SINGLE_LOOP -> {
+                                Icon(
+                                    imageVector = Icons.Rounded.RepeatOne,
+                                    contentDescription = null
+                                )
+                            }
+
+                            PlayManager.PlayMode.LIST_LOOP -> {
+                                Icon(
+                                    imageVector = Icons.Rounded.Repeat,
+                                    contentDescription = null
+                                )
+                            }
+
+                            PlayManager.PlayMode.RANDOM -> {
+                                Icon(
+                                    imageVector = Icons.Rounded.Shuffle,
+                                    contentDescription = null
+                                )
+                            }
+                        }
+                    },
+                    selectedContentColor = Color.White,
+                    unselectedContentColor = translucentWhiteColor
+                )
+            }
+
+        }
     }
 
     AppDivider(

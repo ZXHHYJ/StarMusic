@@ -5,11 +5,21 @@ package com.zxhhyj.music.service.playmanager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.zxhhyj.music.logic.bean.SongBean
+import kotlin.random.Random
 
 /**
  * 播放管理器
  */
 object PlayManager {
+
+    enum class PlayMode {
+        SINGLE_LOOP, LIST_LOOP, RANDOM
+    }
+
+    /**
+     * 播放模式
+     */
+    private val mPlayMode = MutableLiveData(PlayMode.LIST_LOOP)
 
     private var mSongPlayer = SongPlayer()
 
@@ -29,38 +39,40 @@ object PlayManager {
     private val mIndex = MutableLiveData(0)
 
     /**
+     * 获取播放模式的 LiveData
+     */
+    fun playModeLiveData(): LiveData<PlayMode> = mPlayMode
+
+    /**
      * 获取播放列表的 LiveData
      */
-    fun playListLiveData(): LiveData<List<SongBean>?> {
-        return mPlayList
-    }
+    fun playListLiveData(): LiveData<List<SongBean>?> = mPlayList
 
     /**
      * 获取当前播放进度的 LiveData
      */
-    fun progressLiveData(): LiveData<Int> {
-        return mSongPlayer.currentProgress
-    }
+    fun progressLiveData(): LiveData<Int> = mSongPlayer.currentProgress
 
     /**
      * 获取当前歌曲时长的 LiveData
      */
-    fun durationLiveData(): LiveData<Int> {
-        return mSongPlayer.songDuration
-    }
+    fun durationLiveData(): LiveData<Int> = mSongPlayer.songDuration
 
     /**
      * 获取当前播放的歌曲的 LiveData
      */
-    fun currentSongLiveData(): LiveData<SongBean?> {
-        return mCurrentSong
-    }
+    fun currentSongLiveData(): LiveData<SongBean?> = mCurrentSong
 
     /**
      * 获取暂停状态的 LiveData
      */
-    fun pauseLiveData(): LiveData<Boolean> {
-        return mSongPlayer.pause
+    fun pauseLiveData(): LiveData<Boolean> = mSongPlayer.pause
+
+    /**
+     * 修改播放模式
+     */
+    fun setPlayMode(playMode: PlayMode) {
+        mPlayMode.value = playMode
     }
 
     /**
@@ -89,7 +101,27 @@ object PlayManager {
      * 切换到下一首歌曲
      */
     fun skipToNext() {
-        updateIndex(mIndex.value!! + 1)
+        when (mPlayMode.value) {
+            PlayMode.SINGLE_LOOP -> {
+                updateIndex(mIndex.value!!)
+            }
+
+            PlayMode.LIST_LOOP -> {
+                updateIndex(mIndex.value!! + 1)
+            }
+
+            PlayMode.RANDOM -> {
+                var randomNumber = Random.nextInt(0, mPlayList.value!!.size - 1)
+                while (mIndex.value == randomNumber) {
+                    randomNumber = Random.nextInt(0, mPlayList.value!!.size - 1)
+                }
+                updateIndex(randomNumber)
+            }
+
+            null -> {
+
+            }
+        }
     }
 
     /**
