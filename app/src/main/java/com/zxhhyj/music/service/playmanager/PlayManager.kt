@@ -111,11 +111,20 @@ object PlayManager {
             }
 
             PlayMode.RANDOM -> {
-                var randomNumber = Random.nextInt(0, mPlayList.value!!.size - 1)
-                while (mIndex.value == randomNumber) {
-                    randomNumber = Random.nextInt(0, mPlayList.value!!.size - 1)
+                mPlayList.value?.let { playlist ->
+                    if (playlist.size >= 2) {
+                        val randomNumber = if (playlist.size == 2) {
+                            if (mIndex.value == 0) 1 else 0 // 只有两首歌曲，直接选择另外一首
+                        } else {
+                            var newRandomNumber = Random.nextInt(0, playlist.size - 1)
+                            while (newRandomNumber == mIndex.value) {
+                                newRandomNumber = Random.nextInt(0, playlist.size - 1)
+                            }
+                            newRandomNumber
+                        }
+                        updateIndex(randomNumber)
+                    }
                 }
-                updateIndex(randomNumber)
             }
 
             null -> {

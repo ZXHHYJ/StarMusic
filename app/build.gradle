@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "com.zxhhyj.music"
-        minSdk 23
+        minSdk 21
         targetSdk 34
         versionCode Integer.parseInt(code)
         versionName "${calendar.get(Calendar.YEAR)}.${calendar.get(Calendar.MONTH) + 1}.${calendar.get(Calendar.DAY_OF_MONTH)}"
@@ -22,8 +22,13 @@ android {
 
         ndk {
             //noinspection ChromeOsAbiSupport
-            abiFilters "arm64-v8a"
+            //abiFilters "arm64-v8a"
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     composeOptions {
@@ -41,7 +46,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = "1.8"
     }
 
     buildFeatures {
