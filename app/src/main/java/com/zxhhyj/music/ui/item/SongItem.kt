@@ -24,8 +24,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.logic.bean.SongBean
+import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.ui.common.AppAsyncImage
+import com.zxhhyj.music.ui.common.SoundQualityIcon
 import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
@@ -69,14 +71,19 @@ fun SongItem(
                 overflow = TextOverflow.Ellipsis
             )
             Spacer(modifier = Modifier.weight(1.0f))
-            Text(
-                text = song.artist.name,
-                color = LocalColorScheme.current.subText,
-                fontSize = 13.sp,
-                maxLines = 1,
-                textAlign = TextAlign.Center,
-                overflow = TextOverflow.Ellipsis
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                if (SettingRepository.EnableShowSoundQualityLabel) {
+                    SoundQualityIcon(song = song)
+                }
+                Text(
+                    text = song.artist.name,
+                    color = LocalColorScheme.current.subText,
+                    fontSize = 13.sp,
+                    maxLines = 1,
+                    textAlign = TextAlign.Center,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
         }
         Row(horizontalArrangement = Arrangement.spacedBy(horizontal / 2)) {
             CompositionLocalProvider(LocalContentColor provides LocalColorScheme.current.subText) {

@@ -57,4 +57,8 @@
     <string name="misc">杂项</string>
     <string name="auto_play_music">自动播放音乐</string>
     <string name="auto_play_music_info">打开App后自动播放媒体库中的音乐</string>
+    <string name="exclude_songs_under_one_minute">不扫描60秒以下的音频</string>
+    <string name="personalize">个性化</string>
+    <string name="sound_quality_label">音质标签</string>
+    <string name="sound_quality_label_info">在歌曲作者前显示当前歌曲的音质标签</string>
 </resources>

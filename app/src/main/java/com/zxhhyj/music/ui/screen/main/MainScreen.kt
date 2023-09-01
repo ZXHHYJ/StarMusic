@@ -74,12 +74,14 @@ import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.music.ui.screen.about.AboutScreen
 import com.zxhhyj.music.ui.screen.album.AlbumScreen
 import com.zxhhyj.music.ui.screen.albumcnt.AlbumCntScreen
+import com.zxhhyj.music.ui.screen.folder.FolderScreen
 import com.zxhhyj.music.ui.screen.hidesong.HiddenSongScreen
 import com.zxhhyj.music.ui.screen.lab.LabScreen
 import com.zxhhyj.music.ui.screen.lyric.LyricScreen
 import com.zxhhyj.music.ui.screen.medialibs.MediaSourceScreen
 import com.zxhhyj.music.ui.screen.misc.MiscScreen
 import com.zxhhyj.music.ui.screen.more.MoreScreen
+import com.zxhhyj.music.ui.screen.personalize.PersonalizeScreen
 import com.zxhhyj.music.ui.screen.play.PlayScreen
 import com.zxhhyj.music.ui.screen.playlist.PlayListScreen
 import com.zxhhyj.music.ui.screen.playlistcnt.PlayListCntScreen
@@ -88,7 +90,6 @@ import com.zxhhyj.music.ui.screen.singer.SingerScreen
 import com.zxhhyj.music.ui.screen.singercnt.SingerCntScreen
 import com.zxhhyj.music.ui.screen.single.SingleScreen
 import com.zxhhyj.music.ui.screen.vip.VipScreen
-import com.zxhhyj.music.ui.screen.webdav.WebDavScreen
 import com.zxhhyj.music.ui.sheet.AddToPlayListSheet
 import com.zxhhyj.music.ui.sheet.PlaylistMenuSheet
 import com.zxhhyj.music.ui.sheet.SongMenuSheet
@@ -492,13 +493,11 @@ fun MainScreen() {
                         }
 
                         ScreenDestination.Lab -> {
-                            LabScreen(
-                                paddingValues = paddingValues
-                            )
+                            LabScreen(paddingValues = paddingValues)
                         }
 
-                        ScreenDestination.WebDav -> {
-                            WebDavScreen(paddingValues = paddingValues)
+                        ScreenDestination.Folder -> {
+                            FolderScreen(paddingValues = paddingValues)
                         }
 
                         ScreenDestination.Vip -> {
@@ -507,6 +506,10 @@ fun MainScreen() {
 
                         ScreenDestination.Misc -> {
                             MiscScreen(paddingValues = paddingValues)
+                        }
+
+                        ScreenDestination.Personalize -> {
+                            PersonalizeScreen(paddingValues = paddingValues)
                         }
                     }
                 }

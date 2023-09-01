@@ -77,16 +77,28 @@ sealed class ScreenDestination : Parcelable {
     data object Lab : ScreenDestination()
 
     /**
-     * WebDav设置
+     * 文件夹
      */
     @Parcelize
-    data object WebDav : ScreenDestination()
+    data object Folder : ScreenDestination()
 
+    /**
+     * 杂项
+     */
     @Parcelize
     data object Misc : ScreenDestination()
 
+    /**
+     * Star Music PRO
+     */
     @Parcelize
     data object Vip : ScreenDestination()
+
+    /**
+     * 个性化
+     */
+    @Parcelize
+    data object Personalize : ScreenDestination()
 
     /**
      * 歌手详情

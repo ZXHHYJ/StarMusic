@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.FilterAlt
 import androidx.compose.material.icons.rounded.HideSource
 import androidx.compose.material.icons.rounded.LibraryMusic
 import androidx.compose.material.icons.rounded.Refresh
@@ -116,6 +117,27 @@ fun MediaSourceScreen(
                         PlayManager.clearPlayList()
                         dialogNavController.navigate(DialogDestination.ScanMusic)
                     }
+                }
+            }
+            item {
+                ItemSpacer()
+            }
+            item {
+                RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                    ItemSwitcher(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.FilterAlt,
+                                contentDescription = null
+                            )
+                        },
+                        text = { Text(text = stringResource(id = R.string.exclude_songs_under_one_minute)) },
+                        subText = { },
+                        checked = SettingRepository.EnableExcludeSongsUnderOneMinute,
+                        onCheckedChange = {
+                            SettingRepository.EnableExcludeSongsUnderOneMinute = it
+                        }
+                    )
                 }
             }
             item {

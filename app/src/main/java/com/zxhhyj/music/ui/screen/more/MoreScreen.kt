@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material.icons.rounded.FontDownload
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.MiscellaneousServices
+import androidx.compose.material.icons.rounded.Palette
 import androidx.compose.material.icons.rounded.Science
 import androidx.compose.material.icons.rounded.Source
 import androidx.compose.runtime.Composable
@@ -75,6 +76,13 @@ fun MoreScreen(
             }
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                    Item(
+                        icon = { Icon(imageVector = Icons.Rounded.Palette, null) },
+                        text = { Text(text = stringResource(id = R.string.personalize)) },
+                        subText = { Text(text = stringResource(id = R.string.personalize)) }) {
+                        mainNavController.navigate(ScreenDestination.Personalize)
+                    }
+                    ItemDivider()
                     Item(
                         icon = { Icon(imageVector = Icons.Rounded.Source, null) },
                         text = { Text(text = stringResource(id = R.string.media_lib)) },

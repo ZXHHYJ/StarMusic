@@ -9,8 +9,8 @@ import com.zxhhyj.music.logic.config.DataSaverUtils
 import com.zxhhyj.music.logic.utils.CueParser
 import com.zxhhyj.music.logic.utils.FileUtils
 import com.zxhhyj.music.logic.utils.toMillis
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlin.coroutines.resume
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 object AndroidMediaLibsRepository {
@@ -53,7 +53,7 @@ object AndroidMediaLibsRepository {
      * 扫描媒体
      */
     suspend fun scanMedia() {
-        songs = suspendCancellableCoroutine { it ->
+        withContext(Dispatchers.IO) {
             val query = MainApplication.context.contentResolver.query(
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 null,
@@ -61,7 +61,7 @@ object AndroidMediaLibsRepository {
                 null,
                 null
             )
-            val songs = mutableListOf<SongBean>()
+            val scanSongs = mutableListOf<SongBean>()
             query?.use { cursor ->
                 val albumIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)
                 val albumIdIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
@@ -94,7 +94,7 @@ object AndroidMediaLibsRepository {
                                 val endPosition =
                                     track.endPosition.toMillis().takeIf { it != 0L } ?: duration
                                 val startPosition = track.startPosition.toMillis()
-                                songs.add(
+                                scanSongs.add(
                                     SongBean(
                                         album = SongBean.Album(albumId, album),
                                         artist = SongBean.Artist(artistId, track.performer),
@@ -112,7 +112,7 @@ object AndroidMediaLibsRepository {
                                 )
                             }
                         }.getOrElse {
-                            songs.add(
+                            scanSongs.add(
                                 SongBean(
                                     album = SongBean.Album(albumId, album),
                                     artist = SongBean.Artist(artistId, artist),
@@ -130,7 +130,7 @@ object AndroidMediaLibsRepository {
                             )
                         }
                     } else {
-                        songs.add(
+                        scanSongs.add(
                             SongBean(
                                 album = SongBean.Album(albumId, album),
                                 artist = SongBean.Artist(artistId, artist),
@@ -150,10 +150,14 @@ object AndroidMediaLibsRepository {
                 }
             }
             query?.close()
-            songs.removeAll(hideSongs)
-            it.resume(songs)
+            scanSongs.removeAll(hideSongs)
+            songs = if (SettingRepository.EnableExcludeSongsUnderOneMinute) {
+                scanSongs.filter { it.duration > 60 }
+            } else {
+                scanSongs
+            }
+            dataUpdate()
         }
-        dataUpdate()
     }
 
     private fun dataUpdate() {

@@ -69,6 +69,24 @@ object SettingRepository {
     )
 
     /**
+     * 排除一分钟以内的歌曲
+     */
+    var EnableExcludeSongsUnderOneMinute by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "EnableExcludeSongsUnderOneMinute",
+        initialValue = true
+    )
+
+    /**
+     * 在歌曲Item中显示音质标签
+     */
+    var EnableShowSoundQualityLabel by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "EnableShowSoundQualityLabel",
+        initialValue = true
+    )
+
+    /**
      * 歌曲排序方式
      */
     var SongSort by mutableDataSaverStateOf(

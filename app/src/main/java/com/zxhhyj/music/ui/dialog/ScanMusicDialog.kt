@@ -13,9 +13,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
-import com.zxhhyj.ui.view.YesNoDialog
 import com.zxhhyj.ui.theme.LocalColorScheme
-import kotlinx.coroutines.Dispatchers
+import com.zxhhyj.ui.view.YesNoDialog
 import kotlinx.coroutines.launch
 
 @Composable
@@ -36,7 +35,7 @@ fun ScanMusicDialog(onDismissRequest: () -> Unit) {
         }
     }
     LaunchedEffect(Unit) {
-        launch(Dispatchers.IO) {
+        launch {
             AndroidMediaLibsRepository.scanMedia()
             onDismissRequest.invoke()
         }
