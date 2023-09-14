@@ -217,8 +217,8 @@ fun MainScreen() {
                         enter = if (SettingRepository.EnableLinkUI) EnterTransition.None else expandVertically(),
                         exit = if (SettingRepository.EnableLinkUI) ExitTransition.None else shrinkVertically(),
                     ) {
-                        val controlBarHeight = 50.dp
-                        val coverLength = 56.dp
+                        val controlBarHeight = 56.dp
+                        val elevation = 1.dp
                         Box(modifier = Modifier.fillMaxWidth()) {
                             Box(
                                 modifier = Modifier
@@ -229,15 +229,16 @@ fun MainScreen() {
                             ) {
                                 AppDivider(modifier = Modifier.fillMaxWidth())
                             }
-                            Box(modifier = Modifier.padding(horizontal = horizontal)) {
                                 val song by PlayManager.currentSongLiveData().observeAsState()
                                 AppCard(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .height(controlBarHeight)
-                                        .align(Alignment.BottomCenter),
-                                    backgroundColor = Color.Transparent,
-                                    contentColor = Color.Transparent,
+                                        .align(Alignment.BottomCenter)
+                                        .padding(horizontal = horizontal)
+                                        .padding(bottom = elevation),
+                                    backgroundColor = LocalColorScheme.current.background,
+                                    elevation = elevation
                                 ) {
                                     when (SettingRepository.EnableLinkUI) {
                                         true -> {
@@ -270,10 +271,17 @@ fun MainScreen() {
                                     }
                                     Row(
                                         modifier = Modifier
-                                            .padding(start = coverLength)
                                             .fillMaxSize(),
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
+                                        Spacer(modifier = Modifier.width(horizontal / 2))
+
+                                        AppAsyncImage(
+                                            modifier = Modifier
+                                                .size(controlBarHeight * 0.8f),
+                                            data = song?.album?.coverUrl ?: ""
+                                        )
+
                                         Text(
                                             modifier = Modifier
                                                 .padding(start = horizontal)
@@ -317,11 +325,6 @@ fun MainScreen() {
                                         Spacer(modifier = Modifier.width(horizontal / 2))
                                     }
                                 }
-                                AppAsyncImage(
-                                    modifier = Modifier.size(coverLength),
-                                    data = song?.album?.coverUrl ?: ""
-                                )
-                            }
                         }
                     }
                 },

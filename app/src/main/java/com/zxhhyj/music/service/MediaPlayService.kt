@@ -246,51 +246,39 @@ class MediaPlayService : LifecycleService() {
                 if (event != null && event.action == KeyEvent.ACTION_DOWN) {
                     // 处理媒体按钮按下事件
                     when (event.keyCode) {
+
+                        KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> {
+                            if (PlayManager.pauseLiveData().value == true) {
+                                PlayManager.start()
+                            } else {
+                                PlayManager.pause()
+                            }
+                        }
+
                         KeyEvent.KEYCODE_MEDIA_PLAY -> {
-                            onPlay()
+                            PlayManager.start()
                         }
 
                         KeyEvent.KEYCODE_MEDIA_PAUSE -> {
-                            onPause()
+                            PlayManager.pause()
                         }
 
                         KeyEvent.KEYCODE_MEDIA_NEXT -> {
-                            onSkipToNext()
+                            PlayManager.skipToNext()
                         }
 
                         KeyEvent.KEYCODE_MEDIA_PREVIOUS -> {
-                            onSkipToPrevious()
+                            PlayManager.skipToPrevious()
+                        }
+
+                        KeyEvent.KEYCODE_MEDIA_STOP -> {
+                            PlayManager.pause()
+                            stopSelf()
                         }
                     }
                 }
             }
-            return super.onMediaButtonEvent(mediaButtonEvent)
-        }
-
-        override fun onStop() {
-            super.onStop()
-            PlayManager.pause()
-            stopSelf()
-        }
-
-        override fun onSkipToNext() {
-            super.onSkipToNext()
-            PlayManager.skipToNext()
-        }
-
-        override fun onSkipToPrevious() {
-            super.onSkipToPrevious()
-            PlayManager.skipToPrevious()
-        }
-
-        override fun onPlay() {
-            super.onPlay()
-            PlayManager.start()
-        }
-
-        override fun onPause() {
-            super.onPause()
-            PlayManager.pause()
+            return true
         }
 
     }

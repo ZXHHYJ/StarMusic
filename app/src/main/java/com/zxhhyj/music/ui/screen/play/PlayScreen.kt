@@ -168,7 +168,7 @@ fun PlayScreen(
                 Box(
                     modifier = Modifier
                         .widthIn(max = PlayScreen.PlayScreenMaxWidth)
-                        .padding(horizontal = 20.dp),
+                        .padding(horizontal = maxWidth * 0.05f),
                     contentAlignment = Alignment.Center
                 ) {
                     AnimatedNavHost(

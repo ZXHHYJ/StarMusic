@@ -45,6 +45,7 @@ import com.zxhhyj.music.ui.theme.translucentWhiteColor
 import com.zxhhyj.music.ui.theme.translucentWhiteFixBugColor
 import com.zxhhyj.ui.view.AppCard
 import com.zxhhyj.ui.view.AppIconButton
+import com.zxhhyj.ui.view.item.ItemSpacer
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import kotlin.math.roundToInt
@@ -75,7 +76,7 @@ fun PlayControllerScreen(sheetNavController: NavController<SheetDestination>) {
                         .padding(bottom = 8.dp)
                         .size(100.wp),
                     backgroundColor = Color.Transparent,
-                    elevation = 10.dp,
+                    elevation = 12.dp,
                 ) {
                     AppAsyncImage(
                         modifier = Modifier.fillMaxSize(),
@@ -87,23 +88,23 @@ fun PlayControllerScreen(sheetNavController: NavController<SheetDestination>) {
 
             Row(
                 modifier = Modifier
-                    .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                //歌曲标题、歌手名称和菜单按钮
                 Column(
                     modifier = Modifier
                         .weight(1.0f),
-                    horizontalAlignment = Alignment.Start
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
                         text = song?.songName ?: "",
                         color = Color.White,
-                        fontSize = 20.sp,
+                        fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1
                     )
-                    Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = song?.artist?.name ?: "",
                         color = translucentWhiteColor,
@@ -118,7 +119,7 @@ fun PlayControllerScreen(sheetNavController: NavController<SheetDestination>) {
                     contentDescription = null,
                     modifier = Modifier
                         .size(32.dp)
-                        .clip(RoundedCornerShape(32.dp))
+                        .clip(RoundedCornerShape(50))
                         .background(translucentWhiteFixBugColor)
                         .clickable {
                             sheetNavController.navigate(SheetDestination.SongMenu(song!!))
@@ -126,11 +127,12 @@ fun PlayControllerScreen(sheetNavController: NavController<SheetDestination>) {
                 )
             }
 
+            ItemSpacer()
+
             val progress by PlayManager.progressLiveData().map { it.toFloat() }.observeAsState(0f)
 
             val duration by PlayManager.durationLiveData().map { it.toFloat() }.observeAsState(0f)
 
-            //歌曲进度条
             IosSlider(
                 value = progress / duration,
                 onValueChange = {
@@ -146,17 +148,24 @@ fun PlayControllerScreen(sheetNavController: NavController<SheetDestination>) {
                     .fillMaxWidth()
                     .height(16.dp),
             )
-            //当前歌曲播放进度和歌曲时长
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                Text(text = progress.toInt().toTimeString(), color = translucentWhiteColor)
+                Text(
+                    text = progress.toInt().toTimeString(),
+                    color = translucentWhiteColor,
+                    fontSize = 14.sp
+                )
                 Spacer(modifier = Modifier.weight(1f))
-                Text(text = duration.toInt().toTimeString(), color = translucentWhiteColor)
+                Text(
+                    text = duration.toInt().toTimeString(),
+                    color = translucentWhiteColor,
+                    fontSize = 14.sp
+                )
             }
 
-            //上一曲、暂停和下一曲
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

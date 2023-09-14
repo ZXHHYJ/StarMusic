@@ -4,7 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -33,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
@@ -45,10 +46,12 @@ import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.ui.theme.round
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
 import com.zxhhyj.music.ui.theme.vertical
 import com.zxhhyj.ui.view.AppCard
 import com.zxhhyj.ui.view.AppDivider
+import com.zxhhyj.ui.view.AppIconButton
 
 @Composable
 fun ColumnScope.PlayQueueScreen() {
@@ -61,12 +64,19 @@ fun ColumnScope.PlayQueueScreen() {
             .padding(horizontal = PlayScreen.PlayScreenContentHorizontal, vertical = vertical),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = stringResource(id = R.string.play_list),
-            color = Color.White,
-            fontSize = 18.sp,
-            textAlign = TextAlign.Center
-        )
+        Column {
+            Text(
+                text = stringResource(id = R.string.play_list),
+                color = Color.White,
+                fontSize = 16.sp,
+                textAlign = TextAlign.Center
+            )
+            Text(
+                text = "${(playlist?.indexOf(song) ?: 0) + 1}/${playlist?.size}",
+                color = translucentWhiteColor,
+                fontSize = 12.sp
+            )
+        }
         Spacer(modifier = Modifier.weight(1.0f))
         BottomNavigation(
             modifier = Modifier
@@ -105,7 +115,8 @@ fun ColumnScope.PlayQueueScreen() {
                         }
                     },
                     selectedContentColor = Color.White,
-                    unselectedContentColor = translucentWhiteColor
+                    unselectedContentColor = translucentWhiteColor,
+                    modifier = Modifier.clip(RoundedCornerShape(round))
                 )
             }
 
@@ -131,8 +142,7 @@ fun ColumnScope.PlayQueueScreen() {
 
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            state = lazyListState,
-            contentPadding = PaddingValues(top = vertical)
+            state = lazyListState
         ) {
             playlist?.let { songBeans ->
                 itemsIndexed(songBeans) { index, model ->
@@ -154,11 +164,6 @@ fun ColumnScope.PlayQueueScreen() {
             val position = playlist?.indexOf(song) ?: 0
             val height = (boxHeightPx - selectItemBoxSize.height) / 2
             lazyListState.scrollToItem(position.coerceAtLeast(0), -height)
-        }
-        LaunchedEffect(playlist, song) {
-            val position = playlist?.indexOf(song) ?: 0
-            val height = (boxHeightPx - selectItemBoxSize.height) / 2
-            lazyListState.animateScrollToItem(position.coerceAtLeast(0), -height)
         }
     }
 }
@@ -208,15 +213,13 @@ private fun QueueSongItem(
                     TextOverflow.Ellipsis
                 )
             }
-            Icon(
-                imageVector = Icons.Rounded.Remove,
-                tint = translucentWhiteColor,
-                contentDescription = null,
-                modifier = Modifier
-                    .clickable {
-                        PlayManager.removeSong(song)
-                    }
-            )
+            AppIconButton(onClick = { PlayManager.removeSong(song) }) {
+                Icon(
+                    imageVector = Icons.Rounded.Remove,
+                    tint = translucentWhiteColor,
+                    contentDescription = null
+                )
+            }
         }
     }
 }
