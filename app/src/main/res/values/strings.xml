@@ -61,4 +61,6 @@
     <string name="personalize">个性化</string>
     <string name="sound_quality_label">音质标签</string>
     <string name="sound_quality_label_info">在歌曲作者前显示当前歌曲的音质标签</string>
+    <string name="song_name">歌曲名称</string>
+    <string name="singer_name">歌手名称</string>
 </resources>

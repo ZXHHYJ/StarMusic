@@ -218,7 +218,7 @@ fun MainScreen() {
                         exit = if (SettingRepository.EnableLinkUI) ExitTransition.None else shrinkVertically(),
                     ) {
                         val controlBarHeight = 56.dp
-                        val elevation = 1.dp
+                        val elevation = 4.dp
                         Box(modifier = Modifier.fillMaxWidth()) {
                             Box(
                                 modifier = Modifier
@@ -232,11 +232,11 @@ fun MainScreen() {
                                 val song by PlayManager.currentSongLiveData().observeAsState()
                                 AppCard(
                                     modifier = Modifier
+                                        .padding(horizontal = horizontal)
+                                        .padding(bottom = elevation * 2)
                                         .fillMaxWidth()
                                         .height(controlBarHeight)
-                                        .align(Alignment.BottomCenter)
-                                        .padding(horizontal = horizontal)
-                                        .padding(bottom = elevation),
+                                        .align(Alignment.BottomCenter),
                                     backgroundColor = LocalColorScheme.current.background,
                                     elevation = elevation
                                 ) {

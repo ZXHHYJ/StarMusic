@@ -135,12 +135,16 @@ fun SingleScreen(
                 LazyColumn(modifier = Modifier.fillMaxWidth()) {
                     val list = when (SettingRepository.SongSort) {
 
-                        SettingRepository.SongSortType.NAME.value -> {
+                        SettingRepository.SongSortType.SONG_NAME.value -> {
                             AndroidMediaLibsRepository.songs.sortedBy { it.songName }
                         }
 
                         SettingRepository.SongSortType.DURATION.value -> {
                             AndroidMediaLibsRepository.songs.sortedBy { it.duration }
+                        }
+
+                        SettingRepository.SongSortType.SINGER_NAME.value -> {
+                            AndroidMediaLibsRepository.songs.sortedBy { it.artist.name }
                         }
 
                         else -> {
