@@ -8,7 +8,6 @@ class SyncedLyrics(
     fun isEmpty(): Boolean = main.isEmpty() && translation.isEmpty()
 
     companion object {
-        private val lineRegex = "\\d{1,3}:\\d{1,2}\\.\\d{2,3}".toRegex()
 
         private fun mergeLyrics(
             originalLyrics: List<Pair<Long, String>>,
@@ -56,30 +55,34 @@ class SyncedLyrics(
         fun List<String>.toSyncedLyrics(): SyncedLyrics {
             val lyrics = mutableMapOf<Long, String>()
             val translations = mutableMapOf<Long, String>()
+            val lineRegex = "\\d{1,3}:\\d{1,2}\\.\\d{2,3}".toRegex()
+            val timeRegex = "\\[(.*?)]".toRegex()
 
             this.forEach { line ->
-                val time = line.substringBefore(']').substringAfter('[')
-                val lyric = line.substringAfter(']')
-                    .trim()
-                    .replace("&quot;", "\"")
+                val lyric = line.substringAfterLast(']').trim().replace("&quot;", "\"")
+                val matches = timeRegex.findAll(line)
 
-                if (time.matches(lineRegex) && lyric != "//" && lyric.isNotEmpty()) {
-                    val (minute, second, millisecond) = time.split(':', '.')
-                    val milliseconds = minute.toLong() * 60_000 +
-                            second.toLong() * 1000 +
-                            millisecond.toLong() * when (millisecond.length) {
-                        3 -> 1
-                        2 -> 10
-                        else -> error("Invalid millisecond format")
-                    }
+                for (match in matches) {
+                    val time = match.groupValues[1]
+                    if (time.matches(lineRegex) && lyric != "//" && lyric.isNotEmpty()) {
+                        val (minute, second, millisecond) = time.split(':', '.')
+                        val milliseconds = minute.toLong() * 60_000 +
+                                second.toLong() * 1000 +
+                                millisecond.toLong() * when (millisecond.length) {
+                            3 -> 1
+                            2 -> 10
+                            else -> error("Invalid millisecond format")
+                        }
 
-                    if (milliseconds !in lyrics) {
-                        lyrics += milliseconds to lyric
-                    } else {
-                        translations += milliseconds to lyric
+                        if (milliseconds !in lyrics) {
+                            lyrics += milliseconds to lyric
+                        } else {
+                            translations += milliseconds to lyric
+                        }
                     }
                 }
             }
+
             val main = lyrics.toList().sortedBy { it.first }
             val translation = translations.toList().sortedBy { it.first }
             return SyncedLyrics(
