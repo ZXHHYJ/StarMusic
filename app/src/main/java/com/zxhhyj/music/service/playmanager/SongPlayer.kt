@@ -111,8 +111,12 @@ class SongPlayer {
                 _pause.value = true
                 errorListener?.onError(mediaPlayer, i, i2) ?: false
             }
-            setDataSource(song.data)
-            prepareAsync()
+            try {
+                setDataSource(song.data)
+                prepareAsync()
+            } catch (_: Exception) {
+                completionListener?.onCompletion(mediaPlayer)
+            }
         }
     }
 
@@ -158,6 +162,10 @@ class SongPlayer {
         mediaPlayer.release()
     }
 
+    fun getAudioSessionId(): Int {
+        return mediaPlayer.audioSessionId
+    }
+
     /**
      * 定时器内部类
      */
@@ -166,6 +174,7 @@ class SongPlayer {
         private var currentTime = startTime
         private var onUpdateListener: ((Int) -> Unit)? = null
         private var onFinishedListener: (() -> Unit)? = null
+        private val updateTimeout = 200
 
         /**
          * 设置更新监听器
@@ -191,8 +200,8 @@ class SongPlayer {
                 flow {
                     var time = currentTime
                     while (time < endTime) {
-                        delay(1000)
-                        time += 1000
+                        delay(updateTimeout.toLong())
+                        time += updateTimeout
                         emit(time)
                     }
                 }.flowOn(Dispatchers.Main)

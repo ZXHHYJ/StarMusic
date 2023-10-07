@@ -74,7 +74,9 @@ import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.music.ui.screen.about.AboutScreen
 import com.zxhhyj.music.ui.screen.album.AlbumScreen
 import com.zxhhyj.music.ui.screen.albumcnt.AlbumCntScreen
+import com.zxhhyj.music.ui.screen.equalizer.EqualizerScreen
 import com.zxhhyj.music.ui.screen.folder.FolderScreen
+import com.zxhhyj.music.ui.screen.foldermanager.FolderManagerScreen
 import com.zxhhyj.music.ui.screen.hidesong.HiddenSongScreen
 import com.zxhhyj.music.ui.screen.lab.LabScreen
 import com.zxhhyj.music.ui.screen.lyric.LyricScreen
@@ -499,8 +501,8 @@ fun MainScreen() {
                             LabScreen(paddingValues = paddingValues)
                         }
 
-                        ScreenDestination.Folder -> {
-                            FolderScreen(paddingValues = paddingValues)
+                        ScreenDestination.FolderManager -> {
+                            FolderManagerScreen(paddingValues = paddingValues, mainNavController = mainNavController)
                         }
 
                         ScreenDestination.Vip -> {
@@ -513,6 +515,14 @@ fun MainScreen() {
 
                         ScreenDestination.Personalize -> {
                             PersonalizeScreen(paddingValues = paddingValues)
+                        }
+
+                        ScreenDestination.Equalizer -> {
+                            EqualizerScreen(paddingValues = paddingValues)
+                        }
+
+                        is ScreenDestination.Folder -> {
+                            FolderScreen(paddingValues = paddingValues, folder = destination.folder)
                         }
                     }
                 }

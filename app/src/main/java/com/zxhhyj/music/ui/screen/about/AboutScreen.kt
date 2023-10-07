@@ -18,7 +18,6 @@ import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.config.PrivacyPolicyURL
 import com.zxhhyj.music.logic.utils.ActivityUtils
-import com.zxhhyj.music.logic.utils.CopyUtils
 import com.zxhhyj.music.logic.utils.VersionUtils
 import com.zxhhyj.music.ui.item.SubTitleItem
 import com.zxhhyj.ui.view.AppCenterTopBar
@@ -121,9 +120,21 @@ fun AboutScreen(
                                 contentDescription = null
                             )
                         },
-                        text = { Text(text = stringResource(id = R.string.qq_group)) },
+                        text = { Text(text = "BiliBili") },
                         subText = { }) {
-                        CopyUtils.copyText("584136207")
+                        ActivityUtils.openWeb(ctx, "https://b23.tv/LT3jgMj")
+                    }
+                    ItemDivider()
+                    Item(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.Link,
+                                contentDescription = null
+                            )
+                        },
+                        text = { Text(text = stringResource(id = R.string.douyin)) },
+                        subText = { }) {
+                        ActivityUtils.openWeb(ctx, " https://v.douyin.com/idYBDbyr/")
                     }
                 }
             }

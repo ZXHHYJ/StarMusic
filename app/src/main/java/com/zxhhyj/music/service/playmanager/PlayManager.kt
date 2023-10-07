@@ -21,6 +21,9 @@ object PlayManager {
      */
     private val mPlayMode = MutableLiveData(PlayMode.LIST_LOOP)
 
+    /**
+     * MediaPlayer
+     */
     private var mSongPlayer = SongPlayer()
 
     /**
@@ -210,4 +213,5 @@ object PlayManager {
             }
         }
     }
+
 }

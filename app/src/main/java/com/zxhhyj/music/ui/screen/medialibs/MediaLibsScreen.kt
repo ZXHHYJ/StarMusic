@@ -12,6 +12,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.FilterAlt
+import androidx.compose.material.icons.rounded.Folder
 import androidx.compose.material.icons.rounded.HideSource
 import androidx.compose.material.icons.rounded.LibraryMusic
 import androidx.compose.material.icons.rounded.Refresh
@@ -145,6 +146,19 @@ fun MediaSourceScreen(
             }
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                    Item(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.Folder,
+                                contentDescription = null
+                            )
+                        },
+                        text = { Text(text = stringResource(id = R.string.folder)) },
+                        subText = { Text(text = stringResource(id = R.string.folder)) }
+                    ) {
+                        mainNavController.navigate(ScreenDestination.FolderManager)
+                    }
+                    ItemDivider()
                     Item(
                         icon = {
                             Icon(

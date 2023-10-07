@@ -20,16 +20,17 @@ fun SoundQualityIcon(modifier: Modifier = Modifier, song: SongBean) {
         elevation = 0.dp,
         modifier = modifier.padding(end = 2.dp)
     ) {
-        if (song.bitrate!! in 128..192) {
-            Text(
-                text = "SQ",
-                modifier = modifier
-                    .background(Color.Blue.copy(0.3f))
-                    .padding(horizontal = 2.dp),
-                fontSize = fontSize
-            )
-        } else
-            if (song.bitrate in 256..320) {
+        when (song.bitrate) {
+            in 128..192 -> {
+                Text(
+                    text = "SQ",
+                    modifier = modifier
+                        .background(Color.Blue.copy(0.3f))
+                        .padding(horizontal = 2.dp),
+                    fontSize = fontSize
+                )
+            }
+            in 256..320 -> {
                 Text(
                     text = "HQ",
                     modifier = modifier
@@ -37,15 +38,16 @@ fun SoundQualityIcon(modifier: Modifier = Modifier, song: SongBean) {
                         .padding(horizontal = 2.dp),
                     fontSize = fontSize
                 )
-            } else
-                if (song.bitrate >= 320) {
-                    Text(
-                        text = "HR",
-                        modifier = modifier
-                            .background(Color.Yellow.copy(0.5f))
-                            .padding(horizontal = 2.dp),
-                        fontSize = fontSize
-                    )
-                }
+            }
+            in 320..Int.MAX_VALUE -> {
+                Text(
+                    text = "HR",
+                    modifier = modifier
+                        .background(Color.Yellow.copy(0.5f))
+                        .padding(horizontal = 2.dp),
+                    fontSize = fontSize
+                )
+            }
+        }
     }
 }

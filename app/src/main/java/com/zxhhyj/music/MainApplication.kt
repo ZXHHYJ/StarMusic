@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Build
 import com.funny.data_saver.core.DataSaverConverter.registerTypeConverters
 import com.google.gson.GsonBuilder
+import com.zxhhyj.music.logic.bean.Folder
 import com.zxhhyj.music.logic.bean.PlayListModel
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
@@ -30,6 +31,10 @@ class MainApplication : Application() {
         FastKVConfig.setExecutor(Dispatchers.Default.asExecutor())
         //初始化Gson
         val gson = GsonBuilder().create()
+        registerTypeConverters<Folder>(
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, Folder::class.java) }
+        )
         registerTypeConverters<SongBean>(
             save = { bean -> gson.toJson(bean) },
             restore = { str -> gson.fromJson(str, SongBean::class.java) }
