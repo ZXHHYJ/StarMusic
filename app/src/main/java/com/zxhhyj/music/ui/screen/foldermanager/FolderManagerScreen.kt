@@ -33,7 +33,7 @@ fun FolderManagerScreen(
         topBar = {
             AppCenterTopBar(
                 modifier = Modifier.fillMaxWidth(),
-                title = stringResource(id = R.string.folder)
+                title = stringResource(id = R.string.folder_manager)
             ) {
 
             }
@@ -44,7 +44,9 @@ fun FolderManagerScreen(
     ) {
         RoundColumn(modifier = Modifier.fillMaxWidth()) {
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                items(AndroidMediaLibsRepository.folders) { folder ->
+                val folders =
+                    (AndroidMediaLibsRepository.folders + AndroidMediaLibsRepository.hideFolders).sortedBy { it.path }
+                items(folders) { folder ->
                     ItemSwitcher(
                         icon = {
                             Icon(
@@ -61,7 +63,7 @@ fun FolderManagerScreen(
                                 )
                             )
                         },
-                        checked = folder.enabled,
+                        checked = AndroidMediaLibsRepository.folders.any { it == folder },
                         onCheckedChange = {
                             if (it) {
                                 AndroidMediaLibsRepository.unHideFolder(folder)

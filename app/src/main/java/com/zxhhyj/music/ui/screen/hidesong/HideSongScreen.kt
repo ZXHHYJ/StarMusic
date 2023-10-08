@@ -54,7 +54,7 @@ fun HiddenSongScreen(paddingValues: PaddingValues) {
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 items(AndroidMediaLibsRepository.hideSongs) {
                     HideSongItem(song = it) {
-                        AndroidMediaLibsRepository.unHide(it)
+                        AndroidMediaLibsRepository.unHideSong(it)
                     }
                 }
             }

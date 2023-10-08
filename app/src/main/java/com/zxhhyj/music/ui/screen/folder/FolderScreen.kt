@@ -13,11 +13,9 @@ import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.Folder
 import com.zxhhyj.music.ui.item.SongItem
-import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
-import dev.olshevski.navigation.reimagined.rememberNavController
 
 @Composable
 fun FolderScreen(paddingValues: PaddingValues, folder: Folder) {
@@ -37,13 +35,7 @@ fun FolderScreen(paddingValues: PaddingValues, folder: Folder) {
         RoundColumn(modifier = Modifier.fillMaxWidth()) {
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 items(folder.songs) {
-                    SongItem(
-                        song = it, sheetNavController = rememberNavController<SheetDestination>(
-                            emptyList()
-                        )
-                    ) {
-
-                    }
+                    SongItem(song = it)
                 }
             }
         }

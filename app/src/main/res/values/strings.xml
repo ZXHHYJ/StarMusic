@@ -65,4 +65,5 @@
     <string name="singer_name">歌手名称</string>
     <string name="folder">文件夹</string>
     <string name="douyin">抖音</string>
+    <string name="folder_manager">文件夹管理</string>
 </resources>

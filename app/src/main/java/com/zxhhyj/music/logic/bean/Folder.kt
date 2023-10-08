@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Folder(val path: String, val songs: List<SongBean>, var enabled: Boolean) : Parcelable {
+data class Folder(val path: String, val songs: List<SongBean>) : Parcelable {
     override fun equals(other: Any?): Boolean {
         return when (other) {
             is Folder -> {
@@ -18,9 +18,6 @@ data class Folder(val path: String, val songs: List<SongBean>, var enabled: Bool
     }
 
     override fun hashCode(): Int {
-        var result = path.hashCode()
-        result = 31 * result + songs.hashCode()
-        result = 31 * result + enabled.hashCode()
-        return result
+        return path.hashCode()
     }
 }

@@ -131,7 +131,7 @@ fun SongMenuSheet(
                     currentSong != song
                 ) {
                     sheetNavController.popAll()
-                    AndroidMediaLibsRepository.hide(song)
+                    AndroidMediaLibsRepository.hideSong(song)
                 }
                 ItemDivider()
                 Item(

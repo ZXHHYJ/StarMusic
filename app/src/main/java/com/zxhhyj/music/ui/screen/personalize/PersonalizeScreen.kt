@@ -19,15 +19,19 @@ import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.item.SongItem
+import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.ItemSpacer
 import com.zxhhyj.ui.view.item.ItemSwitcher
-import dev.olshevski.navigation.reimagined.rememberNavController
+import dev.olshevski.navigation.reimagined.NavController
 
 @Composable
-fun PersonalizeScreen(paddingValues: PaddingValues) {
+fun PersonalizeScreen(
+    paddingValues: PaddingValues,
+    sheetNavController: NavController<SheetDestination>
+) {
     AppScaffold(
         topBar = {
             AppCenterTopBar(
@@ -72,9 +76,7 @@ fun PersonalizeScreen(paddingValues: PaddingValues) {
                             )
                         }
                     SongItem(
-                        sheetNavController = rememberNavController(
-                            initialBackstack = emptyList()
-                        ),
+                        sheetNavController = sheetNavController,
                         song = easterEggSong ?: SongBean(
                             SongBean.Album(0, ""),
                             SongBean.Artist(0, "未知彩蛋歌曲作者"),

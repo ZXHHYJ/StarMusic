@@ -514,7 +514,7 @@ fun MainScreen() {
                         }
 
                         ScreenDestination.Personalize -> {
-                            PersonalizeScreen(paddingValues = paddingValues)
+                            PersonalizeScreen(paddingValues = paddingValues,sheetNavController = sheetNavController)
                         }
 
                         ScreenDestination.Equalizer -> {

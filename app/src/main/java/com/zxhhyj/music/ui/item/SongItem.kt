@@ -102,3 +102,55 @@ fun SongItem(
         Spacer(modifier = Modifier.padding(end = horizontal))
     }
 }
+
+/**
+ * 展示用，没有点击事件
+ */
+@Composable
+fun SongItem(
+    song: SongBean,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(70.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        AppAsyncImage(
+            modifier = Modifier
+                .padding(horizontal = horizontal, vertical = vertical)
+                .size(50.dp),
+            data = song.album.coverUrl
+        )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .weight(1.0f)
+                .padding(vertical = vertical),
+        ) {
+            Text(
+                text = song.songName,
+                color = LocalColorScheme.current.text,
+                fontSize = 15.sp,
+                maxLines = 1,
+                textAlign = TextAlign.Center,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(modifier = Modifier.weight(1.0f))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                if (SettingRepository.EnableShowSoundQualityLabel) {
+                    SoundQualityIcon(song = song)
+                }
+                Text(
+                    text = song.artist.name,
+                    color = LocalColorScheme.current.subText,
+                    fontSize = 13.sp,
+                    maxLines = 1,
+                    textAlign = TextAlign.Center,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+        Spacer(modifier = Modifier.padding(end = horizontal))
+    }
+}

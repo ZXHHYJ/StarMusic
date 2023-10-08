@@ -56,7 +56,7 @@ fun MediaSourceScreen(
                 }
 
                 PermissionStatus.Granted -> {
-                    if (AndroidMediaLibsRepository.songs.isEmpty()) {
+                    if (AndroidMediaLibsRepository.folders.isEmpty() && AndroidMediaLibsRepository.hideFolders.isEmpty()) {
                         dialogNavController.navigate(DialogDestination.ScanMusic)
                     }
                 }
@@ -153,8 +153,9 @@ fun MediaSourceScreen(
                                 contentDescription = null
                             )
                         },
-                        text = { Text(text = stringResource(id = R.string.folder)) },
-                        subText = { Text(text = stringResource(id = R.string.folder)) }
+                        text = { Text(text = stringResource(id = R.string.folder_manager)) },
+                        subText = { Text(text = stringResource(id = R.string.folder_manager)) },
+                        enabled = SettingRepository.EnableAndroidMediaLibs
                     ) {
                         mainNavController.navigate(ScreenDestination.FolderManager)
                     }

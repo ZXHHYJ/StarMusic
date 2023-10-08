@@ -37,6 +37,13 @@ object AndroidMediaLibsRepository {
     )
         private set
 
+    var hideSongs by mutableDataSaverListStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "hide_songs",
+        initialValue = listOf<SongBean>()
+    )
+        private set
+
     var folders by mutableDataSaverListStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "folders",
@@ -44,10 +51,10 @@ object AndroidMediaLibsRepository {
     )
         private set
 
-    var hideSongs by mutableDataSaverListStateOf(
+    var hideFolders by mutableDataSaverListStateOf(
         dataSaverInterface = DataSaverUtils,
-        key = "hide_songs",
-        initialValue = listOf<SongBean>()
+        key = "hide_folders",
+        initialValue = listOf<Folder>()
     )
         private set
 
@@ -160,50 +167,47 @@ object AndroidMediaLibsRepository {
             query?.close()
             scanSongs.removeAll(hideSongs)
             folders = scanSongs.map { it.data.substringBeforeLast("/") }.distinct().map { path ->
-                Folder(
-                    path,
-                    scanSongs.filter { it.data.startsWith(path) },
-                    folders.find { it.path == path }?.enabled ?: true
-                )
+                Folder(path, scanSongs.filter { it.data.startsWith(path) })
             }
+            folders = folders.filter { it !in hideFolders }
             updateLibs()
         }
     }
 
     private fun updateLibs() {
-        songs = emptyList()
-        folders.forEach { folder ->
-            if (folder.enabled) {
-                songs += folder.songs
-            }
-        }
-        songs = if (SettingRepository.EnableExcludeSongsUnderOneMinute) {
-            songs.filter { it.duration > 60 }
-        } else {
-            songs
-        }
+        songs = folders
+            .flatMap { it.songs }
+            .filter { if (SettingRepository.EnableExcludeSongsUnderOneMinute) it.duration > 60 else true }
+
         albums = songs.map { it.album }
             .distinctBy { it.id }
             .map { it.copy() }
+
         artists = songs.map { it.artist }
             .distinctBy { it.id }
             .map { it.copy() }
     }
 
     fun hideFolder(folder: Folder) {
-        folders.find { it.path == folder.path }?.enabled = false
-        updateLibs()
+        if (folders.any { it.path == folder.path }) {
+            folders = folders - folder
+            hideFolders = hideFolders + folder
+            updateLibs()
+        }
     }
 
     fun unHideFolder(folder: Folder) {
-        folders.find { it.path == folder.path }?.enabled = true
-        updateLibs()
+        if (hideFolders.any { it.path == folder.path }) {
+            folders = folders + folder
+            hideFolders = hideFolders - folder
+            updateLibs()
+        }
     }
 
     /**
      * 从媒体库中隐藏某个歌曲
      */
-    fun hide(song: SongBean) {
+    fun hideSong(song: SongBean) {
         songs = songs - song
         hideSongs = hideSongs + song
         updateLibs()
@@ -212,7 +216,7 @@ object AndroidMediaLibsRepository {
     /**
      * 取消隐藏某个歌曲
      */
-    fun unHide(song: SongBean) {
+    fun unHideSong(song: SongBean) {
         hideSongs = hideSongs - song
         songs = songs + song
         updateLibs()
@@ -232,9 +236,11 @@ object AndroidMediaLibsRepository {
      */
     fun clear() {
         songs = emptyList()
+        hideSongs = emptyList()
+        folders = emptyList()
+        hideFolders = emptyList()
         artists = emptyList()
         albums = emptyList()
-        hideSongs = emptyList()
     }
 
 }
