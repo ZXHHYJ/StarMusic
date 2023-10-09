@@ -37,7 +37,7 @@ import com.zxhhyj.ui.view.AppIconButton
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.AppTopBar
 import com.zxhhyj.ui.view.RoundColumn
-import com.zxhhyj.ui.view.item.Item
+import com.zxhhyj.ui.view.item.ItemArrowRight
 import com.zxhhyj.ui.view.item.ItemDivider
 import com.zxhhyj.ui.view.toolbarHeight
 import dev.olshevski.navigation.reimagined.NavController
@@ -72,7 +72,7 @@ fun SingleScreen(
                                 .height(toolbarHeight)
                         )
                         RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                            Item(
+                            ItemArrowRight(
                                 icon = {
                                     Icon(
                                         imageVector = Icons.Rounded.PlaylistPlay,
@@ -84,7 +84,7 @@ fun SingleScreen(
                                 mainNavController.navigate(ScreenDestination.PlayList)
                             }
                             ItemDivider()
-                            Item(
+                            ItemArrowRight(
                                 icon = {
                                     Icon(
                                         imageVector = Icons.Rounded.Album,
@@ -96,7 +96,7 @@ fun SingleScreen(
                                 mainNavController.navigate(ScreenDestination.Album)
                             }
                             ItemDivider()
-                            Item(
+                            ItemArrowRight(
                                 icon = {
                                     Icon(
                                         imageVector = Icons.Rounded.Mic,

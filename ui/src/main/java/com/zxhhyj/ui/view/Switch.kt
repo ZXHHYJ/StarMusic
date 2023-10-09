@@ -33,7 +33,7 @@ fun AppSwitch(
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit),
 ) {
-    BoxWithConstraints(modifier = modifier) {
+    BoxWithConstraints(modifier = modifier.heightIn(max = 22.dp)) {
         val blockSize = min(maxHeight, maxWidth)
         val blockSizePx = with(LocalDensity.current) { blockSize.toPx() }
         val swipeableState =

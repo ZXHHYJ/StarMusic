@@ -24,6 +24,7 @@ import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.Item
+import com.zxhhyj.ui.view.item.ItemArrowRight
 import com.zxhhyj.ui.view.item.ItemDivider
 
 
@@ -65,7 +66,7 @@ fun AboutScreen(
             }
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                    Item(
+                    ItemArrowRight(
                         icon = {
                             Icon(
                                 imageVector = Icons.Rounded.Link,
@@ -77,7 +78,7 @@ fun AboutScreen(
                         ActivityUtils.openWeb(ctx, "https://gitee.com/ZXHHYJ/star_music")
                     }
                     ItemDivider()
-                    Item(
+                    ItemArrowRight(
                         icon = {
                             Icon(
                                 imageVector = Icons.Rounded.Link,
@@ -89,7 +90,7 @@ fun AboutScreen(
                         ActivityUtils.openWeb(ctx, "https://github.com/ZXHHYJ/StarMusic")
                     }
                     ItemDivider()
-                    Item(
+                    ItemArrowRight(
                         icon = {
                             Icon(
                                 imageVector = Icons.Rounded.Link,
@@ -101,7 +102,7 @@ fun AboutScreen(
                         ActivityUtils.openWeb(ctx, PrivacyPolicyURL)
                     }
                     ItemDivider()
-                    Item(
+                    ItemArrowRight(
                         icon = {
                             Icon(
                                 imageVector = Icons.Rounded.Link,
@@ -113,7 +114,7 @@ fun AboutScreen(
                         ActivityUtils.openMail(ctx, "957447668@qq.com")
                     }
                     ItemDivider()
-                    Item(
+                    ItemArrowRight(
                         icon = {
                             Icon(
                                 imageVector = Icons.Rounded.Link,
@@ -125,7 +126,7 @@ fun AboutScreen(
                         ActivityUtils.openWeb(ctx, "https://b23.tv/LT3jgMj")
                     }
                     ItemDivider()
-                    Item(
+                    ItemArrowRight(
                         icon = {
                             Icon(
                                 imageVector = Icons.Rounded.Link,

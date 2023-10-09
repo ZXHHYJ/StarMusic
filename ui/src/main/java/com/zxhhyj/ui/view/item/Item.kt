@@ -25,6 +25,7 @@ fun Item(
     icon: @Composable () -> Unit,
     text: @Composable () -> Unit,
     subText: @Composable () -> Unit,
+    actions: @Composable () -> Unit = {},
     enabled: Boolean = true,
     onClick: () -> Unit
 ) {
@@ -53,5 +54,6 @@ fun Item(
                 subText()
             }
         }
+        actions()
     }
 }

@@ -176,6 +176,10 @@ object AndroidMediaLibsRepository {
             }
             .filter { it !in hideFolders }
 
+        refreshSongs()
+    }
+
+    private fun refreshSongs() {
         songs = folders
             .flatMap { it.songs }
             .filter { if (SettingRepository.EnableExcludeSongsUnderOneMinute) it.duration > 60 else true }
@@ -185,9 +189,7 @@ object AndroidMediaLibsRepository {
         if (folders.any { it.path == folder.path }) {
             folders = folders - folder
             hideFolders = hideFolders + folder
-            songs = folders
-                .flatMap { it.songs }
-                .filter { if (SettingRepository.EnableExcludeSongsUnderOneMinute) it.duration > 60 else true }
+            refreshSongs()
         }
     }
 
@@ -195,9 +197,7 @@ object AndroidMediaLibsRepository {
         if (hideFolders.any { it.path == folder.path }) {
             folders = folders + folder
             hideFolders = hideFolders - folder
-            songs = folders
-                .flatMap { it.songs }
-                .filter { if (SettingRepository.EnableExcludeSongsUnderOneMinute) it.duration > 60 else true }
+            refreshSongs()
         }
     }
 

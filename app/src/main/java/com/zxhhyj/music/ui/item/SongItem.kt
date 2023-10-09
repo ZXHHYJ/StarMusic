@@ -1,7 +1,5 @@
 package com.zxhhyj.music.ui.item
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,12 +9,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
-import androidx.compose.material.LocalContentColor
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -33,6 +29,7 @@ import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
 import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppIconButton
+import com.zxhhyj.ui.view.item.Item
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -43,63 +40,48 @@ fun SongItem(
     actions: @Composable () -> Unit = {},
     onClick: () -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(70.dp)
-            .clickable(onClick = onClick),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+    Item(icon = {
         AppAsyncImage(
             modifier = Modifier
-                .padding(horizontal = horizontal, vertical = vertical)
                 .size(50.dp),
             data = song.album.coverUrl
         )
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .weight(1.0f)
-                .padding(vertical = vertical),
-        ) {
+    }, text = {
+        Text(
+            text = song.songName,
+            color = LocalColorScheme.current.text,
+            fontSize = 15.sp,
+            maxLines = 1,
+            textAlign = TextAlign.Center,
+            overflow = TextOverflow.Ellipsis
+        )
+    }, subText = {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            if (SettingRepository.EnableShowSoundQualityLabel) {
+                SoundQualityIcon(song = song)
+            }
             Text(
-                text = song.songName,
-                color = LocalColorScheme.current.text,
-                fontSize = 15.sp,
+                text = song.artist.name,
+                color = LocalColorScheme.current.subText,
+                fontSize = 13.sp,
                 maxLines = 1,
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Ellipsis
             )
-            Spacer(modifier = Modifier.weight(1.0f))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                if (SettingRepository.EnableShowSoundQualityLabel) {
-                    SoundQualityIcon(song = song)
-                }
-                Text(
-                    text = song.artist.name,
-                    color = LocalColorScheme.current.subText,
-                    fontSize = 13.sp,
-                    maxLines = 1,
-                    textAlign = TextAlign.Center,
-                    overflow = TextOverflow.Ellipsis
+        }
+    }, actions = {
+        actions.invoke()
+        AppIconButton(onClick = {
+            sheetNavController.navigate(
+                SheetDestination.SongMenu(
+                    song
                 )
-            }
+            )
+        }) {
+            Icon(imageVector = Icons.Rounded.MoreVert, contentDescription = null)
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(horizontal / 2)) {
-            CompositionLocalProvider(LocalContentColor provides LocalColorScheme.current.subText) {
-                actions.invoke()
-                AppIconButton(onClick = {
-                    sheetNavController.navigate(
-                        SheetDestination.SongMenu(
-                            song
-                        )
-                    )
-                }) {
-                    Icon(imageVector = Icons.Rounded.MoreVert, contentDescription = null)
-                }
-            }
-        }
-        Spacer(modifier = Modifier.padding(end = horizontal))
+    }) {
+        onClick.invoke()
     }
 }
 

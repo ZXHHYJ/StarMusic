@@ -10,7 +10,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.StarRate
-import androidx.compose.material.icons.rounded.FontDownload
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.MiscellaneousServices
 import androidx.compose.material.icons.rounded.Palette
@@ -27,7 +26,7 @@ import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
-import com.zxhhyj.ui.view.item.Item
+import com.zxhhyj.ui.view.item.ItemArrowRight
 import com.zxhhyj.ui.view.item.ItemDivider
 import com.zxhhyj.ui.view.item.ItemSpacer
 import dev.olshevski.navigation.reimagined.NavController
@@ -52,7 +51,7 @@ fun MoreScreen(
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                    Item(
+                    ItemArrowRight(
                         icon = {
                             Icon(imageVector = Icons.Filled.StarRate, null)
                         },
@@ -76,42 +75,35 @@ fun MoreScreen(
             }
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                    Item(
+                    ItemArrowRight(
                         icon = { Icon(imageVector = Icons.Rounded.Palette, null) },
                         text = { Text(text = stringResource(id = R.string.personalize)) },
                         subText = { Text(text = stringResource(id = R.string.personalize)) }) {
                         mainNavController.navigate(ScreenDestination.Personalize)
                     }
                     ItemDivider()
-                    Item(
+                    ItemArrowRight(
                         icon = { Icon(imageVector = Icons.Rounded.Source, null) },
                         text = { Text(text = stringResource(id = R.string.media_lib)) },
                         subText = { Text(text = stringResource(id = R.string.scan_music)) }) {
                         mainNavController.navigate(ScreenDestination.MediaLibs)
                     }
                     ItemDivider()
-                    Item(
-                        icon = { Icon(imageVector = Icons.Rounded.FontDownload, null) },
-                        text = { Text(text = stringResource(id = R.string.lyric)) },
-                        subText = { Text(text = stringResource(id = R.string.lyric)) }) {
-                        mainNavController.navigate(ScreenDestination.Lyric)
-                    }
-                    ItemDivider()
-                    Item(
+                    ItemArrowRight(
                         icon = { Icon(imageVector = Icons.Rounded.Science, null) },
                         text = { Text(text = stringResource(id = R.string.lab)) },
                         subText = { Text(text = stringResource(id = R.string.lab)) }) {
                         mainNavController.navigate(ScreenDestination.Lab)
                     }
                     ItemDivider()
-                    Item(
+                    ItemArrowRight(
                         icon = { Icon(imageVector = Icons.Rounded.MiscellaneousServices, null) },
                         text = { Text(text = stringResource(id = R.string.misc)) },
                         subText = { Text(text = stringResource(id = R.string.misc)) }) {
                         mainNavController.navigate(ScreenDestination.Misc)
                     }
                     ItemDivider()
-                    Item(
+                    ItemArrowRight(
                         icon = { Icon(imageVector = Icons.Rounded.Info, null) },
                         text = { Text(text = stringResource(id = R.string.about)) },
                         subText = {

@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.FontDownload
 import androidx.compose.material.icons.rounded.Label
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,17 +20,21 @@ import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.item.SongItem
+import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
+import com.zxhhyj.ui.view.item.ItemArrowRight
 import com.zxhhyj.ui.view.item.ItemSpacer
 import com.zxhhyj.ui.view.item.ItemSwitcher
 import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.navigate
 
 @Composable
 fun PersonalizeScreen(
     paddingValues: PaddingValues,
+    mainNavController: NavController<ScreenDestination>,
     sheetNavController: NavController<SheetDestination>
 ) {
     AppScaffold(
@@ -93,6 +98,19 @@ fun PersonalizeScreen(
                         if (easterEggSong != null) {
                             PlayManager.play(listOf(easterEggSong), 0)
                         }
+                    }
+                }
+            }
+            item {
+                ItemSpacer()
+            }
+            item {
+                RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                    ItemArrowRight(
+                        icon = { Icon(imageVector = Icons.Rounded.FontDownload, null) },
+                        text = { Text(text = stringResource(id = R.string.lyric)) },
+                        subText = { }) {
+                        mainNavController.navigate(ScreenDestination.Lyric)
                     }
                 }
             }

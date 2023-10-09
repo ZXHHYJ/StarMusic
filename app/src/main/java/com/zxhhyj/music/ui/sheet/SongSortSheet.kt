@@ -16,6 +16,7 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.ItemCheckbox
+import com.zxhhyj.ui.view.item.ItemDivider
 
 val SettingRepository.SongSortType.itemName: String
     @Composable get() = when (this) {
@@ -35,7 +36,7 @@ val SettingRepository.SongSortType.itemIcon: ImageVector
 fun SongSortSheet() {
     Column(modifier = Modifier.fillMaxWidth()) {
         RoundColumn(modifier = Modifier.fillMaxWidth()) {
-            SettingRepository.SongSortType.values().forEach { type ->
+            SettingRepository.SongSortType.values().forEachIndexed { index, type ->
                 ItemCheckbox(
                     icon = {
                         Icon(
@@ -50,6 +51,9 @@ fun SongSortSheet() {
                         SettingRepository.SongSort = type.value
                     }
                 )
+                if (index != SettingRepository.SongSortType.values().size - 1) {
+                    ItemDivider()
+                }
             }
         }
     }

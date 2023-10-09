@@ -33,6 +33,7 @@ import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.Item
+import com.zxhhyj.ui.view.item.ItemArrowRight
 import com.zxhhyj.ui.view.item.ItemDivider
 import com.zxhhyj.ui.view.item.ItemSpacer
 import com.zxhhyj.ui.view.item.ItemSwitcher
@@ -146,7 +147,7 @@ fun MediaSourceScreen(
             }
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                    Item(
+                    ItemArrowRight(
                         icon = {
                             Icon(
                                 imageVector = Icons.Rounded.Folder,
@@ -160,7 +161,7 @@ fun MediaSourceScreen(
                         mainNavController.navigate(ScreenDestination.FolderManager)
                     }
                     ItemDivider()
-                    Item(
+                    ItemArrowRight(
                         icon = {
                             Icon(
                                 imageVector = Icons.Rounded.HideSource,

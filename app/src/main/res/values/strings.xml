@@ -50,9 +50,8 @@
     <string name="lab">实验室</string>
     <string name="cue_support">cue分轨文件支持</string>
     <string name="cue_support_info">启用后支持识别cue分轨文件</string>
-    <string name="qq_group">QQ群</string>
     <string name="star_music_pro">StarMusic Pro</string>
-    <string name="slogo">在一起，就可以<!--2023/8/30日凌晨发现被骗--></string>
+    <string name="slogo">无限进步</string>
     <string name="more">更多</string>
     <string name="misc">杂项</string>
     <string name="auto_play_music">自动播放音乐</string>

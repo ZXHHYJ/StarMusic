@@ -33,6 +33,7 @@ import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.Item
+import com.zxhhyj.ui.view.item.ItemArrowRight
 import com.zxhhyj.ui.view.item.ItemDivider
 import com.zxhhyj.ui.view.item.ItemSpacer
 import dev.olshevski.navigation.reimagined.NavController
@@ -60,7 +61,7 @@ fun SongMenuSheet(
     LazyColumn {
         item {
             RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                Item(
+                ItemArrowRight(
                     icon = { Icon(imageVector = Icons.Rounded.Album, contentDescription = null) },
                     text = { Text(text = song.album.name) },
                     subText = { Text(text = stringResource(id = R.string.album)) }) {
@@ -68,7 +69,7 @@ fun SongMenuSheet(
                     mainNavController.navigate(ScreenDestination.AlbumCnt(song.album))
                 }
                 ItemDivider()
-                Item(
+                ItemArrowRight(
                     icon = { Icon(imageVector = Icons.Rounded.Person, contentDescription = null) },
                     text = { Text(text = song.artist.name) },
                     subText = { Text(text = stringResource(id = R.string.singer)) }) {
@@ -128,7 +129,7 @@ fun SongMenuSheet(
                         )
                     },
                     subText = { },
-                    currentSong != song
+                    enabled = currentSong != song
                 ) {
                     sheetNavController.popAll()
                     AndroidMediaLibsRepository.hideSong(song)

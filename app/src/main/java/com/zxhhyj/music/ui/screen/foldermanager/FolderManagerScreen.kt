@@ -19,8 +19,9 @@ import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
+import com.zxhhyj.ui.view.AppSwitch
 import com.zxhhyj.ui.view.RoundColumn
-import com.zxhhyj.ui.view.item.ItemSwitcher
+import com.zxhhyj.ui.view.item.ItemArrowRight
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -47,7 +48,7 @@ fun FolderManagerScreen(
                 val folders =
                     (AndroidMediaLibsRepository.folders + AndroidMediaLibsRepository.hideFolders).sortedBy { it.path }
                 items(folders) { folder ->
-                    ItemSwitcher(
+                    ItemArrowRight(
                         icon = {
                             Icon(
                                 imageVector = Icons.Rounded.Folder,
@@ -63,13 +64,15 @@ fun FolderManagerScreen(
                                 )
                             )
                         },
-                        checked = AndroidMediaLibsRepository.folders.any { it == folder },
-                        onCheckedChange = {
-                            if (it) {
-                                AndroidMediaLibsRepository.unHideFolder(folder)
-                            } else {
-                                AndroidMediaLibsRepository.hideFolder(folder)
-                            }
+                        actions = {
+                            AppSwitch(checked = AndroidMediaLibsRepository.folders.any { it == folder },
+                                onCheckedChange = {
+                                    if (it) {
+                                        AndroidMediaLibsRepository.unHideFolder(folder)
+                                    } else {
+                                        AndroidMediaLibsRepository.hideFolder(folder)
+                                    }
+                                })
                         }
                     ) {
                         mainNavController.navigate(ScreenDestination.Folder(folder))
