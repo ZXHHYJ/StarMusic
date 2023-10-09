@@ -40,11 +40,11 @@ import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.screen.SheetDestination
-import com.zxhhyj.music.ui.screen.play.common.IosSlider
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
 import com.zxhhyj.music.ui.theme.translucentWhiteFixBugColor
 import com.zxhhyj.ui.view.AppCard
 import com.zxhhyj.ui.view.AppIconButton
+import com.zxhhyj.ui.view.AppSlider
 import com.zxhhyj.ui.view.item.ItemSpacer
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
@@ -133,7 +133,7 @@ fun PlayControllerScreen(sheetNavController: NavController<SheetDestination>) {
 
             val duration by PlayManager.durationLiveData().map { it.toFloat() }.observeAsState(0f)
 
-            IosSlider(
+            AppSlider(
                 value = progress / duration,
                 onValueChange = {
                     PlayManager.seekTo((duration * it).roundToInt())
@@ -144,9 +144,13 @@ fun PlayControllerScreen(sheetNavController: NavController<SheetDestination>) {
                 onDragEnd = {
                     PlayManager.start()
                 },
+                thumbSize = 16.dp,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(16.dp),
+                thumbColor = Color.White,
+                activeTrackColor = Color.White,
+                inactiveTrackColor = translucentWhiteFixBugColor,
             )
 
             Row(

@@ -99,4 +99,16 @@ object SettingRepository {
         SONG_NAME(0), DURATION(1), SINGER_NAME(2)
     }
 
+    var lyricFontSize by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "LyricFontSize",
+        initialValue = 0.5
+    )
+
+    var lyricFontBold by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "LyricFontBold",
+        initialValue = true
+    )
+
 }

@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.screen.play.common
+package com.zxhhyj.ui.view
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -25,16 +25,19 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.zxhhyj.music.ui.theme.translucentWhiteFixBugColor
+import com.zxhhyj.ui.theme.LocalColorScheme
 
 @Composable
-fun IosSlider(
+fun AppSlider(
     value: Float,
     onValueChange: (Float) -> Unit,
     onDragStart: () -> Unit = {},
     onDragEnd: () -> Unit = {},
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
-    thumbSize: Dp = 12.dp
+    thumbSize: Dp = 18.dp,
+    thumbColor: Color = LocalColorScheme.current.onText,
+    activeTrackColor: Color = LocalColorScheme.current.highlight,
+    inactiveTrackColor: Color = LocalColorScheme.current.disabled
 ) {
     BoxWithConstraints {
         val thumbOffset = value * (constraints.maxWidth - with(LocalDensity.current) {
@@ -58,7 +61,10 @@ fun IosSlider(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(6.dp)
-                    .background(shape = RoundedCornerShape(50), color = translucentWhiteFixBugColor)
+                    .background(
+                        shape = RoundedCornerShape(50),
+                        color = inactiveTrackColor
+                    )
                     .clip(RoundedCornerShape(50))
                     .clipToBounds()
             ) {
@@ -70,7 +76,7 @@ fun IosSlider(
                                 .toInt()
                                 .toDp() + thumbSize / 2
                         })
-                        .background(color = Color.White)
+                        .background(color = activeTrackColor)
                 )
             }
             Card(
@@ -79,10 +85,11 @@ fun IosSlider(
                         IntOffset(thumbOffset.toInt(), 0)
                     }
                     .size(thumbSize),
-                shape = RoundedCornerShape(50), backgroundColor = Color.White,
-                elevation = 1.dp
-            ) {}
+                shape = RoundedCornerShape(50), backgroundColor = thumbColor,
+                elevation = 2.dp
+            ) {
+
+            }
         }
     }
 }
-

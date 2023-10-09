@@ -39,7 +39,7 @@ fun Item(
             icon()
         }
         Spacer(modifier = Modifier.width(StarDimens.vertical))
-        Column(verticalArrangement = Arrangement.Center) {
+        Column(verticalArrangement = Arrangement.Center, modifier = Modifier.weight(1.0f)) {
             CompositionLocalProvider(
                 LocalTextStyle provides LocalTextStyles.current.main,
                 LocalContentColor provides if (enabled) LocalColorScheme.current.text else LocalColorScheme.current.disabled

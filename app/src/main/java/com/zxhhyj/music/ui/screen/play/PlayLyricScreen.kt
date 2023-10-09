@@ -55,6 +55,7 @@ fun ColumnScope.PlayLyricScreen() {
                           model: String,
                           index: Int,
                           position: Int ->
+                val fontSize = 20
                 Text(
                     modifier = modifier
                         .padding(
@@ -63,8 +64,8 @@ fun ColumnScope.PlayLyricScreen() {
                         ),
                     text = model,
                     color = if (position == index) Color.White else translucentWhiteColor,
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.Bold
+                    fontSize = (fontSize + fontSize * SettingRepository.lyricFontSize).sp,
+                    fontWeight = if (SettingRepository.lyricFontBold) FontWeight.Bold else null
                 )
             }
         ) {

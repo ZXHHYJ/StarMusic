@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.FormatBold
 import androidx.compose.material.icons.rounded.Translate
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,6 +19,9 @@ import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
+import com.zxhhyj.ui.view.item.ItemDivider
+import com.zxhhyj.ui.view.item.ItemSlider
+import com.zxhhyj.ui.view.item.ItemSpacer
 import com.zxhhyj.ui.view.item.ItemSwitcher
 
 @Composable
@@ -54,6 +58,39 @@ fun LyricScreen(paddingValues: PaddingValues) {
                         checked = SettingRepository.EnableLyricsTranslation,
                         onCheckedChange = {
                             SettingRepository.EnableLyricsTranslation = it
+                        }
+                    )
+                }
+            }
+            item {
+                ItemSpacer()
+            }
+            item {
+                RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                    ItemSlider(
+                        text = {
+                            Text(text = stringResource(id = R.string.lyric_font_size))
+                        },
+                        subText = {
+                            val fontSize = 20
+                            Text(text = "${(fontSize + fontSize * SettingRepository.lyricFontSize).toInt()}")
+                        },
+                        value = SettingRepository.lyricFontSize.toFloat(), onValueChange = {
+                            SettingRepository.lyricFontSize = "%.1f".format(it).toDouble()
+                        })
+                    ItemDivider()
+                    ItemSwitcher(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.FormatBold,
+                                contentDescription = null
+                            )
+                        },
+                        text = { Text(text = stringResource(id = R.string.lyric_font_bold)) },
+                        subText = { },
+                        checked = SettingRepository.lyricFontBold,
+                        onCheckedChange = {
+                            SettingRepository.lyricFontBold = it
                         }
                     )
                 }

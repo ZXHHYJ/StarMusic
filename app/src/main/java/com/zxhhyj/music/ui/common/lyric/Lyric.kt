@@ -57,10 +57,14 @@ fun Lyric(
         mutableIntStateOf(0)
     }
 
-    val lyricList = if (translation) {
-        lyric.split("\n").toSyncedLyrics().all
-    } else {
-        lyric.split("\n").toSyncedLyrics().main
+    val lyricList by remember(lyric, translation) {
+        mutableStateOf(
+            if (translation) {
+                lyric.split("\n").toSyncedLyrics().all
+            } else {
+                lyric.split("\n").toSyncedLyrics().main
+            }
+        )
     }
 
     var selectLyricItemSize by remember {
@@ -104,11 +108,11 @@ fun Lyric(
                 Spacer(modifier = Modifier.height(maxHeight / 2))
             }
             itemsIndexed(lyricList) { index, model ->
-                lyricItem.invoke(Modifier
+                lyricItem(Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(round))
                     .clickable {
-                        onClick.invoke(model.first.toInt())
+                        onClick(model.first.toInt())
                     }
                     .onSizeChanged {
                         if (position == index) {
@@ -134,7 +138,7 @@ fun Lyric(
             val index = (position + 1).coerceAtLeast(0)
             lazyListState.scrollToItem(index, -height)
         }
-        LaunchedEffect(position, selectLyricItemSize) {
+        LaunchedEffect(position) {
             if (enableLyricScroll) {
                 val height = (lyricHeightPx - selectLyricItemSize.height) / 2
                 val index = (position + 1).coerceAtLeast(0)

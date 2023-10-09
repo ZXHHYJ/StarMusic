@@ -166,18 +166,18 @@ object AndroidMediaLibsRepository {
             }
             query?.close()
             scanSongs.removeAll(hideSongs)
-            folders = scanSongs.map { it.data.substringBeforeLast("/") }.distinct().map { path ->
-                Folder(path, scanSongs.filter { it.data.startsWith(path) })
-            }
-            folders = folders.filter { it !in hideFolders }
+            songs = scanSongs
             updateLibs()
         }
     }
 
     private fun updateLibs() {
+        folders = songs.map { it.data.substringBeforeLast("/") }.distinct().map { path ->
+            Folder(path, songs.filter { it.data.startsWith(path) })
+        }
+
         songs = folders
             .flatMap { it.songs }
-            .filter { if (SettingRepository.EnableExcludeSongsUnderOneMinute) it.duration > 60 else true }
 
         albums = songs.map { it.album }
             .distinctBy { it.id }

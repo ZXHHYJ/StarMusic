@@ -42,7 +42,7 @@ fun ItemCheckbox(
             icon()
         }
         Spacer(modifier = Modifier.width(StarDimens.vertical))
-        Column(verticalArrangement = Arrangement.Center) {
+        Column(verticalArrangement = Arrangement.Center, modifier = Modifier.weight(1.0f)) {
             CompositionLocalProvider(
                 LocalTextStyle provides LocalTextStyles.current.main,
                 LocalContentColor provides LocalColorScheme.current.text
@@ -56,7 +56,6 @@ fun ItemCheckbox(
                 subText()
             }
         }
-        Spacer(modifier = Modifier.weight(1.0f))
         if (checked) {
             Icon(
                 imageVector = Icons.Rounded.Check,

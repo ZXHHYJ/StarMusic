@@ -45,7 +45,7 @@ fun ItemSwitcher(
             icon()
         }
         Spacer(modifier = Modifier.width(StarDimens.vertical))
-        Column(verticalArrangement = Arrangement.Center) {
+        Column(verticalArrangement = Arrangement.Center, modifier = Modifier.weight(1.0f)) {
             CompositionLocalProvider(
                 LocalTextStyle provides LocalTextStyles.current.main,
                 LocalContentColor provides LocalColorScheme.current.text
@@ -59,7 +59,6 @@ fun ItemSwitcher(
                 subText()
             }
         }
-        Spacer(modifier = Modifier.weight(1.0f))
         AppSwitch(
             checked = checked,
             onCheckedChange = onCheckedChange,
