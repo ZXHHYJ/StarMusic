@@ -154,7 +154,7 @@ fun MediaSourceScreen(
                             )
                         },
                         text = { Text(text = stringResource(id = R.string.folder_manager)) },
-                        subText = { Text(text = stringResource(id = R.string.folder_manager)) },
+                        subText = { },
                         enabled = SettingRepository.EnableAndroidMediaLibs
                     ) {
                         mainNavController.navigate(ScreenDestination.FolderManager)
@@ -168,7 +168,7 @@ fun MediaSourceScreen(
                             )
                         },
                         text = { Text(text = stringResource(id = R.string.hidden_songs)) },
-                        subText = { Text(text = stringResource(id = R.string.hidden_songs)) },
+                        subText = { },
                         enabled = SettingRepository.EnableAndroidMediaLibs
                     ) {
                         mainNavController.navigate(ScreenDestination.HiddenSong)

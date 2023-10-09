@@ -16,19 +16,15 @@ import kotlinx.coroutines.withContext
 
 object AndroidMediaLibsRepository {
 
-    var artists by mutableDataSaverListStateOf(
-        dataSaverInterface = DataSaverUtils,
-        key = "local_artists",
-        initialValue = listOf<SongBean.Artist>()
-    )
-        private set
+    val artists
+        get() = songs.map { it.artist }
+            .distinctBy { it.id }
+            .map { it.copy() }
 
-    var albums by mutableDataSaverListStateOf(
-        dataSaverInterface = DataSaverUtils,
-        key = "local_albums",
-        initialValue = listOf<SongBean.Album>()
-    )
-        private set
+    val albums
+        get() = songs.map { it.album }
+            .distinctBy { it.id }
+            .map { it.copy() }
 
     var songs by mutableDataSaverListStateOf(
         dataSaverInterface = DataSaverUtils,
@@ -172,27 +168,26 @@ object AndroidMediaLibsRepository {
     }
 
     private fun updateLibs() {
-        folders = songs.map { it.data.substringBeforeLast("/") }.distinct().map { path ->
-            Folder(path, songs.filter { it.data.startsWith(path) })
-        }
+        folders = songs
+            .map { it.data.substringBeforeLast("/") }
+            .distinct()
+            .map { path ->
+                Folder(path, songs.filter { it.data.startsWith(path) })
+            }
+            .filter { it !in hideFolders }
 
         songs = folders
             .flatMap { it.songs }
-
-        albums = songs.map { it.album }
-            .distinctBy { it.id }
-            .map { it.copy() }
-
-        artists = songs.map { it.artist }
-            .distinctBy { it.id }
-            .map { it.copy() }
+            .filter { if (SettingRepository.EnableExcludeSongsUnderOneMinute) it.duration > 60 else true }
     }
 
     fun hideFolder(folder: Folder) {
         if (folders.any { it.path == folder.path }) {
             folders = folders - folder
             hideFolders = hideFolders + folder
-            updateLibs()
+            songs = folders
+                .flatMap { it.songs }
+                .filter { if (SettingRepository.EnableExcludeSongsUnderOneMinute) it.duration > 60 else true }
         }
     }
 
@@ -200,7 +195,9 @@ object AndroidMediaLibsRepository {
         if (hideFolders.any { it.path == folder.path }) {
             folders = folders + folder
             hideFolders = hideFolders - folder
-            updateLibs()
+            songs = folders
+                .flatMap { it.songs }
+                .filter { if (SettingRepository.EnableExcludeSongsUnderOneMinute) it.duration > 60 else true }
         }
     }
 
@@ -210,7 +207,6 @@ object AndroidMediaLibsRepository {
     fun hideSong(song: SongBean) {
         songs = songs - song
         hideSongs = hideSongs + song
-        updateLibs()
     }
 
     /**
@@ -219,7 +215,6 @@ object AndroidMediaLibsRepository {
     fun unHideSong(song: SongBean) {
         hideSongs = hideSongs - song
         songs = songs + song
-        updateLibs()
     }
 
     /**
@@ -239,8 +234,6 @@ object AndroidMediaLibsRepository {
         hideSongs = emptyList()
         folders = emptyList()
         hideFolders = emptyList()
-        artists = emptyList()
-        albums = emptyList()
     }
 
 }
