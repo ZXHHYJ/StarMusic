@@ -52,9 +52,7 @@ fun LyricScreen(paddingValues: PaddingValues) {
                         text = {
                             Text(text = stringResource(id = R.string.lyrics_translation))
                         },
-                        subText = {
-                            Text(text = stringResource(id = R.string.lyrics_translation))
-                        },
+                        subText = {},
                         checked = SettingRepository.EnableLyricsTranslation,
                         onCheckedChange = {
                             SettingRepository.EnableLyricsTranslation = it

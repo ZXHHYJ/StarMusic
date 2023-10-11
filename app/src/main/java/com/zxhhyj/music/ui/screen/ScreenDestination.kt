@@ -1,7 +1,6 @@
 package com.zxhhyj.music.ui.screen
 
 import android.os.Parcelable
-import com.zxhhyj.music.logic.bean.Folder
 import com.zxhhyj.music.logic.bean.PlayListModel
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.ui.screen.search.SearchScreenTabs
@@ -87,7 +86,21 @@ sealed class ScreenDestination : Parcelable {
      * 文件夹
      */
     @Parcelize
-    data class Folder(val folder: @RawValue com.zxhhyj.music.logic.bean.Folder) : ScreenDestination()
+    data object Folder : ScreenDestination()
+
+    /**
+     * 文件夹内容预览
+     */
+    @Parcelize
+    data class FolderPreview(val folder: @RawValue com.zxhhyj.music.logic.bean.Folder) :
+        ScreenDestination()
+
+    /**
+     * 文件夹内容
+     */
+    @Parcelize
+    data class FolderCnt(val folder: @RawValue com.zxhhyj.music.logic.bean.Folder) :
+        ScreenDestination()
 
     /**
      * 杂项
@@ -107,6 +120,9 @@ sealed class ScreenDestination : Parcelable {
     @Parcelize
     data object Personalize : ScreenDestination()
 
+    /**
+     * 均衡器
+     */
     @Parcelize
     data object Equalizer : ScreenDestination()
 

@@ -76,7 +76,9 @@ import com.zxhhyj.music.ui.screen.album.AlbumScreen
 import com.zxhhyj.music.ui.screen.albumcnt.AlbumCntScreen
 import com.zxhhyj.music.ui.screen.equalizer.EqualizerScreen
 import com.zxhhyj.music.ui.screen.folder.FolderScreen
+import com.zxhhyj.music.ui.screen.foldercnt.FolderCntScreen
 import com.zxhhyj.music.ui.screen.foldermanager.FolderManagerScreen
+import com.zxhhyj.music.ui.screen.folderpreview.FolderPreviewScreen
 import com.zxhhyj.music.ui.screen.hidesong.HiddenSongScreen
 import com.zxhhyj.music.ui.screen.lab.LabScreen
 import com.zxhhyj.music.ui.screen.lyric.LyricScreen
@@ -227,6 +229,9 @@ fun MainScreen() {
                                     .height(controlBarHeight / 2)
                                     .fillMaxWidth()
                                     .align(Alignment.BottomCenter)
+                                    .clickable(enabled = false) {
+                                        //避免点击穿透
+                                    }
                                     .background(LocalColorScheme.current.highBackground)
                             ) {
                                 AppDivider(modifier = Modifier.fillMaxWidth())
@@ -525,8 +530,26 @@ fun MainScreen() {
                             EqualizerScreen(paddingValues = paddingValues)
                         }
 
-                        is ScreenDestination.Folder -> {
-                            FolderScreen(paddingValues = paddingValues, folder = destination.folder)
+                        is ScreenDestination.FolderCnt -> {
+                            FolderCntScreen(
+                                paddingValues = paddingValues,
+                                sheetNavController = sheetNavController,
+                                folder = destination.folder
+                            )
+                        }
+
+                        is ScreenDestination.FolderPreview -> {
+                            FolderPreviewScreen(
+                                paddingValues = paddingValues,
+                                folder = destination.folder
+                            )
+                        }
+
+                        ScreenDestination.Folder -> {
+                            FolderScreen(
+                                paddingValues = paddingValues,
+                                mainNavController = mainNavController
+                            )
                         }
                     }
                 }

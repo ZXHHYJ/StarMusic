@@ -75,7 +75,7 @@ fun FolderManagerScreen(
                                 })
                         }
                     ) {
-                        mainNavController.navigate(ScreenDestination.Folder(folder))
+                        mainNavController.navigate(ScreenDestination.FolderPreview(folder))
                     }
                 }
             }

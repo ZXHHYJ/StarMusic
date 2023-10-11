@@ -1,6 +1,5 @@
 package com.zxhhyj.music.ui.screen.play
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -10,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -44,14 +44,17 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.bean.SongBean
+import com.zxhhyj.music.logic.repository.SettingRepository
+import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.ui.common.AppAsyncImage
+import com.zxhhyj.music.ui.common.SoundQualityIcon
 import com.zxhhyj.music.ui.theme.round
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
 import com.zxhhyj.music.ui.theme.vertical
 import com.zxhhyj.ui.view.AppCard
-import com.zxhhyj.ui.view.AppDivider
 import com.zxhhyj.ui.view.AppIconButton
+import com.zxhhyj.ui.view.item.Item
 
 @Composable
 fun ColumnScope.PlayQueueScreen() {
@@ -61,7 +64,10 @@ fun ColumnScope.PlayQueueScreen() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = PlayScreen.PlayScreenContentHorizontal, vertical = vertical),
+            .padding(
+                horizontal = PlayScreen.PlayScreenContentHorizontal,
+                vertical = vertical
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column {
@@ -123,11 +129,6 @@ fun ColumnScope.PlayQueueScreen() {
         }
     }
 
-    AppDivider(
-        color = translucentWhiteColor,
-        modifier = Modifier.padding(horizontal = PlayScreen.PlayScreenContentHorizontal)
-    )
-
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxWidth()
@@ -140,19 +141,67 @@ fun ColumnScope.PlayQueueScreen() {
             mutableStateOf(IntSize.Zero)
         }
 
+        val currentSong by PlayManager.currentSongLiveData().observeAsState()
+
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             state = lazyListState
         ) {
             playlist?.let { songBeans ->
                 itemsIndexed(songBeans) { index, model ->
-                    QueueSongItem(
-                        modifier = Modifier.onSizeChanged {
-                            selectItemBoxSize = it
-                        },
-                        song = model
+                    AppCard(
+                        backgroundColor = if (currentSong == model) Color.White.copy(alpha = 0.2f) else Color.Transparent,
+                        modifier = Modifier
+                            .onSizeChanged {
+                                selectItemBoxSize = it
+                            }
+                            .fillMaxWidth()
                     ) {
-                        PlayManager.play(songBeans, index)
+                        Item(
+                            icon = {
+                                AppAsyncImage(
+                                    modifier = Modifier
+                                        .size(50.dp),
+                                    data = model.album.coverUrl,
+                                    backgroundColor = Color.Transparent
+                                )
+                            },
+                            text = {
+                                Text(
+                                    text = model.songName,
+                                    color = Color.White,
+                                    fontSize = 15.sp,
+                                    maxLines = 1,
+                                    textAlign = TextAlign.Center,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }, subText = {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    if (SettingRepository.EnableShowSoundQualityLabel) {
+                                        SoundQualityIcon(song = model)
+                                    }
+                                    Text(
+                                        text = model.artist.name,
+                                        color = translucentWhiteColor,
+                                        fontSize = 13.sp,
+                                        maxLines = 1,
+                                        textAlign = TextAlign.Center,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                }
+                            }, actions = {
+                                AppIconButton(onClick = {
+                                    PlayManager.removeSong(model)
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Rounded.Remove,
+                                        contentDescription = null,
+                                        tint = translucentWhiteColor
+                                    )
+                                }
+                            }) {
+                            PlayManager.play(songBeans, index)
+                        }
                     }
                 }
             }
@@ -164,62 +213,6 @@ fun ColumnScope.PlayQueueScreen() {
             val position = playlist?.indexOf(song) ?: 0
             val height = (boxHeightPx - selectItemBoxSize.height) / 2
             lazyListState.scrollToItem(position.coerceAtLeast(0), -height)
-        }
-    }
-}
-
-@Composable
-private fun QueueSongItem(
-    modifier: Modifier,
-    song: SongBean,
-    onClick: () -> Unit
-) {
-    val currentSong by PlayManager.currentSongLiveData().observeAsState()
-    AppCard(
-        backgroundColor = if (currentSong == song) Color.White.copy(alpha = 0.1f) else Color.Transparent,
-        modifier = modifier
-            .fillMaxWidth()
-            .height(64.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .clickable(onClick = onClick)
-                .padding(horizontal = PlayScreen.PlayScreenContentHorizontal),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1.0f)
-                    .padding(vertical = vertical),
-            ) {
-                Text(
-                    text = song.songName,
-                    color = Color.White,
-                    fontSize = 15.sp,
-                    maxLines = 1,
-                    textAlign = TextAlign.Center,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Spacer(modifier = Modifier.weight(1.0f))
-                Text(
-                    text = song.artist.name,
-                    color = translucentWhiteColor,
-                    fontSize = 13.sp,
-                    maxLines = 1,
-                    textAlign = TextAlign.Center,
-                    overflow =
-                    TextOverflow.Ellipsis
-                )
-            }
-            AppIconButton(onClick = { PlayManager.removeSong(song) }) {
-                Icon(
-                    imageVector = Icons.Rounded.Remove,
-                    tint = translucentWhiteColor,
-                    contentDescription = null
-                )
-            }
         }
     }
 }

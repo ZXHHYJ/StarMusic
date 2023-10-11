@@ -54,6 +54,8 @@ fun Item(
                 subText()
             }
         }
-        actions()
+        Row(horizontalArrangement = Arrangement.spacedBy(StarDimens.horizontal / 2)) {
+            actions()
+        }
     }
 }

@@ -53,6 +53,7 @@ import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.music.ui.screen.play.common.TopMediaController
 import com.zxhhyj.music.ui.theme.round
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
+import com.zxhhyj.ui.theme.StarDimens
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.moveToTop
@@ -80,7 +81,7 @@ val AnimDurationMillis
     get() = if (!SettingRepository.EnableLinkUI) 300 else 0
 
 object PlayScreen {
-    val PlayScreenContentHorizontal = 10.dp
+    val PlayScreenContentHorizontal = StarDimens.horizontal
     val PlayScreenHorizontal = 20.dp
     val PlayScreenMaxWidth = 360.dp
 }

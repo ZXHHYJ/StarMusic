@@ -1,18 +1,14 @@
 package com.zxhhyj.music.ui.item
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -25,8 +21,6 @@ import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.SoundQualityIcon
 import com.zxhhyj.music.ui.screen.SheetDestination
-import com.zxhhyj.music.ui.theme.horizontal
-import com.zxhhyj.music.ui.theme.vertical
 import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppIconButton
 import com.zxhhyj.ui.view.item.Item
@@ -70,15 +64,20 @@ fun SongItem(
             )
         }
     }, actions = {
-        actions.invoke()
-        AppIconButton(onClick = {
-            sheetNavController.navigate(
-                SheetDestination.SongMenu(
-                    song
+        CompositionLocalProvider(LocalContentColor provides LocalColorScheme.current.subText) {
+            actions.invoke()
+            AppIconButton(onClick = {
+                sheetNavController.navigate(
+                    SheetDestination.SongMenu(
+                        song
+                    )
                 )
-            )
-        }) {
-            Icon(imageVector = Icons.Rounded.MoreVert, contentDescription = null)
+            }) {
+                Icon(
+                    imageVector = Icons.Rounded.MoreVert,
+                    contentDescription = null
+                )
+            }
         }
     }) {
         onClick.invoke()
@@ -92,24 +91,15 @@ fun SongItem(
 fun SongItem(
     song: SongBean,
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(70.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        AppAsyncImage(
-            modifier = Modifier
-                .padding(horizontal = horizontal, vertical = vertical)
-                .size(50.dp),
-            data = song.album.coverUrl
-        )
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .weight(1.0f)
-                .padding(vertical = vertical),
-        ) {
+    Item(
+        icon = {
+            AppAsyncImage(
+                modifier = Modifier
+                    .size(50.dp),
+                data = song.album.coverUrl
+            )
+        },
+        text = {
             Text(
                 text = song.songName,
                 color = LocalColorScheme.current.text,
@@ -118,7 +108,8 @@ fun SongItem(
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Ellipsis
             )
-            Spacer(modifier = Modifier.weight(1.0f))
+        },
+        subText = {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 if (SettingRepository.EnableShowSoundQualityLabel) {
                     SoundQualityIcon(song = song)
@@ -132,7 +123,7 @@ fun SongItem(
                     overflow = TextOverflow.Ellipsis
                 )
             }
-        }
-        Spacer(modifier = Modifier.padding(end = horizontal))
-    }
+        },
+        onClick = {}
+    )
 }

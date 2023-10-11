@@ -13,6 +13,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Album
+import androidx.compose.material.icons.rounded.Folder
 import androidx.compose.material.icons.rounded.Mic
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.PlaylistPlay
@@ -107,7 +108,18 @@ fun SingleScreen(
                                 subText = { }) {
                                 mainNavController.navigate(ScreenDestination.Singer)
                             }
-
+                            ItemDivider()
+                            ItemArrowRight(
+                                icon = {
+                                    Icon(
+                                        imageVector = Icons.Rounded.Folder,
+                                        contentDescription = null
+                                    )
+                                },
+                                text = { Text(text = stringResource(id = R.string.folder)) },
+                                subText = { }) {
+                                mainNavController.navigate(ScreenDestination.Folder)
+                            }
                         }
                     }
                 },
