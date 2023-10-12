@@ -200,7 +200,7 @@ fun PlayScreen(
                                         }
                                     }
                                     when (it) {
-                                        PlayScreenDestination.Lyric -> PlayLyricScreen()
+                                        PlayScreenDestination.Lyric -> PlayLyricScreen(navController)
                                         PlayScreenDestination.PlayQueue -> PlayQueueScreen()
                                         else -> {}
                                     }

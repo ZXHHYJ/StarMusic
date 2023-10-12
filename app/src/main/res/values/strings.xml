@@ -10,7 +10,7 @@
     <string name="play_list">播放列表</string>
     <string name="total_n_songs">共%d首</string>
     <string name="scan_music">扫描音乐</string>
-    <string name="not_lyric">无歌词</string>
+    <string name="no_lyrics">暂无歌词</string>
     <string name="delete">删除</string>
     <string name="song_info">歌曲信息</string>
     <string name="bit_rate">比特率</string>
@@ -18,12 +18,9 @@
     <string name="sample_rate">采样率</string>
     <string name="file_path">文件位置</string>
     <string name="file_size">文件大小</string>
-    <string name="theme">主题</string>
-    <string name="theme_info">修改主题</string>
     <string name="lyric">歌词</string>
     <string name="about">关于</string>
     <string name="about_info">版本：%s</string>
-    <string name="clear">清除</string>
     <string name="privacy_policy">隐私政策</string>
     <string name="agree_and_continue">同意并继续</string>
     <string name="cancel">取消</string>
@@ -36,7 +33,7 @@
     <string name="media_lib_has_songs_size">当前媒体库包含%d首歌曲</string>
     <string name="hidden_songs">隐藏的歌曲</string>
     <string name="version">版本</string>
-    <string name="link">链接</string>
+    <string name="about_link">相关链接</string>
     <string name="add_to_playlist">添加至歌单</string>
     <string name="create_playlist">创建播放列表</string>
     <string name="create">创建</string>
@@ -67,4 +64,7 @@
     <string name="folder_manager">文件夹管理</string>
     <string name="lyric_font_size">歌词字体大小</string>
     <string name="lyric_font_bold">歌词字体加粗</string>
+    <string name="weixin">微信</string>
+    <string name="problem_feedback">问题反馈</string>
+    <string name="ask_for_attention">如果可以，希望能点个小小的关注，十分感谢</string>
 </resources>

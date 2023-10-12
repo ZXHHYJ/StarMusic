@@ -1,5 +1,7 @@
 package com.zxhhyj.music.ui.screen.about
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,6 +28,8 @@ import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.Item
 import com.zxhhyj.ui.view.item.ItemArrowRight
 import com.zxhhyj.ui.view.item.ItemDivider
+import com.zxhhyj.ui.view.item.ItemSpacer
+import com.zxhhyj.ui.view.item.ItemTint
 
 
 @Composable
@@ -62,7 +66,7 @@ fun AboutScreen(
                 }
             }
             item {
-                SubTitleItem(title = stringResource(id = R.string.link))
+                SubTitleItem(title = stringResource(id = R.string.about_link))
             }
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
@@ -73,9 +77,21 @@ fun AboutScreen(
                                 contentDescription = null
                             )
                         },
+                        text = { Text(text = stringResource(id = R.string.privacy_policy)) },
+                        subText = { }) {
+                        ActivityUtils.openUrl(ctx, PrivacyPolicyURL)
+                    }
+                    ItemDivider()
+                    ItemArrowRight(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.Link,
+                                contentDescription = null
+                            )
+                        },
                         text = { Text(text = "Gitee") },
                         subText = { }) {
-                        ActivityUtils.openWeb(ctx, "https://gitee.com/ZXHHYJ/star_music")
+                        ActivityUtils.openUrl(ctx, "https://gitee.com/ZXHHYJ/star_music")
                     }
                     ItemDivider()
                     ItemArrowRight(
@@ -87,19 +103,17 @@ fun AboutScreen(
                         },
                         text = { Text(text = "Github") },
                         subText = { }) {
-                        ActivityUtils.openWeb(ctx, "https://github.com/ZXHHYJ/StarMusic")
+                        ActivityUtils.openUrl(ctx, "https://github.com/ZXHHYJ/StarMusic")
                     }
-                    ItemDivider()
-                    ItemArrowRight(
-                        icon = {
-                            Icon(
-                                imageVector = Icons.Rounded.Link,
-                                contentDescription = null
-                            )
-                        },
-                        text = { Text(text = stringResource(id = R.string.privacy_policy)) },
-                        subText = { }) {
-                        ActivityUtils.openWeb(ctx, PrivacyPolicyURL)
+                }
+            }
+            item {
+                ItemSpacer()
+            }
+            item {
+                RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                    ItemTint {
+                        Text(text = stringResource(id = R.string.problem_feedback))
                     }
                     ItemDivider()
                     ItemArrowRight(
@@ -121,9 +135,45 @@ fun AboutScreen(
                                 contentDescription = null
                             )
                         },
+                        text = { Text(text = stringResource(id = R.string.weixin)) },
+                        subText = {
+                            Text(text = "WY7XY_")
+                        }) {
+
+                    }
+                    ItemDivider()
+                    ItemArrowRight(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.Link,
+                                contentDescription = null
+                            )
+                        },
+                        text = { Text(text = "QQ") },
+                        subText = { Text(text = "957447668") }) {
+
+                    }
+                }
+            }
+            item {
+                ItemSpacer()
+            }
+            item {
+                RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                    ItemTint {
+                        Text(text = stringResource(id = R.string.ask_for_attention))
+                    }
+                    ItemDivider()
+                    ItemArrowRight(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.Link,
+                                contentDescription = null
+                            )
+                        },
                         text = { Text(text = "BiliBili") },
                         subText = { }) {
-                        ActivityUtils.openWeb(ctx, "https://b23.tv/LT3jgMj")
+                        ActivityUtils.openUrl(ctx, "https://b23.tv/LT3jgMj")
                     }
                     ItemDivider()
                     ItemArrowRight(
@@ -135,7 +185,9 @@ fun AboutScreen(
                         },
                         text = { Text(text = stringResource(id = R.string.douyin)) },
                         subText = { }) {
-                        ActivityUtils.openWeb(ctx, " https://v.douyin.com/idYBDbyr/")
+                        val intent = Intent()
+                        intent.data = Uri.parse("snssdk1128://user/profile/99593826137")
+                        ctx.startActivity(intent)
                     }
                 }
             }

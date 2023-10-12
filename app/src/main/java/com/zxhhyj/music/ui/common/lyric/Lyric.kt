@@ -6,6 +6,7 @@ import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
@@ -30,7 +32,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntSize
+import com.zxhhyj.music.R
 import com.zxhhyj.music.ui.common.lyric.SyncedLyrics.Companion.toSyncedLyrics
 import com.zxhhyj.music.ui.theme.round
 import kotlinx.coroutines.delay
@@ -44,7 +48,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun Lyric(
     modifier: Modifier = Modifier,
-    lyric: String,
+    lyric: String?,
     liveTime: Int,
     translation: Boolean,
     lyricItem: @Composable (modifier: Modifier, lyric: String, index: Int, position: Int) -> Unit,
@@ -57,16 +61,6 @@ fun Lyric(
         mutableIntStateOf(0)
     }
 
-    val lyricList by remember(lyric, translation) {
-        mutableStateOf(
-            if (translation) {
-                lyric.split("\n").toSyncedLyrics().all
-            } else {
-                lyric.split("\n").toSyncedLyrics().main
-            }
-        )
-    }
-
     var selectLyricItemSize by remember {
         mutableStateOf(IntSize.Zero)
     }
@@ -77,9 +71,28 @@ fun Lyric(
 
     val coroutineScope = rememberCoroutineScope()
 
-    BoxWithConstraints {
+    BoxWithConstraints(modifier) {
+        lyric ?: run {
+            lyricItem.invoke(
+                Modifier.align(Alignment.Center),
+                stringResource(id = R.string.no_lyrics),
+                0,
+                0
+            )
+            return@BoxWithConstraints
+        }
+        val lyricList by remember(lyric, translation) {
+            mutableStateOf(
+                if (translation) {
+                    lyric.split("\n").toSyncedLyrics().all
+                } else {
+                    lyric.split("\n").toSyncedLyrics().main
+                }
+            )
+        }
         LazyColumn(
-            modifier = modifier
+            modifier = Modifier
+                .fillMaxSize()
                 .graphicsLayer { alpha = 0.99F }
                 .drawWithContent {
                     val colors = listOf(

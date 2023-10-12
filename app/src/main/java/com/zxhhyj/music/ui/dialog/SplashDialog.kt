@@ -62,7 +62,7 @@ fun SplashDialog(
                 append(stringResource(id = R.string.privacy_policy))
             }
         }, color = LocalColorScheme.current.text, modifier = Modifier.clickable {
-            ActivityUtils.openWeb(activity, PrivacyPolicyURL)
+            ActivityUtils.openUrl(activity, PrivacyPolicyURL)
         })
     }
 }

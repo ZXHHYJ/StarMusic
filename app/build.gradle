@@ -19,16 +19,6 @@ android {
         versionCode Integer.parseInt(code)
         versionName "${calendar.get(Calendar.YEAR)}.${calendar.get(Calendar.MONTH) + 1}.${calendar.get(Calendar.DAY_OF_MONTH)}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        ndk {
-            //noinspection ChromeOsAbiSupport
-            //abiFilters "arm64-v8a"
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     composeOptions {

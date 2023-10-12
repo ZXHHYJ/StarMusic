@@ -17,9 +17,12 @@ import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.KeepScreenOn
 import com.zxhhyj.music.ui.common.lyric.Lyric
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
+import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.pop
+import dev.olshevski.navigation.reimagined.popAll
 
 @Composable
-fun ColumnScope.PlayLyricScreen() {
+fun ColumnScope.PlayLyricScreen(navController: NavController<PlayScreenDestination>) {
     val pause by PlayManager.pauseLiveData().observeAsState(true)
     KeepScreenOn(enable = !pause)
     val song by PlayManager.currentSongLiveData().observeAsState()
@@ -29,7 +32,7 @@ fun ColumnScope.PlayLyricScreen() {
         modifier = Modifier
             .fillMaxWidth()
             .weight(1.0f),
-        lyric = song?.lyric ?: "[00:00.00]没有歌词",
+        lyric = song?.lyric,
         liveTime = liveTime,
         translation = SettingRepository.EnableLyricsTranslation,
         lyricItem = { modifier: Modifier,

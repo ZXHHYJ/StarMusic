@@ -16,7 +16,7 @@ object ActivityUtils {
      * @param context 调用该方法的上下文
      * @param url 要在 Web 浏览器中打开的 URL
      */
-    fun openWeb(context: Context, url: String) {
+    fun openUrl(context: Context, url: String) {
         val uri = Uri.parse(url)
         val intent = Intent(Intent.ACTION_VIEW, uri)
         val activity = context as? Activity
