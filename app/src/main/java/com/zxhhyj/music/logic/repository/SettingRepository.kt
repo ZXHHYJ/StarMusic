@@ -101,8 +101,8 @@ object SettingRepository {
 
     var lyricFontSize by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
-        key = "LyricFontSize",
-        initialValue = 0.5
+        key = "LyricFontSize_V2",
+        initialValue = 30
     )
 
     var lyricFontBold by mutableDataSaverStateOf(

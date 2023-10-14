@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.screen.vip
+package com.zxhhyj.music.ui.screen.pro
 
 import android.content.Intent
 import android.os.Build
@@ -35,7 +35,7 @@ import com.zxhhyj.ui.view.item.ItemSpacer
 import com.zxhhyj.ui.view.item.ItemSwitcher
 
 @Composable
-fun VipScreen(paddingValues: PaddingValues) {
+fun ProScreen(paddingValues: PaddingValues) {
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()

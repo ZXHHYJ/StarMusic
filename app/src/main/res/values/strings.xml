@@ -67,4 +67,7 @@
     <string name="weixin">微信</string>
     <string name="problem_feedback">问题反馈</string>
     <string name="ask_for_attention">如果可以，希望能点个小小的关注，十分感谢</string>
+    <string name="media_lib_info">扫描音乐、文件夹管理、隐藏的歌曲</string>
+    <string name="lab_info">实验性的功能</string>
+    <string name="personalize_info">界面相关、歌词相关</string>
 </resources>

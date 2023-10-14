@@ -138,24 +138,29 @@ fun Lyric(
                 Spacer(modifier = Modifier.height(maxHeight / 2))
             }
         }
-        LaunchedEffect(liveTime) {
-            lyricList.forEachIndexed { index, lrcContent ->
-                if (liveTime >= lrcContent.first) {
-                    position = index
-                }
-            }
-        }
         val lyricHeightPx = with(LocalDensity.current) { maxHeight.roundToPx() }
         LaunchedEffect(Unit) {
-            val height = (lyricHeightPx - selectLyricItemSize.height) / 2
-            val index = (position + 1).coerceAtLeast(0)
-            lazyListState.scrollToItem(index, -height)
+            lyricList.forEachIndexed { index, lrcContent ->
+                if (liveTime >= lrcContent.first) {
+                    val height = (lyricHeightPx - selectLyricItemSize.height) / 2
+                    lazyListState.scrollToItem((index + 1).coerceAtLeast(0), -height)
+                    return@forEachIndexed
+                }
+            }
         }
         LaunchedEffect(position) {
             if (enableLyricScroll) {
                 val height = (lyricHeightPx - selectLyricItemSize.height) / 2
                 val index = (position + 1).coerceAtLeast(0)
                 lazyListState.animateScrollToItem(index, -height)
+            }
+        }
+        LaunchedEffect(liveTime) {
+            lyricList.forEachIndexed { index, lrcContent ->
+                if (liveTime >= lrcContent.first) {
+                    position = index
+                    return@forEachIndexed
+                }
             }
         }
     }

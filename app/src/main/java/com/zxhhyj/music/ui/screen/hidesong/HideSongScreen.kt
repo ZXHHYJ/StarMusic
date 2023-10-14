@@ -1,23 +1,21 @@
 package com.zxhhyj.music.ui.screen.hidesong
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Remove
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -28,14 +26,16 @@ import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
+import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.ui.common.AppAsyncImage
-import com.zxhhyj.music.ui.theme.horizontal
-import com.zxhhyj.music.ui.theme.vertical
+import com.zxhhyj.music.ui.common.SoundQualityIcon
 import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppCenterTopBar
+import com.zxhhyj.ui.view.AppIconButton
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
+import com.zxhhyj.ui.view.item.Item
 
 @Composable
 fun HiddenSongScreen(paddingValues: PaddingValues) {
@@ -67,36 +67,22 @@ private fun HideSongItem(
     song: SongBean,
     onClick: () -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(70.dp)
-            .clickable {
-                //不需要任何反应
-            },
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        AppAsyncImage(
-            modifier = Modifier
-                .padding(horizontal = horizontal, vertical = vertical)
-                .size(50.dp),
-            data = song.album.coverUrl
+    Item(icon = {
+        AppAsyncImage(modifier = Modifier.size(50.dp), data = song.album.coverUrl)
+    }, text = {
+        Text(
+            text = song.songName,
+            color = LocalColorScheme.current.text,
+            fontSize = 15.sp,
+            maxLines = 1,
+            textAlign = TextAlign.Center,
+            overflow = TextOverflow.Ellipsis
         )
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .weight(1.0f)
-                .padding(vertical = vertical),
-        ) {
-            Text(
-                text = song.songName,
-                color = LocalColorScheme.current.text,
-                fontSize = 15.sp,
-                maxLines = 1,
-                textAlign = TextAlign.Center,
-                overflow = TextOverflow.Ellipsis
-            )
-            Spacer(modifier = Modifier.weight(1.0f))
+    }, subText = {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            if (SettingRepository.EnableShowSoundQualityLabel) {
+                SoundQualityIcon(song = song)
+            }
             Text(
                 text = song.artist.name,
                 color = LocalColorScheme.current.subText,
@@ -106,12 +92,16 @@ private fun HideSongItem(
                 overflow = TextOverflow.Ellipsis
             )
         }
-        Icon(
-            imageVector = Icons.Rounded.Remove,
-            tint = LocalColorScheme.current.subText,
-            contentDescription = null,
-            modifier = Modifier.clickable(onClick = onClick)
-        )
-        Spacer(modifier = Modifier.padding(end = horizontal))
-    }
+    }, actions = {
+        CompositionLocalProvider(LocalContentColor provides LocalColorScheme.current.subText) {
+            AppIconButton(onClick = {
+                onClick.invoke()
+            }) {
+                Icon(
+                    imageVector = Icons.Rounded.Remove,
+                    contentDescription = null
+                )
+            }
+        }
+    }) {}
 }

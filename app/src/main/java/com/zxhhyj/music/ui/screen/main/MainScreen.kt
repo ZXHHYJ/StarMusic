@@ -93,7 +93,7 @@ import com.zxhhyj.music.ui.screen.search.SearchScreen
 import com.zxhhyj.music.ui.screen.singer.SingerScreen
 import com.zxhhyj.music.ui.screen.singercnt.SingerCntScreen
 import com.zxhhyj.music.ui.screen.single.SingleScreen
-import com.zxhhyj.music.ui.screen.vip.VipScreen
+import com.zxhhyj.music.ui.screen.pro.ProScreen
 import com.zxhhyj.music.ui.sheet.AddToPlayListSheet
 import com.zxhhyj.music.ui.sheet.PlaylistMenuSheet
 import com.zxhhyj.music.ui.sheet.SongMenuSheet
@@ -510,8 +510,8 @@ fun MainScreen() {
                             FolderManagerScreen(paddingValues = paddingValues, mainNavController = mainNavController)
                         }
 
-                        ScreenDestination.Vip -> {
-                            VipScreen(paddingValues = paddingValues)
+                        ScreenDestination.Pro -> {
+                            ProScreen(paddingValues = paddingValues)
                         }
 
                         ScreenDestination.Misc -> {

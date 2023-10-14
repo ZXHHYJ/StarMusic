@@ -66,7 +66,7 @@ fun MoreScreen(
                                 false -> Text(text = stringResource(id = R.string.slogo))
                             }
                         }) {
-                        mainNavController.navigate(ScreenDestination.Vip)
+                        mainNavController.navigate(ScreenDestination.Pro)
                     }
                 }
             }
@@ -78,21 +78,21 @@ fun MoreScreen(
                     ItemArrowRight(
                         icon = { Icon(imageVector = Icons.Rounded.Palette, null) },
                         text = { Text(text = stringResource(id = R.string.personalize)) },
-                        subText = { Text(text = stringResource(id = R.string.personalize)) }) {
+                        subText = { Text(text = stringResource(id = R.string.personalize_info)) }) {
                         mainNavController.navigate(ScreenDestination.Personalize)
                     }
                     ItemDivider()
                     ItemArrowRight(
                         icon = { Icon(imageVector = Icons.Rounded.Source, null) },
                         text = { Text(text = stringResource(id = R.string.media_lib)) },
-                        subText = { Text(text = stringResource(id = R.string.scan_music)) }) {
+                        subText = { Text(text = stringResource(id = R.string.media_lib_info)) }) {
                         mainNavController.navigate(ScreenDestination.MediaLibs)
                     }
                     ItemDivider()
                     ItemArrowRight(
                         icon = { Icon(imageVector = Icons.Rounded.Science, null) },
                         text = { Text(text = stringResource(id = R.string.lab)) },
-                        subText = { Text(text = stringResource(id = R.string.lab)) }) {
+                        subText = { Text(text = stringResource(id = R.string.lab_info)) }) {
                         mainNavController.navigate(ScreenDestination.Lab)
                     }
                     ItemDivider()

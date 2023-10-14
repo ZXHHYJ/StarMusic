@@ -112,7 +112,7 @@ sealed class ScreenDestination : Parcelable {
      * Star Music PRO
      */
     @Parcelize
-    data object Vip : ScreenDestination()
+    data object Pro : ScreenDestination()
 
     /**
      * 个性化

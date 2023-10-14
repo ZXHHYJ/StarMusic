@@ -13,6 +13,7 @@
         tools:ignore="ScopedStorage" />
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 
     <application
         android:name=".MainApplication"
@@ -57,6 +58,7 @@
         </receiver>
         <service
             android:name=".service.MediaPlayService"
+            android:foregroundServiceType="mediaPlayback"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />

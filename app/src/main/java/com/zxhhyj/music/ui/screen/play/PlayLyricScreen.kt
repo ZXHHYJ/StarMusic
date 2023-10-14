@@ -17,12 +17,9 @@ import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.KeepScreenOn
 import com.zxhhyj.music.ui.common.lyric.Lyric
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
-import dev.olshevski.navigation.reimagined.NavController
-import dev.olshevski.navigation.reimagined.pop
-import dev.olshevski.navigation.reimagined.popAll
 
 @Composable
-fun ColumnScope.PlayLyricScreen(navController: NavController<PlayScreenDestination>) {
+fun ColumnScope.PlayLyricScreen() {
     val pause by PlayManager.pauseLiveData().observeAsState(true)
     KeepScreenOn(enable = !pause)
     val song by PlayManager.currentSongLiveData().observeAsState()
@@ -48,7 +45,7 @@ fun ColumnScope.PlayLyricScreen(navController: NavController<PlayScreenDestinati
                     ),
                 text = model,
                 color = if (position == index) Color.White else translucentWhiteColor,
-                fontSize = (fontSize + fontSize * SettingRepository.lyricFontSize).sp,
+                fontSize = SettingRepository.lyricFontSize.sp,
                 fontWeight = if (SettingRepository.lyricFontBold) FontWeight.Bold else null
             )
         }

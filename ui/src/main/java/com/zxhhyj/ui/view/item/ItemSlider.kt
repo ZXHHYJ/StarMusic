@@ -23,6 +23,7 @@ fun ItemSlider(
     subText: @Composable () -> Unit,
     value: Float,
     onValueChange: (Float) -> Unit,
+    valueRange: ClosedFloatingPointRange<Float> = 0f..1f, // 新添加的值范围参数
     onDragStart: () -> Unit = {},
     onDragEnd: () -> Unit = {},
 ) {
@@ -44,6 +45,7 @@ fun ItemSlider(
         AppSlider(
             value = value,
             onValueChange = onValueChange,
+            valueRange = valueRange,
             onDragStart = onDragStart,
             onDragEnd = onDragEnd
         )

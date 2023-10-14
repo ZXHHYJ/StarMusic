@@ -70,12 +70,14 @@ fun LyricScreen(paddingValues: PaddingValues) {
                             Text(text = stringResource(id = R.string.lyric_font_size))
                         },
                         subText = {
-                            val fontSize = 20
-                            Text(text = "${(fontSize + fontSize * SettingRepository.lyricFontSize).toInt()}")
+                            Text(text = "${SettingRepository.lyricFontSize}")
                         },
-                        value = SettingRepository.lyricFontSize.toFloat(), onValueChange = {
-                            SettingRepository.lyricFontSize = "%.1f".format(it).toDouble()
-                        })
+                        value = SettingRepository.lyricFontSize.toFloat(),
+                        onValueChange = {
+                            SettingRepository.lyricFontSize = it.toInt()
+                        },
+                        valueRange = 20f..40f
+                    )
                     ItemDivider()
                     ItemSwitcher(
                         icon = {
