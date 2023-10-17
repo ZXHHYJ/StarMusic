@@ -17,6 +17,12 @@ sealed class ScreenDestination : Parcelable {
     data object Main : ScreenDestination()
 
     /**
+     * 付款界面
+     */
+    @Parcelize
+    data object Pay : ScreenDestination()
+
+    /**
      * 搜索
      */
     @Parcelize

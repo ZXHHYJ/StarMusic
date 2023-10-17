@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 class SongPlayer {
     private val mediaPlayer = MediaPlayer()
 
-    private lateinit var currentSong: SongBean
+    private var currentSong: SongBean? = null
 
     private var timer: Timer? = null
 
@@ -79,7 +79,7 @@ class SongPlayer {
         _songDuration.value = song.duration.toInt()
         timer?.pause()
         timer = null
-        timer = Timer(0, currentSong.duration.toInt()).apply {
+        timer = Timer(0, song.duration.toInt()).apply {
             setOnFinishedListener {
                 this@SongPlayer.seekTo(song.startPosition.toInt())
                 completionListener?.onCompletion(mediaPlayer)
@@ -142,6 +142,7 @@ class SongPlayer {
      * 设置音乐播放进度
      */
     fun seekTo(position: Int) {
+        val currentSong = currentSong ?: return
         _currentProgress.value = position
         val currentPosition = when (currentSong.startPosition) {
             0L -> position
@@ -169,12 +170,12 @@ class SongPlayer {
     /**
      * 定时器内部类
      */
-    private class Timer(startTime: Int, private val endTime: Int) {
+    private inner class Timer(private val startTime: Int, private val endTime: Int) {
         private var job: Job? = null
         private var currentTime = startTime
         private var onUpdateListener: ((Int) -> Unit)? = null
         private var onFinishedListener: (() -> Unit)? = null
-        private val updateTimeout = 200
+        private val updateTimeout = 500
 
         /**
          * 设置更新监听器
@@ -201,7 +202,7 @@ class SongPlayer {
                     var time = currentTime
                     while (time < endTime) {
                         delay(updateTimeout.toLong())
-                        time += updateTimeout
+                        time = startTime + mediaPlayer.currentPosition
                         emit(time)
                     }
                 }.flowOn(Dispatchers.Main)

@@ -17,7 +17,9 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.StarRate
+import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.LibraryMusic
+import androidx.compose.material.icons.rounded.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -26,16 +28,26 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
+import com.zxhhyj.music.ui.screen.ScreenDestination
+import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
+import com.zxhhyj.ui.view.item.Item
+import com.zxhhyj.ui.view.item.ItemArrowRight
+import com.zxhhyj.ui.view.item.ItemDivider
 import com.zxhhyj.ui.view.item.ItemSpacer
 import com.zxhhyj.ui.view.item.ItemSwitcher
+import com.zxhhyj.ui.view.item.ItemTint
+import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.navigate
 
 @Composable
-fun ProScreen(paddingValues: PaddingValues) {
+fun ProScreen(paddingValues: PaddingValues, mainNavController: NavController<ScreenDestination>) {
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -48,28 +60,28 @@ fun ProScreen(paddingValues: PaddingValues) {
             )
         }) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            item {
-                RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                    ItemSwitcher(
-                        icon = {
-                            Icon(
-                                imageVector = Icons.Filled.StarRate,
-                                contentDescription = null
-                            )
-                        },
-                        text = { Text(text = stringResource(id = R.string.star_music_pro)) },
-                        subText = { },
-                        checked = SettingRepository.EnableStarMusicPro,
-                        onCheckedChange = {
-                            SettingRepository.EnableStarMusicPro = it
-                        }
-                    )
-                }
-            }
-            item {
-                ItemSpacer()
-            }
             if (SettingRepository.EnableStarMusicPro) {
+                item {
+                    RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                        ItemSwitcher(
+                            icon = {
+                                Icon(
+                                    imageVector = Icons.Filled.StarRate,
+                                    contentDescription = null
+                                )
+                            },
+                            text = { Text(text = stringResource(id = R.string.star_music_pro)) },
+                            subText = { },
+                            checked = SettingRepository.EnableStarMusicPro,
+                            onCheckedChange = {
+                                SettingRepository.EnableStarMusicPro = it
+                            }
+                        )
+                    }
+                }
+                item {
+                    ItemSpacer()
+                }
                 item {
                     RoundColumn(modifier = Modifier.fillMaxWidth()) {
                         Box {
@@ -114,6 +126,51 @@ fun ProScreen(paddingValues: PaddingValues) {
                                     SettingRepository.EnableCueSupport = it
                                 }
                             )
+                        }
+                    }
+                }
+            } else {
+                item {
+                    RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                        ItemTint {
+                            Text(text = "会员功能:\n1.cue分轨文件的支持")
+                        }
+                        ItemTint {
+                            Text(text = "你可以免费体验StarMusic的会员功能，如若你觉得满意，再付款也不迟")
+                        }
+                        ItemDivider()
+                        Item(icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.CheckCircle,
+                                contentDescription = null
+                            )
+                        }, text = { Text(text = "体验StarMusic Pro") }, subText = { /*TODO*/ }) {
+                            SettingRepository.EnableStarMusicPro = true
+                        }
+                    }
+                }
+                item {
+                    ItemSpacer()
+                }
+                item {
+                    RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                        ItemArrowRight(
+                            icon = {
+                                Icon(
+                                    imageVector = Icons.Rounded.ShoppingCart,
+                                    contentDescription = null
+                                )
+                            },
+                            text = { Text(text = "购买StarMusic Pro") },
+                            subText = {
+                                Text(
+                                    text = "1.00RMB",
+                                    color = LocalColorScheme.current.text,
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }) {
+                            mainNavController.navigate(ScreenDestination.Pay)
                         }
                     }
                 }

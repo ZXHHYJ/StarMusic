@@ -85,6 +85,7 @@ import com.zxhhyj.music.ui.screen.lyric.LyricScreen
 import com.zxhhyj.music.ui.screen.medialibs.MediaSourceScreen
 import com.zxhhyj.music.ui.screen.misc.MiscScreen
 import com.zxhhyj.music.ui.screen.more.MoreScreen
+import com.zxhhyj.music.ui.screen.pay.PayScreen
 import com.zxhhyj.music.ui.screen.personalize.PersonalizeScreen
 import com.zxhhyj.music.ui.screen.play.PlayScreen
 import com.zxhhyj.music.ui.screen.playlist.PlayListScreen
@@ -511,7 +512,7 @@ fun MainScreen() {
                         }
 
                         ScreenDestination.Pro -> {
-                            ProScreen(paddingValues = paddingValues)
+                            ProScreen(paddingValues = paddingValues,mainNavController = mainNavController)
                         }
 
                         ScreenDestination.Misc -> {
@@ -550,6 +551,10 @@ fun MainScreen() {
                                 paddingValues = paddingValues,
                                 mainNavController = mainNavController
                             )
+                        }
+
+                        ScreenDestination.Pay -> {
+                            PayScreen(paddingValues = paddingValues)
                         }
                     }
                 }
