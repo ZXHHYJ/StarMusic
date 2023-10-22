@@ -133,18 +133,21 @@ fun ProScreen(paddingValues: PaddingValues, mainNavController: NavController<Scr
                 item {
                     RoundColumn(modifier = Modifier.fillMaxWidth()) {
                         ItemTint {
-                            Text(text = "会员功能:\n1.cue分轨文件的支持")
+                            Text(text = stringResource(id = R.string.membership_features))
                         }
                         ItemTint {
-                            Text(text = "你可以免费体验StarMusic的会员功能，如若你觉得满意，再付款也不迟")
+                            Text(text = stringResource(id = R.string.welcome_experience))
                         }
                         ItemDivider()
-                        Item(icon = {
-                            Icon(
-                                imageVector = Icons.Rounded.CheckCircle,
-                                contentDescription = null
-                            )
-                        }, text = { Text(text = "体验StarMusic Pro") }, subText = { /*TODO*/ }) {
+                        Item(
+                            icon = {
+                                Icon(
+                                    imageVector = Icons.Rounded.CheckCircle,
+                                    contentDescription = null
+                                )
+                            },
+                            text = { Text(text = stringResource(id = R.string.experience_star_music_pro)) },
+                            subText = { }) {
                             SettingRepository.EnableStarMusicPro = true
                         }
                     }
@@ -161,7 +164,7 @@ fun ProScreen(paddingValues: PaddingValues, mainNavController: NavController<Scr
                                     contentDescription = null
                                 )
                             },
-                            text = { Text(text = "购买StarMusic Pro") },
+                            text = { Text(text = stringResource(id = R.string.pay_star_music_pro)) },
                             subText = {
                                 Text(
                                     text = "1.00RMB",

@@ -1,7 +1,10 @@
 package com.zxhhyj.music.ui.common.lyric
 
+import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -51,7 +54,9 @@ fun Lyric(
     lyric: String?,
     liveTime: Int,
     translation: Boolean,
-    lyricItem: @Composable (modifier: Modifier, lyric: String, index: Int, position: Int) -> Unit,
+    lyricItem: @Composable (modifier: Modifier, lyric: String, index: Int, position: Int, animationSpec: AnimationSpec<Color>) -> Unit,
+    lyricScrollAnimationSpec: AnimationSpec<Float> = tween(500),
+    lyricTransitionAnimationSpec: AnimationSpec<Color> = tween(500),
     onClick: (Int) -> Unit
 ) {
 
@@ -77,7 +82,8 @@ fun Lyric(
                 Modifier.align(Alignment.Center),
                 stringResource(id = R.string.no_lyrics),
                 0,
-                0
+                0,
+                lyricTransitionAnimationSpec
             )
             return@BoxWithConstraints
         }
@@ -121,17 +127,22 @@ fun Lyric(
                 Spacer(modifier = Modifier.height(maxHeight / 2))
             }
             itemsIndexed(lyricList) { index, model ->
-                lyricItem(Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(round))
-                    .clickable {
-                        onClick(model.first.toInt())
-                    }
-                    .onSizeChanged {
-                        if (position == index) {
-                            selectLyricItemSize = it
+                lyricItem(
+                    Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(round))
+                        .clickable {
+                            onClick(model.first.toInt())
                         }
-                    }, model.second, index, position
+                        .onSizeChanged {
+                            if (position == index) {
+                                selectLyricItemSize = it
+                            }
+                        },
+                    model.second,
+                    index,
+                    position,
+                    lyricTransitionAnimationSpec
                 )
             }
             item {
@@ -142,17 +153,28 @@ fun Lyric(
         LaunchedEffect(Unit) {
             lyricList.forEachIndexed { index, lrcContent ->
                 if (liveTime >= lrcContent.first) {
-                    val height = (lyricHeightPx - selectLyricItemSize.height) / 2
-                    lazyListState.scrollToItem((index + 1).coerceAtLeast(0), -height)
+                    val offset = (lyricHeightPx - selectLyricItemSize.height) / 2
+                    lazyListState.scrollToItem((index + 1).coerceAtLeast(0), -offset)
                     return@forEachIndexed
                 }
             }
         }
         LaunchedEffect(position) {
             if (enableLyricScroll) {
-                val height = (lyricHeightPx - selectLyricItemSize.height) / 2
+                val offset = (lyricHeightPx - selectLyricItemSize.height) / 2
                 val index = (position + 1).coerceAtLeast(0)
-                lazyListState.animateScrollToItem(index, -height)
+                val layoutInfo = lazyListState.layoutInfo
+                val targetItemLayoutInfo =
+                    layoutInfo.visibleItemsInfo.firstOrNull { it.index == index }
+                if (targetItemLayoutInfo != null) {
+                    val scrollOffset = targetItemLayoutInfo.offset - layoutInfo.viewportStartOffset
+                    lazyListState.animateScrollBy(
+                        scrollOffset.toFloat() - offset,
+                        animationSpec = lyricScrollAnimationSpec
+                    )
+                } else {
+                    lazyListState.animateScrollToItem(index, -offset)
+                }
             }
         }
         LaunchedEffect(liveTime) {
@@ -165,4 +187,3 @@ fun Lyric(
         }
     }
 }
-

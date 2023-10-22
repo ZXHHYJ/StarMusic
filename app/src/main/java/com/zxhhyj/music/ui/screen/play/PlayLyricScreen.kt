@@ -1,5 +1,6 @@
 package com.zxhhyj.music.ui.screen.play
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -35,8 +36,13 @@ fun ColumnScope.PlayLyricScreen() {
         lyricItem = { modifier: Modifier,
                       model: String,
                       index: Int,
-                      position: Int ->
-            val fontSize = 20
+                      position: Int,
+                      animationSpec ->
+            val textColor by animateColorAsState(
+                targetValue = if (position == index) Color.White else translucentWhiteColor,
+                label = "lyric_text_color",
+                animationSpec = animationSpec
+            )
             Text(
                 modifier = modifier
                     .padding(
@@ -44,7 +50,7 @@ fun ColumnScope.PlayLyricScreen() {
                         horizontal = PlayScreen.PlayScreenContentHorizontal
                     ),
                 text = model,
-                color = if (position == index) Color.White else translucentWhiteColor,
+                color = textColor,
                 fontSize = SettingRepository.lyricFontSize.sp,
                 fontWeight = if (SettingRepository.lyricFontBold) FontWeight.Bold else null
             )

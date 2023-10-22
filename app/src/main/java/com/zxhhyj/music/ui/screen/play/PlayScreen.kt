@@ -13,13 +13,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
@@ -83,7 +83,6 @@ val AnimDurationMillis
 object PlayScreen {
     val PlayScreenContentHorizontal = StarDimens.horizontal
     val PlayScreenHorizontal = 20.dp
-    val PlayScreenMaxWidth = 360.dp
 }
 
 val MaterialFadeInTransitionSpec
@@ -128,12 +127,9 @@ fun PlayScreen(
         ) {
 
             @Composable
-            fun BottomNavigationBar() {
+            fun BottomNavigationBar(modifier: Modifier) {
                 BottomNavigation(
-                    modifier = Modifier
-                        .widthIn(max = PlayScreen.PlayScreenMaxWidth)
-                        .fillMaxWidth()
-                        .padding(horizontal = PlayScreen.PlayScreenContentHorizontal + PlayScreen.PlayScreenHorizontal),
+                    modifier = modifier,
                     elevation = 0.dp,
                     backgroundColor = Color.Transparent
                 ) {
@@ -166,44 +162,37 @@ fun PlayScreen(
             @Composable
             fun MainNavHost() {
                 val visibilityTopMediaBar = maxWidth < maxHeight
-                Box(
-                    modifier = Modifier
-                        .widthIn(max = PlayScreen.PlayScreenMaxWidth)
-                        .padding(horizontal = maxWidth * 0.05f),
-                    contentAlignment = Alignment.Center
-                ) {
-                    AnimatedNavHost(
-                        controller = navController,
-                        transitionSpec = { _, _, _ ->
-                            if (SettingRepository.EnableLinkUI) {
-                                return@AnimatedNavHost EnterTransition.None togetherWith ExitTransition.None
-                            }
-                            val tween = tween<Float>(durationMillis = AnimDurationMillis)
-                            fadeIn(tween) togetherWith fadeOut(tween)
+                AnimatedNavHost(
+                    controller = navController,
+                    transitionSpec = { _, _, _ ->
+                        if (SettingRepository.EnableLinkUI) {
+                            return@AnimatedNavHost EnterTransition.None togetherWith ExitTransition.None
                         }
-                    ) {
-                        when (it) {
-                            PlayScreenDestination.Controller -> {
-                                PlayControllerScreen(sheetNavController)
-                            }
+                        val tween = tween<Float>(durationMillis = AnimDurationMillis)
+                        fadeIn(tween) togetherWith fadeOut(tween)
+                    }
+                ) {
+                    when (it) {
+                        PlayScreenDestination.Controller -> {
+                            PlayControllerScreen(sheetNavController)
+                        }
 
-                            else -> {
-                                Column(modifier = Modifier.fillMaxSize()) {
-                                    if (visibilityTopMediaBar) {
-                                        LazyColumn(userScrollEnabled = false) {
-                                            item {
-                                                TopMediaController(
-                                                    navController = navController,
-                                                    sheetNavController = sheetNavController
-                                                )
-                                            }
+                        else -> {
+                            Column(modifier = Modifier.fillMaxSize()) {
+                                if (visibilityTopMediaBar) {
+                                    LazyColumn(userScrollEnabled = false) {
+                                        item {
+                                            TopMediaController(
+                                                navController = navController,
+                                                sheetNavController = sheetNavController
+                                            )
                                         }
                                     }
-                                    when (it) {
-                                        PlayScreenDestination.Lyric -> PlayLyricScreen()
-                                        PlayScreenDestination.PlayQueue -> PlayQueueScreen()
-                                        else -> {}
-                                    }
+                                }
+                                when (it) {
+                                    PlayScreenDestination.Lyric -> PlayLyricScreen()
+                                    PlayScreenDestination.PlayQueue -> PlayQueueScreen()
+                                    else -> {}
                                 }
                             }
                         }
@@ -233,46 +222,63 @@ fun PlayScreen(
                 }
             }
 
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .statusBarsPadding()
-                    .navigationBarsPadding(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                BackHandler(panelController.panelState == PanelState.EXPANDED) {
-                    panelController.swipeTo(PanelState.COLLAPSED)
-                }
-                when {
-                    maxWidth >= maxHeight -> {
-                        Row(
+            BackHandler(panelController.panelState == PanelState.EXPANDED) {
+                panelController.swipeTo(PanelState.COLLAPSED)
+            }
+            when {
+                maxWidth >= maxHeight -> {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .statusBarsPadding()
+                            .navigationBarsPadding()
+                    ) {
+                        Spacer(modifier = Modifier.width(12.wp))
+                        Column(
                             modifier = Modifier
-                                .fillMaxSize()
+                                .fillMaxHeight()
+                                .weight(1.0f)
+                                .padding(horizontal = PlayScreen.PlayScreenHorizontal),
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Spacer(modifier = Modifier.width(12.wp))
-                            Column(
+                            Box(
                                 modifier = Modifier
-                                    .width(35.wp),
-                                horizontalAlignment = Alignment.CenterHorizontally
+                                    .fillMaxWidth()
+                                    .weight(1.0f)
                             ) {
-                                Box(
-                                    modifier = Modifier
-                                        .weight(1.0f)
-                                ) {
-                                    PlayControllerScreen(sheetNavController)
-                                }
-                                BottomNavigationBar()
+                                PlayControllerScreen(sheetNavController)
                             }
-                            Spacer(modifier = Modifier.width(6.wp))
-                            if (lastDestination == PlayScreenDestination.Controller) {
-                                navController.navigate(PlayScreenDestination.Lyric)
-                            }
-                            MainNavHost()
-                            Spacer(modifier = Modifier.width(12.wp))
+                            BottomNavigationBar(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = PlayScreen.PlayScreenContentHorizontal)
+                            )
                         }
+                        Spacer(modifier = Modifier.width(6.wp))
+                        if (lastDestination == PlayScreenDestination.Controller) {
+                            navController.navigate(PlayScreenDestination.Lyric)
+                        }
+                        Box(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .weight(1.0f)
+                                .padding(horizontal = PlayScreen.PlayScreenHorizontal)
+                        ) {
+                            MainNavHost()
+                        }
+                        Spacer(modifier = Modifier.width(12.wp))
                     }
+                }
 
-                    else -> {
+                else -> {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .statusBarsPadding()
+                            .navigationBarsPadding()
+                            .padding(horizontal = PlayScreen.PlayScreenHorizontal),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
                         Row(
                             modifier = Modifier
                                 .fillMaxSize()
@@ -284,7 +290,11 @@ fun PlayScreen(
                             }
                             MainNavHost()
                         }
-                        BottomNavigationBar()
+                        BottomNavigationBar(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = PlayScreen.PlayScreenContentHorizontal)
+                        )
                     }
                 }
             }

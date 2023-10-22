@@ -64,10 +64,13 @@
     <string name="folder_manager">文件夹管理</string>
     <string name="lyric_font_size">歌词字体大小</string>
     <string name="lyric_font_bold">歌词字体加粗</string>
-    <string name="weixin">微信</string>
     <string name="problem_feedback">问题反馈</string>
     <string name="ask_for_attention">如果可以，希望能点个小小的关注，十分感谢</string>
     <string name="media_lib_info">扫描音乐、文件夹管理、隐藏的歌曲</string>
     <string name="lab_info">实验性的功能</string>
     <string name="personalize_info">界面相关、歌词相关</string>
+    <string name="experience_star_music_pro">体验StarMusic Pro</string>
+    <string name="membership_features">会员功能:\n1.cue分轨文件的支持</string>
+    <string name="welcome_experience">欢迎你免费体验StarMusic的会员功能，试用后觉得满意再来付款吧</string>
+    <string name="pay_star_music_pro">购买StarMusic Pro</string>
 </resources>

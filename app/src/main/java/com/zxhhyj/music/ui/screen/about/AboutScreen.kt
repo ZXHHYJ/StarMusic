@@ -135,42 +135,6 @@ fun AboutScreen(
                                 contentDescription = null
                             )
                         },
-                        text = { Text(text = stringResource(id = R.string.weixin)) },
-                        subText = {
-                            Text(text = "WY7XY_")
-                        }) {
-
-                    }
-                    ItemDivider()
-                    ItemArrowRight(
-                        icon = {
-                            Icon(
-                                imageVector = Icons.Rounded.Link,
-                                contentDescription = null
-                            )
-                        },
-                        text = { Text(text = "QQ") },
-                        subText = { Text(text = "957447668") }) {
-
-                    }
-                }
-            }
-            item {
-                ItemSpacer()
-            }
-            item {
-                RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                    ItemTint {
-                        Text(text = stringResource(id = R.string.ask_for_attention))
-                    }
-                    ItemDivider()
-                    ItemArrowRight(
-                        icon = {
-                            Icon(
-                                imageVector = Icons.Rounded.Link,
-                                contentDescription = null
-                            )
-                        },
                         text = { Text(text = "BiliBili") },
                         subText = { }) {
                         ActivityUtils.openUrl(ctx, "https://b23.tv/LT3jgMj")
