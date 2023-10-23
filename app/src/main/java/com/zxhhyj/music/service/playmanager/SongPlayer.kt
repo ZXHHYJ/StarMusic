@@ -104,7 +104,8 @@ class SongPlayer {
                 preparedListener?.onPrepared(it)
             }
             setOnCompletionListener {
-                _currentProgress.value = _songDuration.value
+                timer?.pause()
+                completionListener?.onCompletion(mediaPlayer)
             }
             setOnErrorListener { mediaPlayer, i, i2 ->
                 timer?.pause()

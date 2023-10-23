@@ -90,11 +90,11 @@ import com.zxhhyj.music.ui.screen.personalize.PersonalizeScreen
 import com.zxhhyj.music.ui.screen.play.PlayScreen
 import com.zxhhyj.music.ui.screen.playlist.PlayListScreen
 import com.zxhhyj.music.ui.screen.playlistcnt.PlayListCntScreen
+import com.zxhhyj.music.ui.screen.pro.ProScreen
 import com.zxhhyj.music.ui.screen.search.SearchScreen
 import com.zxhhyj.music.ui.screen.singer.SingerScreen
 import com.zxhhyj.music.ui.screen.singercnt.SingerCntScreen
 import com.zxhhyj.music.ui.screen.single.SingleScreen
-import com.zxhhyj.music.ui.screen.pro.ProScreen
 import com.zxhhyj.music.ui.sheet.AddToPlayListSheet
 import com.zxhhyj.music.ui.sheet.PlaylistMenuSheet
 import com.zxhhyj.music.ui.sheet.SongMenuSheet
@@ -104,6 +104,7 @@ import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.round
 import com.zxhhyj.music.ui.theme.vertical
 import com.zxhhyj.ui.theme.LocalColorScheme
+import com.zxhhyj.ui.theme.StarDimens
 import com.zxhhyj.ui.view.AppCard
 import com.zxhhyj.ui.view.AppDivider
 import com.zxhhyj.ui.view.AppIconButton
@@ -237,102 +238,102 @@ fun MainScreen() {
                             ) {
                                 AppDivider(modifier = Modifier.fillMaxWidth())
                             }
-                                val song by PlayManager.currentSongLiveData().observeAsState()
-                                AppCard(
-                                    modifier = Modifier
-                                        .padding(horizontal = horizontal)
-                                        .padding(bottom = elevation * 2)
-                                        .fillMaxWidth()
-                                        .height(controlBarHeight)
-                                        .align(Alignment.BottomCenter),
-                                    backgroundColor = LocalColorScheme.current.background,
-                                    elevation = elevation
-                                ) {
-                                    when (SettingRepository.EnableLinkUI) {
-                                        true -> {
-                                            Box(
-                                                modifier = Modifier
-                                                    .fillMaxWidth()
-                                                    .align(Alignment.BottomCenter)
-                                                    .height(controlBarHeight)
-                                                    .background(Color.DarkGray)
-                                                    .clickable {
-                                                        panelController.swipeTo(PanelState.EXPANDED)
-                                                    }
-                                            )
-                                        }
-
-                                        false -> {
-                                            AlbumMotionBlur(
-                                                modifier = Modifier
-                                                    .fillMaxWidth()
-                                                    .align(Alignment.BottomCenter)
-                                                    .height(controlBarHeight)
-                                                    .background(Color.DarkGray)
-                                                    .clickable {
-                                                        panelController.swipeTo(PanelState.EXPANDED)
-                                                    },
-                                                albumUrl = song?.album?.coverUrl,
-                                                paused = panelController.panelState != PanelState.COLLAPSED
-                                            )
-                                        }
+                            val song by PlayManager.currentSongLiveData().observeAsState()
+                            AppCard(
+                                modifier = Modifier
+                                    .padding(horizontal = horizontal)
+                                    .padding(bottom = elevation * 2)
+                                    .fillMaxWidth()
+                                    .height(controlBarHeight)
+                                    .align(Alignment.BottomCenter),
+                                backgroundColor = LocalColorScheme.current.background,
+                                elevation = elevation
+                            ) {
+                                when (SettingRepository.EnableLinkUI) {
+                                    true -> {
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .align(Alignment.BottomCenter)
+                                                .height(controlBarHeight)
+                                                .background(Color.DarkGray)
+                                                .clickable {
+                                                    panelController.swipeTo(PanelState.EXPANDED)
+                                                }
+                                        )
                                     }
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxSize(),
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Spacer(modifier = Modifier.width(horizontal / 2))
 
-                                        AppAsyncImage(
+                                    false -> {
+                                        AlbumMotionBlur(
                                             modifier = Modifier
-                                                .size(controlBarHeight * 0.8f),
-                                            data = song?.album?.coverUrl ?: ""
+                                                .fillMaxWidth()
+                                                .align(Alignment.BottomCenter)
+                                                .height(controlBarHeight)
+                                                .background(Color.DarkGray)
+                                                .clickable {
+                                                    panelController.swipeTo(PanelState.EXPANDED)
+                                                },
+                                            albumUrl = song?.album?.coverUrl,
+                                            paused = panelController.panelState != PanelState.COLLAPSED
                                         )
-
-                                        Text(
-                                            modifier = Modifier
-                                                .padding(start = horizontal)
-                                                .weight(1.0f),
-                                            text = song?.songName ?: "",
-                                            fontSize = 16.sp,
-                                            maxLines = 1,
-                                            fontWeight = FontWeight.Bold,
-                                            color = Color.White
-                                        )
-                                        val playPauseState by PlayManager.pauseLiveData().map {
-                                            if (it) R.drawable.ic_play else R.drawable.ic_pause
-                                        }.observeAsState(R.drawable.ic_play)
-                                        val buttonSize = 36.dp
-                                        AppIconButton(onClick = {
-                                            if (PlayManager.pauseLiveData().value == true) {
-                                                PlayManager.start()
-                                            } else {
-                                                PlayManager.pause()
-                                            }
-                                        }) {
-                                            Icon(
-                                                imageVector = ImageVector.vectorResource(
-                                                    playPauseState
-                                                ),
-                                                tint = Color.White,
-                                                contentDescription = null,
-                                                modifier = Modifier.size(buttonSize)
-                                            )
-                                        }
-                                        Spacer(modifier = Modifier.width(horizontal / 2))
-                                        AppIconButton(onClick = { PlayManager.skipToNext() }) {
-                                            Icon(
-                                                imageVector = ImageVector.vectorResource(R.drawable.ic_skip_next),
-                                                tint = Color.White,
-                                                contentDescription = null,
-                                                modifier = Modifier
-                                                    .size(buttonSize)
-                                            )
-                                        }
-                                        Spacer(modifier = Modifier.width(horizontal / 2))
                                     }
                                 }
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxSize(),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Spacer(modifier = Modifier.width(horizontal / 2))
+
+                                    AppAsyncImage(
+                                        modifier = Modifier
+                                            .size(controlBarHeight * 0.8f),
+                                        data = song?.album?.coverUrl ?: ""
+                                    )
+
+                                    Text(
+                                        modifier = Modifier
+                                            .padding(start = horizontal)
+                                            .weight(1.0f),
+                                        text = song?.songName ?: "",
+                                        fontSize = 16.sp,
+                                        maxLines = 1,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.White
+                                    )
+                                    val playPauseState by PlayManager.pauseLiveData().map {
+                                        if (it) R.drawable.ic_play else R.drawable.ic_pause
+                                    }.observeAsState(R.drawable.ic_play)
+                                    val buttonSize = 36.dp
+                                    AppIconButton(onClick = {
+                                        if (PlayManager.pauseLiveData().value == true) {
+                                            PlayManager.start()
+                                        } else {
+                                            PlayManager.pause()
+                                        }
+                                    }) {
+                                        Icon(
+                                            imageVector = ImageVector.vectorResource(
+                                                playPauseState
+                                            ),
+                                            tint = Color.White,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(buttonSize)
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.width(horizontal / 2))
+                                    AppIconButton(onClick = { PlayManager.skipToNext() }) {
+                                        Icon(
+                                            imageVector = ImageVector.vectorResource(R.drawable.ic_skip_next),
+                                            tint = Color.White,
+                                            contentDescription = null,
+                                            modifier = Modifier
+                                                .size(buttonSize)
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.width(horizontal / 2))
+                                }
+                            }
                         }
                     }
                 },
@@ -508,11 +509,17 @@ fun MainScreen() {
                         }
 
                         ScreenDestination.FolderManager -> {
-                            FolderManagerScreen(paddingValues = paddingValues, mainNavController = mainNavController)
+                            FolderManagerScreen(
+                                paddingValues = paddingValues,
+                                mainNavController = mainNavController
+                            )
                         }
 
                         ScreenDestination.Pro -> {
-                            ProScreen(paddingValues = paddingValues,mainNavController = mainNavController)
+                            ProScreen(
+                                paddingValues = paddingValues,
+                                mainNavController = mainNavController
+                            )
                         }
 
                         ScreenDestination.Misc -> {
@@ -554,7 +561,10 @@ fun MainScreen() {
                         }
 
                         ScreenDestination.Pay -> {
-                            PayScreen(paddingValues = paddingValues)
+                            PayScreen(
+                                paddingValues = paddingValues,
+                                mainNavController = mainNavController
+                            )
                         }
                     }
                 }
@@ -627,7 +637,7 @@ fun MainScreen() {
         ) {
             Spacer(
                 modifier = Modifier
-                    .padding(vertical = vertical)
+                    .padding(vertical = StarDimens.vertical)
                     .width(50.dp)
                     .height(6.dp)
                     .background(

@@ -164,7 +164,7 @@ fun ProScreen(paddingValues: PaddingValues, mainNavController: NavController<Scr
                                     contentDescription = null
                                 )
                             },
-                            text = { Text(text = stringResource(id = R.string.pay_star_music_pro)) },
+                            text = { Text(text = stringResource(id = R.string.buy_star_music_pro)) },
                             subText = {
                                 Text(
                                     text = "1.00RMB",

@@ -72,5 +72,7 @@
     <string name="experience_star_music_pro">体验StarMusic Pro</string>
     <string name="membership_features">会员功能:\n1.cue分轨文件的支持</string>
     <string name="welcome_experience">欢迎你免费体验StarMusic的会员功能，试用后觉得满意再来付款吧</string>
-    <string name="pay_star_music_pro">购买StarMusic Pro</string>
+    <string name="buy_star_music_pro">购买StarMusic Pro</string>
+    <string name="enable_star_music_pro">我已诚信付费，启用StarMusic Pro</string>
+    <string name="buy_star_music_pro_introduction">很高兴你能使用到StarMusic Pro中的功能！你可以将此界面截图后进行付款，付款后记得及时删除截图避免遗忘。\n如果你曾付款过，请点击按钮直接启用StarMusic Pro吧！</string>
 </resources>
