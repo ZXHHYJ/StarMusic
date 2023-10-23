@@ -23,7 +23,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,39 +53,25 @@ fun Lyric(
     lyric: String?,
     liveTime: Int,
     translation: Boolean,
-    lyricItem: @Composable (modifier: Modifier, lyric: String, index: Int, position: Int, animationSpec: AnimationSpec<Color>) -> Unit,
-    lyricScrollAnimationSpec: AnimationSpec<Float> = tween(500),
-    lyricTransitionAnimationSpec: AnimationSpec<Color> = tween(500),
+    lyricItem: @Composable (modifier: Modifier, lyric: String, index: Int, position: Int) -> Unit,
+    lyricScrollAnimationSpec: AnimationSpec<Float> = tween(1000),
     onClick: (Int) -> Unit
 ) {
-
-    val lazyListState = rememberLazyListState()
-
-    var position by rememberSaveable {
-        mutableIntStateOf(0)
-    }
-
-    var selectLyricItemSize by remember {
-        mutableStateOf(IntSize.Zero)
-    }
-
-    var enableLyricScroll by remember {
-        mutableStateOf(true)
-    }
-
-    val coroutineScope = rememberCoroutineScope()
-
     BoxWithConstraints(modifier) {
         lyric ?: run {
             lyricItem.invoke(
                 Modifier.align(Alignment.Center),
                 stringResource(id = R.string.no_lyrics),
                 0,
-                0,
-                lyricTransitionAnimationSpec
+                0
             )
             return@BoxWithConstraints
         }
+
+        val lazyListState = rememberLazyListState()
+
+        val coroutineScope = rememberCoroutineScope()
+
         val lyricList by remember(lyric, translation) {
             mutableStateOf(
                 if (translation) {
@@ -96,6 +81,19 @@ fun Lyric(
                 }
             )
         }
+
+        var position by remember {
+            mutableIntStateOf(lyricList.indexOfLast { liveTime >= it.first }.coerceAtLeast(0))
+        }
+
+        var selectLyricItemSize by remember {
+            mutableStateOf(IntSize.Zero)
+        }
+
+        var enableLyricScroll by remember {
+            mutableStateOf(true)
+        }
+
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -132,6 +130,7 @@ fun Lyric(
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(round))
                         .clickable {
+                            enableLyricScroll = true
                             onClick(model.first.toInt())
                         }
                         .onSizeChanged {
@@ -141,14 +140,14 @@ fun Lyric(
                         },
                     model.second,
                     index,
-                    position,
-                    lyricTransitionAnimationSpec
+                    position
                 )
             }
             item {
                 Spacer(modifier = Modifier.height(maxHeight / 2))
             }
         }
+
         val lyricHeightPx = with(LocalDensity.current) { maxHeight.roundToPx() }
         LaunchedEffect(Unit) {
             lyricList.forEachIndexed { index, lrcContent ->
@@ -162,10 +161,11 @@ fun Lyric(
         LaunchedEffect(position) {
             if (enableLyricScroll) {
                 val offset = (lyricHeightPx - selectLyricItemSize.height) / 2
-                val index = (position + 1).coerceAtLeast(0)
+                val index = position + 1
                 val layoutInfo = lazyListState.layoutInfo
                 val targetItemLayoutInfo =
                     layoutInfo.visibleItemsInfo.firstOrNull { it.index == index }
+
                 if (targetItemLayoutInfo != null) {
                     val scrollOffset = targetItemLayoutInfo.offset - layoutInfo.viewportStartOffset
                     lazyListState.animateScrollBy(
@@ -178,12 +178,7 @@ fun Lyric(
             }
         }
         LaunchedEffect(liveTime) {
-            lyricList.forEachIndexed { index, lrcContent ->
-                if (liveTime >= lrcContent.first) {
-                    position = index
-                    return@forEachIndexed
-                }
-            }
+            position = lyricList.indexOfLast { liveTime >= it.first }.coerceAtLeast(0)
         }
     }
 }
