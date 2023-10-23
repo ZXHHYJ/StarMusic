@@ -1,5 +1,7 @@
 package com.zxhhyj.music.ui.screen.main
 
+import android.os.Build
+import android.view.RoundedCorner
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedVisibility
@@ -46,6 +48,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -239,6 +242,18 @@ fun MainScreen() {
                                 AppDivider(modifier = Modifier.fillMaxWidth())
                             }
                             val song by PlayManager.currentSongLiveData().observeAsState()
+                            val android12ScreenRound =
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                                    val cornerRadius =
+                                        LocalView.current.rootWindowInsets?.getRoundedCorner(
+                                            RoundedCorner.POSITION_BOTTOM_RIGHT
+                                        )?.radius
+                                    cornerRadius?.let {
+                                        with(LocalDensity.current) { it.toDp() }
+                                    } ?: 8.dp
+                                } else {
+                                    8.dp
+                                }
                             AppCard(
                                 modifier = Modifier
                                     .padding(horizontal = horizontal)
@@ -246,6 +261,7 @@ fun MainScreen() {
                                     .fillMaxWidth()
                                     .height(controlBarHeight)
                                     .align(Alignment.BottomCenter),
+                                shape = RoundedCornerShape(android12ScreenRound),
                                 backgroundColor = LocalColorScheme.current.background,
                                 elevation = elevation
                             ) {

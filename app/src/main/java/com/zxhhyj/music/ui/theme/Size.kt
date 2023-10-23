@@ -1,7 +1,5 @@
 package com.zxhhyj.music.ui.theme
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.unit.dp
 import com.zxhhyj.ui.theme.StarDimens
 
 /**
@@ -17,5 +15,4 @@ val horizontal = StarDimens.horizontal
 /**
  * 常用圆角大小
  */
-val round
-    @Composable get() = StarDimens.round
+val round = StarDimens.round
