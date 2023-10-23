@@ -69,7 +69,7 @@ fun AppSwitch(
         }
         Card(
             shape = RoundedCornerShape(50),
-            backgroundColor = Color.LightGray,
+            backgroundColor = LocalColorScheme.current.disabled,
             border = BorderStroke(
                 1.dp,
                 LocalColorScheme.current.highlight.copy(alpha = openProgress)

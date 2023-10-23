@@ -13,6 +13,8 @@ data class SongBean(
     val duration: Long,
     // 歌曲文件路径
     val data: String,
+    // 歌曲最后修改时间
+    val dateModified: Long,
     // 歌曲名称
     val songName: String,
     // 歌曲文件大小

@@ -14,7 +14,7 @@
     <string name="delete">删除</string>
     <string name="song_info">歌曲信息</string>
     <string name="bit_rate">比特率</string>
-    <string name="duration">时长</string>
+    <string name="song_duration">歌曲时长</string>
     <string name="sample_rate">采样率</string>
     <string name="file_path">文件位置</string>
     <string name="file_size">文件大小</string>
@@ -75,4 +75,7 @@
     <string name="buy_star_music_pro">购买StarMusic Pro</string>
     <string name="enable_star_music_pro">我已诚信付费，启用StarMusic Pro</string>
     <string name="buy_star_music_pro_introduction">很高兴你能使用到StarMusic Pro中的功能！你可以将此界面截图后进行付款，付款后记得及时删除截图避免遗忘。\n如果你曾付款过，请点击按钮直接启用StarMusic Pro吧！</string>
+    <string name="date_modified">最后修改时间</string>
+    <string name="ascending">升序</string>
+    <string name="descending">降序</string>
 </resources>

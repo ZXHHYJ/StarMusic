@@ -96,16 +96,31 @@ object SettingRepository {
     )
 
     enum class SongSortType(val value: Int) {
-        SONG_NAME(0), DURATION(1), SINGER_NAME(2)
+        SONG_NAME(0), SONG_DURATION(1), SINGER_NAME(2), DATE_MODIFIED(3)
     }
 
-    var lyricFontSize by mutableDataSaverStateOf(
+    /**
+     * 是否是降序
+     */
+    var Descending by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
-        key = "LyricFontSize_V2",
-        initialValue = 30
+        key = "Descending",
+        initialValue = false
     )
 
-    var lyricFontBold by mutableDataSaverStateOf(
+    /**
+     * 歌词字体大小
+     */
+    var LyricFontSize by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "LyricFontSize_V2",
+        initialValue = 28
+    )
+
+    /**
+     * 歌词字体加粗
+     */
+    var LyricFontBold by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "LyricFontBold",
         initialValue = true

@@ -30,6 +30,7 @@ import com.zxhhyj.ui.view.item.ItemSpacer
 import com.zxhhyj.ui.view.item.ItemSwitcher
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
+import dev.olshevski.navigation.reimagined.rememberNavController
 
 @Composable
 fun PersonalizeScreen(
@@ -81,18 +82,22 @@ fun PersonalizeScreen(
                             )
                         }
                     SongItem(
-                        sheetNavController = sheetNavController,
+                        sheetNavController = easterEggSong?.let { sheetNavController }
+                            ?: rememberNavController(initialBackstack = emptyList()),
                         song = easterEggSong ?: SongBean(
                             SongBean.Album(0, ""),
                             SongBean.Artist(0, "未知彩蛋歌曲作者"),
                             0,
                             "",
+                            0,
                             "未知彩蛋歌曲名称",
                             0,
                             0,
                             800,
                             0,
-                            "", 0, 0
+                            "",
+                            0,
+                            0
                         )
                     ) {
                         if (easterEggSong != null) {

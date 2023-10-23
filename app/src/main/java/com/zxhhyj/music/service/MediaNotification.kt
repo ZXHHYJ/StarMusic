@@ -35,8 +35,8 @@ class MediaNotification(
     // 创建跳转到上一曲、播放/暂停、下一曲和停止的按钮
     private val skipPrevious =
         button(R.drawable.ic_skip_previous, PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS)
-    private val pause = button(R.drawable.ic_pause, PlaybackStateCompat.ACTION_PLAY_PAUSE)
-    private val play = button(R.drawable.ic_play, PlaybackStateCompat.ACTION_PLAY_PAUSE)
+    private val pause = button(R.drawable.ic_pause, PlaybackStateCompat.ACTION_PAUSE)
+    private val play = button(R.drawable.ic_play, PlaybackStateCompat.ACTION_PLAY)
     private val skipNext = button(R.drawable.ic_skip_next, PlaybackStateCompat.ACTION_SKIP_TO_NEXT)
     private val stop = button(R.drawable.ic_round_clear_24, PlaybackStateCompat.ACTION_STOP)
 

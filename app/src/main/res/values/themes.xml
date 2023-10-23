@@ -7,7 +7,7 @@
         <item name="android:colorAccent">@android:color/white</item>
         <item name="android:colorPrimary">@android:color/white</item>
         <item name="android:windowBackground">@android:color/white</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
     </style>
 

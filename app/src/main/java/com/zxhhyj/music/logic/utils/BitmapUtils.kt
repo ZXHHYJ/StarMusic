@@ -4,12 +4,13 @@ import android.graphics.Bitmap
 
 object BitmapUtils {
     fun compressBitmap(bitmap: Bitmap): Bitmap {
+        val px = 256
         val originalWidth = bitmap.width
         val originalHeight = bitmap.height
         var compressedBitmap = bitmap
-        if (originalWidth > 512 || originalHeight > 512) {
+        if (originalWidth > px || originalHeight > px) {
             // 计算缩放比例
-            val scaleFactor = Math.max(originalWidth / 512, originalHeight / 512)
+            val scaleFactor = (originalWidth / px).coerceAtLeast(originalHeight / px)
             val scaledWidth = originalWidth / scaleFactor
             val scaledHeight = originalHeight / scaleFactor
             // 缩放 Bitmap

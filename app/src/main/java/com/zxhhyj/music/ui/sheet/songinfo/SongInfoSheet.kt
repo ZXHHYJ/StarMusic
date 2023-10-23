@@ -5,7 +5,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
+import com.zxhhyj.music.logic.utils.timestampToString
 import com.zxhhyj.music.logic.utils.toTimeString
 import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.ItemDivider
@@ -18,7 +20,7 @@ fun SongInfoSheet(
         item {
             RoundColumn(modifier = Modifier.fillMaxWidth()) {
                 SongInfoItem(
-                    title = stringResource(id = com.zxhhyj.music.R.string.duration),
+                    title = stringResource(id = com.zxhhyj.music.R.string.song_duration),
                     info = song.duration.toTimeString()
                 )
                 ItemDivider()
@@ -47,6 +49,11 @@ fun SongInfoSheet(
                 SongInfoItem(
                     title = stringResource(id = com.zxhhyj.music.R.string.file_size),
                     info = "${song.size / 1024 / 1024} MB"
+                )
+                ItemDivider()
+                SongInfoItem(
+                    title = stringResource(id = R.string.date_modified),
+                    info = timestampToString(song.dateModified)
                 )
             }
         }

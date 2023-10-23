@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
+import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
@@ -43,6 +44,7 @@ import com.zxhhyj.ui.view.item.ItemDivider
 import com.zxhhyj.ui.view.toolbarHeight
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
+import java.util.Collections
 
 @Composable
 fun SingleScreen(
@@ -145,24 +147,21 @@ fun SingleScreen(
             SubTitleItem(title = stringResource(id = R.string.single))
             RoundColumn(modifier = Modifier.fillMaxWidth()) {
                 LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                    val list = when (SettingRepository.SongSort) {
-
-                        SettingRepository.SongSortType.SONG_NAME.value -> {
-                            AndroidMediaLibsRepository.songs.sortedBy { it.songName }
+                    val list = AndroidMediaLibsRepository.songs.sortedWith(compareBy<SongBean> {
+                        when (SettingRepository.SongSort) {
+                            SettingRepository.SongSortType.SONG_NAME.value -> it.songName
+                            SettingRepository.SongSortType.SONG_DURATION.value -> it.duration
+                            SettingRepository.SongSortType.SINGER_NAME.value -> it.artist.name
+                            SettingRepository.SongSortType.DATE_MODIFIED.value -> it.dateModified
+                            else -> null
                         }
-
-                        SettingRepository.SongSortType.DURATION.value -> {
-                            AndroidMediaLibsRepository.songs.sortedBy { it.duration }
+                    }.let { comparator ->
+                        if (SettingRepository.Descending) {
+                            Collections.reverseOrder(comparator)
+                        } else {
+                            comparator
                         }
-
-                        SettingRepository.SongSortType.SINGER_NAME.value -> {
-                            AndroidMediaLibsRepository.songs.sortedBy { it.artist.name }
-                        }
-
-                        else -> {
-                            AndroidMediaLibsRepository.songs
-                        }
-                    }
+                    })
                     itemsIndexed(list) { index, item ->
                         SongItem(sheetNavController = sheetNavController, song = item) {
                             PlayManager.play(list, index)

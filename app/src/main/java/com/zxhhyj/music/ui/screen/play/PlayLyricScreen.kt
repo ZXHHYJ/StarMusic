@@ -67,8 +67,8 @@ fun ColumnScope.PlayLyricScreen() {
                     },
                 text = model,
                 color = textColor,
-                fontSize = SettingRepository.lyricFontSize.sp,
-                fontWeight = if (SettingRepository.lyricFontBold) FontWeight.Bold else null,
+                fontSize = SettingRepository.LyricFontSize.sp,
+                fontWeight = if (SettingRepository.LyricFontBold) FontWeight.Bold else null,
                 textAlign = TextAlign.Left
             )
         }

@@ -28,6 +28,7 @@ import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MediaPlayService : LifecycleService() {
 
@@ -42,7 +43,15 @@ class MediaPlayService : LifecycleService() {
             private set
 
         private val PlaybackStateBuilder = PlaybackStateCompat.Builder()
-            .setActions(PlaybackStateCompat.ACTION_SEEK_TO or PlaybackStateCompat.ACTION_PLAY_PAUSE or PlaybackStateCompat.ACTION_SKIP_TO_NEXT or PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS or PlaybackStateCompat.ACTION_STOP)
+            .setActions(
+                PlaybackStateCompat.ACTION_SEEK_TO or
+                        PlaybackStateCompat.ACTION_PLAY_PAUSE or
+                        PlaybackStateCompat.ACTION_SKIP_TO_NEXT or
+                        PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS or
+                        PlaybackStateCompat.ACTION_STOP or
+                        PlaybackStateCompat.ACTION_PLAY or
+                        PlaybackStateCompat.ACTION_PAUSE
+            )
 
         private val MediaMetadataBuilder = MediaMetadataCompat.Builder()
     }
@@ -141,8 +150,10 @@ class MediaPlayService : LifecycleService() {
                             .data(it.album.coverUrl)
                             .build()
                     ).drawable as BitmapDrawable
-                    mMediaNotification.setLargeIcon(BitmapUtils.compressBitmap(drawable.bitmap))
-                    refreshMediaNotifications()
+                    withContext(Dispatchers.Main) {
+                        mMediaNotification.setLargeIcon(BitmapUtils.compressBitmap(drawable.bitmap))
+                        refreshMediaNotifications()
+                    }
                 } catch (_: Exception) {
                 }
             }
@@ -234,7 +245,7 @@ class MediaPlayService : LifecycleService() {
         override fun onMediaButtonEvent(mediaButtonEvent: Intent): Boolean {
             val action = mediaButtonEvent.action
             if (Intent.ACTION_MEDIA_BUTTON == action) {
-                val event = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                val keyEvent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     mediaButtonEvent.getParcelableExtra(
                         Intent.EXTRA_KEY_EVENT,
                         KeyEvent::class.java
@@ -243,15 +254,27 @@ class MediaPlayService : LifecycleService() {
                     @Suppress("DEPRECATION")
                     mediaButtonEvent.getParcelableExtra(Intent.EXTRA_KEY_EVENT)
                 }
-                if (event != null && event.action == KeyEvent.ACTION_DOWN) {
+                if (keyEvent != null && keyEvent.action == KeyEvent.ACTION_DOWN) {
                     // 处理媒体按钮按下事件
-                    when (event.keyCode) {
+                    when (keyEvent.keyCode) {
 
-                        KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> {
-                            if (PlayManager.pauseLiveData().value == true) {
-                                PlayManager.start()
-                            } else {
-                                PlayManager.pause()
+                        KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, KeyEvent.KEYCODE_HEADSETHOOK -> {
+                            when (keyEvent.repeatCount) {
+                                0 -> {
+                                    if (PlayManager.pauseLiveData().value == true) {
+                                        PlayManager.start()
+                                    } else {
+                                        PlayManager.pause()
+                                    }
+                                }
+
+                                1 -> {
+                                    PlayManager.skipToNext()
+                                }
+
+                                2 -> {
+                                    PlayManager.skipToPrevious()
+                                }
                             }
                         }
 

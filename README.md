@@ -36,10 +36,6 @@
 
 多问题请分开提交多个 issue
 
-## 支持我
-
-![image](screenshot/微信赞赏码.png)
-
 ## License
 
 ```

@@ -83,6 +83,8 @@ object AndroidMediaLibsRepository {
                 val songNameIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
                 val sizeIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)
                 val idIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
+                val dateModifiedIndex =
+                    cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)
 
                 while (cursor.moveToNext()) {
                     val album = cursor.getString(albumIndex)
@@ -94,6 +96,7 @@ object AndroidMediaLibsRepository {
                     val songName = cursor.getString(songNameIndex)
                     val size = cursor.getLong(sizeIndex)
                     val id = cursor.getLong(idIndex)
+                    val dateModified = query.getLong(dateModifiedIndex)
                     val metadata = Metadata.getMetadata(data)
 
                     if (SettingRepository.EnableCueSupport) {
@@ -111,6 +114,7 @@ object AndroidMediaLibsRepository {
                                         artist = SongBean.Artist(artistId, track.performer),
                                         duration = endPosition - startPosition,
                                         data = data,
+                                        dateModified = dateModified,
                                         songName = track.title,
                                         size = size,
                                         id = id,
@@ -129,6 +133,7 @@ object AndroidMediaLibsRepository {
                                     artist = SongBean.Artist(artistId, artist),
                                     duration = duration,
                                     data = data,
+                                    dateModified = dateModified,
                                     songName = songName,
                                     size = size,
                                     id = id,
@@ -147,6 +152,7 @@ object AndroidMediaLibsRepository {
                                 artist = SongBean.Artist(artistId, artist),
                                 duration = duration,
                                 data = data,
+                                dateModified = dateModified,
                                 songName = songName,
                                 size = size,
                                 id = id,
