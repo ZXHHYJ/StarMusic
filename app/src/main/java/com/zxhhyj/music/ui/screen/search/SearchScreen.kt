@@ -41,9 +41,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
+import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
+import com.zxhhyj.music.logic.repository.MediaLibRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.ui.view.AppTextField
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.item.AlbumItem
 import com.zxhhyj.music.ui.item.ArtistItem
@@ -55,6 +55,7 @@ import com.zxhhyj.music.ui.theme.vertical
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppTab
 import com.zxhhyj.ui.view.AppTabRow
+import com.zxhhyj.ui.view.AppTextField
 import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.ItemSpacer
 import dev.olshevski.navigation.reimagined.NavController
@@ -162,7 +163,7 @@ fun SearchScreen(
             ) { t ->
                 when (SearchScreenTabs.values()[t]) {
                     SearchScreenTabs.Single -> {
-                        val songs = AndroidMediaLibsRepository.songs.filter {
+                        val songs = AndroidMediaLibRepository.songs.filter {
                             it.songName.contains(searchKey) || it.artist.name.contains(
                                 searchKey
                             )
@@ -171,7 +172,7 @@ fun SearchScreen(
                             itemsIndexed(songs) { index, item ->
                                 SongItem(
                                     sheetNavController = sheetNavController,
-                                    song = item
+                                    songBean = item
                                 ) {
                                     PlayManager.play(songs, index)
                                 }
@@ -185,7 +186,7 @@ fun SearchScreen(
                             if (fixedCount < 2) {
                                 fixedCount = 2
                             }
-                            val albums = AndroidMediaLibsRepository.albums.filter {
+                            val albums = MediaLibRepository.albums.filter {
                                 it.name.contains(searchKey)
                             }
                             LazyVerticalGrid(
@@ -224,7 +225,7 @@ fun SearchScreen(
                     }
 
                     SearchScreenTabs.Singer -> {
-                        val artists = AndroidMediaLibsRepository.artists.filter {
+                        val artists = MediaLibRepository.artists.filter {
                             it.name.contains(searchKey)
                         }
                         LazyColumn(modifier = Modifier.fillMaxSize()) {

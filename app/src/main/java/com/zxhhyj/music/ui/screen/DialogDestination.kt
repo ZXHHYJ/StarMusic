@@ -25,10 +25,25 @@ sealed class DialogDestination : Parcelable {
     data object CreatePlayList : DialogDestination()
 
     /**
-     * 扫描音乐
+     * 扫描Android媒体库
      */
     @Parcelize
-    data object ScanMusic : DialogDestination()
+    data object ScanMediaLib : DialogDestination()
+
+    /**
+     * 扫描WebDav媒体库
+     */
+    @Parcelize
+    data object ScanWebDavMediaLib : DialogDestination()
+
+    @Parcelize
+    data object EditWebDavAddress : DialogDestination()
+
+    @Parcelize
+    data object EditWebDavUsername : DialogDestination()
+
+    @Parcelize
+    data object EditWebDavPassword : DialogDestination()
 
     @Parcelize
     data class EditPlayListTitle(val model: @RawValue PlayListModel) : DialogDestination()

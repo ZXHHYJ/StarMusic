@@ -8,7 +8,9 @@ import com.google.gson.GsonBuilder
 import com.zxhhyj.music.logic.bean.Folder
 import com.zxhhyj.music.logic.bean.PlayListModel
 import com.zxhhyj.music.logic.bean.SongBean
-import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
+import com.zxhhyj.music.logic.bean.WebDavConfig
+import com.zxhhyj.music.logic.bean.WebDavFile
+import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.MediaPlayService
 import com.zxhhyj.music.service.playmanager.PlayManager
@@ -31,13 +33,21 @@ class MainApplication : Application() {
         FastKVConfig.setExecutor(Dispatchers.Default.asExecutor())
         //初始化Gson
         val gson = GsonBuilder().create()
+        registerTypeConverters<WebDavFile>(
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, WebDavFile::class.java) }
+        )
         registerTypeConverters<Folder>(
             save = { bean -> gson.toJson(bean) },
             restore = { str -> gson.fromJson(str, Folder::class.java) }
         )
-        registerTypeConverters<SongBean>(
+        registerTypeConverters<SongBean.Local>(
             save = { bean -> gson.toJson(bean) },
-            restore = { str -> gson.fromJson(str, SongBean::class.java) }
+            restore = { str -> gson.fromJson(str, SongBean.Local::class.java) }
+        )
+        registerTypeConverters<SongBean.WebDav>(
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, SongBean.WebDav::class.java) }
         )
         registerTypeConverters<SongBean.Album>(
             save = { bean -> gson.toJson(bean) },
@@ -46,6 +56,10 @@ class MainApplication : Application() {
         registerTypeConverters<SongBean.Artist>(
             save = { bean -> gson.toJson(bean) },
             restore = { str -> gson.fromJson(str, SongBean.Artist::class.java) }
+        )
+        registerTypeConverters<WebDavConfig>(
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, WebDavConfig::class.java) }
         )
         @Suppress("RemoveExplicitTypeArguments")
         registerTypeConverters<PlayListModel>(
@@ -66,7 +80,7 @@ class MainApplication : Application() {
             }
         //app启动后自动播放音乐功能
         if (SettingRepository.EnableAutoPlayMusic) {
-            AndroidMediaLibsRepository.songs.takeIf { it.isNotEmpty() }?.run {
+            AndroidMediaLibRepository.songs.takeIf { it.isNotEmpty() }?.run {
                 PlayManager.play(this, 0)
             }
         }

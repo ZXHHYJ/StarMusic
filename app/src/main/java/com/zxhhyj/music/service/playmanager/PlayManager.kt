@@ -24,7 +24,7 @@ object PlayManager {
     /**
      * MediaPlayer
      */
-    private var mSongPlayer = SongPlayer()
+    private val mSongPlayer = SongPlayer()
 
     /**
      * 当前播放的歌曲

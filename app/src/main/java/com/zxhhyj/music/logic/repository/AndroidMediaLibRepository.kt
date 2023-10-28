@@ -14,29 +14,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 
-object AndroidMediaLibsRepository {
-
-    val artists
-        get() = songs.map { it.artist }
-            .distinctBy { it.id }
-            .map { it.copy() }
-
-    val albums
-        get() = songs.map { it.album }
-            .distinctBy { it.id }
-            .map { it.copy() }
+object AndroidMediaLibRepository {
 
     var songs by mutableDataSaverListStateOf(
         dataSaverInterface = DataSaverUtils,
-        key = "local_songs",
-        initialValue = listOf<SongBean>()
+        key = "local_songs_v2",
+        initialValue = listOf<SongBean.Local>()
     )
         private set
 
     var hideSongs by mutableDataSaverListStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "hide_songs",
-        initialValue = listOf<SongBean>()
+        initialValue = listOf<SongBean.Local>()
     )
         private set
 
@@ -54,12 +44,6 @@ object AndroidMediaLibsRepository {
     )
         private set
 
-    val SongBean.Album.songs: List<SongBean>
-        get() = AndroidMediaLibsRepository.songs.filter { it.album.id == this.id }
-
-    val SongBean.Artist.songs: List<SongBean>
-        get() = AndroidMediaLibsRepository.songs.filter { it.artist.id == this.id }
-
     /**
      * 扫描媒体
      */
@@ -72,12 +56,11 @@ object AndroidMediaLibsRepository {
                 null,
                 null
             )
-            val scanSongs = mutableListOf<SongBean>()
+            val scanSongs = mutableListOf<SongBean.Local>()
             query?.use { cursor ->
                 val albumIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)
                 val albumIdIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
                 val artistIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
-                val artistIdIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST_ID)
                 val durationIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
                 val dataIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
                 val songNameIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
@@ -90,7 +73,6 @@ object AndroidMediaLibsRepository {
                     val album = cursor.getString(albumIndex)
                     val albumId = cursor.getLong(albumIdIndex)
                     val artist = cursor.getString(artistIndex)
-                    val artistId = cursor.getLong(artistIdIndex)
                     val duration = cursor.getLong(durationIndex)
                     val data = cursor.getString(dataIndex)
                     val songName = cursor.getString(songNameIndex)
@@ -98,6 +80,7 @@ object AndroidMediaLibsRepository {
                     val id = cursor.getLong(idIndex)
                     val dateModified = query.getLong(dateModifiedIndex)
                     val metadata = Metadata.getMetadata(data)
+                    val coverUrl = "content://media/external/audio/albumart/${albumId}"
 
                     if (SettingRepository.EnableCueSupport) {
                         runCatching {
@@ -109,9 +92,10 @@ object AndroidMediaLibsRepository {
                                     track.endPosition.toMillis().takeIf { it != 0L } ?: duration
                                 val startPosition = track.startPosition.toMillis()
                                 scanSongs.add(
-                                    SongBean(
-                                        album = SongBean.Album(albumId, album),
-                                        artist = SongBean.Artist(artistId, track.performer),
+                                    SongBean.Local(
+                                        coverUrl = coverUrl,
+                                        album = SongBean.Album(album),
+                                        artist = SongBean.Artist(track.performer),
                                         duration = endPosition - startPosition,
                                         data = data,
                                         dateModified = dateModified,
@@ -128,9 +112,10 @@ object AndroidMediaLibsRepository {
                             }
                         }.getOrElse {
                             scanSongs.add(
-                                SongBean(
-                                    album = SongBean.Album(albumId, album),
-                                    artist = SongBean.Artist(artistId, artist),
+                                SongBean.Local(
+                                    coverUrl = coverUrl,
+                                    album = SongBean.Album(album),
+                                    artist = SongBean.Artist(artist),
                                     duration = duration,
                                     data = data,
                                     dateModified = dateModified,
@@ -147,9 +132,10 @@ object AndroidMediaLibsRepository {
                         }
                     } else {
                         scanSongs.add(
-                            SongBean(
-                                album = SongBean.Album(albumId, album),
-                                artist = SongBean.Artist(artistId, artist),
+                            SongBean.Local(
+                                coverUrl = coverUrl,
+                                album = SongBean.Album(album),
+                                artist = SongBean.Artist(artist),
                                 duration = duration,
                                 data = data,
                                 dateModified = dateModified,
@@ -188,7 +174,9 @@ object AndroidMediaLibsRepository {
     private fun refreshSongs() {
         songs = folders
             .flatMap { it.songs }
-            .filter { if (SettingRepository.EnableExcludeSongsUnderOneMinute) it.duration > 60 else true }
+            .filter {
+                if (SettingRepository.EnableExcludeSongsUnderOneMinute) it.duration > 60000 else true
+            }
     }
 
     fun hideFolder(folder: Folder) {
@@ -210,7 +198,7 @@ object AndroidMediaLibsRepository {
     /**
      * 从媒体库中隐藏某个歌曲
      */
-    fun hideSong(song: SongBean) {
+    fun hideSong(song: SongBean.Local) {
         songs = songs - song
         hideSongs = hideSongs + song
     }
@@ -218,7 +206,7 @@ object AndroidMediaLibsRepository {
     /**
      * 取消隐藏某个歌曲
      */
-    fun unHideSong(song: SongBean) {
+    fun unHideSong(song: SongBean.Local) {
         hideSongs = hideSongs - song
         songs = songs + song
     }
@@ -226,7 +214,7 @@ object AndroidMediaLibsRepository {
     /**
      * 从媒体库中删除某个歌曲
      */
-    fun delete(song: SongBean) {
+    fun delete(song: SongBean.Local) {
         songs = songs - song
         hideSongs = hideSongs - song
         updateLibs()

@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.screen.single
+package com.zxhhyj.music.ui.screen.medialib
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,6 +13,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Album
+import androidx.compose.material.icons.rounded.CloudUpload
 import androidx.compose.material.icons.rounded.Folder
 import androidx.compose.material.icons.rounded.Mic
 import androidx.compose.material.icons.rounded.MoreVert
@@ -25,8 +26,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
-import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
+import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
+import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.item.SubTitleItem
@@ -47,7 +49,7 @@ import dev.olshevski.navigation.reimagined.navigate
 import java.util.Collections
 
 @Composable
-fun SingleScreen(
+fun MediaLibScreen(
     mainNavController: NavController<ScreenDestination>,
     sheetNavController: NavController<SheetDestination>,
     paddingValues: PaddingValues
@@ -122,6 +124,20 @@ fun SingleScreen(
                                 subText = { }) {
                                 mainNavController.navigate(ScreenDestination.Folder)
                             }
+                            if (SettingRepository.EnableWebDav) {
+                                ItemDivider()
+                                ItemArrowRight(
+                                    icon = {
+                                        Icon(
+                                            imageVector = Icons.Rounded.CloudUpload,
+                                            contentDescription = null
+                                        )
+                                    },
+                                    text = { Text(text = stringResource(id = R.string.webdav)) },
+                                    subText = { }) {
+                                    mainNavController.navigate(ScreenDestination.WebDav)
+                                }
+                            }
                         }
                     }
                 },
@@ -147,23 +163,25 @@ fun SingleScreen(
             SubTitleItem(title = stringResource(id = R.string.single))
             RoundColumn(modifier = Modifier.fillMaxWidth()) {
                 LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                    val list = AndroidMediaLibsRepository.songs.sortedWith(compareBy<SongBean> {
-                        when (SettingRepository.SongSort) {
-                            SettingRepository.SongSortType.SONG_NAME.value -> it.songName
-                            SettingRepository.SongSortType.SONG_DURATION.value -> it.duration
-                            SettingRepository.SongSortType.SINGER_NAME.value -> it.artist.name
-                            SettingRepository.SongSortType.DATE_MODIFIED.value -> it.dateModified
-                            else -> null
-                        }
-                    }.let { comparator ->
-                        if (SettingRepository.Descending) {
-                            Collections.reverseOrder(comparator)
-                        } else {
-                            comparator
-                        }
-                    })
+                    val list =
+                        (AndroidMediaLibRepository.songs + WebDavMediaLibRepository.songs).sortedWith(
+                            compareBy<SongBean> {
+                                when (SettingRepository.SongSort) {
+                                    SettingRepository.SongSortType.SONG_NAME.value -> it.songName
+                                    SettingRepository.SongSortType.SONG_DURATION.value -> it.duration
+                                    SettingRepository.SongSortType.SINGER_NAME.value -> it.artist.name
+                                    SettingRepository.SongSortType.DATE_MODIFIED.value -> it.dateModified
+                                    else -> null
+                                }
+                            }.let { comparator ->
+                                if (SettingRepository.Descending) {
+                                    Collections.reverseOrder(comparator)
+                                } else {
+                                    comparator
+                                }
+                            })
                     itemsIndexed(list) { index, item ->
-                        SongItem(sheetNavController = sheetNavController, song = item) {
+                        SongItem(sheetNavController = sheetNavController, songBean = item) {
                             PlayManager.play(list, index)
                         }
                     }

@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.screen.lyric
+package com.zxhhyj.music.ui.screen.lyricconfig
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -35,7 +35,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AlbumMotionBlur
 import com.zxhhyj.music.ui.common.lyric.Lyric
@@ -50,7 +49,7 @@ import com.zxhhyj.ui.view.item.ItemSpacer
 import com.zxhhyj.ui.view.item.ItemSwitcher
 
 @Composable
-fun LyricScreen(paddingValues: PaddingValues) {
+fun LyricConfigScreen(paddingValues: PaddingValues) {
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -73,7 +72,7 @@ fun LyricScreen(paddingValues: PaddingValues) {
                             .heightIn(max = 300.dp)
                     ) {
                         val coverUrl by PlayManager.currentSongLiveData().map {
-                            it?.album?.coverUrl
+                            it?.coverUrl
                         }.observeAsState()
                         AlbumMotionBlur(
                             modifier = Modifier

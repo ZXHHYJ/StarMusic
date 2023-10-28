@@ -15,7 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
+import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
@@ -46,7 +46,7 @@ fun FolderManagerScreen(
         RoundColumn(modifier = Modifier.fillMaxWidth()) {
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 val folders =
-                    (AndroidMediaLibsRepository.folders + AndroidMediaLibsRepository.hideFolders).sortedBy { it.path }
+                    (AndroidMediaLibRepository.folders + AndroidMediaLibRepository.hideFolders).sortedBy { it.path }
                 items(folders) { folder ->
                     ItemArrowRight(
                         icon = {
@@ -65,12 +65,12 @@ fun FolderManagerScreen(
                             )
                         },
                         actions = {
-                            AppSwitch(checked = AndroidMediaLibsRepository.folders.any { it == folder },
+                            AppSwitch(checked = AndroidMediaLibRepository.folders.any { it == folder },
                                 onCheckedChange = {
                                     if (it) {
-                                        AndroidMediaLibsRepository.unHideFolder(folder)
+                                        AndroidMediaLibRepository.unHideFolder(folder)
                                     } else {
-                                        AndroidMediaLibsRepository.hideFolder(folder)
+                                        AndroidMediaLibRepository.hideFolder(folder)
                                     }
                                 })
                         }

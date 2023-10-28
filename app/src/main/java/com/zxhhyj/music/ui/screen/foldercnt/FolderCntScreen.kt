@@ -40,7 +40,7 @@ fun FolderCntScreen(
         RoundColumn(modifier = Modifier.fillMaxWidth()) {
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 itemsIndexed(folder.songs) { index, song ->
-                    SongItem(song = song, sheetNavController = sheetNavController) {
+                    SongItem(songBean = song, sheetNavController = sheetNavController) {
                         PlayManager.play(folder.songs, index)
                     }
                 }

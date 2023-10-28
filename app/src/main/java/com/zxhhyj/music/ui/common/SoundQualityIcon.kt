@@ -18,7 +18,7 @@ fun SoundQualityIcon(modifier: Modifier = Modifier, song: SongBean) {
     Card(
         shape = RoundedCornerShape(2.dp),
         elevation = 0.dp,
-        modifier = modifier.padding(end = 2.dp)
+        modifier = modifier
     ) {
         when (song.bitrate) {
             in 128..192 -> {
@@ -30,6 +30,7 @@ fun SoundQualityIcon(modifier: Modifier = Modifier, song: SongBean) {
                     fontSize = fontSize
                 )
             }
+
             in 256..320 -> {
                 Text(
                     text = "HQ",
@@ -39,6 +40,7 @@ fun SoundQualityIcon(modifier: Modifier = Modifier, song: SongBean) {
                     fontSize = fontSize
                 )
             }
+
             in 320..Int.MAX_VALUE -> {
                 Text(
                     text = "HR",

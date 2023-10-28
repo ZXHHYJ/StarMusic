@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
-import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
+import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.item.SongItem
@@ -76,7 +76,7 @@ fun PersonalizeScreen(
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
                     val easterEggSong =
-                        AndroidMediaLibsRepository.songs.find {
+                        AndroidMediaLibRepository.songs.find {
                             it.songName == "那一天从梦中醒来" && it.artist.name.contains(
                                 "双笙"
                             )
@@ -84,18 +84,19 @@ fun PersonalizeScreen(
                     SongItem(
                         sheetNavController = easterEggSong?.let { sheetNavController }
                             ?: rememberNavController(initialBackstack = emptyList()),
-                        song = easterEggSong ?: SongBean(
-                            SongBean.Album(0, ""),
-                            SongBean.Artist(0, "未知彩蛋歌曲作者"),
+                        songBean = easterEggSong ?: SongBean.Local(
+                            coverUrl = "",
+                            SongBean.Album("未知彩蛋歌曲专辑"),
+                            SongBean.Artist("未知彩蛋歌曲作者"),
                             0,
                             "",
                             0,
                             "未知彩蛋歌曲名称",
                             0,
                             0,
-                            800,
                             0,
-                            "",
+                            0,
+                            null,
                             0,
                             0
                         )

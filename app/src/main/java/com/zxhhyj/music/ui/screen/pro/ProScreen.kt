@@ -6,7 +6,6 @@ import android.os.Environment
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,6 +17,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material.icons.rounded.CheckCircle
+import androidx.compose.material.icons.rounded.CloudUpload
 import androidx.compose.material.icons.rounded.LibraryMusic
 import androidx.compose.material.icons.rounded.ShoppingCart
 import androidx.compose.runtime.Composable
@@ -84,48 +84,58 @@ fun ProScreen(paddingValues: PaddingValues, mainNavController: NavController<Scr
                 }
                 item {
                     RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                        Box {
-                            var isExternalStorageManager by rememberSaveable {
-                                mutableStateOf(false)
-                            }
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                                isExternalStorageManager = Environment.isExternalStorageManager()
-                            }
-                            val launcher = rememberLauncherForActivityResult(
-                                contract = ActivityResultContracts.StartActivityForResult(),
-                                onResult = {
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                                        isExternalStorageManager =
-                                            Environment.isExternalStorageManager()
-                                        if (!isExternalStorageManager) {
-                                            SettingRepository.EnableCueSupport = false
-                                        }
+                        var isExternalStorageManager by rememberSaveable {
+                            mutableStateOf(false)
+                        }
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                            isExternalStorageManager = Environment.isExternalStorageManager()
+                        }
+                        val launcher = rememberLauncherForActivityResult(
+                            contract = ActivityResultContracts.StartActivityForResult(),
+                            onResult = {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                                    isExternalStorageManager =
+                                        Environment.isExternalStorageManager()
+                                    if (!isExternalStorageManager) {
+                                        SettingRepository.EnableCueSupport = false
                                     }
                                 }
-                            )
-                            LaunchedEffect(SettingRepository.EnableCueSupport) {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && SettingRepository.EnableCueSupport && !isExternalStorageManager) {
-                                    launcher.launch(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
-                                }
                             }
-                            ItemSwitcher(
-                                icon = {
-                                    Icon(
-                                        imageVector = Icons.Rounded.LibraryMusic,
-                                        contentDescription = null
-                                    )
-                                },
-                                text = {
-                                    Text(text = stringResource(id = R.string.cue_support))
-                                },
-                                subText = {
-                                    Text(text = stringResource(id = R.string.cue_support_info))
-                                },
-                                checked = SettingRepository.EnableCueSupport,
-                                onCheckedChange = {
-                                    SettingRepository.EnableCueSupport = it
-                                }
-                            )
+                        )
+                        LaunchedEffect(SettingRepository.EnableCueSupport) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && SettingRepository.EnableCueSupport && !isExternalStorageManager) {
+                                launcher.launch(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
+                            }
+                        }
+                        ItemSwitcher(
+                            icon = {
+                                Icon(
+                                    imageVector = Icons.Rounded.LibraryMusic,
+                                    contentDescription = null
+                                )
+                            },
+                            text = {
+                                Text(text = stringResource(id = R.string.cue_support))
+                            },
+                            subText = {
+                                Text(text = stringResource(id = R.string.cue_support_info))
+                            },
+                            checked = SettingRepository.EnableCueSupport,
+                            onCheckedChange = {
+                                SettingRepository.EnableCueSupport = it
+                            }
+                        )
+                        ItemDivider()
+                        ItemArrowRight(
+                            icon = {
+                                Icon(
+                                    imageVector = Icons.Rounded.CloudUpload,
+                                    contentDescription = null
+                                )
+                            },
+                            text = { Text(text = stringResource(id = R.string.webdav)) },
+                            subText = { }) {
+                            mainNavController.navigate(ScreenDestination.WebDavConfig)
                         }
                     }
                 }

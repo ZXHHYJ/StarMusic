@@ -28,7 +28,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mxalbert.sharedelements.SharedElement
-import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.screen.SheetDestination
@@ -73,13 +72,12 @@ fun TopMediaController(
                         )
                     )
                     .size(56.dp),
-                data = song?.album?.coverUrl
+                data = song?.coverUrl
             ) {
                 navController.moveToTop {
                     it == PlayScreenDestination.Controller
                 }
             }
-
         }
         Column(
             modifier = Modifier
@@ -110,7 +108,7 @@ fun TopMediaController(
             contentDescription = null,
             modifier = Modifier
                 .size(32.dp)
-                .clip(RoundedCornerShape(32.dp))
+                .clip(RoundedCornerShape(50))
                 .background(translucentWhiteFixBugColor)
                 .clickable {
                     sheetNavController.navigate(SheetDestination.SongMenu(song!!))

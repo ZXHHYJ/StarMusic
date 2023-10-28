@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -43,7 +44,6 @@ import com.mxalbert.sharedelements.MaterialArcMotionFactory
 import com.mxalbert.sharedelements.SharedElementsRoot
 import com.mxalbert.sharedelements.SharedElementsTransitionSpec
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AlbumMotionBlur
 import com.zxhhyj.music.ui.common.BoxWithPercentages
@@ -110,7 +110,7 @@ fun PlayScreen(
     val lastDestination = navController.backstack.entries.last().destination
 
     val coverUrl by PlayManager.currentSongLiveData().map {
-        it?.album?.coverUrl
+        it?.coverUrl
     }.observeAsState()
 
     if (panelController.panelState == PanelState.COLLAPSED) {
@@ -129,7 +129,7 @@ fun PlayScreen(
             @Composable
             fun BottomNavigationBar(modifier: Modifier) {
                 BottomNavigation(
-                    modifier = modifier,
+                    modifier = modifier.height(60.dp),
                     elevation = 0.dp,
                     backgroundColor = Color.Transparent
                 ) {
@@ -138,7 +138,8 @@ fun PlayScreen(
                         PlayScreenDestination.PlayQueue
                     ).forEach { screen ->
                         val selected = screen == lastDestination
-                        BottomNavigationItem(modifier = Modifier.clip(RoundedCornerShape(round)),
+                        BottomNavigationItem(
+                            modifier = Modifier.clip(RoundedCornerShape(round)),
                             icon = { Icon(screen.tabIcon, contentDescription = screen.name) },
                             selectedContentColor = Color.White,
                             unselectedContentColor = translucentWhiteColor,
@@ -199,8 +200,6 @@ fun PlayScreen(
                     }
                 }
             }
-
-
 
             when (SettingRepository.EnableLinkUI) {
                 true -> {

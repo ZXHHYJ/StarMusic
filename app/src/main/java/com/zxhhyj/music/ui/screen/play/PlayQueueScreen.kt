@@ -1,5 +1,6 @@
 package com.zxhhyj.music.ui.screen.play
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -34,11 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -48,11 +45,12 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
+import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.SoundQualityIcon
+import com.zxhhyj.music.ui.common.WebDavIcon
 import com.zxhhyj.music.ui.theme.round
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
 import com.zxhhyj.music.ui.theme.vertical
@@ -148,20 +146,7 @@ fun ColumnScope.PlayQueueScreen() {
         val currentSong by PlayManager.currentSongLiveData().observeAsState()
 
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .graphicsLayer { alpha = 0.99F }
-                .drawWithContent {
-                    val colors = listOf(
-                        Color.Transparent, Color.Black, Color.Black, Color.Black, Color.Black,
-                        Color.Black, Color.Black, Color.Black, Color.Transparent
-                    )
-                    drawContent()
-                    drawRect(
-                        brush = Brush.verticalGradient(colors),
-                        blendMode = BlendMode.DstIn
-                    )
-                },
+            modifier = Modifier.fillMaxSize(),
             state = lazyListState
         ) {
             playlist?.let { songBeans ->
@@ -179,7 +164,7 @@ fun ColumnScope.PlayQueueScreen() {
                                 AppAsyncImage(
                                     modifier = Modifier
                                         .size(50.dp),
-                                    data = model.album.coverUrl,
+                                    data = model.coverUrl,
                                     backgroundColor = Color.Transparent
                                 )
                             },
@@ -192,10 +177,17 @@ fun ColumnScope.PlayQueueScreen() {
                                     textAlign = TextAlign.Center,
                                     overflow = TextOverflow.Ellipsis
                                 )
-                            }, subText = {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
+                            },
+                            subText = {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                ) {
                                     if (SettingRepository.EnableShowSoundQualityLabel) {
                                         SoundQualityIcon(song = model)
+                                    }
+                                    if (model is SongBean.WebDav) {
+                                        WebDavIcon()
                                     }
                                     Text(
                                         text = model.artist.name,
@@ -206,7 +198,8 @@ fun ColumnScope.PlayQueueScreen() {
                                         overflow = TextOverflow.Ellipsis
                                     )
                                 }
-                            }, actions = {
+                            },
+                            actions = {
                                 AppIconButton(onClick = {
                                     PlayManager.removeSong(model)
                                 }) {
@@ -226,10 +219,10 @@ fun ColumnScope.PlayQueueScreen() {
         val boxHeightPx = with(LocalDensity.current) {
             maxHeight.roundToPx()
         }
-        LaunchedEffect(Unit) {
+        LaunchedEffect(song) {
             val position = playlist?.indexOf(song) ?: 0
             val height = (boxHeightPx - selectItemBoxSize.height) / 2
-            lazyListState.scrollToItem(position.coerceAtLeast(0), -height)
+            lazyListState.animateScrollToItem(position.coerceAtLeast(0), -height)
         }
     }
 }

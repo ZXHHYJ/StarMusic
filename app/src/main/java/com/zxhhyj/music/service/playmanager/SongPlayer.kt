@@ -176,7 +176,7 @@ class SongPlayer {
         private var currentTime = startTime
         private var onUpdateListener: ((Int) -> Unit)? = null
         private var onFinishedListener: (() -> Unit)? = null
-        private val updateTimeout = 500
+        private val updateTimeout = 100
 
         /**
          * 设置更新监听器

@@ -1,12 +1,13 @@
 package com.zxhhyj.music.logic.repository
 
 import com.funny.data_saver.core.mutableDataSaverStateOf
+import com.zxhhyj.music.logic.bean.WebDavConfig
 import com.zxhhyj.music.logic.config.DataSaverUtils
 
 object SettingRepository {
 
     /**
-     * 是否启用Android媒体库
+     * Android媒体库
      */
     var EnableAndroidMediaLibs by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
@@ -15,7 +16,7 @@ object SettingRepository {
     )
 
     /**
-     * 是否启用对cue文件的支持，CUE 文件是一种用于描述音频 CD 的文本文件格式。它通常与一个或多个音频轨道文件
+     * 对cue文件的支持，CUE 文件是一种用于描述音频 CD 的文本文件格式。它通常与一个或多个音频轨道文件
      */
     var EnableCueSupport by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
@@ -24,7 +25,7 @@ object SettingRepository {
     )
 
     /**
-     * 是否首次启动APP(同意隐私政策)
+     * 首次启动APP(同意隐私政策)
      */
     var AgreePrivacyPolicy by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
@@ -33,7 +34,7 @@ object SettingRepository {
     )
 
     /**
-     * 是否启用显示歌词翻译
+     * 显示歌词翻译
      */
     var EnableLyricsTranslation by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
@@ -51,7 +52,7 @@ object SettingRepository {
     )
 
     /**
-     * 启用墨水屏支持
+     * 墨水屏支持
      */
     var EnableLinkUI by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
@@ -126,4 +127,21 @@ object SettingRepository {
         initialValue = true
     )
 
+    /**
+     * WebDav设置
+     */
+    var EnableWebDav by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "EnableWebDav",
+        initialValue = false
+    )
+
+    /**
+     * WebDav账户配置
+     */
+    var WebDavConfig by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "WebDavConfig",
+        initialValue = WebDavConfig(String(), String(), String())
+    )
 }

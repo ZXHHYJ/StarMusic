@@ -54,6 +54,8 @@ dependencies {
     implementation fileTree(include: ['*.*'], dir: 'libs')
     implementation project(":ui")
 
+    // https://github.com/thegrizzlylabs/sardine-android
+    implementation 'com.github.thegrizzlylabs:sardine-android:0.8'
     // https://github.com/BillyWei01/FastKV
     implementation 'io.github.billywei01:fastkv:2.3.0'
     // https://github.com/flavioarfaria/KenBurnsView
@@ -91,12 +93,12 @@ dependencies {
     implementation "androidx.compose.ui:ui:$compose_ui_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
 
-//    testImplementation 'junit:junit:4.13.2'
-//    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-//    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
-//    debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
-//    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
 
     configurations { all*.exclude group: 'androidx.appcompat', module: 'appcompat' }
 }

@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.screen.medialibs
+package com.zxhhyj.music.ui.screen.medialibconfig
 
 import android.Manifest
 import android.os.Build
@@ -24,7 +24,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
+import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.screen.DialogDestination
@@ -42,7 +42,7 @@ import dev.olshevski.navigation.reimagined.navigate
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun MediaSourceScreen(
+fun MediaLibConfigScreen(
     mainNavController: NavController<ScreenDestination>,
     dialogNavController: NavController<DialogDestination>,
     paddingValues: PaddingValues
@@ -57,14 +57,14 @@ fun MediaSourceScreen(
                 }
 
                 PermissionStatus.Granted -> {
-                    if (AndroidMediaLibsRepository.folders.isEmpty() && AndroidMediaLibsRepository.hideFolders.isEmpty()) {
-                        dialogNavController.navigate(DialogDestination.ScanMusic)
+                    if (AndroidMediaLibRepository.folders.isEmpty() && AndroidMediaLibRepository.hideFolders.isEmpty()) {
+                        dialogNavController.navigate(DialogDestination.ScanMediaLib)
                     }
                 }
             }
         } else {
             PlayManager.clearPlayList()
-            AndroidMediaLibsRepository.clear()
+            AndroidMediaLibRepository.clear()
         }
     }
     AppScaffold(
@@ -89,13 +89,13 @@ fun MediaSourceScreen(
                             )
                         },
                         text = {
-                            Text(text = stringResource(id = R.string.android_meida_libs))
+                            Text(text = stringResource(id = R.string.android_media_libs))
                         },
                         subText = {
                             Text(
                                 text = stringResource(
                                     id = R.string.media_lib_has_songs_size,
-                                    AndroidMediaLibsRepository.songs.size
+                                    AndroidMediaLibRepository.songs.size
                                 )
                             )
                         },
@@ -117,7 +117,7 @@ fun MediaSourceScreen(
                         enabled = SettingRepository.EnableAndroidMediaLibs
                     ) {
                         PlayManager.clearPlayList()
-                        dialogNavController.navigate(DialogDestination.ScanMusic)
+                        dialogNavController.navigate(DialogDestination.ScanMediaLib)
                     }
                 }
             }

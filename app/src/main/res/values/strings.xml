@@ -27,7 +27,7 @@
     <string name="splash_dialog_text">感谢使用Star Music，我们非常重视您的个人信息和隐私保护，为了保护您的权益，请认真阅读我们的</string>
     <string name="yes">确定</string>
     <string name="scan_music_dialog_text">向你的媒体库中添加些内容</string>
-    <string name="android_meida_libs">Android媒体库</string>
+    <string name="android_media_libs">Android媒体库</string>
     <string name="hide">隐藏</string>
     <string name="refresh_media_lib">刷新媒体库</string>
     <string name="media_lib_has_songs_size">当前媒体库包含%d首歌曲</string>
@@ -78,4 +78,9 @@
     <string name="date_modified">最后修改时间</string>
     <string name="ascending">升序</string>
     <string name="descending">降序</string>
+    <string name="webdav">WebDav</string>
+    <string name="webdav_address">WebDav网址</string>
+    <string name="webdav_user">WebDav账号</string>
+    <string name="webdav_password">WebDav密码</string>
+    <string name="nothing">无</string>
 </resources>

@@ -59,7 +59,6 @@ import androidx.lifecycle.map
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AlbumMotionBlur
 import com.zxhhyj.music.ui.common.AppAsyncImage
@@ -68,8 +67,12 @@ import com.zxhhyj.music.ui.common.SlidingPanel
 import com.zxhhyj.music.ui.common.rememberPanelController
 import com.zxhhyj.music.ui.dialog.CreatePlayListDialog
 import com.zxhhyj.music.ui.dialog.EditPlayListTitleDialog
+import com.zxhhyj.music.ui.dialog.EditWebDavAddressDialog
+import com.zxhhyj.music.ui.dialog.EditWebDavPasswordDialog
+import com.zxhhyj.music.ui.dialog.EditWebDavUsernameDialog
 import com.zxhhyj.music.ui.dialog.MediaLibsEmptyDialog
-import com.zxhhyj.music.ui.dialog.ScanMusicDialog
+import com.zxhhyj.music.ui.dialog.ScanMediaLibDialog
+import com.zxhhyj.music.ui.dialog.ScanWebDavMediaLibDialog
 import com.zxhhyj.music.ui.dialog.SplashDialog
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
@@ -84,8 +87,9 @@ import com.zxhhyj.music.ui.screen.foldermanager.FolderManagerScreen
 import com.zxhhyj.music.ui.screen.folderpreview.FolderPreviewScreen
 import com.zxhhyj.music.ui.screen.hidesong.HiddenSongScreen
 import com.zxhhyj.music.ui.screen.lab.LabScreen
-import com.zxhhyj.music.ui.screen.lyric.LyricScreen
-import com.zxhhyj.music.ui.screen.medialibs.MediaSourceScreen
+import com.zxhhyj.music.ui.screen.lyricconfig.LyricConfigScreen
+import com.zxhhyj.music.ui.screen.medialib.MediaLibScreen
+import com.zxhhyj.music.ui.screen.medialibconfig.MediaLibConfigScreen
 import com.zxhhyj.music.ui.screen.misc.MiscScreen
 import com.zxhhyj.music.ui.screen.more.MoreScreen
 import com.zxhhyj.music.ui.screen.pay.PayScreen
@@ -97,7 +101,8 @@ import com.zxhhyj.music.ui.screen.pro.ProScreen
 import com.zxhhyj.music.ui.screen.search.SearchScreen
 import com.zxhhyj.music.ui.screen.singer.SingerScreen
 import com.zxhhyj.music.ui.screen.singercnt.SingerCntScreen
-import com.zxhhyj.music.ui.screen.single.SingleScreen
+import com.zxhhyj.music.ui.screen.webdav.WebDavScreen
+import com.zxhhyj.music.ui.screen.webdavconfig.WebDavConfigScreen
 import com.zxhhyj.music.ui.sheet.AddToPlayListSheet
 import com.zxhhyj.music.ui.sheet.PlaylistMenuSheet
 import com.zxhhyj.music.ui.sheet.SongMenuSheet
@@ -129,19 +134,19 @@ import dev.olshevski.navigation.reimagined.rememberNavController
  */
 
 enum class HomeNavigationDestination {
-    Single,
+    MediaLib,
     More,
 }
 
 val HomeNavigationDestination.tabIcon
     get() = when (this) {
-        HomeNavigationDestination.Single -> Icons.Rounded.Source
+        HomeNavigationDestination.MediaLib -> Icons.Rounded.Source
         HomeNavigationDestination.More -> Icons.Rounded.MoreHoriz
     }
 
 val HomeNavigationDestination.tabName
     @Composable get() = when (this) {
-        HomeNavigationDestination.Single -> stringResource(id = R.string.media_lib)
+        HomeNavigationDestination.MediaLib -> stringResource(id = R.string.media_lib)
         HomeNavigationDestination.More -> stringResource(id = R.string.more)
     }
 
@@ -187,7 +192,7 @@ fun MainScreen() {
         rememberNavController<ScreenDestination>(startDestination = ScreenDestination.Main)
 
     val homeNavController =
-        rememberNavController(startDestination = HomeNavigationDestination.Single)
+        rememberNavController(startDestination = HomeNavigationDestination.MediaLib)
 
     val dialogNavController = rememberNavController<DialogDestination>(
         initialBackstack = emptyList()
@@ -289,7 +294,7 @@ fun MainScreen() {
                                                 .clickable {
                                                     panelController.swipeTo(PanelState.EXPANDED)
                                                 },
-                                            albumUrl = song?.album?.coverUrl,
+                                            albumUrl = song?.coverUrl,
                                             paused = panelController.panelState != PanelState.COLLAPSED
                                         )
                                     }
@@ -304,7 +309,7 @@ fun MainScreen() {
                                     AppAsyncImage(
                                         modifier = Modifier
                                             .size(controlBarHeight * 0.8f),
-                                        data = song?.album?.coverUrl ?: ""
+                                        data = song?.coverUrl
                                     )
 
                                     Text(
@@ -415,8 +420,8 @@ fun MainScreen() {
                         ScreenDestination.Main -> {
                             NavHost(controller = homeNavController) {
                                 when (it) {
-                                    HomeNavigationDestination.Single -> {
-                                        SingleScreen(
+                                    HomeNavigationDestination.MediaLib -> {
+                                        MediaLibScreen(
                                             mainNavController = mainNavController,
                                             sheetNavController = sheetNavController,
                                             paddingValues = paddingValues
@@ -480,8 +485,8 @@ fun MainScreen() {
                             )
                         }
 
-                        ScreenDestination.MediaLibs -> {
-                            MediaSourceScreen(
+                        ScreenDestination.MediaLibConfig -> {
+                            MediaLibConfigScreen(
                                 mainNavController = mainNavController,
                                 dialogNavController = dialogNavController,
                                 paddingValues = paddingValues
@@ -505,7 +510,7 @@ fun MainScreen() {
                         }
 
                         ScreenDestination.Lyric -> {
-                            LyricScreen(paddingValues = paddingValues)
+                            LyricConfigScreen(paddingValues = paddingValues)
                         }
 
                         ScreenDestination.HiddenSong -> {
@@ -554,6 +559,13 @@ fun MainScreen() {
                             EqualizerScreen(paddingValues = paddingValues)
                         }
 
+                        ScreenDestination.WebDavConfig -> {
+                            WebDavConfigScreen(
+                                paddingValues = paddingValues,
+                                dialogNavController = dialogNavController
+                            )
+                        }
+
                         is ScreenDestination.FolderCnt -> {
                             FolderCntScreen(
                                 paddingValues = paddingValues,
@@ -579,6 +591,14 @@ fun MainScreen() {
                         ScreenDestination.Pay -> {
                             PayScreen(
                                 paddingValues = paddingValues,
+                                mainNavController = mainNavController
+                            )
+                        }
+
+                        ScreenDestination.WebDav -> {
+                            WebDavScreen(
+                                paddingValues = paddingValues,
+                                sheetNavController = sheetNavController,
                                 mainNavController = mainNavController
                             )
                         }
@@ -615,12 +635,31 @@ fun MainScreen() {
                 CreatePlayListDialog(onDismissRequest = onDismissRequest)
             }
 
-            DialogDestination.ScanMusic -> {
-                ScanMusicDialog(onDismissRequest = onDismissRequest)
+            DialogDestination.ScanMediaLib -> {
+                ScanMediaLibDialog(onDismissRequest = onDismissRequest)
             }
 
             is DialogDestination.EditPlayListTitle -> {
                 EditPlayListTitleDialog(onDismissRequest = onDismissRequest, model = it.model)
+            }
+
+            DialogDestination.EditWebDavAddress -> {
+                EditWebDavAddressDialog(onDismissRequest = onDismissRequest)
+            }
+
+            DialogDestination.EditWebDavUsername -> {
+                EditWebDavUsernameDialog(onDismissRequest = onDismissRequest)
+            }
+
+            DialogDestination.EditWebDavPassword -> {
+                EditWebDavPasswordDialog(onDismissRequest = onDismissRequest)
+            }
+
+            DialogDestination.ScanWebDavMediaLib -> {
+                ScanWebDavMediaLibDialog(
+                    onDismissRequest = onDismissRequest,
+                    mainNavController = mainNavController
+                )
             }
         }
     }

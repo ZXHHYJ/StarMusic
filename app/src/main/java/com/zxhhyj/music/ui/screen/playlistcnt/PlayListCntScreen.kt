@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.PlayListModel
-import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.item.SongItem
@@ -78,7 +77,7 @@ fun PlayListCntScreen(
                 ) {
                     AppAsyncImage(
                         modifier = Modifier.size(210.dp),
-                        data = playlist.songs.firstOrNull()?.album?.coverUrl
+                        data = playlist.songs.firstOrNull()?.coverUrl
                     )
                     Spacer(modifier = Modifier.height(vertical))
                     Text(text = playlist.name, fontSize = 16.sp, fontWeight = FontWeight.Bold)
@@ -95,7 +94,7 @@ fun PlayListCntScreen(
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 itemsIndexed(playlist.songs) { index, item ->
                     SongItem(
-                        song = item,
+                        songBean = item,
                         sheetNavController = sheetNavController,
                         actions = {
                             AppIconButton(onClick = { playlist.removeSong(item) }) {

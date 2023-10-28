@@ -12,13 +12,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
+import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.YesNoDialog
-import kotlinx.coroutines.launch
 
 @Composable
-fun ScanMusicDialog(onDismissRequest: () -> Unit) {
+fun ScanMediaLibDialog(onDismissRequest: () -> Unit) {
     YesNoDialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
@@ -35,9 +34,7 @@ fun ScanMusicDialog(onDismissRequest: () -> Unit) {
         }
     }
     LaunchedEffect(Unit) {
-        launch {
-            AndroidMediaLibsRepository.scanMedia()
-            onDismissRequest.invoke()
-        }
+        AndroidMediaLibRepository.scanMedia()
+        onDismissRequest.invoke()
     }
 }

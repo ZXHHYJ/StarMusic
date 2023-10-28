@@ -1,5 +1,6 @@
 package com.zxhhyj.music.ui.screen.hidesong
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,9 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
-import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
+import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.SoundQualityIcon
 import com.zxhhyj.ui.theme.LocalColorScheme
@@ -52,9 +52,9 @@ fun HiddenSongScreen(paddingValues: PaddingValues) {
         }) {
         RoundColumn(modifier = Modifier.fillMaxWidth()) {
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                items(AndroidMediaLibsRepository.hideSongs) {
+                items(AndroidMediaLibRepository.hideSongs) {
                     HideSongItem(song = it) {
-                        AndroidMediaLibsRepository.unHideSong(it)
+                        AndroidMediaLibRepository.unHideSong(it)
                     }
                 }
             }
@@ -67,41 +67,48 @@ private fun HideSongItem(
     song: SongBean,
     onClick: () -> Unit
 ) {
-    Item(icon = {
-        AppAsyncImage(modifier = Modifier.size(50.dp), data = song.album.coverUrl)
-    }, text = {
-        Text(
-            text = song.songName,
-            color = LocalColorScheme.current.text,
-            fontSize = 15.sp,
-            maxLines = 1,
-            textAlign = TextAlign.Center,
-            overflow = TextOverflow.Ellipsis
-        )
-    }, subText = {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            if (SettingRepository.EnableShowSoundQualityLabel) {
-                SoundQualityIcon(song = song)
-            }
+    Item(
+        icon = {
+            AppAsyncImage(modifier = Modifier.size(50.dp), data = song.coverUrl)
+        },
+        text = {
             Text(
-                text = song.artist.name,
-                color = LocalColorScheme.current.subText,
-                fontSize = 13.sp,
+                text = song.songName,
+                color = LocalColorScheme.current.text,
+                fontSize = 15.sp,
                 maxLines = 1,
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Ellipsis
             )
-        }
-    }, actions = {
-        CompositionLocalProvider(LocalContentColor provides LocalColorScheme.current.subText) {
-            AppIconButton(onClick = {
-                onClick.invoke()
-            }) {
-                Icon(
-                    imageVector = Icons.Rounded.Remove,
-                    contentDescription = null
+        },
+        subText = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                if (SettingRepository.EnableShowSoundQualityLabel) {
+                    SoundQualityIcon(song = song)
+                }
+                Text(
+                    text = song.artist.name,
+                    color = LocalColorScheme.current.subText,
+                    fontSize = 13.sp,
+                    maxLines = 1,
+                    textAlign = TextAlign.Center,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
-        }
-    }) {}
+        },
+        actions = {
+            CompositionLocalProvider(LocalContentColor provides LocalColorScheme.current.subText) {
+                AppIconButton(onClick = {
+                    onClick.invoke()
+                }) {
+                    Icon(
+                        imageVector = Icons.Rounded.Remove,
+                        contentDescription = null
+                    )
+                }
+            }
+        }) {}
 }

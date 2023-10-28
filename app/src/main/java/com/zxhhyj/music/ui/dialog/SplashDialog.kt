@@ -14,7 +14,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.window.DialogProperties
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.config.PrivacyPolicyURL
-import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
+import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.ActivityUtils
 import com.zxhhyj.music.ui.screen.DialogDestination
@@ -39,7 +39,7 @@ fun SplashDialog(
                 modifier = Modifier.clickable {
                     onDismissRequest.invoke()
                     SettingRepository.AgreePrivacyPolicy = true
-                    if (AndroidMediaLibsRepository.songs.isEmpty()) {
+                    if (AndroidMediaLibRepository.songs.isEmpty()) {
                         dialogNavController.navigate(DialogDestination.MediaLibsEmpty)
                     }
                 })

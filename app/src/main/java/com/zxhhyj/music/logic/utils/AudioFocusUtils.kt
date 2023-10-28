@@ -135,7 +135,7 @@ class AudioFocusUtils(
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun abandonAudioFocusAPI26() {
-        mAudioManager?.abandonAudioFocusRequest(mAudioFocusRequest?:return)
+        mAudioManager?.abandonAudioFocusRequest(mAudioFocusRequest ?: return)
     }
 
     /**

@@ -14,8 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
-import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository.songs
-import com.zxhhyj.music.logic.utils.coverUrl
+import com.zxhhyj.music.logic.repository.MediaLibRepository.songs
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.ui.theme.LocalColorScheme
@@ -30,7 +29,7 @@ fun AlbumItem(
         Column(modifier = Modifier.fillMaxSize()) {
             AppAsyncImage(
                 modifier = Modifier.size(maxWidth),
-                data = album.coverUrl,
+                data = album.songs.getOrNull(0)?.coverUrl,
                 onClick = onClick
             )
             Spacer(modifier = Modifier.height(2.dp))

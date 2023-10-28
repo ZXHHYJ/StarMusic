@@ -59,10 +59,10 @@ sealed class ScreenDestination : Parcelable {
     data object About : ScreenDestination()
 
     /**
-     * 媒体库
+     * 媒体库配置
      */
     @Parcelize
-    data object MediaLibs : ScreenDestination()
+    data object MediaLibConfig : ScreenDestination()
 
     /**
      * 歌手
@@ -131,6 +131,15 @@ sealed class ScreenDestination : Parcelable {
      */
     @Parcelize
     data object Equalizer : ScreenDestination()
+
+    @Parcelize
+    data object WebDav : ScreenDestination()
+
+    /**
+     * WebDav配置设置
+     */
+    @Parcelize
+    data object WebDavConfig : ScreenDestination()
 
     /**
      * 歌手详情

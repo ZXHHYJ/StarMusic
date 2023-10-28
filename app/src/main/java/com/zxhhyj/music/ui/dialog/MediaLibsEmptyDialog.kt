@@ -23,7 +23,7 @@ fun MediaLibsEmptyDialog(
         confirm = {
             Text(text = stringResource(id = R.string.yes), modifier = Modifier.clickable {
                 onDismissRequest.invoke()
-                mainNavController.navigate(ScreenDestination.MediaLibs)
+                mainNavController.navigate(ScreenDestination.MediaLibConfig)
             })
         },
         dismiss = {

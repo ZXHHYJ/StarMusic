@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
 import com.mxalbert.sharedelements.SharedElement
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.logic.utils.toTimeString
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
@@ -48,7 +47,6 @@ import com.zxhhyj.ui.view.AppSlider
 import com.zxhhyj.ui.view.item.ItemSpacer
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
-import kotlin.math.roundToInt
 
 @Composable
 fun PlayControllerScreen(sheetNavController: NavController<SheetDestination>) {
@@ -81,7 +79,7 @@ fun PlayControllerScreen(sheetNavController: NavController<SheetDestination>) {
                     AppAsyncImage(
                         modifier = Modifier.fillMaxSize(),
                         backgroundColor = Color.DarkGray,
-                        data = song?.album?.coverUrl
+                        data = song?.coverUrl
                     )
                 }
             }
@@ -134,9 +132,10 @@ fun PlayControllerScreen(sheetNavController: NavController<SheetDestination>) {
             val duration by PlayManager.durationLiveData().map { it.toFloat() }.observeAsState(0f)
 
             AppSlider(
-                value = progress / duration,
+                value = progress,
+                valueRange = 0f..duration,
                 onValueChange = {
-                    PlayManager.seekTo((duration * it).roundToInt())
+                    PlayManager.seekTo(it.toInt())
                 },
                 onDragStart = {
                     PlayManager.pause()

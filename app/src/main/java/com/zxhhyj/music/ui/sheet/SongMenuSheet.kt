@@ -27,7 +27,7 @@ import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.MainApplication
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
-import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository
+import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.SheetDestination
@@ -51,7 +51,7 @@ fun SongMenuSheet(
         contract = ActivityResultContracts.StartIntentSenderForResult(),
         onResult = {
             if (it.resultCode == -1) {
-                AndroidMediaLibsRepository.delete(song)
+                AndroidMediaLibRepository.delete(song as SongBean.Local)
                 sheetNavController.popAll()
             }
         }
@@ -116,25 +116,27 @@ fun SongMenuSheet(
                     sheetNavController.navigate(SheetDestination.SongInfo(song))
                 }
                 ItemDivider()
-                Item(
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Rounded.HideSource,
-                            contentDescription = null
-                        )
-                    },
-                    text = {
-                        Text(
-                            text = stringResource(id = R.string.hide)
-                        )
-                    },
-                    subText = { },
-                    enabled = currentSong != song
-                ) {
-                    sheetNavController.popAll()
-                    AndroidMediaLibsRepository.hideSong(song)
+                if (song is SongBean.Local) {
+                    Item(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.HideSource,
+                                contentDescription = null
+                            )
+                        },
+                        text = {
+                            Text(
+                                text = stringResource(id = R.string.hide)
+                            )
+                        },
+                        subText = { },
+                        enabled = currentSong != song
+                    ) {
+                        sheetNavController.popAll()
+                        AndroidMediaLibRepository.hideSong(song)
+                    }
+                    ItemDivider()
                 }
-                ItemDivider()
                 Item(
                     icon = {
                         Icon(
@@ -150,21 +152,28 @@ fun SongMenuSheet(
                     subText = { },
                     enabled = currentSong != song
                 ) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        coroutineScope.launch {
-                            val deleteUri =
-                                ContentUris.withAppendedId(
-                                    MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                                    song.id
-                                )
-                            val pendingIntent = MediaStore.createDeleteRequest(
-                                MainApplication.context.contentResolver,
-                                listOf(deleteUri)
-                            )
-                            val request =
-                                IntentSenderRequest.Builder(pendingIntent.intentSender).build()
-                            deleteLauncher.launch(request)
+                    when (song) {
+                        is SongBean.Local -> {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                                coroutineScope.launch {
+                                    val deleteUri =
+                                        ContentUris.withAppendedId(
+                                            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                                            song.id
+                                        )
+                                    val pendingIntent = MediaStore.createDeleteRequest(
+                                        MainApplication.context.contentResolver,
+                                        listOf(deleteUri)
+                                    )
+                                    val request =
+                                        IntentSenderRequest.Builder(pendingIntent.intentSender)
+                                            .build()
+                                    deleteLauncher.launch(request)
+                                }
+                            }
                         }
+
+                        else -> {}
                     }
                 }
             }

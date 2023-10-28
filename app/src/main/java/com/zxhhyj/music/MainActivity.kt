@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
 import com.zxhhyj.music.receiver.HeadphoneReceiver
+import com.zxhhyj.music.ui.common.POPWindows
 import com.zxhhyj.music.ui.screen.main.MainScreen
 import com.zxhhyj.music.ui.theme.MandySaMusicTheme
 
@@ -25,6 +26,7 @@ class MainActivity : ComponentActivity() {
             WindowCompat.setDecorFitsSystemWindows(window, false)
             MandySaMusicTheme {
                 MainScreen()
+                POPWindows.PopWin()
             }
         }
     }

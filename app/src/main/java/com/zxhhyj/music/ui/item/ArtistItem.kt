@@ -13,8 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
-import com.zxhhyj.music.logic.repository.AndroidMediaLibsRepository.songs
-import com.zxhhyj.music.logic.utils.coverUrl
+import com.zxhhyj.music.logic.repository.MediaLibRepository.songs
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.item.ItemArrowRight
@@ -26,7 +25,7 @@ fun ArtistItem(artist: SongBean.Artist, onClick: () -> Unit) {
             modifier = Modifier
                 .size(50.dp)
                 .clip(RoundedCornerShape(50)),
-            data = artist.songs.getOrNull(0)?.album?.coverUrl
+            data = artist.songs.getOrNull(0)?.coverUrl
         )
     }, text = {
         Text(

@@ -22,7 +22,6 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.VersionUtils
 import com.zxhhyj.music.ui.screen.ScreenDestination
-import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
@@ -57,13 +56,8 @@ fun MoreScreen(
                         },
                         text = { Text(text = stringResource(id = R.string.star_music_pro)) },
                         subText = {
-                            when (SettingRepository.EnableStarMusicPro) {
-                                true -> Text(
-                                    text = stringResource(id = R.string.slogo),
-                                    color = LocalColorScheme.current.highlight
-                                )
-
-                                false -> Text(text = stringResource(id = R.string.slogo))
+                            if (SettingRepository.EnableStarMusicPro) {
+                                Text(text = stringResource(id = R.string.slogo))
                             }
                         }) {
                         mainNavController.navigate(ScreenDestination.Pro)
@@ -86,7 +80,7 @@ fun MoreScreen(
                         icon = { Icon(imageVector = Icons.Rounded.Source, null) },
                         text = { Text(text = stringResource(id = R.string.media_lib)) },
                         subText = { Text(text = stringResource(id = R.string.media_lib_info)) }) {
-                        mainNavController.navigate(ScreenDestination.MediaLibs)
+                        mainNavController.navigate(ScreenDestination.MediaLibConfig)
                     }
                     ItemDivider()
                     ItemArrowRight(

@@ -24,7 +24,6 @@ import com.zxhhyj.music.MainActivity
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.utils.AudioFocusUtils
 import com.zxhhyj.music.logic.utils.BitmapUtils
-import com.zxhhyj.music.logic.utils.coverUrl
 import com.zxhhyj.music.service.playmanager.PlayManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -147,7 +146,7 @@ class MediaPlayService : LifecycleService() {
                 try {
                     val drawable = imageLoader.execute(
                         ImageRequest.Builder(this@MediaPlayService)
-                            .data(it.album.coverUrl)
+                            .data(it.coverUrl)
                             .build()
                     ).drawable as BitmapDrawable
                     withContext(Dispatchers.Main) {

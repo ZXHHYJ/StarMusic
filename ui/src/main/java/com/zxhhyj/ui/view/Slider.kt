@@ -50,13 +50,12 @@ fun AppSlider(
         Box(
             modifier = modifier
                 .height(thumbSize)
-                .pointerInput(Unit) {
+                .pointerInput(valueRange, constraints) {
                     detectDragGestures(
                         onDragStart = { onDragStart.invoke() }, // 拖动开始时调用回调函数
                         onDrag = { change, _ ->
-                            val newValue = (change.position.x / constraints.maxWidth) *
-                                    (valueRange.endInclusive - valueRange.start) +
-                                    valueRange.start
+                            val newValue =
+                                (change.position.x / constraints.maxWidth) * (valueRange.endInclusive - valueRange.start) + valueRange.start
                             onValueChange(newValue.coerceIn(valueRange)) // 将新值应用于回调函数，并确保在值范围内
                         },
                         onDragEnd = { onDragEnd.invoke() } // 拖动结束时调用回调函数
