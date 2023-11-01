@@ -1,4 +1,4 @@
-package com.zxhhyj.music.service
+package com.zxhhyj.music.service.media
 
 import android.Manifest
 import android.app.PendingIntent
@@ -24,7 +24,7 @@ import com.zxhhyj.music.MainActivity
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.utils.AudioFocusUtils
 import com.zxhhyj.music.logic.utils.BitmapUtils
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.media.playmanager.PlayManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -33,7 +33,7 @@ class MediaPlayService : LifecycleService() {
 
     companion object {
 
-        private const val NOTIFICATION_CHANNEL_ID = "notification_channel_id"
+        private const val NOTIFICATION_CHANNEL_ID = "media_notification_channel"
 
         private const val NOTIFICATION_ID = 1
 

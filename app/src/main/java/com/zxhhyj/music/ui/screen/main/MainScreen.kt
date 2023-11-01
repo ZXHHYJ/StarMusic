@@ -12,6 +12,7 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -59,7 +60,7 @@ import androidx.lifecycle.map
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.media.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AlbumMotionBlur
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.PanelState
@@ -71,9 +72,9 @@ import com.zxhhyj.music.ui.dialog.EditWebDavAddressDialog
 import com.zxhhyj.music.ui.dialog.EditWebDavPasswordDialog
 import com.zxhhyj.music.ui.dialog.EditWebDavUsernameDialog
 import com.zxhhyj.music.ui.dialog.MediaLibsEmptyDialog
-import com.zxhhyj.music.ui.dialog.ScanMediaLibDialog
-import com.zxhhyj.music.ui.dialog.ScanWebDavMediaLibDialog
+import com.zxhhyj.music.ui.dialog.ScanAndroidMediaLibDialog
 import com.zxhhyj.music.ui.dialog.SplashDialog
+import com.zxhhyj.music.ui.dialog.SyncWebDavMediaLibDialog
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.SheetDestination
@@ -308,7 +309,13 @@ fun MainScreen() {
 
                                     AppAsyncImage(
                                         modifier = Modifier
-                                            .size(controlBarHeight * 0.8f),
+                                            .size(controlBarHeight * 0.8f)
+                                            .clickable(
+                                                interactionSource = MutableInteractionSource(),
+                                                indication = null,
+                                                onClick = {
+                                                    panelController.swipeTo(PanelState.EXPANDED)
+                                                }),
                                         data = song?.coverUrl
                                     )
 
@@ -562,6 +569,7 @@ fun MainScreen() {
                         ScreenDestination.WebDavConfig -> {
                             WebDavConfigScreen(
                                 paddingValues = paddingValues,
+                                mainNavController = mainNavController,
                                 dialogNavController = dialogNavController
                             )
                         }
@@ -599,6 +607,7 @@ fun MainScreen() {
                             WebDavScreen(
                                 paddingValues = paddingValues,
                                 sheetNavController = sheetNavController,
+                                dialogNavController = dialogNavController,
                                 mainNavController = mainNavController
                             )
                         }
@@ -635,8 +644,8 @@ fun MainScreen() {
                 CreatePlayListDialog(onDismissRequest = onDismissRequest)
             }
 
-            DialogDestination.ScanMediaLib -> {
-                ScanMediaLibDialog(onDismissRequest = onDismissRequest)
+            DialogDestination.ScanAndroidMediaLib -> {
+                ScanAndroidMediaLibDialog(onDismissRequest = onDismissRequest)
             }
 
             is DialogDestination.EditPlayListTitle -> {
@@ -655,10 +664,9 @@ fun MainScreen() {
                 EditWebDavPasswordDialog(onDismissRequest = onDismissRequest)
             }
 
-            DialogDestination.ScanWebDavMediaLib -> {
-                ScanWebDavMediaLibDialog(
-                    onDismissRequest = onDismissRequest,
-                    mainNavController = mainNavController
+            DialogDestination.SyncWebDavMediaLib -> {
+                SyncWebDavMediaLibDialog(
+                    onDismissRequest = onDismissRequest
                 )
             }
         }

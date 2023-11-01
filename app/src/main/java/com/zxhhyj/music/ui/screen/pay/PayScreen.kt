@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Cancel
 import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -93,11 +94,30 @@ fun PayScreen(paddingValues: PaddingValues, mainNavController: NavController<Scr
                                     contentDescription = null
                                 )
                             },
-                            text = { Text(text = stringResource(id = R.string.enable_star_music_pro)) },
+                            text = { Text(text = stringResource(id = R.string.i_have_made_an_honest_payment)) },
                             subText = { }) {
-                            SettingRepository.EnableStarMusicPro = true
+                            SettingRepository.EnableHonestPayment = true
                             mainNavController.pop()
                         }
+                    }
+                }
+            }
+            item {
+                ItemSpacer()
+            }
+            item {
+                RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                    Item(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.Cancel,
+                                contentDescription = null
+                            )
+                        },
+                        text = { Text(text = stringResource(id = R.string.cancel_honest_payment)) },
+                        subText = { }) {
+                        SettingRepository.EnableHonestPayment = false
+                        mainNavController.pop()
                     }
                 }
             }

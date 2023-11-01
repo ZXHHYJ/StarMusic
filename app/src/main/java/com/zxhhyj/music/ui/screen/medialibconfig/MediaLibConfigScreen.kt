@@ -26,7 +26,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.media.playmanager.PlayManager
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.ui.view.AppCenterTopBar
@@ -58,7 +58,7 @@ fun MediaLibConfigScreen(
 
                 PermissionStatus.Granted -> {
                     if (AndroidMediaLibRepository.folders.isEmpty() && AndroidMediaLibRepository.hideFolders.isEmpty()) {
-                        dialogNavController.navigate(DialogDestination.ScanMediaLib)
+                        dialogNavController.navigate(DialogDestination.ScanAndroidMediaLib)
                     }
                 }
             }
@@ -117,7 +117,7 @@ fun MediaLibConfigScreen(
                         enabled = SettingRepository.EnableAndroidMediaLibs
                     ) {
                         PlayManager.clearPlayList()
-                        dialogNavController.navigate(DialogDestination.ScanMediaLib)
+                        dialogNavController.navigate(DialogDestination.ScanAndroidMediaLib)
                     }
                 }
             }

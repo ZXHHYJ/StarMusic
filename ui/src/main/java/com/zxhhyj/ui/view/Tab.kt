@@ -2,6 +2,7 @@ package com.zxhhyj.ui.view
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material.Tab
 import androidx.compose.material.TabPosition
 import androidx.compose.material.TabRow
@@ -31,7 +32,7 @@ fun AppTabRow(
 ) {
     TabRow(
         selectedTabIndex,
-        modifier,
+        modifier.heightIn(min = 42.dp),
         Color.Transparent,
         LocalColorScheme.current.highlight,
         indicator,

@@ -28,13 +28,13 @@ sealed class DialogDestination : Parcelable {
      * 扫描Android媒体库
      */
     @Parcelize
-    data object ScanMediaLib : DialogDestination()
+    data object ScanAndroidMediaLib : DialogDestination()
 
     /**
      * 扫描WebDav媒体库
      */
     @Parcelize
-    data object ScanWebDavMediaLib : DialogDestination()
+    data object SyncWebDavMediaLib : DialogDestination()
 
     @Parcelize
     data object EditWebDavAddress : DialogDestination()

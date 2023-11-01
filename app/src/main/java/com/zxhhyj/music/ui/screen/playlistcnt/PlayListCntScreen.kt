@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.PlayListModel
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.media.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.SheetDestination

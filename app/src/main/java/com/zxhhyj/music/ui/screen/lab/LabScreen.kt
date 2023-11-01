@@ -45,8 +45,8 @@ fun LabScreen(
                                 contentDescription = null
                             )
                         },
-                        text = { Text(text = "适配墨水屏") },
-                        subText = { Text(text = "单独为墨水屏设计的UI模式") },
+                        text = { Text(text = stringResource(id = R.string.e_ink_screen_mode)) },
+                        subText = { },
                         checked = SettingRepository.EnableLinkUI,
                         onCheckedChange = {
                             SettingRepository.EnableLinkUI = it

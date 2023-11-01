@@ -35,7 +35,7 @@ import androidx.lifecycle.map
 import com.mxalbert.sharedelements.SharedElement
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.utils.toTimeString
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.media.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.screen.SheetDestination
@@ -73,12 +73,11 @@ fun PlayControllerScreen(sheetNavController: NavController<SheetDestination>) {
                     modifier = Modifier
                         .padding(bottom = 8.dp)
                         .size(100.wp),
-                    backgroundColor = Color.Transparent,
+                    backgroundColor = Color.DarkGray,
                     elevation = 12.dp,
                 ) {
                     AppAsyncImage(
                         modifier = Modifier.fillMaxSize(),
-                        backgroundColor = Color.DarkGray,
                         data = song?.coverUrl
                     )
                 }

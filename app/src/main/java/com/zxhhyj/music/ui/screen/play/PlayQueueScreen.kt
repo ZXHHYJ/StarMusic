@@ -47,7 +47,7 @@ import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.media.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.SoundQualityIcon
 import com.zxhhyj.music.ui.common.WebDavIcon
@@ -164,8 +164,7 @@ fun ColumnScope.PlayQueueScreen() {
                                 AppAsyncImage(
                                     modifier = Modifier
                                         .size(50.dp),
-                                    data = model.coverUrl,
-                                    backgroundColor = Color.Transparent
+                                    data = model.coverUrl
                                 )
                             },
                             text = {
@@ -218,6 +217,11 @@ fun ColumnScope.PlayQueueScreen() {
         }
         val boxHeightPx = with(LocalDensity.current) {
             maxHeight.roundToPx()
+        }
+        LaunchedEffect(Unit) {
+            val position = playlist?.indexOf(song) ?: 0
+            val height = (boxHeightPx - selectItemBoxSize.height) / 2
+            lazyListState.scrollToItem(position.coerceAtLeast(0), -height)
         }
         LaunchedEffect(song) {
             val position = playlist?.indexOf(song) ?: 0

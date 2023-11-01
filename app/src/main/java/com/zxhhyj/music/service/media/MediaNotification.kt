@@ -1,4 +1,4 @@
-package com.zxhhyj.music.service
+package com.zxhhyj.music.service.media
 
 import android.app.Notification
 import android.content.Context
@@ -9,7 +9,7 @@ import androidx.annotation.DrawableRes
 import androidx.core.app.NotificationCompat
 import androidx.media.session.MediaButtonReceiver
 import com.zxhhyj.music.R
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.media.playmanager.PlayManager
 
 
 class MediaNotification(

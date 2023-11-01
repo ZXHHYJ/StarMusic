@@ -8,5 +8,6 @@ data class WebDavFile(
     val path: String,
     val name: String,
     val downloadPath: String,
-    val eTag: String
+    val eTag: String,
+    val contentLength: Long
 ) : Parcelable

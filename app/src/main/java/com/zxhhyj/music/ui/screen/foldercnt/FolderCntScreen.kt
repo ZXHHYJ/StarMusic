@@ -10,7 +10,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.zxhhyj.music.logic.bean.Folder
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.media.playmanager.PlayManager
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.ui.view.AppCenterTopBar

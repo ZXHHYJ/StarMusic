@@ -208,6 +208,7 @@ fun AppTopBar(
                     .padding(horizontal = StarDimens.horizontal),
                 contentAlignment = Alignment.CenterEnd,
                 content = {
+
                     Text(
                         text = title,
                         color = LocalColorScheme.current.text,

@@ -24,6 +24,7 @@
         android:label="@string/app_name"
         android:supportsRtl="false"
         android:theme="@style/Theme.Mandysa_music"
+        android:usesCleartextTraffic="true"
         tools:ignore="DataExtractionRules"
         tools:targetApi="tiramisu">
 
@@ -59,7 +60,7 @@
             </intent-filter>
         </receiver>
         <service
-            android:name=".service.MediaPlayService"
+            android:name=".service.media.MediaPlayService"
             android:exported="false"
             android:foregroundServiceType="mediaPlayback">
             <intent-filter>

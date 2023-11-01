@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.media.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AlbumMotionBlur
 import com.zxhhyj.music.ui.common.lyric.Lyric
 import com.zxhhyj.music.ui.screen.play.PlayScreen

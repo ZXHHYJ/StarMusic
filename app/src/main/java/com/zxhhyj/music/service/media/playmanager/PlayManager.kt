@@ -1,6 +1,6 @@
 @file:Suppress("UNUSED")
 
-package com.zxhhyj.music.service.playmanager
+package com.zxhhyj.music.service.media.playmanager
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -17,7 +17,7 @@ import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.YesNoDialog
 
 @Composable
-fun ScanMediaLibDialog(onDismissRequest: () -> Unit) {
+fun ScanAndroidMediaLibDialog(onDismissRequest: () -> Unit) {
     YesNoDialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),

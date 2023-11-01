@@ -12,8 +12,8 @@ import com.zxhhyj.music.logic.bean.WebDavConfig
 import com.zxhhyj.music.logic.bean.WebDavFile
 import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.service.MediaPlayService
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.media.MediaPlayService
+import com.zxhhyj.music.service.media.playmanager.PlayManager
 import io.fastkv.FastKVConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor

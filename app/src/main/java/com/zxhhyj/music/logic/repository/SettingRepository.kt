@@ -43,11 +43,20 @@ object SettingRepository {
     )
 
     /**
-     * 诚信付费了属于是
+     * StarMusic Pro
      */
     var EnableStarMusicPro by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "EnableStarMusicPro",
+        initialValue = false
+    )
+
+    /**
+     * 诚信付费
+     */
+    var EnableHonestPayment by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "EnableHonestPayment",
         initialValue = false
     )
 

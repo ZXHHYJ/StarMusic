@@ -28,8 +28,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.ui.screen.ScreenDestination
@@ -37,12 +35,10 @@ import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
-import com.zxhhyj.ui.view.item.Item
 import com.zxhhyj.ui.view.item.ItemArrowRight
 import com.zxhhyj.ui.view.item.ItemDivider
 import com.zxhhyj.ui.view.item.ItemSpacer
 import com.zxhhyj.ui.view.item.ItemSwitcher
-import com.zxhhyj.ui.view.item.ItemTint
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -60,133 +56,129 @@ fun ProScreen(paddingValues: PaddingValues, mainNavController: NavController<Scr
             )
         }) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            if (SettingRepository.EnableStarMusicPro) {
-                item {
-                    RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                        ItemSwitcher(
-                            icon = {
-                                Icon(
-                                    imageVector = Icons.Filled.StarRate,
-                                    contentDescription = null
-                                )
-                            },
-                            text = { Text(text = stringResource(id = R.string.star_music_pro)) },
-                            subText = { },
-                            checked = SettingRepository.EnableStarMusicPro,
-                            onCheckedChange = {
-                                SettingRepository.EnableStarMusicPro = it
-                            }
-                        )
+            item {
+                RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                    ItemSwitcher(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Filled.StarRate,
+                                contentDescription = null
+                            )
+                        },
+                        text = { Text(text = stringResource(id = R.string.star_music_pro)) },
+                        subText = { },
+                        checked = SettingRepository.EnableStarMusicPro,
+                        onCheckedChange = {
+                            SettingRepository.EnableStarMusicPro = it
+                        }
+                    )
+                }
+            }
+            item {
+                ItemSpacer()
+            }
+            item {
+                RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                    var isExternalStorageManager by rememberSaveable {
+                        mutableStateOf(false)
                     }
-                }
-                item {
-                    ItemSpacer()
-                }
-                item {
-                    RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                        var isExternalStorageManager by rememberSaveable {
-                            mutableStateOf(false)
-                        }
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                            isExternalStorageManager = Environment.isExternalStorageManager()
-                        }
-                        val launcher = rememberLauncherForActivityResult(
-                            contract = ActivityResultContracts.StartActivityForResult(),
-                            onResult = {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                                    isExternalStorageManager =
-                                        Environment.isExternalStorageManager()
-                                    if (!isExternalStorageManager) {
-                                        SettingRepository.EnableCueSupport = false
-                                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        isExternalStorageManager = Environment.isExternalStorageManager()
+                    }
+                    val launcher = rememberLauncherForActivityResult(
+                        contract = ActivityResultContracts.StartActivityForResult(),
+                        onResult = {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                                isExternalStorageManager =
+                                    Environment.isExternalStorageManager()
+                                if (!isExternalStorageManager) {
+                                    SettingRepository.EnableCueSupport = false
                                 }
                             }
-                        )
-                        LaunchedEffect(SettingRepository.EnableCueSupport) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && SettingRepository.EnableCueSupport && !isExternalStorageManager) {
-                                launcher.launch(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
+                        }
+                    )
+                    LaunchedEffect(SettingRepository.EnableCueSupport) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && SettingRepository.EnableCueSupport && !isExternalStorageManager) {
+                            launcher.launch(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
+                        }
+                    }
+                    ItemSwitcher(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.LibraryMusic,
+                                contentDescription = null
+                            )
+                        },
+                        text = {
+                            Text(text = stringResource(id = R.string.cue_support))
+                        },
+                        subText = {
+                            Text(text = stringResource(id = R.string.cue_support_info))
+                        },
+                        checked = SettingRepository.EnableCueSupport,
+                        onCheckedChange = {
+                            SettingRepository.EnableCueSupport = it
+                        },
+                        enabled = SettingRepository.EnableStarMusicPro,
+                    )
+                    ItemDivider()
+                    ItemArrowRight(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.CloudUpload,
+                                contentDescription = null
+                            )
+                        },
+                        text = { Text(text = stringResource(id = R.string.webdav)) },
+                        subText = { },
+                        enabled = SettingRepository.EnableStarMusicPro
+                    ) {
+                        mainNavController.navigate(ScreenDestination.WebDavConfig)
+                    }
+                }
+            }
+            item {
+                ItemSpacer()
+            }
+            if (SettingRepository.EnableStarMusicPro) {
+                item {
+                    if (SettingRepository.EnableHonestPayment) {
+                        RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                            ItemArrowRight(
+                                icon = {
+                                    Icon(
+                                        imageVector = Icons.Rounded.CheckCircle,
+                                        contentDescription = null
+                                    )
+                                },
+                                text = { Text(text = stringResource(id = R.string.thank_you_support)) },
+                                subText = {
+                                }) {
+                                mainNavController.navigate(ScreenDestination.Pay)
                             }
                         }
-                        ItemSwitcher(
-                            icon = {
-                                Icon(
-                                    imageVector = Icons.Rounded.LibraryMusic,
-                                    contentDescription = null
-                                )
-                            },
-                            text = {
-                                Text(text = stringResource(id = R.string.cue_support))
-                            },
-                            subText = {
-                                Text(text = stringResource(id = R.string.cue_support_info))
-                            },
-                            checked = SettingRepository.EnableCueSupport,
-                            onCheckedChange = {
-                                SettingRepository.EnableCueSupport = it
+                    } else {
+                        RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                            ItemArrowRight(
+                                icon = {
+                                    Icon(
+                                        imageVector = Icons.Rounded.ShoppingCart,
+                                        contentDescription = null
+                                    )
+                                },
+                                text = { Text(text = stringResource(id = R.string.buy_star_music_pro)) },
+                                subText = {
+                                    Text(
+                                        text = "1.00RMB",
+                                        color = LocalColorScheme.current.text
+                                    )
+                                }) {
+                                mainNavController.navigate(ScreenDestination.Pay)
                             }
-                        )
-                        ItemDivider()
-                        ItemArrowRight(
-                            icon = {
-                                Icon(
-                                    imageVector = Icons.Rounded.CloudUpload,
-                                    contentDescription = null
-                                )
-                            },
-                            text = { Text(text = stringResource(id = R.string.webdav)) },
-                            subText = { }) {
-                            mainNavController.navigate(ScreenDestination.WebDavConfig)
                         }
                     }
                 }
-            } else {
-                item {
-                    RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                        ItemTint {
-                            Text(text = stringResource(id = R.string.membership_features))
-                        }
-                        ItemTint {
-                            Text(text = stringResource(id = R.string.welcome_experience))
-                        }
-                        ItemDivider()
-                        Item(
-                            icon = {
-                                Icon(
-                                    imageVector = Icons.Rounded.CheckCircle,
-                                    contentDescription = null
-                                )
-                            },
-                            text = { Text(text = stringResource(id = R.string.experience_star_music_pro)) },
-                            subText = { }) {
-                            SettingRepository.EnableStarMusicPro = true
-                        }
-                    }
-                }
-                item {
-                    ItemSpacer()
-                }
-                item {
-                    RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                        ItemArrowRight(
-                            icon = {
-                                Icon(
-                                    imageVector = Icons.Rounded.ShoppingCart,
-                                    contentDescription = null
-                                )
-                            },
-                            text = { Text(text = stringResource(id = R.string.buy_star_music_pro)) },
-                            subText = {
-                                Text(
-                                    text = "1.00RMB",
-                                    color = LocalColorScheme.current.text,
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }) {
-                            mainNavController.navigate(ScreenDestination.Pay)
-                        }
-                    }
-                }
+
             }
         }
     }

@@ -24,40 +24,43 @@ fun ItemSwitcher(
     icon: @Composable () -> Unit,
     text: @Composable () -> Unit,
     subText: @Composable () -> Unit,
+    enabled: Boolean = true,
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit),
 ) {
     Row(
         modifier = Modifier
-            .clickable {
+            .clickable(enabled) {
                 onCheckedChange.invoke(!checked)
             }
             .fillMaxWidth()
             .padding(horizontal = StarDimens.horizontal, vertical = StarDimens.vertical),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        CompositionLocalProvider(LocalContentColor provides LocalColorScheme.current.highlight) {
+        CompositionLocalProvider(LocalContentColor provides if (enabled) LocalColorScheme.current.highlight else LocalColorScheme.current.disabled) {
             icon()
         }
         Spacer(modifier = Modifier.width(StarDimens.vertical))
         Column(verticalArrangement = Arrangement.Center, modifier = Modifier.weight(1.0f)) {
             CompositionLocalProvider(
                 LocalTextStyle provides LocalTextStyles.current.main,
-                LocalContentColor provides LocalColorScheme.current.text
+                LocalContentColor provides if (enabled) LocalColorScheme.current.text else LocalColorScheme.current.disabled
             ) {
                 text()
             }
             CompositionLocalProvider(
                 LocalTextStyle provides LocalTextStyles.current.sub,
-                LocalContentColor provides LocalColorScheme.current.subText
+                LocalContentColor provides if (enabled) LocalColorScheme.current.subText else LocalColorScheme.current.disabled
             ) {
                 subText()
             }
         }
-        AppSwitch(
-            checked = checked,
-            onCheckedChange = onCheckedChange
-        )
+        if (enabled) {
+            AppSwitch(
+                checked = checked,
+                onCheckedChange = onCheckedChange
+            )
+        }
     }
 }
 

@@ -212,9 +212,9 @@ object AndroidMediaLibRepository {
     }
 
     /**
-     * 从媒体库中删除某个歌曲
+     * 从媒体库中移除某个歌曲
      */
-    fun delete(song: SongBean.Local) {
+    fun removeSong(song: SongBean.Local) {
         songs = songs - song
         hideSongs = hideSongs - song
         updateLibs()

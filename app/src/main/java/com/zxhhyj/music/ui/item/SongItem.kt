@@ -3,16 +3,18 @@ package com.zxhhyj.music.ui.item
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
+import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AudioFile
-import androidx.compose.material.icons.rounded.Downloading
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,6 +26,7 @@ import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.bean.WebDavFile
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
+import com.zxhhyj.music.service.webdav.WebDavWorkerManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.SoundQualityIcon
 import com.zxhhyj.music.ui.common.WebDavIcon
@@ -114,28 +117,15 @@ fun SongItem(
             downloadedOnClick.invoke(webDavSongBean)
         }
     } else {
+        val downloadState by WebDavWorkerManager.getDownloadState(webDavFile = webDavFile)
         Item(
             icon = {
                 Box(contentAlignment = Alignment.Center) {
                     AppAsyncImage(
                         modifier = Modifier
                             .size(50.dp),
-                        backgroundColor = LocalColorScheme.current.highlight,
                         data = null
                     )
-                    CompositionLocalProvider(LocalContentColor provides Color.White) {
-                        if (WebDavMediaLibRepository.downloadList.contains(webDavFile)) {
-                            Icon(
-                                imageVector = Icons.Rounded.Downloading,
-                                contentDescription = null
-                            )
-                        } else {
-                            Icon(
-                                imageVector = Icons.Rounded.AudioFile,
-                                contentDescription = null
-                            )
-                        }
-                    }
                 }
             },
             text = {
@@ -158,21 +148,18 @@ fun SongItem(
                     overflow = TextOverflow.Ellipsis
                 )
             },
-            actions = {
-                CompositionLocalProvider(LocalContentColor provides LocalColorScheme.current.subText) {
-                    AppIconButton(
-                        onClick = {
-
-                        }) {
-                        Icon(
-                            imageVector = Icons.Rounded.MoreVert,
-                            contentDescription = null
-                        )
-                    }
-                }
-            }) {
+            actions = {}) {
             onClick.invoke()
+            //没有点击事件
         }
+        LinearProgressIndicator(
+            progress = (downloadState?.progress ?: 0f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(3.dp),
+            color = LocalColorScheme.current.highlight,
+            backgroundColor = Color.Transparent,
+        )
     }
 }
 

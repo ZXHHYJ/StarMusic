@@ -13,21 +13,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
-import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.YesNoDialog
-import dev.olshevski.navigation.reimagined.NavController
-import dev.olshevski.navigation.reimagined.navigate
 
 @Composable
-fun ScanWebDavMediaLibDialog(
-    onDismissRequest: () -> Unit,
-    mainNavController: NavController<ScreenDestination>
+fun SyncWebDavMediaLibDialog(
+    onDismissRequest: () -> Unit
 ) {
     YesNoDialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
-        title = stringResource(id = R.string.scan_music),
+        title = stringResource(id = R.string.sync_webdav),
         confirm = {},
         dismiss = {})
     {
@@ -42,6 +38,5 @@ fun ScanWebDavMediaLibDialog(
     LaunchedEffect(Unit) {
         WebDavMediaLibRepository.scanMedia()
         onDismissRequest.invoke()
-        mainNavController.navigate(ScreenDestination.WebDav)
     }
 }

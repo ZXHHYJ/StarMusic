@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -43,7 +42,8 @@ import androidx.compose.ui.unit.times
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.logic.repository.MediaLibRepository
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
+import com.zxhhyj.music.service.media.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.item.AlbumItem
 import com.zxhhyj.music.ui.item.ArtistItem
@@ -99,7 +99,7 @@ fun SearchScreen(
         val pagerState = rememberPagerState(
             initialPage = SearchScreenTabs.values().indexOf(start),
         ) { SearchScreenTabs.values().size }
-        val scope = rememberCoroutineScope()
+        val coroutineScope = rememberCoroutineScope()
         RoundColumn(modifier = Modifier.fillMaxWidth()) {
             ItemSpacer()
             AppTextField(
@@ -133,8 +133,7 @@ fun SearchScreen(
                 }
             )
             AppTabRow(
-                modifier = Modifier
-                    .height(42.dp),
+                modifier = Modifier.fillMaxWidth(),
                 selectedTabIndex = pagerState.currentPage
             ) {
                 SearchScreenTabs.values()
@@ -142,7 +141,7 @@ fun SearchScreen(
                         AppTab(
                             selected = index == pagerState.currentPage,
                             onClick = {
-                                scope.launch { pagerState.animateScrollToPage(index) }
+                                coroutineScope.launch { pagerState.animateScrollToPage(index) }
                             }
                         ) {
                             Text(text = searchTypeTabDestination.tabName)
@@ -163,11 +162,12 @@ fun SearchScreen(
             ) { t ->
                 when (SearchScreenTabs.values()[t]) {
                     SearchScreenTabs.Single -> {
-                        val songs = AndroidMediaLibRepository.songs.filter {
-                            it.songName.contains(searchKey) || it.artist.name.contains(
-                                searchKey
-                            )
-                        }
+                        val songs =
+                            (AndroidMediaLibRepository.songs + WebDavMediaLibRepository.songs).filter {
+                                it.songName.contains(searchKey) || it.artist.name.contains(
+                                    searchKey
+                                )
+                            }
                         LazyColumn(modifier = Modifier.fillMaxSize()) {
                             itemsIndexed(songs) { index, item ->
                                 SongItem(
