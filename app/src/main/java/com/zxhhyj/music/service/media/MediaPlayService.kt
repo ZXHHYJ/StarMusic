@@ -22,6 +22,7 @@ import coil.imageLoader
 import coil.request.ImageRequest
 import com.zxhhyj.music.MainActivity
 import com.zxhhyj.music.R
+import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.AudioFocusUtils
 import com.zxhhyj.music.logic.utils.BitmapUtils
 import com.zxhhyj.music.service.media.playmanager.PlayManager
@@ -311,11 +312,15 @@ class MediaPlayService : LifecycleService() {
     inner class AudioFocusChangeListener : AudioFocusUtils.OnAudioFocusChangeListener {
 
         override fun onLoss() {
-            PlayManager.pause()
+            if (!SettingRepository.EnableIsPlayingWithOtherApps) {
+                PlayManager.pause()
+            }
         }
 
         override fun onLossTransient() {
-            PlayManager.pause()
+            if (!SettingRepository.EnableIsPlayingWithOtherApps) {
+                PlayManager.pause()
+            }
         }
 
         override fun onLossTransientCanDuck() {

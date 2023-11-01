@@ -87,4 +87,5 @@
     <string name="downloaded">已下载</string>
     <string name="cancel_honest_payment">取消诚信付费</string>
     <string name="thank_you_support">感谢你的支持！</string>
+    <string name="is_playing_with_other_apps">与其他App同时播放</string>
 </resources>

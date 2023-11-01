@@ -178,7 +178,6 @@ fun ProScreen(paddingValues: PaddingValues, mainNavController: NavController<Scr
                         }
                     }
                 }
-
             }
         }
     }

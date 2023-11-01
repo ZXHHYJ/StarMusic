@@ -153,4 +153,14 @@ object SettingRepository {
         key = "WebDavConfig",
         initialValue = WebDavConfig(String(), String(), String())
     )
+
+    /**
+     * 与其他App同时播放
+     */
+    var EnableIsPlayingWithOtherApps by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "EnableIsPlayingWithOtherApps",
+        initialValue = false
+    )
+
 }
