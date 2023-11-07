@@ -1,4 +1,4 @@
-package com.zxhhyj.music.service.media
+package com.zxhhyj.music.service
 
 import android.Manifest
 import android.app.PendingIntent
@@ -25,7 +25,7 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.AudioFocusUtils
 import com.zxhhyj.music.logic.utils.BitmapUtils
-import com.zxhhyj.music.service.media.playmanager.PlayManager
+import com.zxhhyj.music.service.playmanager.PlayManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

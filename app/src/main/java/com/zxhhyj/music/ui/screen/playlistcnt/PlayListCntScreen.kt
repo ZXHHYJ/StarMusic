@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.PlayListModel
-import com.zxhhyj.music.service.media.playmanager.PlayManager
+import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.SheetDestination
@@ -82,7 +82,7 @@ fun PlayListCntScreen(
                     Spacer(modifier = Modifier.height(vertical))
                     Text(text = playlist.name, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                     AppButton(
-                        onClick = { PlayManager.play(playlist.songs.toList(), 0) },
+                        onClick = { PlayManager.play(playlist.songs, 0) },
                         imageVector = Icons.Rounded.PlayArrow,
                         text = stringResource(id = R.string.play_all),
                         modifier = Modifier.padding(vertical = vertical / 2)
@@ -102,7 +102,7 @@ fun PlayListCntScreen(
                             }
                         },
                         onClick = {
-                            PlayManager.play(playlist.songs.toList(), index)
+                            PlayManager.play(playlist.songs, index)
                         })
                 }
             }

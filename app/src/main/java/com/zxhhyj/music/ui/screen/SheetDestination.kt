@@ -10,13 +10,13 @@ import kotlinx.parcelize.RawValue
 sealed class SheetDestination : Parcelable {
 
     @Parcelize
-    data class SongInfo(val song: @RawValue SongBean) : SheetDestination()
+    data class SongInfo(val songBean: @RawValue SongBean) : SheetDestination()
 
     @Parcelize
-    data class SongMenu(val song: @RawValue SongBean) : SheetDestination()
+    data class SongMenu(val songBean: @RawValue SongBean) : SheetDestination()
 
     @Parcelize
-    data class AddToPlayList(val song: @RawValue SongBean) : SheetDestination()
+    data class AddToPlayList(val songBean: @RawValue SongBean) : SheetDestination()
 
     @Parcelize
     data class PlaylistMenu(val model: @RawValue PlayListModel) : SheetDestination()

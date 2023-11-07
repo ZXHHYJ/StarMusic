@@ -14,6 +14,7 @@ dependencyResolutionManagement {
         maven { url 'https://repo.huaweicloud.com/repository/maven/' }
         maven { url 'https://www.jitpack.io' }
         maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots' }
+        maven { url 'https://maven.google.com/' }
         google()
         mavenCentral()
     }

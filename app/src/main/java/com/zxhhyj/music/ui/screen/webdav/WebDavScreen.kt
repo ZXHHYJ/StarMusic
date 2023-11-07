@@ -17,13 +17,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
-import com.zxhhyj.music.service.media.playmanager.PlayManager
-import com.zxhhyj.music.service.webdav.WebDavWorkerManager
+import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.webdavmanager.WebDavManager
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
@@ -105,7 +104,7 @@ fun WebDavScreen(
                                     sheetNavController = sheetNavController,
                                     webDavFile = it,
                                     onClick = {
-                                        WebDavWorkerManager.download(it)
+                                        WebDavManager.download(it)
                                     },
                                     downloadedOnClick = {
                                         PlayManager.play(listOf(it), 0)
@@ -123,7 +122,7 @@ fun WebDavScreen(
                                     sheetNavController = sheetNavController,
                                     webDavFile = it,
                                     onClick = {
-                                        WebDavWorkerManager.download(it)
+                                        WebDavManager.download(it)
                                     },
                                     downloadedOnClick = {
                                         PlayManager.play(listOf(it), 0)
@@ -141,7 +140,7 @@ fun WebDavScreen(
                                     sheetNavController = sheetNavController,
                                     webDavFile = it,
                                     onClick = {
-                                        WebDavWorkerManager.download(it)
+                                        WebDavManager.download(it)
                                     },
                                     downloadedOnClick = {
                                         PlayManager.play(listOf(it), 0)

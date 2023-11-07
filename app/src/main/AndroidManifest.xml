@@ -60,7 +60,7 @@
             </intent-filter>
         </receiver>
         <service
-            android:name=".service.media.MediaPlayService"
+            android:name=".service.MediaPlayService"
             android:exported="false"
             android:foregroundServiceType="mediaPlayback">
             <intent-filter>

@@ -1,7 +1,8 @@
 @file:Suppress("UNUSED")
 
-package com.zxhhyj.music.service.media.playmanager
+package com.zxhhyj.music.service.playmanager
 
+import android.util.Range
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.zxhhyj.music.logic.bean.SongBean
@@ -24,7 +25,7 @@ object PlayManager {
     /**
      * MediaPlayer
      */
-    private val mSongPlayer = SongPlayer()
+    private val mCueMediaPlayer = CueMediaPlayer()
 
     /**
      * 当前播放的歌曲
@@ -54,12 +55,12 @@ object PlayManager {
     /**
      * 获取当前播放进度的 LiveData
      */
-    fun progressLiveData(): LiveData<Int> = mSongPlayer.currentProgress
+    fun progressLiveData(): LiveData<Int> = mCueMediaPlayer.currentProgress
 
     /**
      * 获取当前歌曲时长的 LiveData
      */
-    fun durationLiveData(): LiveData<Int> = mSongPlayer.songDuration
+    fun durationLiveData(): LiveData<Int> = mCueMediaPlayer.songDuration
 
     /**
      * 获取当前播放的歌曲的 LiveData
@@ -69,7 +70,7 @@ object PlayManager {
     /**
      * 获取暂停状态的 LiveData
      */
-    fun pauseLiveData(): LiveData<Boolean> = mSongPlayer.pause
+    fun pauseLiveData(): LiveData<Boolean> = mCueMediaPlayer.pause
 
     /**
      * 修改播放模式
@@ -90,7 +91,7 @@ object PlayManager {
      * 设置音乐播放进度
      */
     fun seekTo(position: Int) {
-        mSongPlayer.seekTo(position)
+        mCueMediaPlayer.seekTo(position)
     }
 
     /**
@@ -140,14 +141,14 @@ object PlayManager {
      * 开始播放音乐
      */
     fun start() {
-        mSongPlayer.start()
+        mCueMediaPlayer.start()
     }
 
     /**
      * 暂停播放音乐
      */
     fun pause() {
-        mSongPlayer.pause()
+        mCueMediaPlayer.pause()
     }
 
     /**
@@ -176,7 +177,7 @@ object PlayManager {
      * 清空播放列表
      */
     fun clearPlayList() {
-        mSongPlayer.pause()
+        mCueMediaPlayer.pause()
         mCurrentSong.value = null
         mPlayList.value = null
     }
@@ -187,9 +188,33 @@ object PlayManager {
             mPlayList.value?.let { list ->
                 val song = list.getOrNull(it) ?: return@let
                 mCurrentSong.value = song
-                mSongPlayer.play(song)
+                mCueMediaPlayer.play(song)
             }
         }
+    }
+
+    fun setEnableEqualizer(enabled: Boolean) {
+        mCueMediaPlayer.setEnableEqualizer(enabled)
+    }
+
+    fun setBandLevel(band: Int, level: Int) {
+        mCueMediaPlayer.setBandLevel(band, level)
+    }
+
+    fun getBandLevel(band: Int): Int {
+        return mCueMediaPlayer.getBandLevel(band)
+    }
+
+    fun getBandRange(): Range<Int> {
+        return mCueMediaPlayer.getBandRange()
+    }
+
+    fun getNumberOfBands(): Int {
+        return mCueMediaPlayer.getNumberOfBands()
+    }
+
+    fun getBandFreqRange(band: Int): IntArray {
+        return mCueMediaPlayer.getBandFreqRange(band)
     }
 
     private fun updateIndex(index: Int) {
@@ -203,7 +228,7 @@ object PlayManager {
 
     init {
         // 设置播放器的完成监听器和错误监听器，用于切换到下一首歌曲
-        mSongPlayer.apply {
+        mCueMediaPlayer.apply {
             setOnCompletionListener {
                 skipToNext()
             }

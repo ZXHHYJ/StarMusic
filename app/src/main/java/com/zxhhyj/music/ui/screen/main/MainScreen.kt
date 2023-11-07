@@ -60,13 +60,14 @@ import androidx.lifecycle.map
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.service.media.playmanager.PlayManager
+import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AlbumMotionBlur
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.PanelState
 import com.zxhhyj.music.ui.common.SlidingPanel
 import com.zxhhyj.music.ui.common.rememberPanelController
 import com.zxhhyj.music.ui.dialog.CreatePlayListDialog
+import com.zxhhyj.music.ui.dialog.DeleteSongDialog
 import com.zxhhyj.music.ui.dialog.EditPlayListTitleDialog
 import com.zxhhyj.music.ui.dialog.EditWebDavAddressDialog
 import com.zxhhyj.music.ui.dialog.EditWebDavPasswordDialog
@@ -669,6 +670,10 @@ fun MainScreen() {
                     onDismissRequest = onDismissRequest
                 )
             }
+
+            is DialogDestination.DeleteSong -> {
+                DeleteSongDialog(onDismissRequest = onDismissRequest, songBean = it.songBean)
+            }
         }
     }
 
@@ -714,13 +719,14 @@ fun MainScreen() {
                     SongMenuSheet(
                         mainNavController = mainNavController,
                         sheetNavController = sheetNavController,
-                        song = destination.song
+                        dialogNavController = dialogNavController,
+                        songBean = destination.songBean
                     )
                 }
 
                 is SheetDestination.SongInfo -> {
                     SongInfoSheet(
-                        song = destination.song
+                        song = destination.songBean
                     )
                 }
 
@@ -728,7 +734,7 @@ fun MainScreen() {
                     AddToPlayListSheet(
                         dialogNavController = dialogNavController,
                         sheetNavController = sheetNavController,
-                        song = destination.song
+                        song = destination.songBean
                     )
                 }
 

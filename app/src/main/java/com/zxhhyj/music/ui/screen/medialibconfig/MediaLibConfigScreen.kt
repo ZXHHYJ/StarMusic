@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.CloudUpload
 import androidx.compose.material.icons.rounded.FilterAlt
 import androidx.compose.material.icons.rounded.Folder
 import androidx.compose.material.icons.rounded.HideSource
@@ -26,7 +27,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.service.media.playmanager.PlayManager
+import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.ui.view.AppCenterTopBar
@@ -62,9 +63,6 @@ fun MediaLibConfigScreen(
                     }
                 }
             }
-        } else {
-            PlayManager.clearPlayList()
-            AndroidMediaLibRepository.clear()
         }
     }
     AppScaffold(
@@ -102,6 +100,9 @@ fun MediaLibConfigScreen(
                         checked = SettingRepository.EnableAndroidMediaLibs,
                         onCheckedChange = {
                             SettingRepository.EnableAndroidMediaLibs = it
+                            if (!it) {
+                                AndroidMediaLibRepository.clear()
+                            }
                         }
                     )
                     ItemDivider()
@@ -173,6 +174,26 @@ fun MediaLibConfigScreen(
                         enabled = SettingRepository.EnableAndroidMediaLibs
                     ) {
                         mainNavController.navigate(ScreenDestination.HiddenSong)
+                    }
+                }
+            }
+            item {
+                ItemSpacer()
+            }
+            item {
+                RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                    ItemArrowRight(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.CloudUpload,
+                                contentDescription = null
+                            )
+                        },
+                        text = { Text(text = stringResource(id = R.string.webdav)) },
+                        subText = { },
+                        enabled = SettingRepository.EnableStarMusicPro
+                    ) {
+                        mainNavController.navigate(ScreenDestination.WebDavConfig)
                     }
                 }
             }

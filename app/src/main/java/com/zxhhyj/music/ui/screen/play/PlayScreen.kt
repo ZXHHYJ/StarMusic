@@ -44,7 +44,7 @@ import com.mxalbert.sharedelements.MaterialArcMotionFactory
 import com.mxalbert.sharedelements.SharedElementsRoot
 import com.mxalbert.sharedelements.SharedElementsTransitionSpec
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.service.media.playmanager.PlayManager
+import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AlbumMotionBlur
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.common.PanelController

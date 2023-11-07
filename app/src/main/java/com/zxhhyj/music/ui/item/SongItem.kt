@@ -26,7 +26,7 @@ import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.bean.WebDavFile
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
-import com.zxhhyj.music.service.webdav.WebDavWorkerManager
+import com.zxhhyj.music.service.webdavmanager.WebDavManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.SoundQualityIcon
 import com.zxhhyj.music.ui.common.WebDavIcon
@@ -117,7 +117,7 @@ fun SongItem(
             downloadedOnClick.invoke(webDavSongBean)
         }
     } else {
-        val downloadState by WebDavWorkerManager.getDownloadState(webDavFile = webDavFile)
+        val downloadState by WebDavManager.getDownloadState(webDavFile = webDavFile)
         Item(
             icon = {
                 Box(contentAlignment = Alignment.Center) {

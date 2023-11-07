@@ -58,7 +58,22 @@ fun Lyric(
     onClick: (Int) -> Unit
 ) {
     BoxWithConstraints(modifier) {
-        lyric ?: run {
+
+        val lazyListState = rememberLazyListState()
+
+        val coroutineScope = rememberCoroutineScope()
+
+        val lyricList by remember(lyric, translation) {
+            mutableStateOf(
+                if (translation) {
+                    lyric?.split("\n")?.toSyncedLyrics()?.all
+                } else {
+                    lyric?.split("\n")?.toSyncedLyrics()?.main
+                }
+            )
+        }
+
+        if (lyricList == null || lyricList?.isEmpty() == true) {
             lyricItem.invoke(
                 Modifier.align(Alignment.Center),
                 stringResource(id = R.string.no_lyrics),
@@ -68,22 +83,8 @@ fun Lyric(
             return@BoxWithConstraints
         }
 
-        val lazyListState = rememberLazyListState()
-
-        val coroutineScope = rememberCoroutineScope()
-
-        val lyricList by remember(lyric, translation) {
-            mutableStateOf(
-                if (translation) {
-                    lyric.split("\n").toSyncedLyrics().all
-                } else {
-                    lyric.split("\n").toSyncedLyrics().main
-                }
-            )
-        }
-
         var position by remember {
-            mutableIntStateOf(lyricList.indexOfLast { liveTime >= it.first }.coerceAtLeast(0))
+            mutableIntStateOf(lyricList!!.indexOfLast { liveTime >= it.first }.coerceAtLeast(0))
         }
 
         var selectLyricItemSize by remember {
@@ -124,7 +125,7 @@ fun Lyric(
             item {
                 Spacer(modifier = Modifier.height(maxHeight / 2))
             }
-            itemsIndexed(lyricList) { index, model ->
+            itemsIndexed(lyricList!!) { index, model ->
                 lyricItem(
                     Modifier
                         .fillMaxWidth()
@@ -150,7 +151,7 @@ fun Lyric(
 
         val lyricHeightPx = with(LocalDensity.current) { maxHeight.roundToPx() }
         LaunchedEffect(Unit) {
-            lyricList.forEachIndexed { index, lrcContent ->
+            lyricList!!.forEachIndexed { index, lrcContent ->
                 if (liveTime >= lrcContent.first) {
                     val offset = (lyricHeightPx - selectLyricItemSize.height) / 2
                     lazyListState.scrollToItem((index + 1).coerceAtLeast(0), -offset)
@@ -178,7 +179,7 @@ fun Lyric(
             }
         }
         LaunchedEffect(liveTime) {
-            position = lyricList.indexOfLast { liveTime >= it.first }.coerceAtLeast(0)
+            position = lyricList!!.indexOfLast { liveTime >= it.first }.coerceAtLeast(0)
         }
     }
 }

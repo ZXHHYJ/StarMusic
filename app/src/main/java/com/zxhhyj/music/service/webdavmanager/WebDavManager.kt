@@ -1,4 +1,4 @@
-package com.zxhhyj.music.service.webdav
+package com.zxhhyj.music.service.webdavmanager
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -26,7 +26,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 @OptIn(DelicateCoroutinesApi::class)
-object WebDavWorkerManager {
+object WebDavManager {
     private val downloadTasks = mutableStateMapOf<String, DownloadTask>()
 
     fun getDownloadState(webDavFile: WebDavFile): State<DownloadState?> {

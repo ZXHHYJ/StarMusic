@@ -94,7 +94,7 @@ fun PayScreen(paddingValues: PaddingValues, mainNavController: NavController<Scr
                                     contentDescription = null
                                 )
                             },
-                            text = { Text(text = stringResource(id = R.string.i_have_made_an_honest_payment)) },
+                            text = { Text(text = stringResource(id = R.string.i_have_made_an_honest_payment) + "(1.00RMB)") },
                             subText = { }) {
                             SettingRepository.EnableHonestPayment = true
                             mainNavController.pop()

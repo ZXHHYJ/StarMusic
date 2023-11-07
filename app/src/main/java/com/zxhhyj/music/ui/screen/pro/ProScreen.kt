@@ -21,16 +21,19 @@ import androidx.compose.material.icons.rounded.CloudUpload
 import androidx.compose.material.icons.rounded.LibraryMusic
 import androidx.compose.material.icons.rounded.ShoppingCart
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.ui.screen.ScreenDestination
+import com.zxhhyj.ui.theme.ColorScheme
 import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
@@ -152,28 +155,31 @@ fun ProScreen(paddingValues: PaddingValues, mainNavController: NavController<Scr
                                     )
                                 },
                                 text = { Text(text = stringResource(id = R.string.thank_you_support)) },
-                                subText = {
-                                }) {
+                                subText = {}) {
                                 mainNavController.navigate(ScreenDestination.Pay)
                             }
                         }
                     } else {
-                        RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                            ItemArrowRight(
-                                icon = {
-                                    Icon(
-                                        imageVector = Icons.Rounded.ShoppingCart,
-                                        contentDescription = null
-                                    )
-                                },
-                                text = { Text(text = stringResource(id = R.string.buy_star_music_pro)) },
-                                subText = {
-                                    Text(
-                                        text = "1.00RMB",
-                                        color = LocalColorScheme.current.text
-                                    )
-                                }) {
-                                mainNavController.navigate(ScreenDestination.Pay)
+                        CompositionLocalProvider(
+                            LocalColorScheme provides ColorScheme(
+                                highlight = Color.White,
+                                highBackground = LocalColorScheme.current.highlight,
+                                text = Color.White,
+                                subText = Color.White
+                            )
+                        ) {
+                            RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                                ItemArrowRight(
+                                    icon = {
+                                        Icon(
+                                            imageVector = Icons.Rounded.ShoppingCart,
+                                            contentDescription = null
+                                        )
+                                    },
+                                    text = { Text(text = stringResource(id = R.string.buy_star_music_pro)) },
+                                    subText = {}) {
+                                    mainNavController.navigate(ScreenDestination.Pay)
+                                }
                             }
                         }
                     }

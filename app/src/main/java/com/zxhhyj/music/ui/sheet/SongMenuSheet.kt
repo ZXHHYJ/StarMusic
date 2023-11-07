@@ -20,8 +20,8 @@ import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
-import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
-import com.zxhhyj.music.service.media.playmanager.PlayManager
+import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.ui.view.RoundColumn
@@ -32,13 +32,13 @@ import com.zxhhyj.ui.view.item.ItemSpacer
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.popAll
-import java.io.File
 
 @Composable
 fun SongMenuSheet(
     mainNavController: NavController<ScreenDestination>,
     sheetNavController: NavController<SheetDestination>,
-    song: SongBean,
+    dialogNavController: NavController<DialogDestination>,
+    songBean: SongBean,
 ) {
     val currentSong by PlayManager.currentSongLiveData().observeAsState()
     LazyColumn {
@@ -46,18 +46,18 @@ fun SongMenuSheet(
             RoundColumn(modifier = Modifier.fillMaxWidth()) {
                 ItemArrowRight(
                     icon = { Icon(imageVector = Icons.Rounded.Album, contentDescription = null) },
-                    text = { Text(text = song.album.name) },
+                    text = { Text(text = songBean.album.name) },
                     subText = { Text(text = stringResource(id = R.string.album)) }) {
                     sheetNavController.popAll()
-                    mainNavController.navigate(ScreenDestination.AlbumCnt(song.album))
+                    mainNavController.navigate(ScreenDestination.AlbumCnt(songBean.album))
                 }
                 ItemDivider()
                 ItemArrowRight(
                     icon = { Icon(imageVector = Icons.Rounded.Person, contentDescription = null) },
-                    text = { Text(text = song.artist.name) },
+                    text = { Text(text = songBean.artist.name) },
                     subText = { Text(text = stringResource(id = R.string.singer)) }) {
                     sheetNavController.popAll()
-                    mainNavController.navigate(ScreenDestination.SingerCnt(song.artist))
+                    mainNavController.navigate(ScreenDestination.SingerCnt(songBean.artist))
                 }
             }
         }
@@ -71,7 +71,7 @@ fun SongMenuSheet(
                     text = { Text(text = stringResource(id = R.string.add_to_playlist)) },
                     subText = { }) {
                     sheetNavController.popAll()
-                    sheetNavController.navigate(SheetDestination.AddToPlayList(song))
+                    sheetNavController.navigate(SheetDestination.AddToPlayList(songBean))
                 }
                 ItemDivider()
                 Item(
@@ -84,7 +84,7 @@ fun SongMenuSheet(
                     text = { Text(text = stringResource(id = R.string.next_play)) },
                     subText = { }) {
                     sheetNavController.popAll()
-                    PlayManager.addNextPlay(song)
+                    PlayManager.addNextPlay(songBean)
                 }
                 ItemDivider()
                 Item(
@@ -96,30 +96,28 @@ fun SongMenuSheet(
                     },
                     subText = { }) {
                     sheetNavController.popAll()
-                    sheetNavController.navigate(SheetDestination.SongInfo(song))
+                    sheetNavController.navigate(SheetDestination.SongInfo(songBean))
                 }
                 ItemDivider()
-                if (song is SongBean.Local) {
-                    Item(
-                        icon = {
-                            Icon(
-                                imageVector = Icons.Rounded.HideSource,
-                                contentDescription = null
-                            )
-                        },
-                        text = {
-                            Text(
-                                text = stringResource(id = R.string.hide)
-                            )
-                        },
-                        subText = { },
-                        enabled = currentSong != song
-                    ) {
-                        sheetNavController.popAll()
-                        AndroidMediaLibRepository.hideSong(song)
-                    }
-                    ItemDivider()
+                Item(
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Rounded.HideSource,
+                            contentDescription = null
+                        )
+                    },
+                    text = {
+                        Text(
+                            text = stringResource(id = R.string.hide)
+                        )
+                    },
+                    subText = { },
+                    enabled = currentSong != songBean && songBean is SongBean.Local
+                ) {
+                    sheetNavController.popAll()
+                    AndroidMediaLibRepository.hideSong(songBean as SongBean.Local)
                 }
+                ItemDivider()
                 Item(
                     icon = {
                         Icon(
@@ -133,24 +131,10 @@ fun SongMenuSheet(
                         )
                     },
                     subText = { },
-                    enabled = currentSong != song
+                    enabled = currentSong != songBean
                 ) {
-                    when (song) {
-                        is SongBean.Local -> {
-                            val file = File(song.data)
-                            file.delete()
-                            AndroidMediaLibRepository.removeSong(song)
-                        }
-
-                        is SongBean.WebDav -> {
-                            val file = File(song.data)
-                            file.delete()
-                            WebDavMediaLibRepository.removeSong(song)
-                        }
-
-                        else -> {}
-                    }
                     sheetNavController.popAll()
+                    dialogNavController.navigate(DialogDestination.DeleteSong(songBean))
                 }
             }
         }

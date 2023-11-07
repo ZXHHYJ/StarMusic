@@ -25,11 +25,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.bean.SongBean
-import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
+import com.zxhhyj.music.logic.utils.MediaLibHelper
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
-import com.zxhhyj.music.service.media.playmanager.PlayManager
+import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.item.SubTitleItem
 import com.zxhhyj.music.ui.screen.ScreenDestination
@@ -46,7 +44,6 @@ import com.zxhhyj.ui.view.item.ItemDivider
 import com.zxhhyj.ui.view.toolbarHeight
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
-import java.util.Collections
 
 @Composable
 fun MediaLibScreen(
@@ -163,23 +160,7 @@ fun MediaLibScreen(
             SubTitleItem(title = stringResource(id = R.string.single))
             RoundColumn(modifier = Modifier.fillMaxWidth()) {
                 LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                    val list =
-                        (AndroidMediaLibRepository.songs + WebDavMediaLibRepository.songs).sortedWith(
-                            compareBy<SongBean> {
-                                when (SettingRepository.SongSort) {
-                                    SettingRepository.SongSortType.SONG_NAME.value -> it.songName
-                                    SettingRepository.SongSortType.SONG_DURATION.value -> it.duration
-                                    SettingRepository.SongSortType.SINGER_NAME.value -> it.artist.name
-                                    SettingRepository.SongSortType.DATE_MODIFIED.value -> it.dateModified
-                                    else -> null
-                                }
-                            }.let { comparator ->
-                                if (SettingRepository.Descending) {
-                                    Collections.reverseOrder(comparator)
-                                } else {
-                                    comparator
-                                }
-                            })
+                    val list = MediaLibHelper.songs
                     itemsIndexed(list) { index, item ->
                         SongItem(sheetNavController = sheetNavController, songBean = item) {
                             PlayManager.play(list, index)

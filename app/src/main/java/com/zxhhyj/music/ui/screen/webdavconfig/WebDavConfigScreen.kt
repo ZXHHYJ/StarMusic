@@ -64,7 +64,14 @@ fun WebDavConfigScreen(
                         )
                     },
                     text = { Text(text = stringResource(id = R.string.webdav)) },
-                    subText = { },
+                    subText = {
+                        Text(
+                            text = stringResource(
+                                id = R.string.media_lib_has_songs_size,
+                                WebDavMediaLibRepository.songs.size
+                            )
+                        )
+                    },
                     checked = SettingRepository.EnableWebDav,
                     onCheckedChange = {
                         SettingRepository.EnableWebDav = it

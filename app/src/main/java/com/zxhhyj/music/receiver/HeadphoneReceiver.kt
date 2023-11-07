@@ -3,7 +3,7 @@ package com.zxhhyj.music.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.zxhhyj.music.service.media.playmanager.PlayManager
+import com.zxhhyj.music.service.playmanager.PlayManager
 
 
 class HeadphoneReceiver : BroadcastReceiver() {

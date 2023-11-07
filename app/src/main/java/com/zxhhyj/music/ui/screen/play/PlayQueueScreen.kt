@@ -8,10 +8,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -35,7 +34,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -47,7 +50,7 @@ import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.service.media.playmanager.PlayManager
+import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.SoundQualityIcon
 import com.zxhhyj.music.ui.common.WebDavIcon
@@ -88,8 +91,8 @@ fun ColumnScope.PlayQueueScreen() {
         Spacer(modifier = Modifier.weight(1.0f))
         BottomNavigation(
             modifier = Modifier
-                .width(28.dp * 4)
-                .height(28.dp),
+                .widthIn(max = 120.dp)
+                .clip(RoundedCornerShape(round)),
             backgroundColor = Color.Transparent,
             elevation = 0.dp
         ) {
@@ -124,10 +127,9 @@ fun ColumnScope.PlayQueueScreen() {
                     },
                     selectedContentColor = Color.White,
                     unselectedContentColor = translucentWhiteColor,
-                    modifier = Modifier.clip(RoundedCornerShape(round))
+                    modifier = Modifier.clip(RoundedCornerShape(0))
                 )
             }
-
         }
     }
 
@@ -146,7 +148,38 @@ fun ColumnScope.PlayQueueScreen() {
         val currentSong by PlayManager.currentSongLiveData().observeAsState()
 
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .graphicsLayer { alpha = 0.99F }
+                .drawWithContent {
+                    val colors = listOf(
+                        Color.Transparent,
+                        Color.Black,
+                        Color.Black,
+                        Color.Black,
+                        Color.Black,
+                        Color.Black,
+                        Color.Black,
+                        Color.Black,
+                        Color.Black,
+                        Color.Black,
+                        Color.Black,
+                        Color.Black,
+                        Color.Black,
+                        Color.Black,
+                        Color.Black,
+                        Color.Black,
+                        Color.Black,
+                        Color.Black,
+                        Color.Black,
+                        Color.Transparent
+                    )
+                    drawContent()
+                    drawRect(
+                        brush = Brush.verticalGradient(colors),
+                        blendMode = BlendMode.DstIn
+                    )
+                },
             state = lazyListState
         ) {
             playlist?.let { songBeans ->

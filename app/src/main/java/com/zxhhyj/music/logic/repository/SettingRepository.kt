@@ -163,4 +163,22 @@ object SettingRepository {
         initialValue = false
     )
 
+    /**
+     * 均衡器
+     */
+    var EnableEqualizer by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "EnableEqualizer",
+        initialValue = false
+    )
+
+    /**
+     * 均衡器配置
+     */
+    var EqualizerConfig by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "EqualizerConfig",
+        initialValue = intArrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    )
+
 }

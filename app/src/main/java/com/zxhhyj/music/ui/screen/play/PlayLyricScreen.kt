@@ -19,7 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.service.media.playmanager.PlayManager
+import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.KeepScreenOn
 import com.zxhhyj.music.ui.common.lyric.Lyric
 import com.zxhhyj.music.ui.theme.translucentWhiteColor

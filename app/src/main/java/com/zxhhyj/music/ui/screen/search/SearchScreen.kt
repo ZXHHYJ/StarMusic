@@ -41,9 +41,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
-import com.zxhhyj.music.logic.repository.MediaLibRepository
+import com.zxhhyj.music.logic.utils.MediaLibHelper
 import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
-import com.zxhhyj.music.service.media.playmanager.PlayManager
+import com.zxhhyj.music.service.playmanager.PlayManager
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.item.AlbumItem
 import com.zxhhyj.music.ui.item.ArtistItem
@@ -186,7 +186,7 @@ fun SearchScreen(
                             if (fixedCount < 2) {
                                 fixedCount = 2
                             }
-                            val albums = MediaLibRepository.albums.filter {
+                            val albums = MediaLibHelper.albums.filter {
                                 it.name.contains(searchKey)
                             }
                             LazyVerticalGrid(
@@ -225,7 +225,7 @@ fun SearchScreen(
                     }
 
                     SearchScreenTabs.Singer -> {
-                        val artists = MediaLibRepository.artists.filter {
+                        val artists = MediaLibHelper.artists.filter {
                             it.name.contains(searchKey)
                         }
                         LazyColumn(modifier = Modifier.fillMaxSize()) {

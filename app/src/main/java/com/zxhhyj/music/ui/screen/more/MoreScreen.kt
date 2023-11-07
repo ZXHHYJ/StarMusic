@@ -10,6 +10,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.StarRate
+import androidx.compose.material.icons.rounded.Equalizer
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.MiscellaneousServices
 import androidx.compose.material.icons.rounded.Palette
@@ -81,6 +82,13 @@ fun MoreScreen(
                         text = { Text(text = stringResource(id = R.string.media_lib)) },
                         subText = { Text(text = stringResource(id = R.string.media_lib_info)) }) {
                         mainNavController.navigate(ScreenDestination.MediaLibConfig)
+                    }
+                    ItemDivider()
+                    ItemArrowRight(
+                        icon = { Icon(imageVector = Icons.Rounded.Equalizer, null) },
+                        text = { Text(text = stringResource(id = R.string.eq)) },
+                        subText = { Text(text = stringResource(id = R.string.eq)) }) {
+                        mainNavController.navigate(ScreenDestination.Equalizer)
                     }
                     ItemDivider()
                     ItemArrowRight(

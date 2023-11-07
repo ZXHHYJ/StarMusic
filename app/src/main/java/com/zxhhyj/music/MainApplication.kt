@@ -10,10 +10,8 @@ import com.zxhhyj.music.logic.bean.PlayListModel
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.bean.WebDavConfig
 import com.zxhhyj.music.logic.bean.WebDavFile
-import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
-import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.service.media.MediaPlayService
-import com.zxhhyj.music.service.media.playmanager.PlayManager
+import com.zxhhyj.music.service.MediaPlayService
+import com.zxhhyj.music.service.playmanager.PlayManager
 import io.fastkv.FastKVConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
@@ -66,6 +64,10 @@ class MainApplication : Application() {
             save = { bean -> bean.uuid },
             restore = { str -> PlayListModel(str) }
         )
+        registerTypeConverters<IntArray>(
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, IntArray::class.java) }
+        )
         //初始化播放管理器
         PlayManager.pauseLiveData()
             .observeForever {
@@ -78,12 +80,6 @@ class MainApplication : Application() {
                 if (it != null)
                     startPlayerService()
             }
-        //app启动后自动播放音乐功能
-        if (SettingRepository.EnableAutoPlayMusic) {
-            AndroidMediaLibRepository.songs.takeIf { it.isNotEmpty() }?.run {
-                PlayManager.play(this, 0)
-            }
-        }
     }
 
     @Synchronized
