@@ -206,9 +206,7 @@ fun MainScreen() {
 
     val panelController = rememberPanelController(panelState = PanelState.COLLAPSED)
 
-    val systemUiController = rememberSystemUiController()
-
-    systemUiController.setSystemBarsColor(
+    rememberSystemUiController().setSystemBarsColor(
         Color.Transparent,
         if (panelController.panelState == PanelState.EXPANDED) false else !isSystemInDarkTheme(),
         isNavigationBarContrastEnforced = false
@@ -667,7 +665,8 @@ fun MainScreen() {
 
             DialogDestination.SyncWebDavMediaLib -> {
                 SyncWebDavMediaLibDialog(
-                    onDismissRequest = onDismissRequest
+                    onDismissRequest = onDismissRequest,
+                    mainNavController = mainNavController
                 )
             }
 

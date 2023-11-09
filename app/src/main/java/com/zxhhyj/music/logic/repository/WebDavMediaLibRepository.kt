@@ -1,13 +1,13 @@
 package com.zxhhyj.music.logic.repository
 
 import com.funny.data_saver.core.mutableDataSaverListStateOf
-import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.bean.WebDavFile
 import com.zxhhyj.music.logic.config.DataSaverUtils
-import com.zxhhyj.music.ui.common.POPWindows
+import com.zxhhyj.music.logic.utils.SardineUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.File
 
 object WebDavMediaLibRepository {
 
@@ -33,30 +33,15 @@ object WebDavMediaLibRepository {
         songs -= song
     }
 
-    private fun createSardine(): OkHttpSardine {
-        return OkHttpSardine().apply {
-            setCredentials(
-                SettingRepository.WebDavConfig.username,
-                SettingRepository.WebDavConfig.password
-            )
-        }
-    }
-
-    suspend fun testLink() {
-        withContext(Dispatchers.IO) {
-            try {
-                val sardine = createSardine()
-                sardine.list(SettingRepository.WebDavConfig.address)
-                POPWindows.postValue("连接成功")
-            } catch (_: Exception) {
-                POPWindows.postValue("连接失败")
-            }
-        }
-    }
-
     suspend fun scanMedia() {
         withContext(Dispatchers.IO) {
-            val sardine = createSardine()
+            val sardine = SardineUtils.createSardine()
+            try {
+                sardine.list(SettingRepository.WebDavConfig.address)
+                //先进行一次连通性测试
+            } catch (e: Exception) {
+                throw e
+            }
             fun traverseFolder(path: String): List<WebDavFile> {
                 val fileList = mutableListOf<WebDavFile>()
                 try {
@@ -69,7 +54,7 @@ object WebDavMediaLibRepository {
                                 WebDavFile(
                                     file.path,
                                     file.name,
-                                    "$path${file.name}",
+                                    path + file.name,
                                     file.etag,
                                     file.contentLength
                                 )
@@ -92,6 +77,15 @@ object WebDavMediaLibRepository {
             }
         }
         return false
+    }
+
+    fun clear() {
+        davFileList = emptyList()
+        for (song in songs) {
+            val file = File(song.data)
+            file.delete()
+        }
+        songs = emptyList()
     }
 
 }

@@ -15,3 +15,8 @@
 -dontwarn org.xmlpull.v1.**
 -keep class org.xmlpull.v1.** { *; }
 -dontwarn android.content.res.XmlResourceParser
+
+-keep class com.zxhhyj.music.logic.bean.** { *; }
+
+#混淆前后的映射
+-printmapping mapping.txt

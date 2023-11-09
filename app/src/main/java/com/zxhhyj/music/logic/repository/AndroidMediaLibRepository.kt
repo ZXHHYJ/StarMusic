@@ -1,6 +1,7 @@
 package com.zxhhyj.music.logic.repository
 
 import android.provider.MediaStore
+import androidx.core.database.getStringOrNull
 import com.funny.data_saver.core.mutableDataSaverListStateOf
 import com.kyant.tag.Metadata
 import com.zxhhyj.music.MainApplication
@@ -49,6 +50,7 @@ object AndroidMediaLibRepository {
      */
     suspend fun scanMedia() {
         withContext(Dispatchers.IO) {
+            val scanSongs = mutableListOf<SongBean.Local>()
             val query = MainApplication.context.contentResolver.query(
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 null,
@@ -56,7 +58,6 @@ object AndroidMediaLibRepository {
                 null,
                 null
             )
-            val scanSongs = mutableListOf<SongBean.Local>()
             query?.use { cursor ->
                 val albumIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)
                 val albumIdIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
@@ -70,15 +71,15 @@ object AndroidMediaLibRepository {
                     cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)
 
                 while (cursor.moveToNext()) {
-                    val album = cursor.getString(albumIndex)
+                    val album = cursor.getStringOrNull(albumIndex) ?: "<unknown>"
                     val albumId = cursor.getLong(albumIdIndex)
-                    val artist = cursor.getString(artistIndex)
+                    val artist = cursor.getStringOrNull(artistIndex) ?: "<unknown>"
                     val duration = cursor.getLong(durationIndex)
                     val data = cursor.getString(dataIndex)
                     val songName = cursor.getString(songNameIndex)
                     val size = cursor.getLong(sizeIndex)
                     val id = cursor.getLong(idIndex)
-                    val dateModified = query.getLong(dateModifiedIndex)
+                    val dateModified = cursor.getLong(dateModifiedIndex)
                     val metadata = Metadata.getMetadata(data)
                     val coverUrl = "content://media/external/audio/albumart/${albumId}"
 
@@ -101,10 +102,9 @@ object AndroidMediaLibRepository {
                                         dateModified = dateModified,
                                         songName = track.title,
                                         size = size,
-                                        id = id,
                                         bitrate = metadata?.bitrate,
                                         samplingRate = metadata?.sampleRate,
-                                        lyric = metadata?.properties?.get("LYRICS")?.get(0),
+                                        lyric = metadata?.properties?.get("LYRICS")?.getOrNull(0),
                                         startPosition = startPosition,
                                         endPosition = endPosition,
                                     )
@@ -121,10 +121,9 @@ object AndroidMediaLibRepository {
                                     dateModified = dateModified,
                                     songName = songName,
                                     size = size,
-                                    id = id,
                                     bitrate = metadata?.bitrate,
                                     samplingRate = metadata?.sampleRate,
-                                    lyric = metadata?.properties?.get("LYRICS")?.get(0),
+                                    lyric = metadata?.properties?.get("LYRICS")?.getOrNull(0),
                                     startPosition = 0,
                                     endPosition = duration,
                                 )
@@ -141,10 +140,9 @@ object AndroidMediaLibRepository {
                                 dateModified = dateModified,
                                 songName = songName,
                                 size = size,
-                                id = id,
                                 bitrate = metadata?.bitrate,
                                 samplingRate = metadata?.sampleRate,
-                                lyric = metadata?.properties?.get("LYRICS")?.get(0),
+                                lyric = metadata?.properties?.get("LYRICS")?.getOrNull(0),
                                 startPosition = 0,
                                 endPosition = duration,
                             )
@@ -152,7 +150,6 @@ object AndroidMediaLibRepository {
                     }
                 }
             }
-            query?.close()
             scanSongs.removeAll(hideSongs)
             songs = scanSongs
             updateLibs()

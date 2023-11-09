@@ -3,6 +3,7 @@ package com.zxhhyj.music.logic.repository
 import com.funny.data_saver.core.mutableDataSaverStateOf
 import com.zxhhyj.music.logic.bean.WebDavConfig
 import com.zxhhyj.music.logic.config.DataSaverUtils
+import com.zxhhyj.music.service.playmanager.PlayManager
 
 object SettingRepository {
 
@@ -124,7 +125,7 @@ object SettingRepository {
     var LyricFontSize by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "LyricFontSize_V2",
-        initialValue = 28
+        initialValue = 26
     )
 
     /**
@@ -133,7 +134,7 @@ object SettingRepository {
     var LyricFontBold by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "LyricFontBold",
-        initialValue = true
+        initialValue = false
     )
 
     /**
@@ -179,6 +180,15 @@ object SettingRepository {
         dataSaverInterface = DataSaverUtils,
         key = "EqualizerConfig",
         initialValue = intArrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    )
+
+    /**
+     * 播放模式
+     */
+    var PlayMode by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "PlayMode",
+        initialValue = PlayManager.PlayMode.LIST_LOOP
     )
 
 }

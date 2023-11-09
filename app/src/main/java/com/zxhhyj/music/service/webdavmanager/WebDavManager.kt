@@ -9,13 +9,12 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.kyant.tag.Metadata
-import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import com.zxhhyj.music.MainApplication
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.bean.WebDavFile
-import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
-import com.zxhhyj.music.ui.common.POPWindows
+import com.zxhhyj.music.logic.utils.SardineUtils
+import com.zxhhyj.music.ui.common.PopWindows
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -38,12 +37,7 @@ object WebDavManager {
         val downloadJob =
             GlobalScope.launch(context = Dispatchers.IO) {
                 try {
-                    val sardine = OkHttpSardine().apply {
-                        setCredentials(
-                            SettingRepository.WebDavConfig.username,
-                            SettingRepository.WebDavConfig.password
-                        )
-                    }
+                    val sardine = SardineUtils.createSardine()
                     val inputStream = sardine[webDavFile.downloadPath]
                     val directory = MainApplication.context.getExternalFilesDir("music")
                     val songFile = File(directory, webDavFile.name)
@@ -89,14 +83,14 @@ object WebDavManager {
                         size = songFile.length(),
                         bitrate = metadata?.bitrate,
                         samplingRate = metadata?.sampleRate,
-                        lyric = metadata?.properties?.get("LYRICS")?.get(0),
+                        lyric = metadata?.properties?.get("LYRICS")?.getOrNull(0),
                         startPosition = 0,
                         endPosition = metadata?.lengthInMilliseconds ?: 0
                     )
                     WebDavMediaLibRepository.addSong(songBean)
-                    POPWindows.postValue("下载成功")
+                    PopWindows.postCheckMessage("下载成功")
                 } catch (_: Exception) {
-                    POPWindows.postValue("下载失败")
+                    PopWindows.postErrorMessage("下载失败")
                 } finally {
                     downloadTasks.remove(webDavFile.downloadPath)
                 }

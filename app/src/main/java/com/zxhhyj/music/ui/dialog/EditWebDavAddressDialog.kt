@@ -36,7 +36,8 @@ fun EditWebDavAddressDialog(onDismissRequest: () -> Unit) {
                 stringResource(id = R.string.yes),
                 modifier = Modifier.clickable {
                     SettingRepository.WebDavConfig =
-                        SettingRepository.WebDavConfig.copy(address = address)
+                        SettingRepository.WebDavConfig.copy(address = address.takeUnless { it.isNotEmpty() && it.last() == '/' }
+                            ?.plus("/") ?: address)
                     onDismissRequest.invoke()
                 })
         },

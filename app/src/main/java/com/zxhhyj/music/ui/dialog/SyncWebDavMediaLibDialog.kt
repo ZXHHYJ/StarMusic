@@ -13,12 +13,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
+import com.zxhhyj.music.ui.common.PopWindows
+import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.YesNoDialog
+import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.moveToTop
+import dev.olshevski.navigation.reimagined.navigate
+import kotlinx.coroutines.delay
 
 @Composable
 fun SyncWebDavMediaLibDialog(
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
+    mainNavController: NavController<ScreenDestination>
 ) {
     YesNoDialog(
         onDismissRequest = onDismissRequest,
@@ -36,7 +43,18 @@ fun SyncWebDavMediaLibDialog(
         }
     }
     LaunchedEffect(Unit) {
-        WebDavMediaLibRepository.scanMedia()
+        try {
+            WebDavMediaLibRepository.scanMedia()
+        } catch (_: Exception) {
+            delay(100)
+            //避免闪烁影响用户体验
+            onDismissRequest.invoke()
+            PopWindows.postErrorMessage("连接失败")
+            return@LaunchedEffect
+        }
+        if (!mainNavController.moveToTop { it is ScreenDestination.WebDav }) {
+            mainNavController.navigate(ScreenDestination.WebDav)
+        }
         onDismissRequest.invoke()
     }
 }

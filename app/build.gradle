@@ -19,6 +19,10 @@ android {
         versionCode Integer.parseInt(code)
         versionName "${calendar.get(Calendar.YEAR)}.${calendar.get(Calendar.MONTH) + 1}.${calendar.get(Calendar.DAY_OF_MONTH)}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            //noinspection ChromeOsAbiSupport
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+        }
     }
 
     composeOptions {

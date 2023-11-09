@@ -34,11 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -148,38 +144,7 @@ fun ColumnScope.PlayQueueScreen() {
         val currentSong by PlayManager.currentSongLiveData().observeAsState()
 
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .graphicsLayer { alpha = 0.99F }
-                .drawWithContent {
-                    val colors = listOf(
-                        Color.Transparent,
-                        Color.Black,
-                        Color.Black,
-                        Color.Black,
-                        Color.Black,
-                        Color.Black,
-                        Color.Black,
-                        Color.Black,
-                        Color.Black,
-                        Color.Black,
-                        Color.Black,
-                        Color.Black,
-                        Color.Black,
-                        Color.Black,
-                        Color.Black,
-                        Color.Black,
-                        Color.Black,
-                        Color.Black,
-                        Color.Black,
-                        Color.Transparent
-                    )
-                    drawContent()
-                    drawRect(
-                        brush = Brush.verticalGradient(colors),
-                        blendMode = BlendMode.DstIn
-                    )
-                },
+            modifier = Modifier.fillMaxSize(),
             state = lazyListState
         ) {
             playlist?.let { songBeans ->

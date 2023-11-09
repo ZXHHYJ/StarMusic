@@ -10,21 +10,32 @@ import com.zxhhyj.music.logic.bean.PlayListModel
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.bean.WebDavConfig
 import com.zxhhyj.music.logic.bean.WebDavFile
+import com.zxhhyj.music.logic.repository.SettingRepository
+import com.zxhhyj.music.logic.utils.MediaLibHelper
 import com.zxhhyj.music.service.MediaPlayService
 import com.zxhhyj.music.service.playmanager.PlayManager
 import io.fastkv.FastKVConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
+import kotlin.system.exitProcess
 
 class MainApplication : Application() {
 
     companion object {
         lateinit var context: Application
             private set
+        var uncaughtExceptionHandler: Thread.UncaughtExceptionHandler? = null
     }
 
     override fun onCreate() {
         super.onCreate()
+        if (uncaughtExceptionHandler == null) {
+            uncaughtExceptionHandler = Thread.UncaughtExceptionHandler { _, e ->
+                e.printStackTrace()
+                CrashActivity.startActivity(this, e.stackTraceToString())
+                exitProcess(0)
+            }
+        }
         //全局context
         context = this
         //初始化FastKV
@@ -68,7 +79,10 @@ class MainApplication : Application() {
             save = { bean -> gson.toJson(bean) },
             restore = { str -> gson.fromJson(str, IntArray::class.java) }
         )
-        //初始化播放管理器
+        registerTypeConverters<PlayManager.PlayMode>(
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, PlayManager.PlayMode::class.java) }
+        )
         PlayManager.pauseLiveData()
             .observeForever {
                 if (it == false)
@@ -80,6 +94,12 @@ class MainApplication : Application() {
                 if (it != null)
                     startPlayerService()
             }
+        //app启动后自动播放音乐
+        if (SettingRepository.EnableAutoPlayMusic) {
+            MediaLibHelper.songs.takeIf { it.isNotEmpty() }?.run {
+                PlayManager.play(this, 0)
+            }
+        }
     }
 
     @Synchronized

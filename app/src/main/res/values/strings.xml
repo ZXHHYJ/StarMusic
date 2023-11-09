@@ -91,4 +91,5 @@
     <string name="permanent_delete">永久删除</string>
     <string name="delete_from_media_library">从媒体库中删除</string>
     <string name="eq">均衡器</string>
+    <string name="crash_info">崩溃信息</string>
 </resources>
