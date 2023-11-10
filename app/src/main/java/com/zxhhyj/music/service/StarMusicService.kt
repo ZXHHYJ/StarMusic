@@ -4,62 +4,36 @@ import android.Manifest
 import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.drawable.BitmapDrawable
 import android.media.AudioManager
 import android.media.session.MediaSession
 import android.os.Build
-import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
-import android.support.v4.media.session.PlaybackStateCompat
 import android.view.KeyEvent
 import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.LifecycleService
-import androidx.lifecycle.coroutineScope
 import androidx.media.session.MediaButtonReceiver
-import coil.imageLoader
-import coil.request.ImageRequest
 import com.zxhhyj.music.MainActivity
-import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.AudioFocusUtils
-import com.zxhhyj.music.logic.utils.BitmapUtils
 import com.zxhhyj.music.service.playmanager.PlayManager
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-class MediaPlayService : LifecycleService() {
+class StarMusicService : LifecycleService() {
 
     companion object {
 
-        private const val NOTIFICATION_CHANNEL_ID = "media_notification_channel"
-
-        private const val NOTIFICATION_ID = 1
+        private const val NOTIFICATION_ID = 12 + 13
 
         @Volatile
         var isServiceAlive = false
             private set
 
-        private val PlaybackStateBuilder = PlaybackStateCompat.Builder()
-            .setActions(
-                PlaybackStateCompat.ACTION_SEEK_TO or
-                        PlaybackStateCompat.ACTION_PLAY_PAUSE or
-                        PlaybackStateCompat.ACTION_SKIP_TO_NEXT or
-                        PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS or
-                        PlaybackStateCompat.ACTION_STOP or
-                        PlaybackStateCompat.ACTION_PLAY or
-                        PlaybackStateCompat.ACTION_PAUSE
-            )
-
-        private val MediaMetadataBuilder = MediaMetadataCompat.Builder()
     }
 
     @Synchronized
     private fun refreshMediaNotifications() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-            startForeground(NOTIFICATION_ID, mMediaNotification.build())
+            startForeground(NOTIFICATION_ID, mStarMusicNotification.build())
             if (PlayManager.pauseLiveData().value == true) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     stopForeground(STOP_FOREGROUND_DETACH)
@@ -76,47 +50,9 @@ class MediaPlayService : LifecycleService() {
             ) {
                 return
             }
-            mNotificationManager.notify(NOTIFICATION_ID, mMediaNotification.build())
+            mNotificationManager.notify(NOTIFICATION_ID, mStarMusicNotification.build())
         }
     }
-
-    /**
-     *  通知session播放状态、播放进度、播放速度
-     */
-    private fun refreshMediaSession() {
-        mMediaSession.setPlaybackState(
-            PlaybackStateBuilder.setState(
-                if (PlayManager.pauseLiveData().value == true) PlaybackStateCompat.STATE_PAUSED else PlaybackStateCompat.STATE_PLAYING,
-                PlayManager.progressLiveData().value?.toLong() ?: 0,
-                0F
-            ).build()
-        )
-    }
-
-    private fun refreshMetadata(
-        songName: String? = null,
-        artistName: String? = null,
-        duration: Int? = null
-    ) {
-        if (songName != null) {
-            MediaMetadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, songName)
-        }
-        if (artistName != null) {
-            MediaMetadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, artistName)
-        }
-        if (duration != null && duration > 0) {
-            MediaMetadataBuilder.putLong(
-                MediaMetadataCompat.METADATA_KEY_DURATION,
-                duration.toLong()
-            )
-        }
-        mMediaSession.setMetadata(MediaMetadataBuilder.build())
-    }
-
-    /**
-     * 媒体通知
-     */
-    private lateinit var mMediaNotification: MediaNotification
 
     /**
      * 媒体会话
@@ -128,6 +64,8 @@ class MediaPlayService : LifecycleService() {
      */
     private lateinit var mNotificationManager: NotificationManagerCompat
 
+    private lateinit var mStarMusicNotification: StarMusicNotification
+
     /**
      * 管理音频焦点
      */
@@ -137,34 +75,18 @@ class MediaPlayService : LifecycleService() {
         isServiceAlive = true
         super.onCreate()
         mAudioFocusUtils = AudioFocusUtils(this, AudioFocusChangeListener())
-        PlayManager.currentSongLiveData().observe(this@MediaPlayService) {
-            if (it == null) return@observe
-            mMediaNotification
-                .setContentTitle(it.songName)
-                .setContentText(it.artist.name)
-            refreshMediaNotifications()
-            lifecycle.coroutineScope.launch(Dispatchers.IO) {
-                try {
-                    val drawable = imageLoader.execute(
-                        ImageRequest.Builder(this@MediaPlayService)
-                            .data(it.coverUrl)
-                            .build()
-                    ).drawable as BitmapDrawable
-                    withContext(Dispatchers.Main) {
-                        mMediaNotification.setLargeIcon(BitmapUtils.compressBitmap(drawable.bitmap))
-                        refreshMediaNotifications()
-                    }
-                } catch (_: Exception) {
-                }
+        PlayManager.currentSongLiveData().observe(this@StarMusicService) {
+            it?.apply {
+                mStarMusicNotification.setSongBean(this)
+                refreshMediaNotifications()
             }
-            refreshMetadata(songName = it.songName, artistName = it.artist.name)
         }
-        PlayManager.progressLiveData().observe(this@MediaPlayService) {
-            refreshMediaSession()
+        PlayManager.progressLiveData().observe(this@StarMusicService) {
+            mStarMusicNotification.setPosition(it)
         }
-        PlayManager.pauseLiveData().observe(this@MediaPlayService) {
+        PlayManager.pauseLiveData().observe(this@StarMusicService) {
+            mStarMusicNotification.setPlaying(it)
             refreshMediaNotifications()
-            refreshMediaSession()
 
             if (it == false) {
                 mAudioFocusUtils.requestAudioFocus(
@@ -175,10 +97,7 @@ class MediaPlayService : LifecycleService() {
                 mAudioFocusUtils.abandonAudioFocus()
             }
         }
-        PlayManager.durationLiveData().observe(this@MediaPlayService) {
-            refreshMetadata(duration = it)
-        }
-        PlayManager.playListLiveData().observe(this@MediaPlayService) {
+        PlayManager.playListLiveData().observe(this@StarMusicService) {
             //播放列表被清空
             //为了避免用户尝试恢复播放
             //直接把服务杀掉
@@ -197,20 +116,9 @@ class MediaPlayService : LifecycleService() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        //配置通知
         if (!::mNotificationManager.isInitialized) {
-            mNotificationManager = NotificationManagerCompat.from(this)
-            val channel = NotificationChannelCompat.Builder(
-                NOTIFICATION_CHANNEL_ID,
-                NotificationManagerCompat.IMPORTANCE_LOW
-            ).apply {
-                setName(getString(R.string.channel_name))
-                setDescription(getString(R.string.channel_name))
-                setVibrationEnabled(false)
-            }
-            mNotificationManager.createNotificationChannel(channel.build())
+            mNotificationManager = StarMusicNotification.createChannel(this)
         }
-        //配置媒体会话
         if (!::mMediaSession.isInitialized) {
             mMediaSession =
                 MediaSessionCompat.fromMediaSession(this, MediaSession(this, packageName))
@@ -224,10 +132,10 @@ class MediaPlayService : LifecycleService() {
                 )
             )
             mMediaSession.setCallback(MediaSessionCallback())
-            mMediaNotification = MediaNotification(this, mMediaSession, NOTIFICATION_CHANNEL_ID)
+            mStarMusicNotification = StarMusicNotification.Builder(this, mMediaSession)
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            startForeground(NOTIFICATION_ID, mMediaNotification.build())
+            startForeground(NOTIFICATION_ID, mStarMusicNotification.build())
         }
         MediaButtonReceiver.handleIntent(mMediaSession, intent)
         return super.onStartCommand(intent, flags, startId)
@@ -240,6 +148,26 @@ class MediaPlayService : LifecycleService() {
         override fun onSeekTo(pos: Long) {
             super.onSeekTo(pos)
             PlayManager.seekTo(pos.toInt())
+        }
+
+        override fun onPlay() {
+            super.onPlay()
+            PlayManager.start()
+        }
+
+        override fun onPause() {
+            super.onPause()
+            PlayManager.pause()
+        }
+
+        override fun onSkipToPrevious() {
+            super.onSkipToPrevious()
+            PlayManager.skipToPrevious()
+        }
+
+        override fun onSkipToNext() {
+            super.onSkipToNext()
+            PlayManager.skipToNext()
         }
 
         override fun onMediaButtonEvent(mediaButtonEvent: Intent): Boolean {

@@ -12,7 +12,7 @@ import com.zxhhyj.music.logic.bean.WebDavConfig
 import com.zxhhyj.music.logic.bean.WebDavFile
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.MediaLibHelper
-import com.zxhhyj.music.service.MediaPlayService
+import com.zxhhyj.music.service.StarMusicService
 import com.zxhhyj.music.service.playmanager.PlayManager
 import io.fastkv.FastKVConfig
 import kotlinx.coroutines.Dispatchers
@@ -104,8 +104,8 @@ class MainApplication : Application() {
 
     @Synchronized
     private fun startPlayerService() {
-        if (!MediaPlayService.isServiceAlive) {
-            val intent = Intent(this, MediaPlayService::class.java)
+        if (!StarMusicService.isServiceAlive) {
+            val intent = Intent(this, StarMusicService::class.java)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(intent)
             } else {

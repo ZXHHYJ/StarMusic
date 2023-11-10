@@ -52,6 +52,7 @@ open class SongBean(
         override val songName: String,
         @SerializedName("localSize")
         override val size: Long,
+        val id: Long,
         @SerializedName("localBitrate")
         override val bitrate: Int?,
         @SerializedName("localSamplingRate")
@@ -77,6 +78,7 @@ open class SongBean(
         startPosition,
         endPosition
     )
+
 
     @Parcelize
     data class WebDav(
