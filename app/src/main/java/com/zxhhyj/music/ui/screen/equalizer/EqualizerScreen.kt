@@ -37,7 +37,7 @@ fun EqualizerScreen(paddingValues: PaddingValues) {
             .padding(paddingValues), topBar = {
             AppCenterTopBar(
                 modifier = Modifier.fillMaxWidth(),
-                title = stringResource(id = R.string.eq)
+                title = { Text(text = stringResource(id = R.string.eq)) }
             ) {
 
             }

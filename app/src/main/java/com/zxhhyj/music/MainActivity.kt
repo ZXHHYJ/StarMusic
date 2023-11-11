@@ -12,7 +12,7 @@ import androidx.core.view.WindowCompat
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.receiver.HeadphoneReceiver
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.ui.common.PopWindows
+import com.zxhhyj.music.ui.common.ComposeToast
 import com.zxhhyj.music.ui.screen.main.MainScreen
 import com.zxhhyj.music.ui.theme.MandySaMusicTheme
 
@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
             WindowCompat.setDecorFitsSystemWindows(window, false)
             MandySaMusicTheme {
                 MainScreen()
-                PopWindows.PopWin()
+                ComposeToast.ComposeToast()
             }
             LaunchedEffect(SettingRepository.EnableEqualizer) {
                 PlayManager.setEnableEqualizer(SettingRepository.EnableEqualizer)

@@ -55,7 +55,7 @@ fun AlbumCntScreen(
         topBar = {
             AppTopBar(
                 modifier = Modifier.fillMaxWidth(),
-                title = album.name,
+                title = { Text(text = album.name) },
                 actions = {}
             ) {
                 Column(
@@ -73,6 +73,7 @@ fun AlbumCntScreen(
                     Text(
                         text = album.name,
                         fontSize = 16.sp,
+                        color = LocalColorScheme.current.text,
                         fontWeight = FontWeight.Bold
                     )
                     Text(

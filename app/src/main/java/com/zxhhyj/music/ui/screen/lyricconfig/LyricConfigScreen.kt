@@ -57,7 +57,7 @@ fun LyricConfigScreen(paddingValues: PaddingValues) {
             .padding(paddingValues),
         topBar = {
             AppCenterTopBar(
-                modifier = Modifier, title = stringResource(id = R.string.lyric)
+                modifier = Modifier, title = { Text(text = stringResource(id = R.string.lyric)) }
             )
         }) {
         LazyColumn(

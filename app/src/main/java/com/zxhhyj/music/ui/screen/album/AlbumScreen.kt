@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
@@ -53,7 +54,7 @@ fun AlbumScreen(
             topBar = {
                 AppCenterTopBar(
                     modifier = Modifier.fillMaxWidth(),
-                    title = stringResource(id = R.string.album),
+                    title = { Text(text = stringResource(id = R.string.album)) },
                     actions = {
                         AppIconButton(onClick = {
                             mainNavController.navigate(

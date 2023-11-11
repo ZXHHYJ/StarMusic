@@ -48,7 +48,7 @@ class CrashActivity : ComponentActivity() {
                     topBar = {
                         AppCenterTopBar(
                             modifier = Modifier.fillMaxWidth(),
-                            title = stringResource(id = R.string.crash_info)
+                            title = { Text(text = stringResource(id = R.string.crash_info)) }
                         ) {
 
                         }

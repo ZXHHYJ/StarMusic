@@ -47,7 +47,7 @@ fun HiddenSongScreen(paddingValues: PaddingValues) {
         topBar = {
             AppCenterTopBar(
                 modifier = Modifier,
-                title = stringResource(id = R.string.hidden_songs)
+                title = { Text(text = stringResource(id = R.string.hidden_songs)) }
             )
         }) {
         RoundColumn(modifier = Modifier.fillMaxWidth()) {

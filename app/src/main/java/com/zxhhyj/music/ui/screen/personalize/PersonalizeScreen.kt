@@ -42,7 +42,7 @@ fun PersonalizeScreen(
         topBar = {
             AppCenterTopBar(
                 modifier = Modifier.fillMaxWidth(),
-                title = stringResource(id = R.string.personalize)
+                title = { Text(text = stringResource(id = R.string.personalize)) }
             ) {
 
             }

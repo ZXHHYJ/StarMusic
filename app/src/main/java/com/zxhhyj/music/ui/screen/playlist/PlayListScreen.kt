@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.MoreVert
@@ -43,7 +44,7 @@ fun PlayListScreen(
         topBar = {
             AppCenterTopBar(
                 modifier = Modifier,
-                title = stringResource(id = R.string.play_list),
+                title = { Text(text = stringResource(id = R.string.play_list)) },
                 actions = {
                     AppIconButton(onClick = { dialogNavController.navigate(DialogDestination.CreatePlayList) }) {
                         Icon(

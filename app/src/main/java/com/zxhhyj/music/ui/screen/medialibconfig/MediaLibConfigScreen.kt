@@ -73,7 +73,7 @@ fun MediaLibConfigScreen(
         topBar = {
             AppCenterTopBar(
                 modifier = Modifier.fillMaxWidth(),
-                title = stringResource(id = R.string.media_lib)
+                title = { Text(text = stringResource(id = R.string.media_lib)) }
             )
         }) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {

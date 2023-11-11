@@ -1,14 +1,14 @@
 package com.zxhhyj.music.ui.screen.medialib
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -20,10 +20,9 @@ import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.PlaylistPlay
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.MediaLibHelper
@@ -33,17 +32,17 @@ import com.zxhhyj.music.ui.item.SubTitleItem
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.music.ui.screen.search.SearchScreenTabs
-import com.zxhhyj.music.ui.theme.horizontal
-import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppIconButton
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.AppTopBar
+import com.zxhhyj.ui.view.LocalTopBarState
 import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.ItemArrowRight
 import com.zxhhyj.ui.view.item.ItemDivider
-import com.zxhhyj.ui.view.toolbarHeight
+import com.zxhhyj.ui.view.roundColumn
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
+import kotlinx.coroutines.launch
 
 @Composable
 fun MediaLibScreen(
@@ -51,92 +50,26 @@ fun MediaLibScreen(
     sheetNavController: NavController<SheetDestination>,
     paddingValues: PaddingValues
 ) {
+    val lazyListState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
+            val topBarState = LocalTopBarState.current
             AppTopBar(
                 modifier = Modifier.fillMaxWidth(),
-                title = stringResource(id = R.string.media_lib),
-                content = {
-                    Column(modifier = Modifier.fillMaxWidth()) {
-                        Text(
-                            text = stringResource(id = R.string.media_lib),
-                            color = LocalColorScheme.current.text,
-                            fontSize = 26.sp,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = horizontal)
-                                .height(toolbarHeight)
-                        )
-                        RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                            ItemArrowRight(
-                                icon = {
-                                    Icon(
-                                        imageVector = Icons.Rounded.PlaylistPlay,
-                                        contentDescription = null
-                                    )
-                                },
-                                text = { Text(text = stringResource(id = R.string.play_list)) },
-                                subText = { }) {
-                                mainNavController.navigate(ScreenDestination.PlayList)
+                title = {
+                    Text(
+                        text = stringResource(id = R.string.media_lib),
+                        modifier = Modifier.clickable {
+                            coroutineScope.launch {
+                                lazyListState.animateScrollToItem(0)
+                                topBarState.barOffsetHeightPx = 0f
                             }
-                            ItemDivider()
-                            ItemArrowRight(
-                                icon = {
-                                    Icon(
-                                        imageVector = Icons.Rounded.Album,
-                                        contentDescription = null
-                                    )
-                                },
-                                text = { Text(text = stringResource(id = R.string.album)) },
-                                subText = { }) {
-                                mainNavController.navigate(ScreenDestination.Album)
-                            }
-                            ItemDivider()
-                            ItemArrowRight(
-                                icon = {
-                                    Icon(
-                                        imageVector = Icons.Rounded.Mic,
-                                        contentDescription = null
-                                    )
-                                },
-                                text = { Text(text = stringResource(id = R.string.singer)) },
-                                subText = { }) {
-                                mainNavController.navigate(ScreenDestination.Singer)
-                            }
-                            ItemDivider()
-                            ItemArrowRight(
-                                icon = {
-                                    Icon(
-                                        imageVector = Icons.Rounded.Folder,
-                                        contentDescription = null
-                                    )
-                                },
-                                text = { Text(text = stringResource(id = R.string.folder)) },
-                                subText = { }) {
-                                mainNavController.navigate(ScreenDestination.Folder)
-                            }
-                            if (SettingRepository.EnableWebDav) {
-                                ItemDivider()
-                                ItemArrowRight(
-                                    icon = {
-                                        Icon(
-                                            imageVector = Icons.Rounded.CloudUpload,
-                                            contentDescription = null
-                                        )
-                                    },
-                                    text = { Text(text = stringResource(id = R.string.webdav)) },
-                                    subText = { }) {
-                                    mainNavController.navigate(ScreenDestination.WebDav)
-                                }
-                            }
-                        }
-                    }
+                        })
                 },
                 actions = {
                     AppIconButton(onClick = {
@@ -156,19 +89,87 @@ fun MediaLibScreen(
                 }
             )
         }) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            SubTitleItem(title = stringResource(id = R.string.single))
-            RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                    val list = MediaLibHelper.songs
-                    itemsIndexed(list) { index, item ->
-                        SongItem(sheetNavController = sheetNavController, songBean = item) {
-                            PlayManager.play(list, index)
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize(),
+            state = lazyListState
+        ) {
+            item {
+                RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                    ItemArrowRight(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.PlaylistPlay,
+                                contentDescription = null
+                            )
+                        },
+                        text = { Text(text = stringResource(id = R.string.play_list)) },
+                        subText = { }) {
+                        mainNavController.navigate(ScreenDestination.PlayList)
+                    }
+                    ItemDivider()
+                    ItemArrowRight(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.Album,
+                                contentDescription = null
+                            )
+                        },
+                        text = { Text(text = stringResource(id = R.string.album)) },
+                        subText = { }) {
+                        mainNavController.navigate(ScreenDestination.Album)
+                    }
+                    ItemDivider()
+                    ItemArrowRight(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.Mic,
+                                contentDescription = null
+                            )
+                        },
+                        text = { Text(text = stringResource(id = R.string.singer)) },
+                        subText = { }) {
+                        mainNavController.navigate(ScreenDestination.Singer)
+                    }
+                    ItemDivider()
+                    ItemArrowRight(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.Folder,
+                                contentDescription = null
+                            )
+                        },
+                        text = { Text(text = stringResource(id = R.string.folder)) },
+                        subText = { }) {
+                        mainNavController.navigate(ScreenDestination.Folder)
+                    }
+                    if (SettingRepository.EnableWebDav) {
+                        ItemDivider()
+                        ItemArrowRight(
+                            icon = {
+                                Icon(
+                                    imageVector = Icons.Rounded.CloudUpload,
+                                    contentDescription = null
+                                )
+                            },
+                            text = { Text(text = stringResource(id = R.string.webdav)) },
+                            subText = { }) {
+                            mainNavController.navigate(ScreenDestination.WebDav)
                         }
                     }
                 }
             }
+            item {
+                SubTitleItem(title = stringResource(id = R.string.single))
+            }
+            roundColumn {
+                val list = MediaLibHelper.songs
+                itemsIndexed(list) { index, item ->
+                    SongItem(sheetNavController = sheetNavController, songBean = item) {
+                        PlayManager.play(list, index)
+                    }
+                }
+            }
         }
-
     }
 }

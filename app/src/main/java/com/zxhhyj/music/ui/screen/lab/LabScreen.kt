@@ -32,7 +32,7 @@ fun LabScreen(
         topBar = {
             AppCenterTopBar(
                 modifier = Modifier.fillMaxWidth(),
-                title = stringResource(id = R.string.lab)
+                title = { Text(text = stringResource(id = R.string.lab)) }
             )
         }) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {

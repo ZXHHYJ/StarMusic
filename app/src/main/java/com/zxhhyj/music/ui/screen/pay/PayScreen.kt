@@ -45,7 +45,8 @@ fun PayScreen(paddingValues: PaddingValues, mainNavController: NavController<Scr
             .padding(paddingValues),
         topBar = {
             AppCenterTopBar(
-                modifier = Modifier, title = stringResource(id = R.string.buy_star_music_pro)
+                modifier = Modifier,
+                title = { Text(text = stringResource(id = R.string.buy_star_music_pro)) }
             )
         }) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {

@@ -54,7 +54,7 @@ fun PlayListCntScreen(
         topBar = {
             AppTopBar(
                 modifier = Modifier.fillMaxWidth(),
-                title = playlist.name,
+                title = { Text(text = playlist.name) },
                 actions = {
                     AppIconButton(onClick = {
                         sheetNavController.navigate(

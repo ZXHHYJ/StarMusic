@@ -45,7 +45,7 @@ fun MoreScreen(
         topBar = {
             AppCenterTopBar(
                 modifier = Modifier.fillMaxWidth(),
-                title = stringResource(id = R.string.more)
+                title = { Text(text = stringResource(id = R.string.more)) }
             )
         }) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {

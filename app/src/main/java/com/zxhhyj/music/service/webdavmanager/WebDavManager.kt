@@ -14,7 +14,7 @@ import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.bean.WebDavFile
 import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
 import com.zxhhyj.music.logic.utils.SardineUtils
-import com.zxhhyj.music.ui.common.PopWindows
+import com.zxhhyj.music.ui.common.ComposeToast
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -88,9 +88,9 @@ object WebDavManager {
                         endPosition = metadata?.lengthInMilliseconds ?: 0
                     )
                     WebDavMediaLibRepository.addSong(songBean)
-                    PopWindows.postCheckMessage("下载成功")
+                    ComposeToast.postCheckToast("下载成功")
                 } catch (_: Exception) {
-                    PopWindows.postErrorMessage("下载失败")
+                    ComposeToast.postErrorToast("下载失败")
                 } finally {
                     downloadTasks.remove(webDavFile.downloadPath)
                 }

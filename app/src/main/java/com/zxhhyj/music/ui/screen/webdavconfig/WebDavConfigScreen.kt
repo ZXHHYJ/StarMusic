@@ -47,7 +47,7 @@ fun WebDavConfigScreen(
             .padding(paddingValues),
         topBar = {
             AppCenterTopBar(
-                modifier = Modifier, title = stringResource(id = R.string.webdav)
+                modifier = Modifier, title = { Text(text = stringResource(id = R.string.webdav)) }
             )
         }) {
         Column(modifier = Modifier.fillMaxSize()) {

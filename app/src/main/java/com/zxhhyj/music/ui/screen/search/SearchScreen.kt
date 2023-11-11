@@ -94,7 +94,7 @@ fun SearchScreen(
     ) {
         AppCenterTopBar(
             modifier = Modifier.fillMaxWidth(),
-            title = stringResource(id = R.string.search)
+            title = { Text(text = stringResource(id = R.string.search)) }
         )
         val pagerState = rememberPagerState(
             initialPage = SearchScreenTabs.values().indexOf(start),

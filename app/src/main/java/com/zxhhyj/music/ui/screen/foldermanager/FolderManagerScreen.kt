@@ -34,7 +34,7 @@ fun FolderManagerScreen(
         topBar = {
             AppCenterTopBar(
                 modifier = Modifier.fillMaxWidth(),
-                title = stringResource(id = R.string.folder_manager)
+                title = { Text(text = stringResource(id = R.string.folder_manager)) }
             ) {
 
             }

@@ -28,7 +28,7 @@ fun MiscScreen(paddingValues: PaddingValues) {
         topBar = {
             AppCenterTopBar(
                 modifier = Modifier.fillMaxWidth(),
-                title = stringResource(id = R.string.misc)
+                title = { Text(text = stringResource(id = R.string.misc)) }
             )
         }, modifier = Modifier
             .fillMaxSize()

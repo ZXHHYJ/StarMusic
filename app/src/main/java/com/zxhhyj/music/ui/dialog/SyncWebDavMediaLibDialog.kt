@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
-import com.zxhhyj.music.ui.common.PopWindows
+import com.zxhhyj.music.ui.common.ComposeToast
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.YesNoDialog
@@ -49,7 +49,7 @@ fun SyncWebDavMediaLibDialog(
             delay(100)
             //避免闪烁影响用户体验
             onDismissRequest.invoke()
-            PopWindows.postErrorMessage("连接失败")
+            ComposeToast.postErrorToast("连接失败")
             return@LaunchedEffect
         }
         if (!mainNavController.moveToTop { it is ScreenDestination.WebDav }) {

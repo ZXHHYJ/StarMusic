@@ -160,6 +160,10 @@ object AndroidMediaLibRepository {
     }
 
     private fun updateLibs() {
+        hideFolders = hideFolders.mapNotNull {
+            if (it.songs.isEmpty()) null else it
+        }.distinctBy { it.path }
+
         folders = songs
             .map { it.data.substringBeforeLast("/") }
             .distinct()

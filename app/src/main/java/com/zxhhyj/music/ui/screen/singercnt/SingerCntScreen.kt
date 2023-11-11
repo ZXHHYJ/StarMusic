@@ -48,7 +48,7 @@ fun SingerCntScreen(
         topBar = {
             AppTopBar(
                 modifier = Modifier.fillMaxWidth(),
-                title = artist.name,
+                title = { Text(text = artist.name) },
             ) {
                 Row(
                     modifier = Modifier

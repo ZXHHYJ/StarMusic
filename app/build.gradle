@@ -31,8 +31,21 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    buildTypes {
+    signingConfigs {
         release {
+            storeFile file('../keystore/mandysa_music.jks')
+            storePassword 'mandysa_music'
+            keyAlias 'mandysa_music'
+            keyPassword 'mandysa_music'
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.release
+        }
+        release {
+            signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

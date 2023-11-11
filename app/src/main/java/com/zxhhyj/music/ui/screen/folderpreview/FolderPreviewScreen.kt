@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.zxhhyj.music.logic.bean.Folder
@@ -24,7 +25,7 @@ fun FolderPreviewScreen(
         topBar = {
             AppCenterTopBar(
                 modifier = Modifier.fillMaxWidth(),
-                title = folder.path.substringAfterLast("/")
+                title = { Text(text = folder.path.substringAfterLast("/")) }
             ) {
 
             }

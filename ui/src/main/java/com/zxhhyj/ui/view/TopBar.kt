@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.LocalContentColor
-import androidx.compose.material.Text
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Stable
@@ -31,8 +31,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
@@ -77,7 +76,19 @@ class TopBarState : Parcelable {
             ): Offset {
                 val newOffset = barOffsetHeightPx + available.y
                 barOffsetHeightPx = newOffset.coerceIn(barOffsetHeightPx, 0f)
-                return available
+                return when {
+                    newOffset < barOffsetHeightPx -> {
+                        available
+                    }
+
+                    newOffset > -maxOffsetPx -> {
+                        available
+                    }
+
+                    else -> {
+                        available
+                    }
+                }
             }
 
             override fun onPreScroll(
@@ -99,7 +110,7 @@ class TopBarState : Parcelable {
                         }
 
                         else -> {
-                            available
+                            Offset.Zero
                         }
                     }
                 }
@@ -121,7 +132,7 @@ fun Modifier.bindTopBarState() = composed {
 @Composable
 fun AppCenterTopBar(
     modifier: Modifier,
-    title: String,
+    title: @Composable () -> Unit = {},
     actions: @Composable () -> Unit = {}
 ) {
     val topBarState = LocalTopBarState.current
@@ -141,16 +152,14 @@ fun AppCenterTopBar(
                 .fillMaxWidth(),
             contentAlignment = Alignment.Center,
             content = {
-                Text(
-                    text = title,
-                    color = LocalColorScheme.current.text,
-                    fontSize = 18.sp,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                )
+                CompositionLocalProvider(
+                    LocalTextStyle provides TextStyle(
+                        color = LocalColorScheme.current.text,
+                        fontSize = 18.sp
+                    )
+                ) {
+                    title()
+                }
             }
         )
         Row(
@@ -168,20 +177,24 @@ fun AppCenterTopBar(
 fun AppTopBar(
     topBarProperties: TopBarProperties = TopBarProperties(),
     modifier: Modifier,
-    title: String,
+    title: @Composable () -> Unit = {},
     actions: @Composable () -> Unit = {},
     content: @Composable () -> Unit = {
-        Text(
-            text = title,
-            color = LocalColorScheme.current.text,
-            fontSize = 26.sp,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = StarDimens.horizontal)
                 .height(toolbarHeight)
-        )
+        ) {
+            CompositionLocalProvider(
+                LocalTextStyle provides TextStyle(
+                    color = LocalColorScheme.current.text,
+                    fontSize = 26.sp,
+                )
+            ) {
+                title()
+            }
+        }
     }
 ) {
     val topBarState = LocalTopBarState.current
@@ -208,14 +221,7 @@ fun AppTopBar(
                     .padding(horizontal = StarDimens.horizontal),
                 contentAlignment = Alignment.CenterEnd,
                 content = {
-
-                    Text(
-                        text = title,
-                        color = LocalColorScheme.current.text,
-                        fontSize = 18.sp,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.Center,
+                    Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .offset {
@@ -226,8 +232,17 @@ fun AppTopBar(
                                         .coerceIn(0, contentSize.height)
                                 )
                             }
-                            .alpha(elementAlpha)
-                    )
+                            .alpha(elementAlpha),
+                        contentAlignment = Alignment.Center) {
+                        CompositionLocalProvider(
+                            LocalTextStyle provides TextStyle(
+                                color = LocalColorScheme.current.text,
+                                fontSize = 18.sp,
+                            )
+                        ) {
+                            title()
+                        }
+                    }
                     Row(horizontalArrangement = Arrangement.spacedBy(StarDimens.horizontal / 2)) {
                         CompositionLocalProvider(LocalContentColor provides LocalColorScheme.current.highlight) {
                             actions.invoke()

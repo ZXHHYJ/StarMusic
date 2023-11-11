@@ -55,7 +55,7 @@ fun ProScreen(paddingValues: PaddingValues, mainNavController: NavController<Scr
         topBar = {
             AppCenterTopBar(
                 modifier = Modifier.fillMaxWidth(),
-                title = stringResource(id = R.string.star_music_pro)
+                title = { Text(text = stringResource(id = R.string.star_music_pro)) }
             )
         }) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {

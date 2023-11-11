@@ -45,7 +45,7 @@ fun AboutScreen(
         topBar = {
             AppCenterTopBar(
                 modifier = Modifier,
-                title = stringResource(id = R.string.about)
+                title = { Text(text = stringResource(id = R.string.about)) }
             )
         })
     {
