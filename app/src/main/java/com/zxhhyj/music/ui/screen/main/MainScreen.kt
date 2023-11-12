@@ -7,6 +7,7 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
@@ -36,7 +37,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreHoriz
 import androidx.compose.material.icons.rounded.Source
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -74,7 +74,6 @@ import com.zxhhyj.music.ui.dialog.EditWebDavPasswordDialog
 import com.zxhhyj.music.ui.dialog.EditWebDavUsernameDialog
 import com.zxhhyj.music.ui.dialog.MediaLibsEmptyDialog
 import com.zxhhyj.music.ui.dialog.ScanAndroidMediaLibDialog
-import com.zxhhyj.music.ui.dialog.SplashDialog
 import com.zxhhyj.music.ui.dialog.SyncWebDavMediaLibDialog
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
@@ -99,6 +98,7 @@ import com.zxhhyj.music.ui.screen.personalize.PersonalizeScreen
 import com.zxhhyj.music.ui.screen.play.PlayScreen
 import com.zxhhyj.music.ui.screen.playlist.PlayListScreen
 import com.zxhhyj.music.ui.screen.playlistcnt.PlayListCntScreen
+import com.zxhhyj.music.ui.screen.privacypolicy.PrivacyPolicyScreen
 import com.zxhhyj.music.ui.screen.pro.ProScreen
 import com.zxhhyj.music.ui.screen.search.SearchScreen
 import com.zxhhyj.music.ui.screen.singer.SingerScreen
@@ -110,6 +110,10 @@ import com.zxhhyj.music.ui.sheet.PlaylistMenuSheet
 import com.zxhhyj.music.ui.sheet.SongMenuSheet
 import com.zxhhyj.music.ui.sheet.SongSortSheet
 import com.zxhhyj.music.ui.sheet.songinfo.SongInfoSheet
+import com.zxhhyj.music.ui.theme.BottomSheetAnimation
+import com.zxhhyj.music.ui.theme.MediaControllerAnimation
+import com.zxhhyj.music.ui.theme.NavHostAnimation
+import com.zxhhyj.music.ui.theme.PanelAnimation
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.round
 import com.zxhhyj.music.ui.theme.vertical
@@ -122,13 +126,13 @@ import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.DialogNavHost
 import dev.olshevski.navigation.reimagined.NavAction
 import dev.olshevski.navigation.reimagined.NavBackHandler
+import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.NavHost
 import dev.olshevski.navigation.reimagined.material.BottomSheetNavHost
 import dev.olshevski.navigation.reimagined.material.BottomSheetProperties
 import dev.olshevski.navigation.reimagined.moveToTop
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop
-import dev.olshevski.navigation.reimagined.popAll
 import dev.olshevski.navigation.reimagined.rememberNavController
 
 /**
@@ -190,8 +194,12 @@ private fun Scaffold(
 @Composable
 fun MainScreen() {
 
-    val mainNavController =
-        rememberNavController<ScreenDestination>(startDestination = ScreenDestination.Main)
+    val mainNavController: NavController<ScreenDestination> =
+        if (SettingRepository.AgreePrivacyPolicy) {
+            rememberNavController(startDestination = ScreenDestination.Main)
+        } else {
+            rememberNavController(listOf(ScreenDestination.Main, ScreenDestination.PrivacyPolicy))
+        }
 
     val homeNavController =
         rememberNavController(startDestination = HomeNavigationDestination.MediaLib)
@@ -206,9 +214,27 @@ fun MainScreen() {
 
     val panelController = rememberPanelController(panelState = PanelState.COLLAPSED)
 
+    val isSystemInDarkMode = when (SettingRepository.ThemeMode) {
+        SettingRepository.ThemeModeEnum.AUTO.value -> {
+            isSystemInDarkTheme()
+        }
+
+        SettingRepository.ThemeModeEnum.LIGHT.value -> {
+            false
+        }
+
+        SettingRepository.ThemeModeEnum.DARK.value -> {
+            true
+        }
+
+        else -> {
+            isSystemInDarkTheme()
+        }
+    }
+
     rememberSystemUiController().setSystemBarsColor(
         Color.Transparent,
-        if (panelController.panelState == PanelState.EXPANDED) false else !isSystemInDarkTheme(),
+        if (panelController.panelState == PanelState.EXPANDED) false else !isSystemInDarkMode,
         isNavigationBarContrastEnforced = false
     )
 
@@ -216,6 +242,7 @@ fun MainScreen() {
         modifier = Modifier.fillMaxSize(),
         panelHeight = 0.dp,
         panelController = panelController,
+        panelAnimationSpec = if (SettingRepository.EnableLinkUI) tween(0) else PanelAnimation,
         content = {
             val visibilityMediaController by PlayManager.currentSongLiveData().map {
                 return@map it != null
@@ -367,8 +394,12 @@ fun MainScreen() {
                 navigationBar = {
                     AnimatedVisibility(
                         visible = mainNavController.backstack.entries.size <= 1,
-                        enter = if (SettingRepository.EnableLinkUI) EnterTransition.None else expandVertically(),
-                        exit = if (SettingRepository.EnableLinkUI) ExitTransition.None else shrinkVertically()
+                        enter = if (SettingRepository.EnableLinkUI) EnterTransition.None else expandVertically(
+                            MediaControllerAnimation
+                        ),
+                        exit = if (SettingRepository.EnableLinkUI) ExitTransition.None else shrinkVertically(
+                            MediaControllerAnimation
+                        )
                     ) {
                         BottomNavigation(
                             modifier = Modifier.fillMaxWidth(),
@@ -380,7 +411,12 @@ fun MainScreen() {
                                 homeNavController.backstack.entries.last().destination
                             HomeNavigationDestination.values().forEach { item ->
                                 BottomNavigationItem(
-                                    icon = { Icon(item.tabIcon, contentDescription = item.name) },
+                                    icon = {
+                                        Icon(
+                                            item.tabIcon,
+                                            contentDescription = item.name
+                                        )
+                                    },
                                     label = { Text(text = item.tabName) },
                                     selected = item == bottomLastDestination,
                                     unselectedContentColor = LocalColorScheme.current.disabled,
@@ -419,10 +455,17 @@ fun MainScreen() {
                         } else {
                             AnimatedContentTransitionScope.SlideDirection.Start
                         }
-                        slideIntoContainer(direction) togetherWith slideOutOfContainer(direction)
+                        slideIntoContainer(
+                            direction,
+                            NavHostAnimation
+                        ) togetherWith slideOutOfContainer(direction, NavHostAnimation)
                     }
                 ) { destination ->
                     when (destination) {
+                        ScreenDestination.PrivacyPolicy -> {
+                            PrivacyPolicyScreen(mainNavController = mainNavController)
+                        }
+
                         ScreenDestination.Main -> {
                             NavHost(controller = homeNavController) {
                                 when (it) {
@@ -632,13 +675,6 @@ fun MainScreen() {
                 )
             }
 
-            DialogDestination.Splash -> {
-                SplashDialog(
-                    onDismissRequest = onDismissRequest,
-                    dialogNavController = dialogNavController
-                )
-            }
-
             DialogDestination.CreatePlayList -> {
                 CreatePlayListDialog(onDismissRequest = onDismissRequest)
             }
@@ -676,20 +712,14 @@ fun MainScreen() {
         }
     }
 
-    DisposableEffect(Unit) {
-        if (!SettingRepository.AgreePrivacyPolicy) {
-            dialogNavController.navigate(DialogDestination.Splash)
-        }
-        onDispose {
-            dialogNavController.popAll()
-        }
-    }
-
     BottomSheetNavHost(
         controller = sheetNavController,
         onDismissRequest = { sheetNavController.pop() },
         sheetPropertiesSpec = {
-            BottomSheetProperties(skipHalfExpanded = true)
+            BottomSheetProperties(
+                animationSpec = if (SettingRepository.EnableLinkUI) tween(0) else BottomSheetAnimation,
+                skipHalfExpanded = true
+            )
         }
     ) { destination ->
         BackHandler {

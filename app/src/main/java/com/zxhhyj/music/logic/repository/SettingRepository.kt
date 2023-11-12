@@ -103,10 +103,10 @@ object SettingRepository {
     var SongSort by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "SongSort",
-        initialValue = SongSortType.SONG_NAME.value
+        initialValue = SongSortEnum.SONG_NAME.value
     )
 
-    enum class SongSortType(val value: Int) {
+    enum class SongSortEnum(val value: Int) {
         SONG_NAME(0), SONG_DURATION(1), SINGER_NAME(2), DATE_MODIFIED(3)
     }
 
@@ -189,6 +189,16 @@ object SettingRepository {
         dataSaverInterface = DataSaverUtils,
         key = "PlayMode",
         initialValue = PlayManager.PlayMode.LIST_LOOP
+    )
+
+    enum class ThemeModeEnum(val value: Int) {
+        AUTO(0), LIGHT(1), DARK(2)
+    }
+
+    var ThemeMode by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "ThemeMode",
+        initialValue = ThemeModeEnum.AUTO.value
     )
 
 }

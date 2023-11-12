@@ -22,27 +22,27 @@ import com.zxhhyj.ui.view.item.ItemCheckbox
 import com.zxhhyj.ui.view.item.ItemDivider
 import com.zxhhyj.ui.view.item.ItemSpacer
 
-val SettingRepository.SongSortType.itemName: String
+val SettingRepository.SongSortEnum.itemName: String
     @Composable get() = when (this) {
-        SettingRepository.SongSortType.SONG_NAME -> stringResource(id = R.string.song_name)
-        SettingRepository.SongSortType.SONG_DURATION -> stringResource(id = R.string.song_duration)
-        SettingRepository.SongSortType.SINGER_NAME -> stringResource(id = R.string.singer_name)
-        SettingRepository.SongSortType.DATE_MODIFIED -> stringResource(id = R.string.date_modified)
+        SettingRepository.SongSortEnum.SONG_NAME -> stringResource(id = R.string.song_name)
+        SettingRepository.SongSortEnum.SONG_DURATION -> stringResource(id = R.string.song_duration)
+        SettingRepository.SongSortEnum.SINGER_NAME -> stringResource(id = R.string.singer_name)
+        SettingRepository.SongSortEnum.DATE_MODIFIED -> stringResource(id = R.string.date_modified)
     }
 
-val SettingRepository.SongSortType.itemIcon: ImageVector
+val SettingRepository.SongSortEnum.itemIcon: ImageVector
     @Composable get() = when (this) {
-        SettingRepository.SongSortType.SONG_NAME -> Icons.Rounded.Abc
-        SettingRepository.SongSortType.SONG_DURATION -> Icons.Rounded.Timer
-        SettingRepository.SongSortType.SINGER_NAME -> Icons.Rounded.Person
-        SettingRepository.SongSortType.DATE_MODIFIED -> Icons.Rounded.AccessTime
+        SettingRepository.SongSortEnum.SONG_NAME -> Icons.Rounded.Abc
+        SettingRepository.SongSortEnum.SONG_DURATION -> Icons.Rounded.Timer
+        SettingRepository.SongSortEnum.SINGER_NAME -> Icons.Rounded.Person
+        SettingRepository.SongSortEnum.DATE_MODIFIED -> Icons.Rounded.AccessTime
     }
 
 @Composable
 fun SongSortSheet() {
     Column(modifier = Modifier.fillMaxWidth()) {
         RoundColumn(modifier = Modifier.fillMaxWidth()) {
-            SettingRepository.SongSortType.values().forEachIndexed { index, type ->
+            SettingRepository.SongSortEnum.values().forEachIndexed { index, type ->
                 ItemCheckbox(
                     icon = {
                         Icon(
@@ -57,7 +57,7 @@ fun SongSortSheet() {
                         SettingRepository.SongSort = type.value
                     }
                 )
-                if (index != SettingRepository.SongSortType.values().size - 1) {
+                if (index != SettingRepository.SongSortEnum.values().size - 1) {
                     ItemDivider()
                 }
             }

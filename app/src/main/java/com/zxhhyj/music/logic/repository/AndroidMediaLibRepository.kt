@@ -181,6 +181,7 @@ object AndroidMediaLibRepository {
             .filter {
                 if (SettingRepository.EnableExcludeSongsUnderOneMinute) it.duration > 60000 else true
             }
+            .distinctBy { it.data }
     }
 
     fun hideFolder(folder: Folder) {

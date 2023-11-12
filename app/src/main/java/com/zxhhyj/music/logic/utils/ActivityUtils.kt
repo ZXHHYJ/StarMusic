@@ -17,10 +17,13 @@ object ActivityUtils {
      * @param url 要在 Web 浏览器中打开的 URL
      */
     fun openUrl(context: Context, url: String) {
-        val uri = Uri.parse(url)
-        val intent = Intent(Intent.ACTION_VIEW, uri)
-        val activity = context as? Activity
-        activity?.startActivity(intent)
+        try {
+            val uri = Uri.parse(url)
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            val activity = context as? Activity
+            activity?.startActivity(intent)
+        } catch (_: Exception) {
+        }
     }
 
     /**
@@ -29,9 +32,12 @@ object ActivityUtils {
      * @param mail 要发送邮件的地址
      */
     fun openMail(context: Context, mail: String) {
-        val uri = Uri.parse("mailto:$mail")
-        val intent = Intent(Intent.ACTION_SENDTO, uri)
-        val activity = context as? Activity
-        activity?.startActivity(intent)
+        try {
+            val uri = Uri.parse("mailto:$mail")
+            val intent = Intent(Intent.ACTION_SENDTO, uri)
+            val activity = context as? Activity
+            activity?.startActivity(intent)
+        } catch (_: Exception) {
+        }
     }
 }

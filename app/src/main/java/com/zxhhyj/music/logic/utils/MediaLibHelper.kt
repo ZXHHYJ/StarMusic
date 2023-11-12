@@ -12,10 +12,10 @@ object MediaLibHelper {
         get() = (AndroidMediaLibRepository.songs + WebDavMediaLibRepository.songs).sortedWith(
             compareBy<SongBean> {
                 when (SettingRepository.SongSort) {
-                    SettingRepository.SongSortType.SONG_NAME.value -> it.songName
-                    SettingRepository.SongSortType.SONG_DURATION.value -> it.duration
-                    SettingRepository.SongSortType.SINGER_NAME.value -> it.artist.name
-                    SettingRepository.SongSortType.DATE_MODIFIED.value -> it.dateModified
+                    SettingRepository.SongSortEnum.SONG_NAME.value -> it.songName
+                    SettingRepository.SongSortEnum.SONG_DURATION.value -> it.duration
+                    SettingRepository.SongSortEnum.SINGER_NAME.value -> it.artist.name
+                    SettingRepository.SongSortEnum.DATE_MODIFIED.value -> it.dateModified
                     else -> null
                 }
             }.let { comparator ->

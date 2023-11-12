@@ -10,6 +10,9 @@ import kotlinx.parcelize.RawValue
 
 sealed class ScreenDestination : Parcelable {
 
+    @Parcelize
+    data object PrivacyPolicy : ScreenDestination()
+
     /**
      * 主页
      */

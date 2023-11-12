@@ -1,5 +1,7 @@
 package com.zxhhyj.music.ui.common
 
+import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.SpringSpec
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.*
@@ -46,6 +48,7 @@ fun SlidingPanel(
     modifier: Modifier = Modifier,
     panelHeight: Dp,
     panelController: PanelController,
+    panelAnimationSpec: AnimationSpec<Float> = SpringSpec(),
     content: @Composable () -> Unit,
     panel: @Composable () -> Unit
 ) {
@@ -53,7 +56,7 @@ fun SlidingPanel(
         modifier = modifier,
         contentAlignment = Alignment.BottomCenter
     ) {
-        val swipeableState = rememberSwipeableState(panelController.panelState)
+        val swipeableState = rememberSwipeableState(panelController.panelState, panelAnimationSpec)
         val sizePx = with(LocalDensity.current) { (maxHeight - panelHeight).toPx() }
         val anchors = mapOf(0f to PanelState.EXPANDED, sizePx to PanelState.COLLAPSED)
         LaunchedEffect(panelController.panelState) {

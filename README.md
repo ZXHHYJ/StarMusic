@@ -15,7 +15,7 @@
 </p>
 
 <br>
-<p align="center"><strong>基于Android Compose开发的本地音乐播放器</strong></p>
+<p align="center"><strong>使用Android Compose开发的音乐播放器</strong></p>
 <br>
 
 |             媒体库              |             全部专辑             |               歌手               |

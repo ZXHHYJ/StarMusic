@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.core.view.WindowCompat
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.zxhhyj.music.ui.theme.MandySaMusicTheme
+import com.zxhhyj.music.ui.theme.StarMusicTheme
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
@@ -43,7 +43,7 @@ class CrashActivity : ComponentActivity() {
                 !isSystemInDarkTheme(),
                 isNavigationBarContrastEnforced = false
             )
-            MandySaMusicTheme {
+            StarMusicTheme {
                 AppScaffold(
                     topBar = {
                         AppCenterTopBar(

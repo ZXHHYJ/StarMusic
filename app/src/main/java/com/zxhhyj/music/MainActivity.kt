@@ -12,9 +12,9 @@ import androidx.core.view.WindowCompat
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.receiver.HeadphoneReceiver
 import com.zxhhyj.music.service.playmanager.PlayManager
-import com.zxhhyj.music.ui.common.ComposeToast
+import com.zxhhyj.music.ui.common.ComposeToast.ComposeToast
 import com.zxhhyj.music.ui.screen.main.MainScreen
-import com.zxhhyj.music.ui.theme.MandySaMusicTheme
+import com.zxhhyj.music.ui.theme.StarMusicTheme
 
 
 class MainActivity : ComponentActivity() {
@@ -30,9 +30,9 @@ class MainActivity : ComponentActivity() {
         registerReceiver(headphoneReceiver, intentFilter)
         setContent {
             WindowCompat.setDecorFitsSystemWindows(window, false)
-            MandySaMusicTheme {
+            StarMusicTheme {
                 MainScreen()
-                ComposeToast.ComposeToast()
+                ComposeToast()
             }
             LaunchedEffect(SettingRepository.EnableEqualizer) {
                 PlayManager.setEnableEqualizer(SettingRepository.EnableEqualizer)

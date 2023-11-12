@@ -1,15 +1,13 @@
 package com.zxhhyj.music.service
 
-import android.Manifest
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.media.AudioManager
 import android.media.session.MediaSession
 import android.os.Build
 import android.support.v4.media.session.MediaSessionCompat
 import android.view.KeyEvent
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.LifecycleService
 import androidx.media.session.MediaButtonReceiver
@@ -30,6 +28,7 @@ class StarMusicService : LifecycleService() {
 
     }
 
+    @SuppressLint("MissingPermission")
     @Synchronized
     private fun refreshMediaNotifications() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
@@ -43,13 +42,6 @@ class StarMusicService : LifecycleService() {
                 }
             }
         } else {
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                return
-            }
             mNotificationManager.notify(NOTIFICATION_ID, mStarMusicNotification.build())
         }
     }

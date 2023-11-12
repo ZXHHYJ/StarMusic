@@ -66,7 +66,7 @@ fun MediaLibScreen(
                         text = stringResource(id = R.string.media_lib),
                         modifier = Modifier.clickable {
                             coroutineScope.launch {
-                                lazyListState.animateScrollToItem(0)
+                                lazyListState.scrollToItem(0)
                                 topBarState.barOffsetHeightPx = 0f
                             }
                         })

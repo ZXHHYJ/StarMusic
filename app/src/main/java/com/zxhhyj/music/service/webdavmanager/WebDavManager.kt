@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.kyant.tag.Metadata
 import com.zxhhyj.music.MainApplication
+import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.bean.WebDavFile
 import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
@@ -88,9 +89,9 @@ object WebDavManager {
                         endPosition = metadata?.lengthInMilliseconds ?: 0
                     )
                     WebDavMediaLibRepository.addSong(songBean)
-                    ComposeToast.postCheckToast("下载成功")
+                    ComposeToast.postCheckToast(MainApplication.context.getString(R.string.download_success))
                 } catch (_: Exception) {
-                    ComposeToast.postErrorToast("下载失败")
+                    ComposeToast.postErrorToast(MainApplication.context.getString(R.string.download_failure))
                 } finally {
                     downloadTasks.remove(webDavFile.downloadPath)
                 }

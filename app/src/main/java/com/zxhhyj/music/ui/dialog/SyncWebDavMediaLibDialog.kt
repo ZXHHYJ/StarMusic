@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
@@ -27,6 +28,7 @@ fun SyncWebDavMediaLibDialog(
     onDismissRequest: () -> Unit,
     mainNavController: NavController<ScreenDestination>
 ) {
+    val context = LocalContext.current
     YesNoDialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
@@ -49,7 +51,7 @@ fun SyncWebDavMediaLibDialog(
             delay(100)
             //避免闪烁影响用户体验
             onDismissRequest.invoke()
-            ComposeToast.postErrorToast("连接失败")
+            ComposeToast.postErrorToast(context.getString(R.string.link_error))
             return@LaunchedEffect
         }
         if (!mainNavController.moveToTop { it is ScreenDestination.WebDav }) {

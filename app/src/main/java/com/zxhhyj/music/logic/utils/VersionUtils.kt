@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.zxhhyj.music.logic.utils
 
 import android.content.pm.PackageManager

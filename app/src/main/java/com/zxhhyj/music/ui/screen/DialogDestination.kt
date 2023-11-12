@@ -7,11 +7,6 @@ import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
 sealed class DialogDestination : Parcelable {
-    /**
-     * 隐私政策
-     */
-    @Parcelize
-    data object Splash : DialogDestination()
 
     /**
      * 媒体库为空时的提示
