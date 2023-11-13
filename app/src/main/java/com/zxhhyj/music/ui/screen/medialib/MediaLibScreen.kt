@@ -24,6 +24,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
+import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.MediaLibHelper
 import com.zxhhyj.music.service.playmanager.PlayManager
@@ -164,7 +165,9 @@ fun MediaLibScreen(
             }
             roundColumn {
                 val list = MediaLibHelper.songs
-                itemsIndexed(list) { index, item ->
+                itemsIndexed(list, contentType = { _: Int, item: SongBean ->
+                    item
+                }) { index, item ->
                     SongItem(sheetNavController = sheetNavController, songBean = item) {
                         PlayManager.play(list, index)
                     }

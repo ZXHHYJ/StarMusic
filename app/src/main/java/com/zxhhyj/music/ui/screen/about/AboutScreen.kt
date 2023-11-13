@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
+import com.zxhhyj.music.logic.config.BiliBiliHome
 import com.zxhhyj.music.logic.config.PrivacyPolicyURL
 import com.zxhhyj.music.logic.utils.ActivityUtils
 import com.zxhhyj.music.logic.utils.VersionUtils
@@ -137,7 +138,7 @@ fun AboutScreen(
                         },
                         text = { Text(text = "BiliBili") },
                         subText = { }) {
-                        ActivityUtils.openUrl(ctx, "https://b23.tv/LT3jgMj")
+                        ActivityUtils.openUrl(ctx, BiliBiliHome)
                     }
                     ItemDivider()
                     ItemArrowRight(

@@ -53,15 +53,6 @@ object SettingRepository {
     )
 
     /**
-     * 诚信付费
-     */
-    var EnableHonestPayment by mutableDataSaverStateOf(
-        dataSaverInterface = DataSaverUtils,
-        key = "EnableHonestPayment",
-        initialValue = false
-    )
-
-    /**
      * 墨水屏支持
      */
     var EnableLinkUI by mutableDataSaverStateOf(

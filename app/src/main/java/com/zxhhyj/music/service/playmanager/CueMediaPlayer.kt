@@ -8,6 +8,7 @@ import android.util.Range
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.zxhhyj.music.logic.bean.SongBean
+import com.zxhhyj.music.service.playmanager.exception.MediaPlayerException
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -41,10 +42,11 @@ class CueMediaPlayer {
     private val mSongDuration = MutableLiveData<Int>()
     val songDuration: LiveData<Int> = mSongDuration
 
+    var errorListener: (CueMediaPlayer.(Exception) -> Unit)? = null
+
     private var mPreparedListener: MediaPlayer.OnPreparedListener? = null
     private var mSeekCompleteListener: MediaPlayer.OnSeekCompleteListener? = null
     private var mCompletionListener: MediaPlayer.OnCompletionListener? = null
-    private var mErrorListener: MediaPlayer.OnErrorListener? = null
 
     /**
      * 设置 MediaPlayer 的 OnPreparedListener。
@@ -65,13 +67,6 @@ class CueMediaPlayer {
      */
     fun setOnCompletionListener(completionListener: MediaPlayer.OnCompletionListener) {
         this.mCompletionListener = completionListener
-    }
-
-    /**
-     * 设置 MediaPlayer 的 OnErrorListener。
-     */
-    fun setOnErrorListener(errorListener: MediaPlayer.OnErrorListener) {
-        this.mErrorListener = errorListener
     }
 
     /**
@@ -111,16 +106,17 @@ class CueMediaPlayer {
                 mTimer?.pause()
                 mCompletionListener?.onCompletion(mMediaPlayer)
             }
-            setOnErrorListener { mediaPlayer, i, i2 ->
+            setOnErrorListener { _, i, i2 ->
                 mTimer?.pause()
                 mPause.value = true
-                mErrorListener?.onError(mediaPlayer, i, i2) ?: false
+                errorListener?.invoke(this@CueMediaPlayer, MediaPlayerException(i, i2))
+                true
             }
             try {
                 setDataSource(song.data)
-                prepareAsync()
-            } catch (_: Exception) {
-                mCompletionListener?.onCompletion(mMediaPlayer)
+                prepare()
+            } catch (e: Exception) {
+                errorListener?.invoke(this@CueMediaPlayer, e)
             }
         }
     }

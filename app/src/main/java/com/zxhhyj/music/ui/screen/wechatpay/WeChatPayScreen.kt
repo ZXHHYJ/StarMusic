@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.screen.pay
+package com.zxhhyj.music.ui.screen.wechatpay
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Cancel
 import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -25,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.ui.screen.ScreenDestination
+import com.zxhhyj.music.ui.theme.wechatColor
 import com.zxhhyj.ui.theme.ColorScheme
 import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppCenterTopBar
@@ -37,7 +37,10 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.pop
 
 @Composable
-fun PayScreen(paddingValues: PaddingValues, mainNavController: NavController<ScreenDestination>) {
+fun WeChatPayScreen(
+    paddingValues: PaddingValues,
+    mainNavController: NavController<ScreenDestination>
+) {
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -46,7 +49,7 @@ fun PayScreen(paddingValues: PaddingValues, mainNavController: NavController<Scr
         topBar = {
             AppCenterTopBar(
                 modifier = Modifier,
-                title = { Text(text = stringResource(id = R.string.buy_star_music_pro)) }
+                title = { Text(text = stringResource(id = R.string.wechat_payment)) }
             )
         }) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
@@ -83,7 +86,7 @@ fun PayScreen(paddingValues: PaddingValues, mainNavController: NavController<Scr
                 CompositionLocalProvider(
                     LocalColorScheme provides ColorScheme(
                         highlight = Color.White,
-                        highBackground = LocalColorScheme.current.highlight,
+                        highBackground = wechatColor,
                         text = Color.White
                     )
                 ) {
@@ -97,28 +100,9 @@ fun PayScreen(paddingValues: PaddingValues, mainNavController: NavController<Scr
                             },
                             text = { Text(text = stringResource(id = R.string.i_have_made_an_honest_payment)) },
                             subText = { }) {
-                            SettingRepository.EnableHonestPayment = true
+                            SettingRepository.EnableStarMusicPro = true
                             mainNavController.pop()
                         }
-                    }
-                }
-            }
-            item {
-                ItemSpacer()
-            }
-            item {
-                RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                    Item(
-                        icon = {
-                            Icon(
-                                imageVector = Icons.Rounded.Cancel,
-                                contentDescription = null
-                            )
-                        },
-                        text = { Text(text = stringResource(id = R.string.cancel_honest_payment)) },
-                        subText = { }) {
-                        SettingRepository.EnableHonestPayment = false
-                        mainNavController.pop()
                     }
                 }
             }

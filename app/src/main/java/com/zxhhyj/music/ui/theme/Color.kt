@@ -25,3 +25,7 @@ val nightColorScheme = ColorScheme(
     outline = Color(0xFF383838),
     disabled = Color(0xFF8D8D8D)
 )
+
+val wechatColor = Color(0xFF07C060)
+
+val bilibiliColor = Color(0xFF1E88E5)

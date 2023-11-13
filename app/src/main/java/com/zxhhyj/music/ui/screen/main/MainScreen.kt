@@ -66,6 +66,7 @@ import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.PanelState
 import com.zxhhyj.music.ui.common.SlidingPanel
 import com.zxhhyj.music.ui.common.rememberPanelController
+import com.zxhhyj.music.ui.dialog.BiliBiliPowerDialog
 import com.zxhhyj.music.ui.dialog.CreatePlayListDialog
 import com.zxhhyj.music.ui.dialog.DeleteSongDialog
 import com.zxhhyj.music.ui.dialog.EditPlayListTitleDialog
@@ -93,7 +94,6 @@ import com.zxhhyj.music.ui.screen.medialib.MediaLibScreen
 import com.zxhhyj.music.ui.screen.medialibconfig.MediaLibConfigScreen
 import com.zxhhyj.music.ui.screen.misc.MiscScreen
 import com.zxhhyj.music.ui.screen.more.MoreScreen
-import com.zxhhyj.music.ui.screen.pay.PayScreen
 import com.zxhhyj.music.ui.screen.personalize.PersonalizeScreen
 import com.zxhhyj.music.ui.screen.play.PlayScreen
 import com.zxhhyj.music.ui.screen.playlist.PlayListScreen
@@ -105,6 +105,7 @@ import com.zxhhyj.music.ui.screen.singer.SingerScreen
 import com.zxhhyj.music.ui.screen.singercnt.SingerCntScreen
 import com.zxhhyj.music.ui.screen.webdav.WebDavScreen
 import com.zxhhyj.music.ui.screen.webdavconfig.WebDavConfigScreen
+import com.zxhhyj.music.ui.screen.wechatpay.WeChatPayScreen
 import com.zxhhyj.music.ui.sheet.AddToPlayListSheet
 import com.zxhhyj.music.ui.sheet.PlaylistMenuSheet
 import com.zxhhyj.music.ui.sheet.SongMenuSheet
@@ -588,7 +589,8 @@ fun MainScreen() {
                         ScreenDestination.Pro -> {
                             ProScreen(
                                 paddingValues = paddingValues,
-                                mainNavController = mainNavController
+                                mainNavController = mainNavController,
+                                dialogNavController = dialogNavController
                             )
                         }
 
@@ -639,7 +641,7 @@ fun MainScreen() {
                         }
 
                         ScreenDestination.Pay -> {
-                            PayScreen(
+                            WeChatPayScreen(
                                 paddingValues = paddingValues,
                                 mainNavController = mainNavController
                             )
@@ -708,6 +710,10 @@ fun MainScreen() {
 
             is DialogDestination.DeleteSong -> {
                 DeleteSongDialog(onDismissRequest = onDismissRequest, songBean = it.songBean)
+            }
+
+            DialogDestination.BiliBiliPower -> {
+                BiliBiliPowerDialog(onDismissRequest = onDismissRequest)
             }
         }
     }

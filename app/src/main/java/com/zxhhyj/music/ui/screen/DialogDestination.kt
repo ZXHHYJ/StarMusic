@@ -46,4 +46,7 @@ sealed class DialogDestination : Parcelable {
 
     @Parcelize
     data class DeleteSong(val songBean: @RawValue SongBean) : DialogDestination()
+
+    @Parcelize
+    data object BiliBiliPower : DialogDestination()
 }

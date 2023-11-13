@@ -87,7 +87,7 @@ object ComposeToast {
                     modelState.value
                 }
                 Surface(
-                    modifier = Modifier.size(200.dp),
+                    modifier = Modifier.size(180.dp),
                     shape = RoundedCornerShape(round),
                     color = LocalColorScheme.current.highBackground,
                     elevation = 0.dp,

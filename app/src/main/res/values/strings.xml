@@ -69,7 +69,7 @@
     <string name="personalize_info">界面相关、歌词相关</string>
     <string name="buy_star_music_pro">购买StarMusic Pro</string>
     <string name="i_have_made_an_honest_payment">我已诚信付费</string>
-    <string name="buy_star_music_pro_introduction">很高兴你购买StarMusic Pro！\nStarMusic Pro并没有一个特定的价格，随意即可。\n\n如果你曾购买过，就不要重复购买啦。</string>
+    <string name="buy_star_music_pro_introduction">十分感谢你的支持，你们的支持就是我更新的动力！\n如果你曾购买过，就不要重复购买啦。</string>
     <string name="date_modified">最后修改时间</string>
     <string name="ascending">升序</string>
     <string name="descending">降序</string>
@@ -97,5 +97,11 @@
     <string name="follow_system">跟随系统</string>
     <string name="light_mode">浅色模式</string>
     <string name="dark_mode">深色模式</string>
-
+    <string name="unknown_error">未知错误</string>
+    <string name="song_file_missing">歌曲文件丢失</string>
+    <string name="bilibili_power">哔哩哔哩充电</string>
+    <string name="star_music_pro_member">StarMusic Pro诚信会员</string>
+    <string name="membership_function">会员功能:\n1.支持扫描cue分轨文件\n2.开启WebDav功能</string>
+    <string name="wechat_payment">微信支付</string>
+    <string name="previously_purchased">曾购买过?</string>
 </resources>
