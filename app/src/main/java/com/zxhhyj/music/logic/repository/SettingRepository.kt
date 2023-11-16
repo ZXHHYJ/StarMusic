@@ -4,6 +4,7 @@ import com.funny.data_saver.core.mutableDataSaverStateOf
 import com.zxhhyj.music.logic.bean.WebDavConfig
 import com.zxhhyj.music.logic.config.DataSaverUtils
 import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.ui.theme.PaletteStyle
 
 object SettingRepository {
 
@@ -94,11 +95,11 @@ object SettingRepository {
     var SongSort by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "SongSort",
-        initialValue = SongSortEnum.SONG_NAME.value
+        initialValue = SongSortEnum.SONG_NAME.ordinal
     )
 
-    enum class SongSortEnum(val value: Int) {
-        SONG_NAME(0), SONG_DURATION(1), SINGER_NAME(2), DATE_MODIFIED(3)
+    enum class SongSortEnum {
+        SONG_NAME, SONG_DURATION, SINGER_NAME, DATE_MODIFIED
     }
 
     /**
@@ -182,14 +183,25 @@ object SettingRepository {
         initialValue = PlayManager.PlayMode.LIST_LOOP
     )
 
-    enum class ThemeModeEnum(val value: Int) {
-        AUTO(0), LIGHT(1), DARK(2)
+    enum class ThemeModeEnum {
+        AUTO, LIGHT, DARK
     }
 
     var ThemeMode by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "ThemeMode",
-        initialValue = ThemeModeEnum.AUTO.value
+        initialValue = ThemeModeEnum.AUTO.ordinal
     )
 
+    var EnableDynamicColors by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "EnableDynamicColors",
+        initialValue = false
+    )
+
+    var M3PaletteStyle by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "PaletteStyle",
+        initialValue = PaletteStyle.TonalSpot.ordinal
+    )
 }

@@ -216,15 +216,15 @@ fun MainScreen() {
     val panelController = rememberPanelController(panelState = PanelState.COLLAPSED)
 
     val isSystemInDarkMode = when (SettingRepository.ThemeMode) {
-        SettingRepository.ThemeModeEnum.AUTO.value -> {
+        SettingRepository.ThemeModeEnum.AUTO.ordinal -> {
             isSystemInDarkTheme()
         }
 
-        SettingRepository.ThemeModeEnum.LIGHT.value -> {
+        SettingRepository.ThemeModeEnum.LIGHT.ordinal -> {
             false
         }
 
-        SettingRepository.ThemeModeEnum.DARK.value -> {
+        SettingRepository.ThemeModeEnum.DARK.ordinal -> {
             true
         }
 
@@ -240,7 +240,9 @@ fun MainScreen() {
     )
 
     SlidingPanel(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(LocalColorScheme.current.background),
         panelHeight = 0.dp,
         panelController = panelController,
         panelAnimationSpec = if (SettingRepository.EnableLinkUI) tween(0) else PanelAnimation,

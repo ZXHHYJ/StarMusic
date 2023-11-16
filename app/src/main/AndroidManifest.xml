@@ -22,6 +22,7 @@
         android:label="@string/app_name"
         android:supportsRtl="false"
         android:theme="@style/Theme.Mandysa_music"
+        android:extractNativeLibs="true"
         android:usesCleartextTraffic="true"
         tools:ignore="DataExtractionRules"
         tools:targetApi="tiramisu">

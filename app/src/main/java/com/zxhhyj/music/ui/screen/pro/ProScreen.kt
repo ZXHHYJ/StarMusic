@@ -18,6 +18,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material.icons.rounded.CloudUpload
+import androidx.compose.material.icons.rounded.Colorize
 import androidx.compose.material.icons.rounded.LibraryMusic
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -137,8 +138,26 @@ fun ProScreen(
                                 checked = SettingRepository.EnableCueSupport,
                                 onCheckedChange = {
                                     SettingRepository.EnableCueSupport = it
+                                }
+                            )
+                            ItemDivider()
+                            ItemSwitcher(
+                                icon = {
+                                    Icon(
+                                        imageVector = Icons.Rounded.Colorize,
+                                        contentDescription = null
+                                    )
                                 },
-                                enabled = SettingRepository.EnableStarMusicPro,
+                                text = {
+                                    Text(text = stringResource(id = R.string.dynamic_colors_theme))
+                                },
+                                subText = {
+                                    Text(text = stringResource(id = R.string.dynamic_colors_theme_info))
+                                },
+                                checked = SettingRepository.EnableDynamicColors,
+                                onCheckedChange = {
+                                    SettingRepository.EnableDynamicColors = it
+                                }
                             )
                             ItemDivider()
                             ItemArrowRight(

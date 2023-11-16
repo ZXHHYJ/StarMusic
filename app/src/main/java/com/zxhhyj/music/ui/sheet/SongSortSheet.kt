@@ -52,9 +52,9 @@ fun SongSortSheet() {
                     },
                     text = { Text(text = type.itemName) },
                     subText = { },
-                    checked = SettingRepository.SongSort == type.value,
+                    checked = SettingRepository.SongSort == type.ordinal,
                     onCheckedChange = {
-                        SettingRepository.SongSort = type.value
+                        SettingRepository.SongSort = type.ordinal
                     }
                 )
                 if (index != SettingRepository.SongSortEnum.values().size - 1) {

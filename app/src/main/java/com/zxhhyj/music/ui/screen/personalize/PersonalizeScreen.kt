@@ -155,9 +155,9 @@ fun PersonalizeScreen(
                             },
                             text = { Text(text = type.itemName) },
                             subText = { },
-                            checked = SettingRepository.ThemeMode == type.value,
+                            checked = SettingRepository.ThemeMode == type.ordinal,
                             onCheckedChange = {
-                                SettingRepository.ThemeMode = type.value
+                                SettingRepository.ThemeMode = type.ordinal
                             }
                         )
                         if (index != SettingRepository.ThemeModeEnum.values().size - 1) {
