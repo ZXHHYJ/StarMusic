@@ -55,6 +55,13 @@ class RoundColumnLazyListScope(private val lazyListScope: LazyListScope) : LazyL
     ) {
         lazyListScope.items(count, key, contentType) {
             when {
+
+                count == 1 -> {
+                    RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                        itemContent(this, it)
+                    }
+                }
+
                 it == 0 -> {
                     AppCard(
                         backgroundColor = LocalColorScheme.current.highBackground,
@@ -66,12 +73,6 @@ class RoundColumnLazyListScope(private val lazyListScope: LazyListScope) : LazyL
                             .fillMaxWidth()
                             .padding(horizontal = StarDimens.horizontal)
                     ) {
-                        itemContent(this, it)
-                    }
-                }
-
-                count == 1 -> {
-                    RoundColumn(modifier = Modifier.fillMaxWidth()) {
                         itemContent(this, it)
                     }
                 }

@@ -1,7 +1,5 @@
 package com.zxhhyj.music.ui.screen.about
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -138,20 +136,6 @@ fun AboutScreen(
                         text = { Text(text = "BiliBili") },
                         subText = { }) {
                         ActivityUtils.openUrl(ctx, BiliBiliHome)
-                    }
-                    ItemDivider()
-                    ItemArrowRight(
-                        icon = {
-                            Icon(
-                                imageVector = Icons.Rounded.Link,
-                                contentDescription = null
-                            )
-                        },
-                        text = { Text(text = stringResource(id = R.string.douyin)) },
-                        subText = { }) {
-                        val intent = Intent()
-                        intent.data = Uri.parse("snssdk1128://user/profile/99593826137")
-                        ctx.startActivity(intent)
                     }
                     ItemDivider()
                     ItemArrowRight(
