@@ -6,38 +6,37 @@ import android.os.Build
 import com.funny.data_saver.core.DataSaverConverter.registerTypeConverters
 import com.squareup.moshi.Moshi
 import com.zxhhyj.music.logic.bean.Folder
-import com.zxhhyj.music.logic.bean.PlayListModel
+import com.zxhhyj.music.logic.bean.PlayListBean
+import com.zxhhyj.music.logic.bean.PlayListSongBean
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.bean.WebDavConfig
 import com.zxhhyj.music.logic.bean.WebDavFile
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.MediaLibHelper
 import com.zxhhyj.music.service.StarMusicService
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playermanager.PlayerManager
 import io.fastkv.FastKVConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 import kotlin.system.exitProcess
+
 
 class MainApplication : Application() {
 
     companion object {
         lateinit var context: Application
             private set
-        var uncaughtExceptionHandler: Thread.UncaughtExceptionHandler? = null
     }
 
     override fun onCreate() {
         super.onCreate()
-        if (uncaughtExceptionHandler == null) {
-            uncaughtExceptionHandler = Thread.UncaughtExceptionHandler { _, e ->
-                e.printStackTrace()
-                CrashActivity.startActivity(this, e.stackTraceToString())
-                exitProcess(0)
-            }
-        }
-        //全局context
         context = this
+        Thread.setDefaultUncaughtExceptionHandler { _, e ->
+            e.printStackTrace()
+            CrashActivity.startActivity(this, e.stackTraceToString())
+            android.os.Process.killProcess(android.os.Process.myPid())
+            exitProcess(1)
+        }
         //初始化FastKV
         FastKVConfig.setExecutor(Dispatchers.Default.asExecutor())
         //初始化Moshi
@@ -85,31 +84,36 @@ class MainApplication : Application() {
             restore = { str -> adapterWebDavConfig.fromJson(str) }
         )
 
-        @Suppress("RemoveExplicitTypeArguments")
-        registerTypeConverters<PlayListModel>(
-            save = { bean -> bean.uuid },
-            restore = { str -> PlayListModel(str) }
-        )
-
         val adapterIntArray = moshi.adapter(IntArray::class.java)
         registerTypeConverters(
             save = { bean -> adapterIntArray.toJson(bean) },
             restore = { str -> adapterIntArray.fromJson(str) }
         )
 
-        val adapterPlayMode = moshi.adapter(PlayManager.PlayMode::class.java)
+        val adapterPlayMode = moshi.adapter(PlayerManager.PlayMode::class.java)
         registerTypeConverters(
             save = { bean -> adapterPlayMode.toJson(bean) },
             restore = { str -> adapterPlayMode.fromJson(str) }
         )
 
-        PlayManager.pauseLiveData()
+        val adapterPlayListBean = moshi.adapter(PlayListBean::class.java)
+        registerTypeConverters(
+            save = { bean -> adapterPlayListBean.toJson(bean) },
+            restore = { str -> adapterPlayListBean.fromJson(str) }
+        )
+
+        val adapterPlayListSongBean = moshi.adapter(PlayListSongBean::class.java)
+        registerTypeConverters(
+            save = { bean -> adapterPlayListSongBean.toJson(bean) },
+            restore = { str -> adapterPlayListSongBean.fromJson(str) }
+        )
+        //确保播放音乐时播放启动服务
+        PlayerManager.pauseLiveData()
             .observeForever {
                 if (it == false)
                     startPlayerService()
             }
-        //确保播放音乐时播放启动服务
-        PlayManager.currentSongLiveData()
+        PlayerManager.currentSongLiveData()
             .observeForever {
                 if (it != null)
                     startPlayerService()
@@ -117,9 +121,10 @@ class MainApplication : Application() {
         //app启动后自动播放音乐
         if (SettingRepository.EnableAutoPlayMusic) {
             MediaLibHelper.songs.takeIf { it.isNotEmpty() }?.run {
-                PlayManager.play(this, 0)
+                PlayerManager.play(this, 0)
             }
         }
+
     }
 
     @Synchronized

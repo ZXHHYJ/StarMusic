@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.common.AlbumMotionBlur
 import com.zxhhyj.music.ui.common.lyric.Lyric
 import com.zxhhyj.music.ui.screen.play.PlayScreen
@@ -71,7 +71,7 @@ fun LyricConfigScreen(paddingValues: PaddingValues) {
                             .fillMaxWidth()
                             .heightIn(max = 300.dp)
                     ) {
-                        val coverUrl by PlayManager.currentSongLiveData().map {
+                        val coverUrl by PlayerManager.currentSongLiveData().map {
                             it?.coverUrl
                         }.observeAsState()
                         AlbumMotionBlur(
@@ -82,8 +82,8 @@ fun LyricConfigScreen(paddingValues: PaddingValues) {
                             paused = false
                         )
                         //这里参数与播放界面的歌词要保持一致
-                        val song by PlayManager.currentSongLiveData().observeAsState()
-                        val liveTime by PlayManager.progressLiveData()
+                        val song by PlayerManager.currentSongLiveData().observeAsState()
+                        val liveTime by PlayerManager.progressLiveData()
                             .observeAsState(0)
                         val animDurationMillis = 1000
                         Lyric(

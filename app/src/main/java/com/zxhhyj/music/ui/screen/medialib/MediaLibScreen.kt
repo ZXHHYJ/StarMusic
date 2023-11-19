@@ -27,9 +27,8 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.MediaLibHelper
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.item.SongItem
-import com.zxhhyj.music.ui.item.SubTitleItem
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.music.ui.screen.search.SearchScreenTabs
@@ -40,6 +39,7 @@ import com.zxhhyj.ui.view.LocalTopBarState
 import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.ItemArrowRight
 import com.zxhhyj.ui.view.item.ItemDivider
+import com.zxhhyj.ui.view.item.ItemSpacer
 import com.zxhhyj.ui.view.roundColumn
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
@@ -161,7 +161,7 @@ fun MediaLibScreen(
                 }
             }
             item {
-                SubTitleItem(title = stringResource(id = R.string.single))
+                ItemSpacer()
             }
             roundColumn {
                 val list = MediaLibHelper.songs
@@ -169,7 +169,7 @@ fun MediaLibScreen(
                     item
                 }) { index, item ->
                     SongItem(sheetNavController = sheetNavController, songBean = item) {
-                        PlayManager.play(list, index)
+                        PlayerManager.play(list, index)
                     }
                 }
             }

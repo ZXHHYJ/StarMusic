@@ -56,16 +56,12 @@ fun PlayListScreen(
         }) {
         RoundColumn(modifier = Modifier.fillMaxWidth()) {
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                items(PlayListRepository.playlist) {
+                items(PlayListRepository.playList) {
                     PlayListItem(
-                        model = it,
+                        playListBean = it,
                         actions = {
                             AppIconButton(onClick = {
-                                sheetNavController.navigate(
-                                    SheetDestination.PlaylistMenu(
-                                        it
-                                    )
-                                )
+                                sheetNavController.navigate(SheetDestination.PlaylistMenu(it))
                             }) {
                                 Icon(
                                     imageVector = Icons.Rounded.MoreVert,

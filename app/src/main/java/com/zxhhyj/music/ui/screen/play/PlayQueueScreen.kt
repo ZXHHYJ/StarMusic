@@ -46,7 +46,7 @@ import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.SoundQualityIcon
 import com.zxhhyj.music.ui.common.WebDavIcon
@@ -59,8 +59,8 @@ import com.zxhhyj.ui.view.item.Item
 
 @Composable
 fun ColumnScope.PlayQueueScreen() {
-    val playlist by PlayManager.playListLiveData().observeAsState()
-    val song by PlayManager.currentSongLiveData().observeAsState()
+    val playlist by PlayerManager.playListLiveData().observeAsState()
+    val song by PlayerManager.currentSongLiveData().observeAsState()
 
     Row(
         modifier = Modifier
@@ -92,28 +92,28 @@ fun ColumnScope.PlayQueueScreen() {
             backgroundColor = Color.Transparent,
             elevation = 0.dp
         ) {
-            val playMode by PlayManager.playModeLiveData().observeAsState()
-            PlayManager.PlayMode.values().forEach {
+            val playMode by PlayerManager.playModeLiveData().observeAsState()
+            PlayerManager.PlayMode.values().forEach {
                 BottomNavigationItem(
                     selected = it == playMode,
-                    onClick = { PlayManager.setPlayMode(it) },
+                    onClick = { PlayerManager.setPlayMode(it) },
                     icon = {
                         when (it) {
-                            PlayManager.PlayMode.SINGLE_LOOP -> {
+                            PlayerManager.PlayMode.SINGLE_LOOP -> {
                                 Icon(
                                     imageVector = Icons.Rounded.RepeatOne,
                                     contentDescription = null
                                 )
                             }
 
-                            PlayManager.PlayMode.LIST_LOOP -> {
+                            PlayerManager.PlayMode.LIST_LOOP -> {
                                 Icon(
                                     imageVector = Icons.Rounded.Repeat,
                                     contentDescription = null
                                 )
                             }
 
-                            PlayManager.PlayMode.RANDOM -> {
+                            PlayerManager.PlayMode.RANDOM -> {
                                 Icon(
                                     imageVector = Icons.Rounded.Shuffle,
                                     contentDescription = null
@@ -141,7 +141,7 @@ fun ColumnScope.PlayQueueScreen() {
             mutableStateOf(IntSize.Zero)
         }
 
-        val currentSong by PlayManager.currentSongLiveData().observeAsState()
+        val currentSong by PlayerManager.currentSongLiveData().observeAsState()
 
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -198,7 +198,7 @@ fun ColumnScope.PlayQueueScreen() {
                             },
                             actions = {
                                 AppIconButton(onClick = {
-                                    PlayManager.removeSong(model)
+                                    PlayerManager.removeSong(model)
                                 }) {
                                     Icon(
                                         imageVector = Icons.Rounded.Remove,
@@ -207,7 +207,7 @@ fun ColumnScope.PlayQueueScreen() {
                                     )
                                 }
                             }) {
-                            PlayManager.play(songBeans, index)
+                            PlayerManager.play(songBeans, index)
                         }
                     }
                 }

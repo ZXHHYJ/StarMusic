@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.bean.PlayListModel
+import com.zxhhyj.music.logic.bean.PlayListBean
 import com.zxhhyj.music.logic.repository.PlayListRepository
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
@@ -29,7 +29,7 @@ fun PlaylistMenuSheet(
     mainNavController: NavController<ScreenDestination>,
     dialogNavController: NavController<DialogDestination>,
     sheetNavController: NavController<SheetDestination>,
-    model: PlayListModel
+    playListBean: PlayListBean
 ) {
     LazyColumn {
         item {
@@ -39,7 +39,7 @@ fun PlaylistMenuSheet(
                     text = { Text(text = stringResource(id = R.string.edit_playlist_title)) },
                     subText = { }) {
                     sheetNavController.pop()
-                    dialogNavController.navigate(DialogDestination.EditPlayListTitle(model))
+                    dialogNavController.navigate(DialogDestination.EditPlayListTitle(playListBean))
                 }
                 ItemDivider()
                 Item(
@@ -50,7 +50,7 @@ fun PlaylistMenuSheet(
                     mainNavController.popUpTo {
                         it == ScreenDestination.PlayList
                     }
-                    PlayListRepository.remove(model)
+                    PlayListRepository.remove(playListBean)
                 }
             }
         }

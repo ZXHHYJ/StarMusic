@@ -1,6 +1,6 @@
 @file:Suppress("UNUSED")
 
-package com.zxhhyj.music.service.playmanager
+package com.zxhhyj.music.service.playermanager
 
 import android.media.MediaPlayer
 import android.media.audiofx.Equalizer
@@ -8,7 +8,7 @@ import android.util.Range
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.zxhhyj.music.logic.bean.SongBean
-import com.zxhhyj.music.service.playmanager.exception.MediaPlayerException
+import com.zxhhyj.music.service.playermanager.exception.MediaPlayerException
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

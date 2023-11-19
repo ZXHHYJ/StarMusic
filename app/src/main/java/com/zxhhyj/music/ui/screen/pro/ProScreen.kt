@@ -35,13 +35,12 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
-import com.zxhhyj.music.ui.theme.bilibiliColor
 import com.zxhhyj.music.ui.theme.wechatColor
 import com.zxhhyj.ui.theme.ColorScheme
 import com.zxhhyj.ui.theme.LocalColorScheme
@@ -59,8 +58,7 @@ import dev.olshevski.navigation.reimagined.navigate
 @Composable
 fun ProScreen(
     paddingValues: PaddingValues,
-    mainNavController: NavController<ScreenDestination>,
-    dialogNavController: NavController<DialogDestination>
+    mainNavController: NavController<ScreenDestination>
 ) {
     AppScaffold(
         modifier = Modifier
@@ -242,37 +240,14 @@ fun ProScreen(
                         ItemSpacer()
                     }
                     item {
-                        CompositionLocalProvider(
-                            LocalColorScheme provides ColorScheme(
-                                highlight = Color.White,
-                                highBackground = bilibiliColor,
-                                text = Color.White,
-                                subText = Color.White
-                            )
-                        ) {
-                            RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                                ItemArrowRight(
-                                    icon = {
-                                        Icon(
-                                            imageVector = ImageVector.vectorResource(R.drawable.icons8_bilibili),
-                                            contentDescription = null
-                                        )
-                                    },
-                                    text = { Text(text = stringResource(id = R.string.bilibili_power)) },
-                                    subText = {}) {
-                                    dialogNavController.navigate(DialogDestination.BiliBiliPower)
-                                }
-                            }
-                        }
-                    }
-                    item {
-                        ItemSpacer()
-                    }
-                    item {
                         RoundColumn(modifier = Modifier.fillMaxWidth()) {
                             ItemTint {
                                 Text(
-                                    text = stringResource(id = R.string.previously_purchased),
+                                    text = buildAnnotatedString {
+                                        withStyle(style = SpanStyle(textDecoration = TextDecoration.Underline)) {
+                                            append(stringResource(id = R.string.previously_purchased))
+                                        }
+                                    },
                                     Modifier.clickable {
                                         SettingRepository.EnableStarMusicPro = true
                                     })

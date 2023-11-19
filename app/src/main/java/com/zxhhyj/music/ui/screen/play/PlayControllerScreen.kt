@@ -35,12 +35,13 @@ import androidx.lifecycle.map
 import com.mxalbert.sharedelements.SharedElement
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.utils.toTimeString
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
 import com.zxhhyj.music.ui.theme.translucentWhiteFixBugColor
+import com.zxhhyj.music.ui.theme.vertical
 import com.zxhhyj.ui.view.AppCard
 import com.zxhhyj.ui.view.AppIconButton
 import com.zxhhyj.ui.view.AppSlider
@@ -56,25 +57,25 @@ fun PlayControllerScreen(sheetNavController: NavController<SheetDestination>) {
             .padding(horizontal = PlayScreen.PlayScreenContentHorizontal)
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            val song by PlayManager.currentSongLiveData().observeAsState()
+            val song by PlayerManager.currentSongLiveData().observeAsState()
 
             SharedElement(
                 key = ShareAlbumKey,
                 screenKey = PlayScreenDestination.Controller,
                 transitionSpec = MaterialFadeOutTransitionSpec
             ) {
+                val elevation = vertical
                 AppCard(
                     modifier = Modifier
-                        .padding(bottom = 8.dp)
+                        .padding(bottom = elevation)
                         .size(100.wp),
                     backgroundColor = Color.DarkGray,
-                    elevation = 12.dp,
+                    elevation = elevation,
                 ) {
                     AppAsyncImage(
                         modifier = Modifier.fillMaxSize(),
@@ -84,8 +85,7 @@ fun PlayControllerScreen(sheetNavController: NavController<SheetDestination>) {
             }
 
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(
@@ -119,33 +119,37 @@ fun PlayControllerScreen(sheetNavController: NavController<SheetDestination>) {
                         .clip(RoundedCornerShape(50))
                         .background(translucentWhiteFixBugColor)
                         .clickable {
-                            sheetNavController.navigate(SheetDestination.SongMenu(song!!))
+                            song?.let {
+                                sheetNavController.navigate(SheetDestination.SongPanel(it))
+                            }
                         }
                 )
             }
 
             ItemSpacer()
 
-            val progress by PlayManager.progressLiveData().map { it.toFloat() }.observeAsState(0f)
+            val progress by PlayerManager.progressLiveData().map { it.toFloat() }.observeAsState(0f)
 
-            val duration by PlayManager.durationLiveData().map { it.toFloat() }.observeAsState(0f)
+            val duration by PlayerManager.durationLiveData().map { it.toFloat() }.observeAsState(0f)
+
+            val sliderHeight = 16.dp
 
             AppSlider(
                 value = progress,
                 valueRange = 0f..duration,
                 onValueChange = {
-                    PlayManager.seekTo(it.toInt())
+                    PlayerManager.seekTo(it.toInt())
                 },
                 onDragStart = {
-                    PlayManager.pause()
+                    PlayerManager.pause()
                 },
                 onDragEnd = {
-                    PlayManager.start()
+                    PlayerManager.start()
                 },
-                thumbSize = 16.dp,
+                thumbSize = sliderHeight,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(16.dp),
+                    .height(sliderHeight),
                 thumbColor = Color.White,
                 activeTrackColor = Color.White,
                 inactiveTrackColor = translucentWhiteFixBugColor,
@@ -178,11 +182,7 @@ fun PlayControllerScreen(sheetNavController: NavController<SheetDestination>) {
 
                 val buttonSize = 18.wp
 
-                val playPauseState by PlayManager.pauseLiveData().map {
-                    if (it) R.drawable.ic_play else R.drawable.ic_pause
-                }.observeAsState(R.drawable.ic_play)
-
-                AppIconButton(onClick = { PlayManager.skipToPrevious() }) {
+                AppIconButton(onClick = { PlayerManager.skipToPrevious() }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_previous),
                         contentDescription = null,
@@ -191,10 +191,17 @@ fun PlayControllerScreen(sheetNavController: NavController<SheetDestination>) {
                     )
                 }
                 Spacer(modifier = Modifier.width(8.wp))
+
+                val playPauseState by PlayerManager.pauseLiveData().map {
+                    if (it) R.drawable.ic_play else R.drawable.ic_pause
+                }.observeAsState(R.drawable.ic_play)
+
                 AppIconButton(onClick = {
-                    if (PlayManager.pauseLiveData().value == true)
-                        PlayManager.start()
-                    else PlayManager.pause()
+                    if (PlayerManager.pauseLiveData().value == true) {
+                        PlayerManager.start()
+                    } else {
+                        PlayerManager.pause()
+                    }
                 }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = playPauseState),
@@ -206,7 +213,7 @@ fun PlayControllerScreen(sheetNavController: NavController<SheetDestination>) {
                     )
                 }
                 Spacer(modifier = Modifier.width(8.wp))
-                AppIconButton(onClick = { PlayManager.skipToNext() }) {
+                AppIconButton(onClick = { PlayerManager.skipToNext() }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_next),
                         contentDescription = null,

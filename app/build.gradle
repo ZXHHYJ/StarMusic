@@ -43,8 +43,6 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.release
-            minifyEnabled true
-            shrinkResources true
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
         release {
@@ -66,6 +64,11 @@ android {
     sourceSets {
         main {
             jniLibs.srcDirs = ["libs"]
+        }
+    }
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging true
         }
     }
 }

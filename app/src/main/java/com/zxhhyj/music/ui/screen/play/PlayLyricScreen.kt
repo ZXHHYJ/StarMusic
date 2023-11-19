@@ -19,17 +19,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.common.KeepScreenOn
 import com.zxhhyj.music.ui.common.lyric.Lyric
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
 
 @Composable
 fun ColumnScope.PlayLyricScreen() {
-    val pause by PlayManager.pauseLiveData().observeAsState(true)
+    val pause by PlayerManager.pauseLiveData().observeAsState(true)
     KeepScreenOn(enable = !pause)
-    val song by PlayManager.currentSongLiveData().observeAsState()
-    val liveTime by PlayManager.progressLiveData()
+    val song by PlayerManager.currentSongLiveData().observeAsState()
+    val liveTime by PlayerManager.progressLiveData()
         .observeAsState(0)
     val animDurationMillis = 1000
     Lyric(
@@ -73,7 +73,7 @@ fun ColumnScope.PlayLyricScreen() {
             )
         }
     ) {
-        PlayManager.seekTo(it)
-        PlayManager.start()
+        PlayerManager.seekTo(it)
+        PlayerManager.start()
     }
 }

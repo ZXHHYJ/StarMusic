@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.SheetDestination
@@ -40,7 +40,7 @@ fun SongMenuSheet(
     dialogNavController: NavController<DialogDestination>,
     songBean: SongBean,
 ) {
-    val currentSong by PlayManager.currentSongLiveData().observeAsState()
+    val currentSong by PlayerManager.currentSongLiveData().observeAsState()
     LazyColumn {
         item {
             RoundColumn(modifier = Modifier.fillMaxWidth()) {
@@ -84,19 +84,19 @@ fun SongMenuSheet(
                     text = { Text(text = stringResource(id = R.string.next_play)) },
                     subText = { }) {
                     sheetNavController.popAll()
-                    PlayManager.addNextPlay(songBean)
+                    PlayerManager.addNextPlay(songBean)
                 }
                 ItemDivider()
                 Item(
                     icon = { Icon(imageVector = Icons.Rounded.Info, contentDescription = null) },
                     text = {
                         Text(
-                            text = stringResource(id = R.string.song_info)
+                            text = stringResource(id = R.string.more_parameters)
                         )
                     },
                     subText = { }) {
                     sheetNavController.popAll()
-                    sheetNavController.navigate(SheetDestination.SongInfo(songBean))
+                    sheetNavController.navigate(SheetDestination.SongParameters(songBean))
                 }
                 ItemDivider()
                 Item(

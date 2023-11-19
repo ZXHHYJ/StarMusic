@@ -1,6 +1,6 @@
 @file:Suppress("UNUSED")
 
-package com.zxhhyj.music.service.playmanager
+package com.zxhhyj.music.service.playermanager
 
 import android.util.Range
 import androidx.lifecycle.LiveData
@@ -15,7 +15,7 @@ import kotlin.random.Random
 /**
  * 播放管理器
  */
-object PlayManager {
+object PlayerManager {
 
     enum class PlayMode {
         SINGLE_LOOP, LIST_LOOP, RANDOM

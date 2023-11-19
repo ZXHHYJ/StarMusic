@@ -3,7 +3,7 @@ package com.zxhhyj.music.logic.repository
 import com.funny.data_saver.core.mutableDataSaverStateOf
 import com.zxhhyj.music.logic.bean.WebDavConfig
 import com.zxhhyj.music.logic.config.DataSaverUtils
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.theme.PaletteStyle
 
 object SettingRepository {
@@ -180,7 +180,7 @@ object SettingRepository {
     var PlayMode by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "PlayMode",
-        initialValue = PlayManager.PlayMode.LIST_LOOP
+        initialValue = PlayerManager.PlayMode.LIST_LOOP
     )
 
     enum class ThemeModeEnum {

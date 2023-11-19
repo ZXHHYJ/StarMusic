@@ -28,7 +28,7 @@ val DataSaverUtils = object : DataSaverInterface() {
                 is Boolean -> putBoolean(key, data)
                 is Float -> putFloat(key, data)
                 is Double -> putDouble(key, data)
-                else -> throw IllegalArgumentException("Unable to save $data, this type(${data!!::class.java}) cannot be saved to MMKV, call [registerTypeConverters] to support it.")
+                else -> throw IllegalArgumentException("Unable to save $data, this type(${data!!::class.java}) cannot be saved to FastKV, call [registerTypeConverters] to support it.")
             }
             notifyExternalDataChanged(key, data)
         }
@@ -42,7 +42,7 @@ val DataSaverUtils = object : DataSaverInterface() {
             is Boolean -> getBoolean(key, default)
             is Float -> getFloat(key, default)
             is Double -> getDouble(key, default)
-            else -> throw IllegalArgumentException("Unable to read $default, this type(${default!!::class.java}) cannot be read from MMKV, call [registerTypeConverters] to support it.")
+            else -> throw IllegalArgumentException("Unable to read $default, this type(${default!!::class.java}) cannot be read from FastKV, call [registerTypeConverters] to support it.")
         }
         return@with res as T
     }

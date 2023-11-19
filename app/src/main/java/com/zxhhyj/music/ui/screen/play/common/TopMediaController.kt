@@ -2,15 +2,13 @@ package com.zxhhyj.music.ui.screen.play.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -28,7 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mxalbert.sharedelements.SharedElement
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.music.ui.screen.play.MaterialFadeInTransitionSpec
@@ -49,13 +47,12 @@ fun TopMediaController(
     navController: NavController<PlayScreenDestination>,
     sheetNavController: NavController<SheetDestination>,
 ) {
-    val song by PlayManager.currentSongLiveData().observeAsState()
+    val songBean by PlayerManager.currentSongLiveData().observeAsState()
     Row(
-        modifier = modifier
-            .heightIn(max = 82.dp),
+        modifier = modifier.padding(horizontal = PlayScreen.PlayScreenContentHorizontal),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Spacer(modifier = Modifier.width(PlayScreen.PlayScreenContentHorizontal))
+        val albumHeight = 56.dp
         SharedElement(
             key = ShareAlbumKey,
             screenKey = PlayScreenDestination.PlayQueue,
@@ -71,8 +68,8 @@ fun TopMediaController(
                             bottom = vertical
                         )
                     )
-                    .size(56.dp),
-                data = song?.coverUrl
+                    .size(albumHeight),
+                data = songBean?.coverUrl
             ) {
                 navController.moveToTop {
                     it == PlayScreenDestination.Controller
@@ -82,19 +79,19 @@ fun TopMediaController(
         Column(
             modifier = Modifier
                 .weight(1.0f)
-                .height(46.dp),
+                .height(albumHeight),
+            verticalArrangement = Arrangement.SpaceAround,
         ) {
             Text(
-                text = song?.songName ?: "",
+                text = songBean?.songName ?: "",
                 color = Color.White,
                 fontSize = 16.sp,
                 maxLines = 1,
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Ellipsis
             )
-            Spacer(modifier = Modifier.weight(1.0f))
             Text(
-                text = song?.artist?.name ?: "",
+                text = songBean?.artist?.name ?: "",
                 color = translucentWhiteColor,
                 fontSize = 14.sp,
                 maxLines = 1,
@@ -111,9 +108,10 @@ fun TopMediaController(
                 .clip(RoundedCornerShape(50))
                 .background(translucentWhiteFixBugColor)
                 .clickable {
-                    sheetNavController.navigate(SheetDestination.SongMenu(song!!))
+                    songBean?.let {
+                        sheetNavController.navigate(SheetDestination.SongPanel(it))
+                    }
                 }
         )
-        Spacer(modifier = Modifier.width(PlayScreen.PlayScreenContentHorizontal))
     }
 }

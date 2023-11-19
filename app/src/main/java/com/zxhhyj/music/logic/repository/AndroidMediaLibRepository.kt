@@ -51,10 +51,21 @@ object AndroidMediaLibRepository {
     suspend fun scanMedia() {
         withContext(Dispatchers.IO) {
             val scanSongs = mutableListOf<SongBean.Local>()
+            val formatCollection = listOf(
+                "audio/x-wav",
+                "audio/ogg",
+                "audio/aac",
+                "audio/midi"
+            )
+            val selectionBuilder = StringBuilder("${MediaStore.Audio.Media.IS_MUSIC}!=0")
+            for (i in formatCollection) {
+                selectionBuilder.append(" or ${MediaStore.Audio.Media.MIME_TYPE}='$i'")
+            }
+            val selection = selectionBuilder.toString()
             val query = MainApplication.context.contentResolver.query(
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 null,
-                null,
+                selection,
                 null,
                 null
             )
@@ -62,7 +73,8 @@ object AndroidMediaLibRepository {
                 val albumIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)
                 val albumIdIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
                 val artistIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
-                val durationIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
+                val durationIndex =
+                    cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
                 val dataIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
                 val songNameIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
                 val sizeIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)
@@ -81,6 +93,9 @@ object AndroidMediaLibRepository {
                     val id = cursor.getLong(idIndex)
                     val dateModified = cursor.getLong(dateModifiedIndex)
                     val metadata = Metadata.getMetadata(data)
+                    val bitrate = metadata?.bitrate
+                    val sampleRate = metadata?.sampleRate
+                    val lyric = metadata?.properties?.get("LYRICS")?.getOrNull(0)?.trim()
                     val coverUrl = "content://media/external/audio/albumart/${albumId}"
 
                     if (SettingRepository.EnableCueSupport) {
@@ -103,9 +118,9 @@ object AndroidMediaLibRepository {
                                         songName = track.title,
                                         size = size,
                                         id = id,
-                                        bitrate = metadata?.bitrate,
-                                        samplingRate = metadata?.sampleRate,
-                                        lyric = metadata?.properties?.get("LYRICS")?.getOrNull(0),
+                                        bitrate = bitrate,
+                                        samplingRate = sampleRate,
+                                        lyric = lyric,
                                         startPosition = startPosition,
                                         endPosition = endPosition,
                                     )
@@ -123,9 +138,9 @@ object AndroidMediaLibRepository {
                                     songName = songName,
                                     size = size,
                                     id = id,
-                                    bitrate = metadata?.bitrate,
-                                    samplingRate = metadata?.sampleRate,
-                                    lyric = metadata?.properties?.get("LYRICS")?.getOrNull(0),
+                                    bitrate = bitrate,
+                                    samplingRate = sampleRate,
+                                    lyric = lyric,
                                     startPosition = 0,
                                     endPosition = duration,
                                 )
@@ -143,9 +158,9 @@ object AndroidMediaLibRepository {
                                 songName = songName,
                                 size = size,
                                 id = id,
-                                bitrate = metadata?.bitrate,
-                                samplingRate = metadata?.sampleRate,
-                                lyric = metadata?.properties?.get("LYRICS")?.getOrNull(0),
+                                bitrate = bitrate,
+                                samplingRate = sampleRate,
+                                lyric = lyric,
                                 startPosition = 0,
                                 endPosition = duration,
                             )

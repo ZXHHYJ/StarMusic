@@ -2,12 +2,14 @@ package com.zxhhyj.music.ui.dialog
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -15,38 +17,34 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.KeyboardType
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.bean.PlayListBean
-import com.zxhhyj.music.logic.repository.PlayListRepository.rename
+import com.zxhhyj.music.service.playermanager.PlayerTimerManager
 import com.zxhhyj.ui.view.AppTextField
 import com.zxhhyj.ui.view.YesNoDialog
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun EditPlayListTitleDialog(onDismissRequest: () -> Unit, playListBean: PlayListBean) {
+fun CustomTimerDialog(onDismissRequest: () -> Unit) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
-    var titleValue by remember {
-        mutableStateOf(TextFieldValue(playListBean.name, TextRange(playListBean.name.length)))
+    var minutes by rememberSaveable {
+        mutableStateOf<Int?>(null)
     }
     YesNoDialog(
         onDismissRequest = onDismissRequest,
-        title = stringResource(id = R.string.edit_playlist_title),
+        title = stringResource(id = R.string.custom_timer),
         confirm = {
-            Text(
-                stringResource(id = R.string.yes),
-                modifier = Modifier.clickable {
-                    if (titleValue.text.isNotEmpty()) {
-                        playListBean.rename(titleValue.text)
-                        onDismissRequest.invoke()
-                    }
-                })
+            Text(text = stringResource(id = R.string.yes), modifier = Modifier.clickable {
+                minutes?.let {
+                    PlayerTimerManager.startCustomTimer(it * 60 * 1000)
+                    onDismissRequest.invoke()
+                }
+            })
         },
         dismiss = {
             Text(
-                stringResource(id = R.string.cancel),
+                text = stringResource(id = R.string.cancel),
                 modifier = Modifier.clickable { onDismissRequest.invoke() })
         }) {
         AppTextField(
@@ -54,15 +52,14 @@ fun EditPlayListTitleDialog(onDismissRequest: () -> Unit, playListBean: PlayList
                 .fillMaxWidth()
                 .focusRequester(focusRequester),
             singleLine = true,
-            value = titleValue,
+            value = "${minutes ?: ""}",
             onValueChange = {
-                if (it.text.length <= 16) {
-                    titleValue = it
-                }
+                minutes = it.toIntOrNull()
             },
             placeholder = {
-                Text(text = stringResource(id = R.string.new_title))
-            }
+                Text(text = stringResource(id = R.string.minute_number))
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
         DisposableEffect(Unit) {
             focusRequester.requestFocus()

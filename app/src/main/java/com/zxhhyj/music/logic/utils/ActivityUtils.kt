@@ -40,4 +40,20 @@ object ActivityUtils {
         } catch (_: Exception) {
         }
     }
+
+    /**
+     * 发起添加QQ群流程
+     * @param context 调用该方法的上下文
+     * @param key key 由官网生成的key
+     */
+    fun openQQGroup(context: Context, key: String) {
+        try {
+            val intent = Intent()
+            intent.data =
+                Uri.parse("mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26jump_from%3Dwebapi%26k%3D$key")
+            context.startActivity(intent)
+        } catch (_: Exception) {
+        }
+    }
+
 }

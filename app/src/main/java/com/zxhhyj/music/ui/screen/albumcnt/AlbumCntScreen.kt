@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.utils.MediaLibHelper.songs
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.ScreenDestination
@@ -89,7 +89,7 @@ fun AlbumCntScreen(
                         }
                     )
                     AppButton(
-                        onClick = { PlayManager.play(album.songs, 0) },
+                        onClick = { PlayerManager.play(album.songs, 0) },
                         imageVector = Icons.Rounded.PlayArrow,
                         text = stringResource(id = R.string.play_all),
                         modifier = Modifier.padding(vertical = vertical / 2)
@@ -101,7 +101,7 @@ fun AlbumCntScreen(
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 itemsIndexed(album.songs) { index, item ->
                     SongItem(songBean = item, sheetNavController = sheetNavController) {
-                        PlayManager.play(album.songs, index)
+                        PlayerManager.play(album.songs, index)
                     }
                 }
             }

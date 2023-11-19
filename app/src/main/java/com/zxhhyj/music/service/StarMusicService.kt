@@ -14,7 +14,7 @@ import androidx.media.session.MediaButtonReceiver
 import com.zxhhyj.music.MainActivity
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.AudioFocusUtils
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playermanager.PlayerManager
 
 class StarMusicService : LifecycleService() {
 
@@ -33,7 +33,7 @@ class StarMusicService : LifecycleService() {
     private fun refreshMediaNotifications() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
             startForeground(NOTIFICATION_ID, mStarMusicNotification.build())
-            if (PlayManager.pauseLiveData().value == true) {
+            if (PlayerManager.pauseLiveData().value == true) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     stopForeground(STOP_FOREGROUND_DETACH)
                 } else {
@@ -67,16 +67,16 @@ class StarMusicService : LifecycleService() {
         isServiceAlive = true
         super.onCreate()
         mAudioFocusUtils = AudioFocusUtils(this, AudioFocusChangeListener())
-        PlayManager.currentSongLiveData().observe(this@StarMusicService) {
+        PlayerManager.currentSongLiveData().observe(this@StarMusicService) {
             it?.apply {
                 mStarMusicNotification.setSongBean(this)
                 refreshMediaNotifications()
             }
         }
-        PlayManager.progressLiveData().observe(this@StarMusicService) {
+        PlayerManager.progressLiveData().observe(this@StarMusicService) {
             mStarMusicNotification.setPosition(it)
         }
-        PlayManager.pauseLiveData().observe(this@StarMusicService) {
+        PlayerManager.pauseLiveData().observe(this@StarMusicService) {
             mStarMusicNotification.setPlaying(it)
             refreshMediaNotifications()
 
@@ -89,7 +89,7 @@ class StarMusicService : LifecycleService() {
                 mAudioFocusUtils.abandonAudioFocus()
             }
         }
-        PlayManager.playListLiveData().observe(this@StarMusicService) {
+        PlayerManager.playListLiveData().observe(this@StarMusicService) {
             //播放列表被清空
             //为了避免用户尝试恢复播放
             //直接把服务杀掉
@@ -139,27 +139,27 @@ class StarMusicService : LifecycleService() {
     inner class MediaSessionCallback : MediaSessionCompat.Callback() {
         override fun onSeekTo(pos: Long) {
             super.onSeekTo(pos)
-            PlayManager.seekTo(pos.toInt())
+            PlayerManager.seekTo(pos.toInt())
         }
 
         override fun onPlay() {
             super.onPlay()
-            PlayManager.start()
+            PlayerManager.start()
         }
 
         override fun onPause() {
             super.onPause()
-            PlayManager.pause()
+            PlayerManager.pause()
         }
 
         override fun onSkipToPrevious() {
             super.onSkipToPrevious()
-            PlayManager.skipToPrevious()
+            PlayerManager.skipToPrevious()
         }
 
         override fun onSkipToNext() {
             super.onSkipToNext()
-            PlayManager.skipToNext()
+            PlayerManager.skipToNext()
         }
 
         override fun onMediaButtonEvent(mediaButtonEvent: Intent): Boolean {
@@ -181,41 +181,42 @@ class StarMusicService : LifecycleService() {
                         KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, KeyEvent.KEYCODE_HEADSETHOOK -> {
                             when (keyEvent.repeatCount) {
                                 0 -> {
-                                    if (PlayManager.pauseLiveData().value == true) {
-                                        PlayManager.start()
+                                    if (PlayerManager.pauseLiveData().value == true) {
+                                        PlayerManager.start()
                                     } else {
-                                        PlayManager.pause()
+                                        PlayerManager.pause()
                                     }
                                 }
 
                                 1 -> {
-                                    PlayManager.skipToNext()
+                                    PlayerManager.skipToNext()
                                 }
 
                                 2 -> {
-                                    PlayManager.skipToPrevious()
+                                    PlayerManager.skipToPrevious()
                                 }
                             }
                         }
 
                         KeyEvent.KEYCODE_MEDIA_PLAY -> {
-                            PlayManager.start()
+                            PlayerManager.start()
                         }
 
                         KeyEvent.KEYCODE_MEDIA_PAUSE -> {
-                            PlayManager.pause()
+                            PlayerManager.pause()
                         }
 
                         KeyEvent.KEYCODE_MEDIA_NEXT -> {
-                            PlayManager.skipToNext()
+                            PlayerManager.skipToNext()
                         }
 
                         KeyEvent.KEYCODE_MEDIA_PREVIOUS -> {
-                            PlayManager.skipToPrevious()
+                            PlayerManager.skipToPrevious()
                         }
 
                         KeyEvent.KEYCODE_MEDIA_STOP -> {
-                            PlayManager.pause()
+                            PlayerManager.pause()
+                            mNotificationManager.cancelAll()
                             stopSelf()
                         }
                     }
@@ -233,13 +234,13 @@ class StarMusicService : LifecycleService() {
 
         override fun onLoss() {
             if (!SettingRepository.EnableIsPlayingWithOtherApps) {
-                PlayManager.pause()
+                PlayerManager.pause()
             }
         }
 
         override fun onLossTransient() {
             if (!SettingRepository.EnableIsPlayingWithOtherApps) {
-                PlayManager.pause()
+                PlayerManager.pause()
             }
         }
 
@@ -249,7 +250,7 @@ class StarMusicService : LifecycleService() {
 
         override fun onGain(lossTransient: Boolean, lossTransientCanDuck: Boolean) {
             if (lossTransient) {
-                PlayManager.start()
+                PlayerManager.start()
             }
         }
     }

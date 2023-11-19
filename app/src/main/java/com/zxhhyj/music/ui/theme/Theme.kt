@@ -38,7 +38,7 @@ fun StarMusicTheme(
             val keyColor = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 colorResource(id = android.R.color.system_accent1_500)
             } else {
-                Color(0xFFE41308)
+                mainColor
             }
 
             val contrastLevel = 0.0

@@ -44,7 +44,7 @@ import com.mxalbert.sharedelements.MaterialArcMotionFactory
 import com.mxalbert.sharedelements.SharedElementsRoot
 import com.mxalbert.sharedelements.SharedElementsTransitionSpec
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.common.AlbumMotionBlur
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.common.PanelController
@@ -109,7 +109,7 @@ fun PlayScreen(
 
     val lastDestination = navController.backstack.entries.last().destination
 
-    val coverUrl by PlayManager.currentSongLiveData().map {
+    val coverUrl by PlayerManager.currentSongLiveData().map {
         it?.coverUrl
     }.observeAsState()
 

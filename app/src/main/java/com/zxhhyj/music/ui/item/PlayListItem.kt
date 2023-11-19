@@ -21,7 +21,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.bean.PlayListModel
+import com.zxhhyj.music.logic.bean.PlayListBean
+import com.zxhhyj.music.logic.utils.MediaLibHelper
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
@@ -29,10 +30,15 @@ import com.zxhhyj.ui.theme.LocalColorScheme
 
 @Composable
 fun PlayListItem(
-    model: PlayListModel,
+    playListBean: PlayListBean,
     actions: @Composable () -> Unit = {},
     onClick: () -> Unit
 ) {
+    val songs = playListBean.songs.mapNotNull { playListSongBean ->
+        MediaLibHelper.songs.find {
+            it.songName == playListSongBean.songName && it.artist.name == playListSongBean.artistName && it.album.name == playListSongBean.albumName
+        }
+    }
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -44,7 +50,7 @@ fun PlayListItem(
             modifier = Modifier
                 .padding(horizontal = horizontal, vertical = vertical)
                 .size(50.dp),
-            data = model.songs.firstOrNull()?.coverUrl
+            data = songs.firstOrNull()?.coverUrl
         )
         Column(
             modifier = Modifier
@@ -53,7 +59,7 @@ fun PlayListItem(
                 .padding(vertical = vertical),
         ) {
             Text(
-                text = model.name,
+                text = playListBean.name,
                 color = LocalColorScheme.current.text,
                 fontSize = 15.sp,
                 maxLines = 1,
@@ -62,7 +68,7 @@ fun PlayListItem(
             )
             Spacer(modifier = Modifier.weight(1.0f))
             Text(
-                text = stringResource(id = R.string.total_n_songs, model.songs.size),
+                text = stringResource(id = R.string.total_n_songs, playListBean.songs.size),
                 color = LocalColorScheme.current.subText,
                 fontSize = 13.sp,
                 maxLines = 1,

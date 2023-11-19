@@ -60,14 +60,14 @@ import androidx.lifecycle.map
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.common.AlbumMotionBlur
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.PanelState
 import com.zxhhyj.music.ui.common.SlidingPanel
 import com.zxhhyj.music.ui.common.rememberPanelController
-import com.zxhhyj.music.ui.dialog.BiliBiliPowerDialog
 import com.zxhhyj.music.ui.dialog.CreatePlayListDialog
+import com.zxhhyj.music.ui.dialog.CustomTimerDialog
 import com.zxhhyj.music.ui.dialog.DeleteSongDialog
 import com.zxhhyj.music.ui.dialog.EditPlayListTitleDialog
 import com.zxhhyj.music.ui.dialog.EditWebDavAddressDialog
@@ -109,17 +109,17 @@ import com.zxhhyj.music.ui.screen.wechatpay.WeChatPayScreen
 import com.zxhhyj.music.ui.sheet.AddToPlayListSheet
 import com.zxhhyj.music.ui.sheet.PlaylistMenuSheet
 import com.zxhhyj.music.ui.sheet.SongMenuSheet
+import com.zxhhyj.music.ui.sheet.SongPanelSheet
 import com.zxhhyj.music.ui.sheet.SongSortSheet
-import com.zxhhyj.music.ui.sheet.songinfo.SongInfoSheet
+import com.zxhhyj.music.ui.sheet.TimerSheet
+import com.zxhhyj.music.ui.sheet.SongParametersSheet
 import com.zxhhyj.music.ui.theme.BottomSheetAnimation
 import com.zxhhyj.music.ui.theme.MediaControllerAnimation
 import com.zxhhyj.music.ui.theme.NavHostAnimation
 import com.zxhhyj.music.ui.theme.PanelAnimation
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.round
-import com.zxhhyj.music.ui.theme.vertical
 import com.zxhhyj.ui.theme.LocalColorScheme
-import com.zxhhyj.ui.theme.StarDimens
 import com.zxhhyj.ui.view.AppCard
 import com.zxhhyj.ui.view.AppDivider
 import com.zxhhyj.ui.view.AppIconButton
@@ -247,7 +247,7 @@ fun MainScreen() {
         panelController = panelController,
         panelAnimationSpec = if (SettingRepository.EnableLinkUI) tween(0) else PanelAnimation,
         content = {
-            val visibilityMediaController by PlayManager.currentSongLiveData().map {
+            val visibilityMediaController by PlayerManager.currentSongLiveData().map {
                 return@map it != null
             }.observeAsState(false)
             if (!visibilityMediaController && panelController.panelState == PanelState.EXPANDED) {
@@ -276,7 +276,7 @@ fun MainScreen() {
                             ) {
                                 AppDivider(modifier = Modifier.fillMaxWidth())
                             }
-                            val song by PlayManager.currentSongLiveData().observeAsState()
+                            val song by PlayerManager.currentSongLiveData().observeAsState()
                             val android12ScreenRound =
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                                     val cornerRadius =
@@ -358,15 +358,15 @@ fun MainScreen() {
                                         fontWeight = FontWeight.Bold,
                                         color = Color.White
                                     )
-                                    val playPauseState by PlayManager.pauseLiveData().map {
+                                    val playPauseState by PlayerManager.pauseLiveData().map {
                                         if (it) R.drawable.ic_play else R.drawable.ic_pause
                                     }.observeAsState(R.drawable.ic_play)
                                     val buttonSize = 36.dp
                                     AppIconButton(onClick = {
-                                        if (PlayManager.pauseLiveData().value == true) {
-                                            PlayManager.start()
+                                        if (PlayerManager.pauseLiveData().value == true) {
+                                            PlayerManager.start()
                                         } else {
-                                            PlayManager.pause()
+                                            PlayerManager.pause()
                                         }
                                     }) {
                                         Icon(
@@ -379,7 +379,7 @@ fun MainScreen() {
                                         )
                                     }
                                     Spacer(modifier = Modifier.width(horizontal / 2))
-                                    AppIconButton(onClick = { PlayManager.skipToNext() }) {
+                                    AppIconButton(onClick = { PlayerManager.skipToNext() }) {
                                         Icon(
                                             imageVector = ImageVector.vectorResource(R.drawable.ic_skip_next),
                                             tint = Color.White,
@@ -571,7 +571,7 @@ fun MainScreen() {
 
                         is ScreenDestination.PlayListCnt -> {
                             PlayListCntScreen(
-                                playlist = destination.model,
+                                playListBean = destination.model,
                                 sheetNavController = sheetNavController,
                                 paddingValues = paddingValues
                             )
@@ -591,8 +591,7 @@ fun MainScreen() {
                         ScreenDestination.Pro -> {
                             ProScreen(
                                 paddingValues = paddingValues,
-                                mainNavController = mainNavController,
-                                dialogNavController = dialogNavController
+                                mainNavController = mainNavController
                             )
                         }
 
@@ -688,7 +687,10 @@ fun MainScreen() {
             }
 
             is DialogDestination.EditPlayListTitle -> {
-                EditPlayListTitleDialog(onDismissRequest = onDismissRequest, model = it.model)
+                EditPlayListTitleDialog(
+                    onDismissRequest = onDismissRequest,
+                    playListBean = it.model
+                )
             }
 
             DialogDestination.EditWebDavAddress -> {
@@ -714,8 +716,8 @@ fun MainScreen() {
                 DeleteSongDialog(onDismissRequest = onDismissRequest, songBean = it.songBean)
             }
 
-            DialogDestination.BiliBiliPower -> {
-                BiliBiliPowerDialog(onDismissRequest = onDismissRequest)
+            DialogDestination.CustomTimer -> {
+                CustomTimerDialog(onDismissRequest = onDismissRequest)
             }
         }
     }
@@ -739,18 +741,8 @@ fun MainScreen() {
                     LocalColorScheme.current.background,
                     shape = RoundedCornerShape(topStart = round, topEnd = round)
                 )
+                .padding(top = horizontal)
         ) {
-            Spacer(
-                modifier = Modifier
-                    .padding(vertical = StarDimens.vertical)
-                    .width(50.dp)
-                    .height(6.dp)
-                    .background(
-                        LocalColorScheme.current.subText.copy(0.3f),
-                        RoundedCornerShape(50)
-                    )
-                    .align(Alignment.CenterHorizontally)
-            )
             when (destination) {
                 is SheetDestination.SongMenu -> {
                     SongMenuSheet(
@@ -761,8 +753,8 @@ fun MainScreen() {
                     )
                 }
 
-                is SheetDestination.SongInfo -> {
-                    SongInfoSheet(
+                is SheetDestination.SongParameters -> {
+                    SongParametersSheet(
                         song = destination.songBean
                     )
                 }
@@ -771,7 +763,7 @@ fun MainScreen() {
                     AddToPlayListSheet(
                         dialogNavController = dialogNavController,
                         sheetNavController = sheetNavController,
-                        song = destination.songBean
+                        songBean = destination.songBean
                     )
                 }
 
@@ -780,18 +772,30 @@ fun MainScreen() {
                         mainNavController = mainNavController,
                         dialogNavController = dialogNavController,
                         sheetNavController = sheetNavController,
-                        model = destination.model
+                        playListBean = destination.model
                     )
                 }
 
                 SheetDestination.SongSort -> {
                     SongSortSheet()
                 }
+
+                is SheetDestination.SongPanel -> {
+                    SongPanelSheet(
+                        mainNavController = mainNavController,
+                        sheetNavController = sheetNavController,
+                        songBean = destination.songBean
+                    )
+                }
+
+                SheetDestination.Timer -> {
+                    TimerSheet(dialogNavController = dialogNavController)
+                }
             }
-            Box(modifier = Modifier.heightIn(min = vertical)) {
+            Box(modifier = Modifier.heightIn(min = horizontal)) {
                 Spacer(modifier = Modifier.navigationBarsPadding())
             }
         }
-
     }
+
 }

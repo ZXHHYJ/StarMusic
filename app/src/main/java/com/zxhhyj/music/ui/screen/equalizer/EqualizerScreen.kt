@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
@@ -63,8 +63,8 @@ fun EqualizerScreen(paddingValues: PaddingValues) {
             if (SettingRepository.EnableEqualizer) {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
 
-                    val bandCount = PlayManager.getNumberOfBands()
-                    val bandRange = PlayManager.getBandRange()
+                    val bandCount = PlayerManager.getNumberOfBands()
+                    val bandRange = PlayerManager.getBandRange()
 
                     for (bandIndex in 0 until bandCount) {
                         var bandLevel by remember {
@@ -73,7 +73,7 @@ fun EqualizerScreen(paddingValues: PaddingValues) {
                             )
                         }
 
-                        val bandFreqRange = PlayManager.getBandFreqRange(bandIndex)
+                        val bandFreqRange = PlayerManager.getBandFreqRange(bandIndex)
                         val bandFreqText = "${bandFreqRange.min()}-${bandFreqRange.max()}"
 
                         ItemSlider(
@@ -81,8 +81,8 @@ fun EqualizerScreen(paddingValues: PaddingValues) {
                             subText = { Text(text = "$bandLevel") },
                             value = bandLevel.toFloat(),
                             onValueChange = { newLevel ->
-                                PlayManager.setBandLevel(bandIndex, newLevel.toInt())
-                                bandLevel = PlayManager.getBandLevel(bandIndex)
+                                PlayerManager.setBandLevel(bandIndex, newLevel.toInt())
+                                bandLevel = PlayerManager.getBandLevel(bandIndex)
                                 SettingRepository.EqualizerConfig =
                                     SettingRepository.EqualizerConfig.copyOf().apply {
                                         set(bandIndex, bandLevel)

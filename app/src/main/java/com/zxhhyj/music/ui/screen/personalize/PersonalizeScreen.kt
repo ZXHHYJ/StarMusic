@@ -9,8 +9,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.FontDownload
 import androidx.compose.material.icons.rounded.Label
+import androidx.compose.material.icons.rounded.Lyrics
 import androidx.compose.material.icons.rounded.ModeNight
 import androidx.compose.material.icons.rounded.Smartphone
 import androidx.compose.material.icons.rounded.WbSunny
@@ -22,7 +22,7 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.SheetDestination
@@ -122,7 +122,7 @@ fun PersonalizeScreen(
                         )
                     ) {
                         if (easterEggSong != null) {
-                            PlayManager.play(listOf(easterEggSong), 0)
+                            PlayerManager.play(listOf(easterEggSong), 0)
                         }
                     }
                 }
@@ -133,7 +133,7 @@ fun PersonalizeScreen(
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
                     ItemArrowRight(
-                        icon = { Icon(imageVector = Icons.Rounded.FontDownload, null) },
+                        icon = { Icon(imageVector = Icons.Rounded.Lyrics, null) },
                         text = { Text(text = stringResource(id = R.string.lyric)) },
                         subText = { }) {
                         mainNavController.navigate(ScreenDestination.Lyric)

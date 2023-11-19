@@ -43,7 +43,7 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
 import com.zxhhyj.music.logic.utils.MediaLibHelper
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.item.AlbumItem
 import com.zxhhyj.music.ui.item.ArtistItem
@@ -174,7 +174,7 @@ fun SearchScreen(
                                     sheetNavController = sheetNavController,
                                     songBean = item
                                 ) {
-                                    PlayManager.play(songs, index)
+                                    PlayerManager.play(songs, index)
                                 }
                             }
                         }

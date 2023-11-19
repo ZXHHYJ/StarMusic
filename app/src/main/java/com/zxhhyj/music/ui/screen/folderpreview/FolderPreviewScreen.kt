@@ -37,7 +37,7 @@ fun FolderPreviewScreen(
         RoundColumn(modifier = Modifier.fillMaxWidth()) {
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 items(folder.songs) {
-                    SongItem(song = it)
+                    SongItem(songBean = it)
                 }
             }
         }

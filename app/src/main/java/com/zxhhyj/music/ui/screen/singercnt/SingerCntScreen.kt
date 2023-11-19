@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.utils.MediaLibHelper.songs
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.music.ui.theme.horizontal
@@ -74,7 +74,7 @@ fun SingerCntScreen(
                             modifier = Modifier
                                 .size(32.dp)
                                 .clickable {
-                                    PlayManager.play(artist.songs, 0)
+                                    PlayerManager.play(artist.songs, 0)
                                 }
                         )
                     }
@@ -85,7 +85,7 @@ fun SingerCntScreen(
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 itemsIndexed(artist.songs) { index, item ->
                     SongItem(sheetNavController = sheetNavController, songBean = item) {
-                        PlayManager.play(artist.songs, index)
+                        PlayerManager.play(artist.songs, index)
                     }
                 }
             }

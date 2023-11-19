@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.PlayListRepository
+import com.zxhhyj.music.logic.repository.PlayListRepository.addSong
 import com.zxhhyj.music.ui.item.PlayListItem
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.SheetDestination
@@ -29,7 +30,7 @@ import dev.olshevski.navigation.reimagined.popAll
 fun AddToPlayListSheet(
     dialogNavController: NavController<DialogDestination>,
     sheetNavController: NavController<SheetDestination>,
-    song: SongBean
+    songBean: SongBean
 ) {
     RoundColumn(modifier = Modifier.fillMaxWidth()) {
         Item(
@@ -46,9 +47,9 @@ fun AddToPlayListSheet(
             .heightIn(min = 200.dp)
     ) {
         LazyColumn {
-            items(PlayListRepository.playlist) {
+            items(PlayListRepository.playList) {
                 PlayListItem(it) {
-                    it.addSong(song)
+                    it.addSong(songBean)
                     sheetNavController.popAll()
                 }
             }

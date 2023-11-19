@@ -11,7 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.zxhhyj.music.logic.bean.Folder
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.ui.view.AppCenterTopBar
@@ -42,7 +42,7 @@ fun FolderCntScreen(
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 itemsIndexed(folder.songs) { index, song ->
                     SongItem(songBean = song, sheetNavController = sheetNavController) {
-                        PlayManager.play(folder.songs, index)
+                        PlayerManager.play(folder.songs, index)
                     }
                 }
             }

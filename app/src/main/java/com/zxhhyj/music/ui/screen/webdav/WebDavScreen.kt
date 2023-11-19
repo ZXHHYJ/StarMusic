@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.service.webdavmanager.WebDavManager
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.DialogDestination
@@ -109,7 +109,7 @@ fun WebDavScreen(
                                         WebDavManager.download(it)
                                     },
                                     downloadedOnClick = {
-                                        PlayManager.play(listOf(it), 0)
+                                        PlayerManager.play(listOf(it), 0)
                                     })
                             }
                         }
@@ -127,7 +127,7 @@ fun WebDavScreen(
                                         WebDavManager.download(it)
                                     },
                                     downloadedOnClick = {
-                                        PlayManager.play(listOf(it), 0)
+                                        PlayerManager.play(listOf(it), 0)
                                     })
                             }
                         }
@@ -145,7 +145,7 @@ fun WebDavScreen(
                                         WebDavManager.download(it)
                                     },
                                     downloadedOnClick = {
-                                        PlayManager.play(listOf(it), 0)
+                                        PlayerManager.play(listOf(it), 0)
                                     })
                             }
                         }

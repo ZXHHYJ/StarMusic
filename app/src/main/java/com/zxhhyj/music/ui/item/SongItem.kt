@@ -163,22 +163,19 @@ fun SongItem(
     }
 }
 
-/**
- * 展示用，没有点击事件
- */
 @Composable
-fun SongItem(song: SongBean) {
+fun SongItem(songBean: SongBean) {
     Item(
         icon = {
             AppAsyncImage(
                 modifier = Modifier
                     .size(50.dp),
-                data = song.coverUrl
+                data = songBean.coverUrl
             )
         },
         text = {
             Text(
-                text = song.songName,
+                text = songBean.songName,
                 color = LocalColorScheme.current.text,
                 fontSize = 15.sp,
                 maxLines = 1,
@@ -189,10 +186,10 @@ fun SongItem(song: SongBean) {
         subText = {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 if (SettingRepository.EnableShowSoundQualityLabel) {
-                    SoundQualityIcon(song = song)
+                    SoundQualityIcon(song = songBean)
                 }
                 Text(
-                    text = song.artist.name,
+                    text = songBean.artist.name,
                     color = LocalColorScheme.current.subText,
                     fontSize = 13.sp,
                     maxLines = 1,

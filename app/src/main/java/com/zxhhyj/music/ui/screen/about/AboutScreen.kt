@@ -22,7 +22,6 @@ import com.zxhhyj.music.logic.config.BiliBiliHome
 import com.zxhhyj.music.logic.config.PrivacyPolicyURL
 import com.zxhhyj.music.logic.utils.ActivityUtils
 import com.zxhhyj.music.logic.utils.VersionUtils
-import com.zxhhyj.music.ui.item.SubTitleItem
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
@@ -67,10 +66,14 @@ fun AboutScreen(
                 }
             }
             item {
-                SubTitleItem(title = stringResource(id = R.string.about_link))
+                ItemSpacer()
             }
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                    ItemTint {
+                        Text(text = stringResource(id = R.string.about_link))
+                    }
+                    ItemDivider()
                     ItemArrowRight(
                         icon = {
                             Icon(
@@ -113,10 +116,6 @@ fun AboutScreen(
             }
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                    ItemTint {
-                        Text(text = stringResource(id = R.string.problem_feedback))
-                    }
-                    ItemDivider()
                     ItemArrowRight(
                         icon = {
                             Icon(
@@ -153,6 +152,18 @@ fun AboutScreen(
                         val intent = Intent()
                         intent.data = Uri.parse("snssdk1128://user/profile/99593826137")
                         ctx.startActivity(intent)
+                    }
+                    ItemDivider()
+                    ItemArrowRight(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.Link,
+                                contentDescription = null
+                            )
+                        },
+                        text = { Text(text = stringResource(id = R.string.qq_group)) },
+                        subText = { }) {
+                        ActivityUtils.openQQGroup(ctx, "Cd-49roM1cv_k39_CJmsBh_J3AS9m3Mz")
                     }
                 }
             }

@@ -11,7 +11,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.core.view.WindowCompat
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.receiver.HeadphoneReceiver
-import com.zxhhyj.music.service.playmanager.PlayManager
+import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.common.ComposeToast.ComposeToast
 import com.zxhhyj.music.ui.screen.main.MainScreen
 import com.zxhhyj.music.ui.theme.StarMusicTheme
@@ -23,7 +23,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Thread.setDefaultUncaughtExceptionHandler(MainApplication.uncaughtExceptionHandler)
         headphoneReceiver = HeadphoneReceiver()
         val intentFilter = IntentFilter()
         intentFilter.addAction(Intent.ACTION_HEADSET_PLUG)
@@ -35,16 +34,16 @@ class MainActivity : ComponentActivity() {
                 ComposeToast()
             }
             LaunchedEffect(SettingRepository.EnableEqualizer) {
-                PlayManager.setEnableEqualizer(SettingRepository.EnableEqualizer)
+                PlayerManager.setEnableEqualizer(SettingRepository.EnableEqualizer)
             }
             LaunchedEffect(Unit) {
-                PlayManager.setPlayMode(SettingRepository.PlayMode)
+                PlayerManager.setPlayMode(SettingRepository.PlayMode)
                 //恢复播放模式
             }
-            val playMode by PlayManager.playModeLiveData().observeAsState()
+            val playMode by PlayerManager.playModeLiveData().observeAsState()
             LaunchedEffect(playMode) {
                 if (playMode != null) {
-                    SettingRepository.PlayMode = playMode as PlayManager.PlayMode
+                    SettingRepository.PlayMode = playMode as PlayerManager.PlayMode
                 }
                 //播放模式变更后进行持久化
             }
