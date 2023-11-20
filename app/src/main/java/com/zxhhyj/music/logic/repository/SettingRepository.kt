@@ -1,6 +1,7 @@
 package com.zxhhyj.music.logic.repository
 
 import com.funny.data_saver.core.mutableDataSaverStateOf
+import com.zxhhyj.music.logic.bean.PlayMemoryBean
 import com.zxhhyj.music.logic.bean.WebDavConfig
 import com.zxhhyj.music.logic.config.DataSaverUtils
 import com.zxhhyj.music.service.playermanager.PlayerManager
@@ -187,21 +188,48 @@ object SettingRepository {
         AUTO, LIGHT, DARK
     }
 
+    /**
+     * 主题模式
+     */
     var ThemeMode by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "ThemeMode",
         initialValue = ThemeModeEnum.AUTO.ordinal
     )
 
+    /**
+     * 动态颜色主题
+     */
     var EnableDynamicColors by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "EnableDynamicColors",
         initialValue = false
     )
 
+    /**
+     * M3调色板
+     */
     var M3PaletteStyle by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "PaletteStyle",
         initialValue = PaletteStyle.TonalSpot.ordinal
+    )
+
+    /**
+     * 播放记忆
+     */
+    var PlayMemory by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "PlayMemory",
+        initialValue = PlayMemoryBean()
+    )
+
+    /**
+     * 是否启用播放记忆
+     */
+    var EnablePlayMemory by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "EnablePlayMemory",
+        initialValue = true
     )
 }

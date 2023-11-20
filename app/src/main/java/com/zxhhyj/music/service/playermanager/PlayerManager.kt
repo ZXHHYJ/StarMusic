@@ -44,7 +44,7 @@ object PlayerManager {
     /**
      * 当前播放歌曲的下标
      */
-    private val indexLiveData = MutableLiveData(0)
+    private val indexLiveData = MutableLiveData<Int>()
 
     /**
      * 获取播放模式的 LiveData
@@ -76,6 +76,8 @@ object PlayerManager {
      */
     fun pauseLiveData(): LiveData<Boolean> = cueMediaPlayer.pause
 
+    fun indexLiveData(): LiveData<Int> = indexLiveData
+
     /**
      * 修改播放模式
      */
@@ -88,7 +90,21 @@ object PlayerManager {
      */
     fun play(list: List<SongBean>, index: Int) {
         playListLiveData.value = list
-        updateIndex(index)
+        val song = playListLiveData.value?.getOrNull(index)
+        indexLiveData.value = index
+        song?.let {
+            currentSongLiveData.value = it
+            cueMediaPlayer.preparePlay(it)
+        }
+    }
+
+    fun install(list: List<SongBean>, index: Int) {
+        playListLiveData.value = list
+        list.getOrNull(index)?.let {
+            indexLiveData.value = index
+            currentSongLiveData.value = it
+            cueMediaPlayer.prepare(it)
+        }
     }
 
     /**
@@ -102,7 +118,13 @@ object PlayerManager {
      * 切换到上一首歌曲
      */
     fun skipToPrevious() {
-        updateIndex(indexLiveData.value!! - 1)
+        val index = indexLiveData.value?.let { it - 1 } ?: return
+        val song = playListLiveData.value?.getOrNull(index)
+        indexLiveData.value = index
+        song?.let {
+            currentSongLiveData.value = it
+            cueMediaPlayer.preparePlay(it)
+        }
     }
 
     /**
@@ -111,33 +133,44 @@ object PlayerManager {
     fun skipToNext() {
         when (playModeLiveData.value) {
             PlayMode.SINGLE_LOOP -> {
-                updateIndex(indexLiveData.value!!)
+                currentSongLiveData.value?.startPosition?.let {
+                    seekTo(it.toInt())
+                }
             }
 
             PlayMode.LIST_LOOP -> {
-                updateIndex(indexLiveData.value!! + 1)
+                val index = indexLiveData.value!! + 1
+                val song = playListLiveData.value?.getOrNull(index)
+                indexLiveData.value = index
+                song?.let {
+                    currentSongLiveData.value = it
+                    cueMediaPlayer.preparePlay(it)
+                }
             }
 
             PlayMode.RANDOM -> {
                 playListLiveData.value?.let { playlist ->
                     if (playlist.size >= 2) {
                         val randomNumber = if (playlist.size == 2) {
-                            if (indexLiveData.value == 0) 1 else 0 // 只有两首歌曲，直接选择另外一首
+                            if (indexLiveData.value == 0) 1 else 0
                         } else {
-                            var newRandomNumber = Random.nextInt(0, playlist.size - 1)
-                            while (newRandomNumber == indexLiveData.value) {
+                            var newRandomNumber: Int
+                            do {
                                 newRandomNumber = Random.nextInt(0, playlist.size - 1)
-                            }
+                            } while (newRandomNumber == indexLiveData.value)
                             newRandomNumber
                         }
-                        updateIndex(randomNumber)
+                        val song = playListLiveData.value?.getOrNull(randomNumber)
+                        indexLiveData.value = randomNumber
+                        song?.let {
+                            currentSongLiveData.value = it
+                            cueMediaPlayer.preparePlay(it)
+                        }
                     }
                 }
             }
 
-            null -> {
-
-            }
+            null -> {}
         }
     }
 
@@ -170,10 +203,7 @@ object PlayerManager {
      * 移除指定歌曲
      */
     fun removeSong(song: SongBean) {
-        val currentSong = currentSongLiveData.value
-        if (currentSong == song) {
-            skipToNext()
-        }
+        currentSongLiveData.value?.takeIf { it == song }?.run { skipToNext() }
         playListLiveData.value = playListLiveData.value?.minus(song)
     }
 
@@ -184,17 +214,6 @@ object PlayerManager {
         cueMediaPlayer.pause()
         currentSongLiveData.value = null
         playListLiveData.value = null
-    }
-
-    init {
-        // 观察当前播放歌曲的下标，如果播放列表不为空，则根据下标播放歌曲
-        indexLiveData.observeForever {
-            playListLiveData.value?.let { list ->
-                val song = list.getOrNull(it) ?: return@let
-                currentSongLiveData.value = song
-                cueMediaPlayer.play(song)
-            }
-        }
     }
 
     fun setEnableEqualizer(enabled: Boolean) {
@@ -219,15 +238,6 @@ object PlayerManager {
 
     fun getBandFreqRange(band: Int): IntArray {
         return cueMediaPlayer.getBandFreqRange(band)
-    }
-
-    private fun updateIndex(index: Int) {
-        // 根据下标切换歌曲，如果下标越界，则暂停播放
-        playListLiveData.value?.getOrNull(index)?.let {
-            indexLiveData.value = index
-            return
-        }
-        pause()
     }
 
     init {

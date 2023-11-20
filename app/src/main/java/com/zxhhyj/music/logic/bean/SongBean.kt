@@ -5,6 +5,7 @@ import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
+@JsonClass(generateAdapter = true)
 open class SongBean(
     // 歌曲封面路径
     open val coverUrl: String,

@@ -69,10 +69,15 @@ class CueMediaPlayer {
         this.mCompletionListener = completionListener
     }
 
-    /**
-     * 播放音乐。
-     */
-    fun play(song: SongBean) {
+    fun preparePlay(song: SongBean) {
+        preparePlay(song, true)
+    }
+
+    fun prepare(song: SongBean) {
+        preparePlay(song, false)
+    }
+
+    private fun preparePlay(song: SongBean, playWhenReady: Boolean) {
         this.mCurrentSong = song
         mCurrentProgress.value = 0
         mSongDuration.value = song.duration.toInt()
@@ -99,7 +104,9 @@ class CueMediaPlayer {
             }
             setOnPreparedListener {
                 it.seekTo(song.startPosition.toInt())
-                this@CueMediaPlayer.start()
+                if (playWhenReady) {
+                    this@CueMediaPlayer.start()
+                }
                 mPreparedListener?.onPrepared(it)
             }
             setOnCompletionListener {

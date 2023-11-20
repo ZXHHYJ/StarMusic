@@ -3,8 +3,10 @@ package com.zxhhyj.music.ui.screen.play
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -52,7 +54,6 @@ import com.zxhhyj.ui.view.item.Item
 fun ColumnScope.PlayQueueScreen() {
     val playlist by PlayerManager.playListLiveData().observeAsState()
     val song by PlayerManager.currentSongLiveData().observeAsState()
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -62,18 +63,20 @@ fun ColumnScope.PlayQueueScreen() {
             ),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = "${(playlist?.indexOf(song) ?: 0) + 1}/${playlist?.size}",
-            color = translucentWhiteColor,
-            fontSize = 14.sp
-        )
-        Text(
-            text = stringResource(id = R.string.play_list),
-            modifier = Modifier.weight(1.0f),
-            color = Color.White,
-            fontSize = 16.sp,
-            textAlign = TextAlign.Center
-        )
+        Column {
+            Text(
+                text = stringResource(id = R.string.play_list),
+                color = Color.White,
+                fontSize = 16.sp,
+                textAlign = TextAlign.Center
+            )
+            Text(
+                text = "${(playlist?.indexOf(song) ?: 0) + 1}/${playlist?.size}",
+                color = translucentWhiteColor,
+                fontSize = 12.sp
+            )
+        }
+        Spacer(modifier = Modifier.weight(1.0f))
         Text(
             text = stringResource(id = R.string.clear),
             color = translucentWhiteColor,
@@ -85,7 +88,9 @@ fun ColumnScope.PlayQueueScreen() {
 
     AppDivider(
         color = translucentWhiteColor,
-        modifier = Modifier.padding(horizontal = PlayScreen.PlayScreenContentHorizontal)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = PlayScreen.PlayScreenContentHorizontal)
     )
 
     BoxWithConstraints(

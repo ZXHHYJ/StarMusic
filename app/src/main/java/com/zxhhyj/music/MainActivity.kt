@@ -7,6 +7,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.core.view.WindowCompat
+import com.zxhhyj.music.logic.bean.PlayMemoryBean
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.AudioBecomingNoisyManager
 import com.zxhhyj.music.service.playermanager.PlayerManager
@@ -35,16 +36,28 @@ class MainActivity : ComponentActivity() {
             LaunchedEffect(SettingRepository.EnableEqualizer) {
                 PlayerManager.setEnableEqualizer(SettingRepository.EnableEqualizer)
             }
-            LaunchedEffect(Unit) {
-                PlayerManager.setPlayMode(SettingRepository.PlayMode)
-                //恢复播放模式
-            }
             val playMode by PlayerManager.playModeLiveData().observeAsState()
             LaunchedEffect(playMode) {
-                if (playMode != null) {
-                    SettingRepository.PlayMode = playMode as PlayerManager.PlayMode
+                playMode?.let {
+                    SettingRepository.PlayMode = it
                 }
-                //播放模式变更后进行持久化
+            }
+            LaunchedEffect(Unit) {
+                PlayerManager.setPlayMode(SettingRepository.PlayMode)
+                SettingRepository.PlayMemory
+                    .takeIf { SettingRepository.EnablePlayMemory }
+                    ?.takeIf { it.index != null }
+                    ?.takeIf { it.playlist != null }
+                    ?.let {
+                        PlayerManager.install(it.playlist!!, it.index!!)
+                    }
+            }
+            if (SettingRepository.EnablePlayMemory) {
+                val index by PlayerManager.indexLiveData().observeAsState()
+                val playlist by PlayerManager.playListLiveData().observeAsState()
+                LaunchedEffect(index, playlist) {
+                    SettingRepository.PlayMemory = PlayMemoryBean(index, playlist)
+                }
             }
         }
     }

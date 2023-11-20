@@ -8,6 +8,7 @@ import com.squareup.moshi.Moshi
 import com.zxhhyj.music.logic.bean.Folder
 import com.zxhhyj.music.logic.bean.PlayListBean
 import com.zxhhyj.music.logic.bean.PlayListSongBean
+import com.zxhhyj.music.logic.bean.PlayMemoryBean
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.bean.WebDavConfig
 import com.zxhhyj.music.logic.bean.WebDavFile
@@ -106,6 +107,12 @@ class MainApplication : Application() {
         registerTypeConverters(
             save = { bean -> adapterPlayListSongBean.toJson(bean) },
             restore = { str -> adapterPlayListSongBean.fromJson(str) }
+        )
+
+        val adapterPlayMemoryBean = moshi.adapter(PlayMemoryBean::class.java)
+        registerTypeConverters(
+            save = { bean -> adapterPlayMemoryBean.toJson(bean) },
+            restore = { str -> adapterPlayMemoryBean.fromJson(str) }
         )
         //确保播放音乐时播放启动服务
         PlayerManager.pauseLiveData()

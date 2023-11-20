@@ -115,4 +115,5 @@
     <string name="random">随机</string>
     <string name="more_parameters">更多参数</string>
     <string name="clear">清除</string>
+    <string name="play_memory">播放记忆</string>
 </resources>
