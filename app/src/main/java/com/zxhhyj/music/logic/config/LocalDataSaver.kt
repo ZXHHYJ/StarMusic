@@ -1,4 +1,4 @@
-@file:Suppress("UNCHECKED_CAST")
+@file:Suppress("UNCHECKED_CAST", "UNCHECKED_CAST")
 
 package com.zxhhyj.music.logic.config
 

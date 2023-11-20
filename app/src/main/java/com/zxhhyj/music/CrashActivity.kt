@@ -8,7 +8,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
@@ -24,12 +25,12 @@ import com.zxhhyj.ui.view.item.ItemTint
 
 class CrashActivity : ComponentActivity() {
     companion object {
-        const val LOG_KEY = "LOG"
+        const val CRASH_ACTIVITY_KEY = "CRASH_ACTIVITY_KEY"
 
         fun startActivity(context: Context, log: String) {
             context.startActivity(Intent(context, CrashActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                putExtra(LOG_KEY, log)
+                putExtra(CRASH_ACTIVITY_KEY, log)
             })
         }
     }
@@ -47,21 +48,21 @@ class CrashActivity : ComponentActivity() {
                 AppScaffold(
                     topBar = {
                         AppCenterTopBar(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .statusBarsPadding(),
                             title = { Text(text = stringResource(id = R.string.crash_info)) }
-                        ) {
-
-                        }
+                        )
                     },
                     modifier = Modifier
                         .fillMaxSize()
-                        .systemBarsPadding()
+                        .navigationBarsPadding()
                 ) {
                     LazyColumn(modifier = Modifier.fillMaxSize()) {
                         item {
                             RoundColumn(modifier = Modifier.fillMaxWidth()) {
                                 ItemTint {
-                                    Text(text = "${intent.extras?.getString(LOG_KEY)}")
+                                    Text(text = "${intent.extras?.getString(CRASH_ACTIVITY_KEY)}")
                                 }
                             }
                         }

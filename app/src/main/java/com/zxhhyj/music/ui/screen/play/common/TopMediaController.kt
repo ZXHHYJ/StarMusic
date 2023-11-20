@@ -55,7 +55,7 @@ fun TopMediaController(
         val albumHeight = 56.dp
         SharedElement(
             key = ShareAlbumKey,
-            screenKey = PlayScreenDestination.PlayQueue,
+            screenKey = this,
             transitionSpec = MaterialFadeInTransitionSpec
         ) {
             AppAsyncImage(

@@ -16,7 +16,7 @@ import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.AudioFocusUtils
 import com.zxhhyj.music.service.playermanager.PlayerManager
 
-class StarMusicService : LifecycleService() {
+class StarMusicService : LifecycleService(), AudioFocusUtils.OnAudioFocusChangeListener {
 
     companion object {
 
@@ -56,17 +56,19 @@ class StarMusicService : LifecycleService() {
      */
     private lateinit var mNotificationManager: NotificationManagerCompat
 
+    /**
+     * 媒体通知
+     */
     private lateinit var mStarMusicNotification: StarMusicNotification
 
     /**
      * 管理音频焦点
      */
-    private lateinit var mAudioFocusUtils: AudioFocusUtils
+    private val mAudioFocusUtils by lazy { AudioFocusUtils(this, this) }
 
     override fun onCreate() {
         isServiceAlive = true
         super.onCreate()
-        mAudioFocusUtils = AudioFocusUtils(this, AudioFocusChangeListener())
         PlayerManager.currentSongLiveData().observe(this@StarMusicService) {
             it?.apply {
                 mStarMusicNotification.setSongBean(this)
@@ -227,31 +229,25 @@ class StarMusicService : LifecycleService() {
 
     }
 
-    /**
-     * 对音频焦点获取与丢失做出反应
-     */
-    inner class AudioFocusChangeListener : AudioFocusUtils.OnAudioFocusChangeListener {
-
-        override fun onLoss() {
-            if (!SettingRepository.EnableIsPlayingWithOtherApps) {
-                PlayerManager.pause()
-            }
+    override fun onLoss() {
+        if (!SettingRepository.EnableIsPlayingWithOtherApps) {
+            PlayerManager.pause()
         }
+    }
 
-        override fun onLossTransient() {
-            if (!SettingRepository.EnableIsPlayingWithOtherApps) {
-                PlayerManager.pause()
-            }
+    override fun onLossTransient() {
+        if (!SettingRepository.EnableIsPlayingWithOtherApps) {
+            PlayerManager.pause()
         }
+    }
 
-        override fun onLossTransientCanDuck() {
+    override fun onLossTransientCanDuck() {
 
-        }
+    }
 
-        override fun onGain(lossTransient: Boolean, lossTransientCanDuck: Boolean) {
-            if (lossTransient) {
-                PlayerManager.start()
-            }
+    override fun onGain(lossTransient: Boolean, lossTransientCanDuck: Boolean) {
+        if (lossTransient) {
+            PlayerManager.start()
         }
     }
 }

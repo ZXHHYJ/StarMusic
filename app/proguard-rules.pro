@@ -13,4 +13,4 @@
 -keep class org.xmlpull.v1.** { *; }
 -dontwarn android.content.res.XmlResourceParser
 
--keep class com.zxhhyj.** { *; }
+-keepnames class com.zxhhyj.** { *; }

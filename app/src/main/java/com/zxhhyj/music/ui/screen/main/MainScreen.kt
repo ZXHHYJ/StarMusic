@@ -110,9 +110,9 @@ import com.zxhhyj.music.ui.sheet.AddToPlayListSheet
 import com.zxhhyj.music.ui.sheet.PlaylistMenuSheet
 import com.zxhhyj.music.ui.sheet.SongMenuSheet
 import com.zxhhyj.music.ui.sheet.SongPanelSheet
+import com.zxhhyj.music.ui.sheet.SongParametersSheet
 import com.zxhhyj.music.ui.sheet.SongSortSheet
 import com.zxhhyj.music.ui.sheet.TimerSheet
-import com.zxhhyj.music.ui.sheet.SongParametersSheet
 import com.zxhhyj.music.ui.theme.BottomSheetAnimation
 import com.zxhhyj.music.ui.theme.MediaControllerAnimation
 import com.zxhhyj.music.ui.theme.NavHostAnimation
@@ -258,8 +258,12 @@ fun MainScreen() {
                 controllerBar = {
                     AnimatedVisibility(
                         visible = visibilityMediaController,
-                        enter = if (SettingRepository.EnableLinkUI) EnterTransition.None else expandVertically(),
-                        exit = if (SettingRepository.EnableLinkUI) ExitTransition.None else shrinkVertically(),
+                        enter = if (SettingRepository.EnableLinkUI) EnterTransition.None else expandVertically(
+                            MediaControllerAnimation
+                        ),
+                        exit = if (SettingRepository.EnableLinkUI) ExitTransition.None else shrinkVertically(
+                            MediaControllerAnimation
+                        ),
                     ) {
                         val controlBarHeight = 56.dp
                         val elevation = 4.dp

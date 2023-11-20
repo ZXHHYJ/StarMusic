@@ -114,4 +114,5 @@
     <string name="list_loop">列表循环</string>
     <string name="random">随机</string>
     <string name="more_parameters">更多参数</string>
+    <string name="clear">清除</string>
 </resources>

@@ -6,6 +6,7 @@ import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.zxhhyj.music.logic.utils.AudioFocusUtils.OnAudioFocusChangeListener
 
 /**
  * 用于帮助处理应用程序的音频焦点的获取与丢失。
@@ -18,12 +19,16 @@ import androidx.annotation.RequiresApi
  *  1. 创建一个 AudioFocusHelper 对象。需提供以下两个参数：
  *
  *  1. 一个 Context 对象；
- *  1. 一个 [media.helper.AudioFocusHelper.OnAudioFocusChangeListener] 对象，该接口中的回调方法会在当前应用程序的音频焦点丢失与获取时被调用。
+ *  1. 一个 [OnAudioFocusChangeListener] 对象，该接口中的回调方法会在当前应用程序的音频焦点丢失与获取时被调用。
  *
  *  1. 调用 [.requestAudioFocus] 方法请求音频焦点。
  *  1. 调用 [.abandonAudioFocus] 方法放弃音频焦点。
  *
  *
+ * 创建一个 [AudioFocusUtils] 对象。
+ *
+ * @param context  Context 对象，不能为 null
+ * @param listener 事件监听器，不能为 null
  */
 @Suppress("DEPRECATION")
 class AudioFocusUtils(
@@ -37,12 +42,6 @@ class AudioFocusUtils(
     private var mLossTransient = false
     private var mLossTransientCanDuck = false
 
-    /**
-     * 创建一个 [media.helper.AudioFocusHelper] 对象。
-     *
-     * @param context  Context 对象，不能为 null
-     * @param listener 事件监听器，不能为 null
-     */
     init {
         mAudioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         mListener = listener

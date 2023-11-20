@@ -55,7 +55,7 @@ fun FolderManagerScreen(
                                 contentDescription = null
                             )
                         },
-                        text = { Text(text = folder.path) },
+                        text = { Text(text = folder.path.substringAfterLast("/")) },
                         subText = {
                             Text(
                                 text = stringResource(

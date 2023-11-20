@@ -66,7 +66,7 @@ fun PlayControllerScreen(sheetNavController: NavController<SheetDestination>) {
 
             SharedElement(
                 key = ShareAlbumKey,
-                screenKey = PlayScreenDestination.Controller,
+                screenKey = this,
                 transitionSpec = MaterialFadeOutTransitionSpec
             ) {
                 val elevation = vertical
