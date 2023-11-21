@@ -42,6 +42,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -98,7 +99,6 @@ import com.zxhhyj.music.ui.screen.personalize.PersonalizeScreen
 import com.zxhhyj.music.ui.screen.play.PlayScreen
 import com.zxhhyj.music.ui.screen.playlist.PlayListScreen
 import com.zxhhyj.music.ui.screen.playlistcnt.PlayListCntScreen
-import com.zxhhyj.music.ui.screen.privacypolicy.PrivacyPolicyScreen
 import com.zxhhyj.music.ui.screen.pro.ProScreen
 import com.zxhhyj.music.ui.screen.search.SearchScreen
 import com.zxhhyj.music.ui.screen.singer.SingerScreen
@@ -112,6 +112,7 @@ import com.zxhhyj.music.ui.sheet.SongMenuSheet
 import com.zxhhyj.music.ui.sheet.SongPanelSheet
 import com.zxhhyj.music.ui.sheet.SongParametersSheet
 import com.zxhhyj.music.ui.sheet.SongSortSheet
+import com.zxhhyj.music.ui.sheet.StartSheet
 import com.zxhhyj.music.ui.sheet.TimerSheet
 import com.zxhhyj.music.ui.theme.BottomSheetAnimation
 import com.zxhhyj.music.ui.theme.MediaControllerAnimation
@@ -196,11 +197,7 @@ private fun Scaffold(
 fun MainScreen() {
 
     val mainNavController: NavController<ScreenDestination> =
-        if (SettingRepository.AgreePrivacyPolicy) {
-            rememberNavController(startDestination = ScreenDestination.Main)
-        } else {
-            rememberNavController(listOf(ScreenDestination.Main, ScreenDestination.PrivacyPolicy))
-        }
+        rememberNavController(startDestination = ScreenDestination.Main)
 
     val homeNavController =
         rememberNavController(startDestination = HomeNavigationDestination.MediaLib)
@@ -250,9 +247,6 @@ fun MainScreen() {
             val visibilityMediaController by PlayerManager.currentSongLiveData().map {
                 return@map it != null
             }.observeAsState(false)
-            if (!visibilityMediaController && panelController.panelState == PanelState.EXPANDED) {
-                panelController.swipeTo(PanelState.COLLAPSED)
-            }
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
                 controllerBar = {
@@ -445,10 +439,15 @@ fun MainScreen() {
                     NavBackHandler(controller = mainNavController)
                     //面板展开时返回事件不再分发到这里
                 }
+                var rememberLastMainNavDestinationId by rememberSaveable {
+                    mutableStateOf<String?>(null)
+                }
+                val lastMainNavDestinationId = "${mainNavController.backstack.entries.last().id}"
                 //避免导航时面板处于展开状态
-                LaunchedEffect(mainNavController.backstack) {
-                    if (panelController.panelState == PanelState.EXPANDED) {
+                LaunchedEffect(lastMainNavDestinationId) {
+                    if (panelController.panelState == PanelState.EXPANDED && rememberLastMainNavDestinationId != lastMainNavDestinationId) {
                         panelController.swipeTo(PanelState.COLLAPSED)
+                        rememberLastMainNavDestinationId = lastMainNavDestinationId
                     }
                 }
                 AnimatedNavHost(
@@ -469,9 +468,6 @@ fun MainScreen() {
                     }
                 ) { destination ->
                     when (destination) {
-                        ScreenDestination.PrivacyPolicy -> {
-                            PrivacyPolicyScreen(mainNavController = mainNavController)
-                        }
 
                         ScreenDestination.Main -> {
                             NavHost(controller = homeNavController) {
@@ -795,10 +791,20 @@ fun MainScreen() {
                 SheetDestination.Timer -> {
                     TimerSheet(dialogNavController = dialogNavController)
                 }
+
+                SheetDestination.Start -> {
+                    StartSheet(sheetNavController = sheetNavController)
+                }
             }
             Box(modifier = Modifier.heightIn(min = horizontal)) {
                 Spacer(modifier = Modifier.navigationBarsPadding())
             }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        if (!SettingRepository.AgreePrivacyPolicy) {
+            sheetNavController.navigate(SheetDestination.Start)
         }
     }
 

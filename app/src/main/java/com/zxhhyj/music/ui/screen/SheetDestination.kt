@@ -30,4 +30,7 @@ sealed class SheetDestination : Parcelable {
     @Parcelize
     data object Timer : SheetDestination()
 
+    @Parcelize
+    data object Start : SheetDestination()
+
 }

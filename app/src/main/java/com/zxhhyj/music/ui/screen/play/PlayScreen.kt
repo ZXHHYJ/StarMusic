@@ -3,14 +3,20 @@ package com.zxhhyj.music.ui.screen.play
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -19,41 +25,81 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.FontDownload
 import androidx.compose.material.icons.rounded.FormatListBulleted
+import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material.icons.rounded.Remove
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.map
 import com.mxalbert.sharedelements.FadeMode
 import com.mxalbert.sharedelements.MaterialArcMotionFactory
+import com.mxalbert.sharedelements.SharedElement
 import com.mxalbert.sharedelements.SharedElementsRoot
 import com.mxalbert.sharedelements.SharedElementsTransitionSpec
+import com.zxhhyj.music.R
+import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.SettingRepository
+import com.zxhhyj.music.logic.utils.toTimeString
 import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.common.AlbumMotionBlur
+import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.common.BoxWithPercentages
+import com.zxhhyj.music.ui.common.KeepScreenOn
 import com.zxhhyj.music.ui.common.PanelController
 import com.zxhhyj.music.ui.common.PanelState
+import com.zxhhyj.music.ui.common.SoundQualityIcon
+import com.zxhhyj.music.ui.common.WebDavIcon
+import com.zxhhyj.music.ui.common.lyric.Lyric
 import com.zxhhyj.music.ui.screen.SheetDestination
-import com.zxhhyj.music.ui.screen.play.common.TopMediaController
+import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.round
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
+import com.zxhhyj.music.ui.theme.translucentWhiteFixBugColor
+import com.zxhhyj.music.ui.theme.vertical
 import com.zxhhyj.ui.theme.StarDimens
+import com.zxhhyj.ui.view.AppCard
+import com.zxhhyj.ui.view.AppDivider
+import com.zxhhyj.ui.view.AppIconButton
+import com.zxhhyj.ui.view.AppSlider
+import com.zxhhyj.ui.view.item.Item
+import com.zxhhyj.ui.view.item.ItemSpacer
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.moveToTop
@@ -183,7 +229,7 @@ fun PlayScreen(
                                 if (visibilityTopMediaBar) {
                                     LazyColumn(userScrollEnabled = false) {
                                         item {
-                                            TopMediaController(
+                                            TopSongItem(
                                                 navController = navController,
                                                 sheetNavController = sheetNavController
                                             )
@@ -192,7 +238,10 @@ fun PlayScreen(
                                 }
                                 when (it) {
                                     PlayScreenDestination.Lyric -> PlayLyricScreen()
-                                    PlayScreenDestination.PlayQueue -> PlayQueueScreen()
+                                    PlayScreenDestination.PlayQueue -> PlayQueueScreen(
+                                        panelController = panelController
+                                    )
+
                                     else -> {}
                                 }
                             }
@@ -301,3 +350,452 @@ fun PlayScreen(
     }
 }
 
+@Composable
+private fun PlayControllerScreen(sheetNavController: NavController<SheetDestination>) {
+    BoxWithPercentages(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = PlayScreen.PlayScreenContentHorizontal)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            val song by PlayerManager.currentSongLiveData().observeAsState()
+
+            SharedElement(
+                key = ShareAlbumKey,
+                screenKey = this,
+                transitionSpec = MaterialFadeOutTransitionSpec
+            ) {
+                val elevation = vertical
+                AppCard(
+                    modifier = Modifier
+                        .padding(bottom = elevation)
+                        .size(100.wp),
+                    backgroundColor = Color.DarkGray,
+                    elevation = elevation,
+                ) {
+                    AppAsyncImage(
+                        modifier = Modifier.fillMaxSize(),
+                        data = song?.coverUrl
+                    )
+                }
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(
+                    modifier = Modifier
+                        .weight(1.0f),
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = song?.songName ?: "",
+                        color = Color.White,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1
+                    )
+                    Text(
+                        text = song?.artist?.name ?: "",
+                        color = translucentWhiteColor,
+                        fontSize = 16.sp,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1
+                    )
+                }
+                Icon(
+                    imageVector = Icons.Rounded.MoreVert,
+                    tint = Color.White,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(32.dp)
+                        .clip(RoundedCornerShape(50))
+                        .background(translucentWhiteFixBugColor)
+                        .clickable {
+                            song?.let {
+                                sheetNavController.navigate(SheetDestination.SongPanel(it))
+                            }
+                        }
+                )
+            }
+
+            ItemSpacer()
+
+            val progress by PlayerManager.progressLiveData().map { it.toFloat() }.observeAsState(0f)
+
+            val duration by PlayerManager.durationLiveData().map { it.toFloat() }.observeAsState(0f)
+
+            val sliderHeight = 16.dp
+
+            AppSlider(
+                value = progress,
+                valueRange = 0f..duration,
+                onValueChange = {
+                    PlayerManager.seekTo(it.toInt())
+                },
+                onDragStart = {
+                    PlayerManager.pause()
+                },
+                onDragEnd = {
+                    PlayerManager.start()
+                },
+                thumbSize = sliderHeight,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(sliderHeight),
+                thumbColor = Color.White,
+                activeTrackColor = Color.White,
+                inactiveTrackColor = translucentWhiteFixBugColor,
+            )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = progress.toInt().toTimeString(),
+                    color = translucentWhiteColor,
+                    fontSize = 14.sp
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = duration.toInt().toTimeString(),
+                    color = translucentWhiteColor,
+                    fontSize = 14.sp
+                )
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(24.hp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                val buttonSize = 18.wp
+
+                AppIconButton(onClick = { PlayerManager.skipToPrevious() }) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_previous),
+                        contentDescription = null,
+                        modifier = Modifier.size(buttonSize),
+                        tint = Color.White
+                    )
+                }
+                Spacer(modifier = Modifier.width(8.wp))
+
+                val playPauseState by PlayerManager.pauseLiveData().map {
+                    if (it) R.drawable.ic_play else R.drawable.ic_pause
+                }.observeAsState(R.drawable.ic_play)
+
+                AppIconButton(onClick = {
+                    if (PlayerManager.pauseLiveData().value == true) {
+                        PlayerManager.start()
+                    } else {
+                        PlayerManager.pause()
+                    }
+                }) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = playPauseState),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .scale(1.2f)
+                            .size(23.wp),
+                        tint = Color.White
+                    )
+                }
+                Spacer(modifier = Modifier.width(8.wp))
+                AppIconButton(onClick = { PlayerManager.skipToNext() }) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_next),
+                        contentDescription = null,
+                        modifier = Modifier.size(buttonSize),
+                        tint = Color.White
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ColumnScope.PlayLyricScreen() {
+    val pause by PlayerManager.pauseLiveData().observeAsState(true)
+    KeepScreenOn(enable = !pause)
+    val song by PlayerManager.currentSongLiveData().observeAsState()
+    val liveTime by PlayerManager.progressLiveData()
+        .observeAsState(0)
+    val animDurationMillis = 1000
+    Lyric(
+        modifier = Modifier
+            .fillMaxWidth()
+            .weight(1.0f),
+        lyric = song?.lyric,
+        liveTime = liveTime,
+        translation = SettingRepository.EnableLyricsTranslation,
+        lyricScrollAnimationSpec = tween(animDurationMillis),
+        lyricItem = { modifier: Modifier,
+                      model: String,
+                      index: Int,
+                      position: Int ->
+            val textColor by animateColorAsState(
+                targetValue = if (position == index) Color.White else translucentWhiteColor,
+                label = "lyric_text_color",
+                animationSpec = tween(animDurationMillis)
+            )
+            val textScale by animateFloatAsState(
+                targetValue = if (position == index) 1.05f else 1f,
+                label = "lyric_text_scale",
+                animationSpec = tween(animDurationMillis)
+            )
+            Text(
+                modifier = modifier
+                    .padding(
+                        vertical = 18.dp,
+                        horizontal = PlayScreen.PlayScreenContentHorizontal
+                    )
+                    .graphicsLayer {
+                        scaleX = textScale
+                        scaleY = textScale
+                        transformOrigin = TransformOrigin(0f, 0f)
+                    },
+                text = model,
+                color = textColor,
+                fontSize = SettingRepository.LyricFontSize.sp,
+                fontWeight = if (SettingRepository.LyricFontBold) FontWeight.Bold else null,
+                textAlign = TextAlign.Left
+            )
+        }
+    ) {
+        PlayerManager.seekTo(it)
+        PlayerManager.start()
+    }
+}
+
+@Composable
+private fun ColumnScope.PlayQueueScreen(panelController: PanelController) {
+    val playlist by PlayerManager.playListLiveData().observeAsState()
+    val song by PlayerManager.currentSongLiveData().observeAsState()
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = PlayScreen.PlayScreenContentHorizontal,
+                vertical = vertical
+            ),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column {
+            Text(
+                text = stringResource(id = R.string.play_list),
+                color = Color.White,
+                fontSize = 16.sp,
+                textAlign = TextAlign.Center
+            )
+            Text(
+                text = "${(playlist?.indexOf(song) ?: 0) + 1}/${playlist?.size}",
+                color = translucentWhiteColor,
+                fontSize = 12.sp
+            )
+        }
+        Spacer(modifier = Modifier.weight(1.0f))
+        Text(
+            text = stringResource(id = R.string.clear),
+            color = translucentWhiteColor,
+            fontSize = 14.sp,
+            modifier = Modifier.clickable {
+                panelController.swipeTo(PanelState.COLLAPSED)
+                PlayerManager.clearPlayList()
+            })
+    }
+
+    AppDivider(
+        color = translucentWhiteColor,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = PlayScreen.PlayScreenContentHorizontal)
+    )
+
+    BoxWithConstraints(
+        modifier = Modifier
+            .fillMaxWidth()
+            .weight(1.0f)
+    ) {
+
+        val lazyListState = rememberLazyListState()
+
+        var selectItemBoxSize by remember {
+            mutableStateOf(IntSize.Zero)
+        }
+
+        val currentSong by PlayerManager.currentSongLiveData().observeAsState()
+
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            state = lazyListState
+        ) {
+            playlist?.let { songBeans ->
+                itemsIndexed(songBeans) { index, model ->
+                    AppCard(
+                        backgroundColor = if (currentSong == model) Color.White.copy(alpha = 0.2f) else Color.Transparent,
+                        modifier = Modifier
+                            .onSizeChanged {
+                                selectItemBoxSize = it
+                            }
+                            .fillMaxWidth()
+                    ) {
+                        Item(
+                            icon = {
+                                AppAsyncImage(
+                                    modifier = Modifier
+                                        .size(50.dp),
+                                    data = model.coverUrl
+                                )
+                            },
+                            text = {
+                                Text(
+                                    text = model.songName,
+                                    color = Color.White,
+                                    fontSize = 15.sp,
+                                    maxLines = 1,
+                                    textAlign = TextAlign.Center,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            },
+                            subText = {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                ) {
+                                    if (SettingRepository.EnableShowSoundQualityLabel) {
+                                        SoundQualityIcon(song = model)
+                                    }
+                                    if (model is SongBean.WebDav) {
+                                        WebDavIcon()
+                                    }
+                                    Text(
+                                        text = model.artist.name,
+                                        color = translucentWhiteColor,
+                                        fontSize = 13.sp,
+                                        maxLines = 1,
+                                        textAlign = TextAlign.Center,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                }
+                            },
+                            actions = {
+                                AppIconButton(onClick = {
+                                    PlayerManager.removeSong(model)
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Rounded.Remove,
+                                        contentDescription = null,
+                                        tint = translucentWhiteColor
+                                    )
+                                }
+                            }) {
+                            PlayerManager.play(songBeans, index)
+                        }
+                    }
+                }
+            }
+        }
+        val boxHeightPx = with(LocalDensity.current) {
+            maxHeight.roundToPx()
+        }
+        LaunchedEffect(Unit) {
+            val position = playlist?.indexOf(song) ?: 0
+            val height = (boxHeightPx - selectItemBoxSize.height) / 2
+            lazyListState.scrollToItem(position.coerceAtLeast(0), -height)
+        }
+        LaunchedEffect(song) {
+            val position = playlist?.indexOf(song) ?: 0
+            val height = (boxHeightPx - selectItemBoxSize.height) / 2
+            lazyListState.animateScrollToItem(position.coerceAtLeast(0), -height)
+        }
+    }
+}
+
+@Composable
+private fun TopSongItem(
+    modifier: Modifier = Modifier,
+    navController: NavController<PlayScreenDestination>,
+    sheetNavController: NavController<SheetDestination>,
+) {
+    val songBean by PlayerManager.currentSongLiveData().observeAsState()
+    Row(
+        modifier = modifier.padding(horizontal = PlayScreen.PlayScreenContentHorizontal),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        val albumHeight = 56.dp
+        SharedElement(
+            key = ShareAlbumKey,
+            screenKey = this,
+            transitionSpec = MaterialFadeInTransitionSpec
+        ) {
+            AppAsyncImage(
+                modifier = Modifier
+                    .padding(
+                        PaddingValues.Absolute(
+                            left = 0.dp,
+                            right = horizontal / 2,
+                            top = vertical,
+                            bottom = vertical
+                        )
+                    )
+                    .size(albumHeight),
+                data = songBean?.coverUrl
+            ) {
+                navController.moveToTop {
+                    it == PlayScreenDestination.Controller
+                }
+            }
+        }
+        Column(
+            modifier = Modifier
+                .weight(1.0f)
+                .height(albumHeight),
+            verticalArrangement = Arrangement.SpaceAround,
+        ) {
+            Text(
+                text = songBean?.songName ?: "",
+                color = Color.White,
+                fontSize = 16.sp,
+                maxLines = 1,
+                textAlign = TextAlign.Center,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                text = songBean?.artist?.name ?: "",
+                color = translucentWhiteColor,
+                fontSize = 14.sp,
+                maxLines = 1,
+                textAlign = TextAlign.Center,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+        Icon(
+            imageVector = Icons.Rounded.MoreVert,
+            tint = Color.White,
+            contentDescription = null,
+            modifier = Modifier
+                .size(32.dp)
+                .clip(RoundedCornerShape(50))
+                .background(translucentWhiteFixBugColor)
+                .clickable {
+                    songBean?.let {
+                        sheetNavController.navigate(SheetDestination.SongPanel(it))
+                    }
+                }
+        )
+    }
+}

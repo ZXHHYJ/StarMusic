@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED")
-
 package com.zxhhyj.music.service.playermanager
 
 import android.media.MediaPlayer
@@ -44,30 +42,7 @@ class CueMediaPlayer {
 
     var errorListener: (CueMediaPlayer.(Exception) -> Unit)? = null
 
-    private var mPreparedListener: MediaPlayer.OnPreparedListener? = null
-    private var mSeekCompleteListener: MediaPlayer.OnSeekCompleteListener? = null
-    private var mCompletionListener: MediaPlayer.OnCompletionListener? = null
-
-    /**
-     * 设置 MediaPlayer 的 OnPreparedListener。
-     */
-    fun setOnPreparedListener(preparedListener: MediaPlayer.OnPreparedListener) {
-        this.mPreparedListener = preparedListener
-    }
-
-    /**
-     * 设置 MediaPlayer 的 OnSeekCompleteListener。
-     */
-    fun setOnSeekCompleteListener(seekCompleteListener: MediaPlayer.OnSeekCompleteListener) {
-        this.mSeekCompleteListener = seekCompleteListener
-    }
-
-    /**
-     * 设置 MediaPlayer 的 OnCompletionListener。
-     */
-    fun setOnCompletionListener(completionListener: MediaPlayer.OnCompletionListener) {
-        this.mCompletionListener = completionListener
-    }
+    var completionListener: (() -> Unit)? = null
 
     fun preparePlay(song: SongBean) {
         preparePlay(song, true)
@@ -86,7 +61,7 @@ class CueMediaPlayer {
         mTimer = Timer(0, song.duration.toInt()).apply {
             setOnFinishedListener {
                 this@CueMediaPlayer.seekTo(song.startPosition.toInt())
-                mCompletionListener?.onCompletion(mMediaPlayer)
+                completionListener?.invoke()
             }
             setOnUpdateListener {
                 mCurrentProgress.value = it
@@ -100,18 +75,16 @@ class CueMediaPlayer {
                     else -> it.currentPosition - song.startPosition
                 }.toInt()
                 mTimer?.setCurrentTime(currentPosition)
-                mSeekCompleteListener?.onSeekComplete(it)
             }
             setOnPreparedListener {
                 it.seekTo(song.startPosition.toInt())
                 if (playWhenReady) {
                     this@CueMediaPlayer.start()
                 }
-                mPreparedListener?.onPrepared(it)
             }
             setOnCompletionListener {
                 mTimer?.pause()
-                mCompletionListener?.onCompletion(mMediaPlayer)
+                completionListener?.invoke()
             }
             setOnErrorListener { _, i, i2 ->
                 mTimer?.pause()
@@ -132,18 +105,22 @@ class CueMediaPlayer {
      * 开始播放音乐。
      */
     fun start() {
-        mTimer?.start()
-        mPause.value = false
-        mMediaPlayer.start()
+        if (!mMediaPlayer.isPlaying) {
+            mTimer?.start()
+            mPause.value = false
+            mMediaPlayer.start()
+        }
     }
 
     /**
      * 暂停播放音乐。
      */
     fun pause() {
-        mTimer?.pause()
-        mPause.value = true
-        mMediaPlayer.pause()
+        if (mMediaPlayer.isPlaying) {
+            mTimer?.pause()
+            mPause.value = true
+            mMediaPlayer.pause()
+        }
     }
 
     /**
@@ -157,19 +134,6 @@ class CueMediaPlayer {
             else -> position + currentSong.startPosition
         }.toInt()
         mMediaPlayer.seekTo(currentPosition)
-    }
-
-    /**
-     * 释放 MediaPlayer 资源。
-     */
-    fun release() {
-        mTimer?.pause()
-        mTimer = null
-        mPause.value = false
-        mCurrentProgress.value = 0
-        mSongDuration.value = 0
-        mMediaPlayer.release()
-        mEqualizer.release()
     }
 
     fun setEnableEqualizer(enabled: Boolean) {

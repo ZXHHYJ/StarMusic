@@ -1,12 +1,21 @@
 package com.zxhhyj.music.ui.theme
 
+import android.app.WallpaperManager
+import android.app.WallpaperManager.FLAG_SYSTEM
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.platform.LocalContext
 import com.kyant.m3color.dynamiccolor.MaterialDynamicColors
 import com.kyant.m3color.hct.Hct
 import com.kyant.m3color.scheme.SchemeContent
@@ -35,14 +44,42 @@ fun StarMusicTheme(
 
     val colorScheme = when (SettingRepository.EnableDynamicColors) {
         true -> {
-            val keyColor = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                colorResource(id = android.R.color.system_accent1_500)
-            } else {
-                mainColor
+            val mainColor = mainColor
+            var monetColor: Color by remember {
+                mutableStateOf(mainColor)
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                //获取壁纸管理器
+                val wallpaperManager = WallpaperManager.getInstance(LocalContext.current)
+                //判断是否支持获取壁纸颜色
+                try {
+                    monetColor =
+                        Color(wallpaperManager.getWallpaperColors(FLAG_SYSTEM)!!.primaryColor.toArgb())
+                } catch (e: Exception) {
+                    //windows sub system就会报错
+                }
+                val handler = Handler.createAsync(Looper.getMainLooper())
+                DisposableEffect(Unit) {
+                    val colorsChangedListener =
+                        WallpaperManager.OnColorsChangedListener { colors, which ->
+                            if (FLAG_SYSTEM == which && colors != null) {
+                                monetColor = Color(colors.primaryColor.toArgb())
+                            }
+                        }
+
+                    wallpaperManager.addOnColorsChangedListener(
+                        colorsChangedListener,
+                        handler
+                    )
+                    onDispose {
+                        //避免内存泄露
+                        wallpaperManager.removeOnColorsChangedListener(colorsChangedListener)
+                    }
+                }
             }
 
             val contrastLevel = 0.0
-            val hct = Hct.fromInt(keyColor.toArgb())
+            val hct = Hct.fromInt(monetColor.toArgb())
             val colors = MaterialDynamicColors()
             val scheme = when (PaletteStyle.entries[SettingRepository.M3PaletteStyle]) {
                 PaletteStyle.TonalSpot -> SchemeTonalSpot(hct, isDark, contrastLevel)

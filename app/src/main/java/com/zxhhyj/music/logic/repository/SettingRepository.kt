@@ -218,10 +218,10 @@ object SettingRepository {
     /**
      * 播放记忆
      */
-    var PlayMemory by mutableDataSaverStateOf(
+    var PlayMemory :PlayMemoryBean? by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "PlayMemory",
-        initialValue = PlayMemoryBean()
+        initialValue = null
     )
 
     /**

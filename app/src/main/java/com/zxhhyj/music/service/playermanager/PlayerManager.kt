@@ -120,8 +120,8 @@ object PlayerManager {
     fun skipToPrevious() {
         val index = indexLiveData.value?.let { it - 1 } ?: return
         val song = playListLiveData.value?.getOrNull(index)
-        indexLiveData.value = index
         song?.let {
+            indexLiveData.value = index
             currentSongLiveData.value = it
             cueMediaPlayer.preparePlay(it)
         }
@@ -141,8 +141,8 @@ object PlayerManager {
             PlayMode.LIST_LOOP -> {
                 val index = indexLiveData.value!! + 1
                 val song = playListLiveData.value?.getOrNull(index)
-                indexLiveData.value = index
                 song?.let {
+                    indexLiveData.value = index
                     currentSongLiveData.value = it
                     cueMediaPlayer.preparePlay(it)
                 }
@@ -242,7 +242,7 @@ object PlayerManager {
 
     init {
         cueMediaPlayer.apply {
-            setOnCompletionListener {
+            completionListener = {
                 skipToNext()
             }
             errorListener = {

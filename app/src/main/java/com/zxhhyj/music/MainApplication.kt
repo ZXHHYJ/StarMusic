@@ -132,6 +132,16 @@ class MainApplication : Application() {
             }
         }
 
+        //记忆播放模式
+        PlayerManager.setPlayMode(SettingRepository.PlayMode)
+        //记忆播放列表和下标
+        SettingRepository.PlayMemory
+            ?.takeIf { SettingRepository.EnablePlayMemory }
+            ?.takeIf { it.index != null }
+            ?.takeIf { it.playlist != null }
+            ?.let {
+                PlayerManager.install(it.playlist!!, it.index!!)
+            }
     }
 
     @Synchronized

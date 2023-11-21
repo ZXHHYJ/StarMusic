@@ -42,16 +42,6 @@ class MainActivity : ComponentActivity() {
                     SettingRepository.PlayMode = it
                 }
             }
-            LaunchedEffect(Unit) {
-                PlayerManager.setPlayMode(SettingRepository.PlayMode)
-                SettingRepository.PlayMemory
-                    .takeIf { SettingRepository.EnablePlayMemory }
-                    ?.takeIf { it.index != null }
-                    ?.takeIf { it.playlist != null }
-                    ?.let {
-                        PlayerManager.install(it.playlist!!, it.index!!)
-                    }
-            }
             if (SettingRepository.EnablePlayMemory) {
                 val index by PlayerManager.indexLiveData().observeAsState()
                 val playlist by PlayerManager.playListLiveData().observeAsState()
