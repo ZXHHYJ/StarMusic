@@ -59,12 +59,12 @@ object PlayerManager {
     /**
      * 获取当前播放进度的 LiveData
      */
-    fun progressLiveData(): LiveData<Int> = cueMediaPlayer.currentProgress
+    fun progressLiveData(): LiveData<Int> = cueMediaPlayer.currentProgressLiveData
 
     /**
      * 获取当前歌曲时长的 LiveData
      */
-    fun durationLiveData(): LiveData<Int> = cueMediaPlayer.songDuration
+    fun durationLiveData(): LiveData<Int> = cueMediaPlayer.songDurationLiveData
 
     /**
      * 获取当前播放的歌曲的 LiveData
@@ -74,7 +74,7 @@ object PlayerManager {
     /**
      * 获取暂停状态的 LiveData
      */
-    fun pauseLiveData(): LiveData<Boolean> = cueMediaPlayer.pause
+    fun pauseLiveData(): LiveData<Boolean> = cueMediaPlayer.pauseLiveData
 
     fun indexLiveData(): LiveData<Int> = indexLiveData
 

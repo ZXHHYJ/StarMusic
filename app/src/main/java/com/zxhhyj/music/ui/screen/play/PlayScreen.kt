@@ -35,6 +35,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.FontDownload
@@ -42,6 +43,7 @@ import androidx.compose.material.icons.rounded.FormatListBulleted
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.Remove
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -93,6 +95,7 @@ import com.zxhhyj.music.ui.theme.round
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
 import com.zxhhyj.music.ui.theme.translucentWhiteFixBugColor
 import com.zxhhyj.music.ui.theme.vertical
+import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.theme.StarDimens
 import com.zxhhyj.ui.view.AppCard
 import com.zxhhyj.ui.view.AppDivider
@@ -480,48 +483,69 @@ private fun PlayControllerScreen(sheetNavController: NavController<SheetDestinat
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
-                val buttonSize = 18.wp
-
-                AppIconButton(onClick = { PlayerManager.skipToPrevious() }) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_previous),
-                        contentDescription = null,
-                        modifier = Modifier.size(buttonSize),
-                        tint = Color.White
-                    )
-                }
-                Spacer(modifier = Modifier.width(8.wp))
-
-                val playPauseState by PlayerManager.pauseLiveData().map {
-                    if (it) R.drawable.ic_play else R.drawable.ic_pause
-                }.observeAsState(R.drawable.ic_play)
-
-                AppIconButton(onClick = {
-                    if (PlayerManager.pauseLiveData().value == true) {
-                        PlayerManager.start()
-                    } else {
-                        PlayerManager.pause()
-                    }
-                }) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = playPauseState),
-                        contentDescription = null,
+                CompositionLocalProvider(
+                    LocalColorScheme provides LocalColorScheme.current.copy(disabled = translucentWhiteColor),
+                    LocalContentColor provides Color.White
+                ) {
+                    val buttonSize = 64.dp
+                    val index by PlayerManager.indexLiveData().observeAsState()
+                    val playlistSize by PlayerManager.playListLiveData().map { it?.size }
+                        .observeAsState()
+                    AppIconButton(
+                        onClick = { PlayerManager.skipToPrevious() },
+                        enabled = index != 0,
                         modifier = Modifier
+                            .size(buttonSize)
+                    ) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_previous),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .scale(0.8f)
+                        )
+                    }
+
+                    val playPauseState by PlayerManager.pauseLiveData().map {
+                        if (it) R.drawable.ic_play else R.drawable.ic_pause
+                    }.observeAsState(R.drawable.ic_play)
+
+                    AppIconButton(
+                        onClick = {
+                            if (PlayerManager.pauseLiveData().value == true) {
+                                PlayerManager.start()
+                            } else {
+                                PlayerManager.pause()
+                            }
+                        },
+                        modifier = Modifier
+                            .padding(horizontal = 20.dp)
+                            .size(buttonSize)
                             .scale(1.2f)
-                            .size(23.wp),
-                        tint = Color.White
-                    )
+                    ) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = playPauseState),
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+
+                    AppIconButton(
+                        onClick = { PlayerManager.skipToNext() },
+                        enabled = index != playlistSize?.let { it - 1 },
+                        modifier = Modifier
+                            .size(buttonSize)
+                    ) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_next),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .scale(0.8f)
+                        )
+                    }
                 }
-                Spacer(modifier = Modifier.width(8.wp))
-                AppIconButton(onClick = { PlayerManager.skipToNext() }) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_skip_next),
-                        contentDescription = null,
-                        modifier = Modifier.size(buttonSize),
-                        tint = Color.White
-                    )
-                }
+
             }
         }
     }

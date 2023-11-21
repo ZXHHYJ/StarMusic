@@ -21,24 +21,26 @@ import kotlinx.coroutines.launch
  */
 class CueMediaPlayer {
 
-    private val mMediaPlayer = MediaPlayer()
+    private val mediaPlayer = MediaPlayer()
 
-    private var mEqualizer = Equalizer(0, mMediaPlayer.audioSessionId).apply {
+    private var equalizer = Equalizer(0, mediaPlayer.audioSessionId).apply {
         enabled = true
     }
 
-    private var mCurrentSong: SongBean? = null
+    private var playWhenReady = false
 
-    private var mTimer: Timer? = null
+    private var currentSong: SongBean? = null
 
-    private val mPause = MutableLiveData(true)
-    val pause: LiveData<Boolean> = mPause
+    private var timer: Timer? = null
 
-    private val mCurrentProgress = MutableLiveData<Int>()
-    val currentProgress: LiveData<Int> = mCurrentProgress
+    private val _pauseLiveData = MutableLiveData(true)
+    val pauseLiveData: LiveData<Boolean> = _pauseLiveData
 
-    private val mSongDuration = MutableLiveData<Int>()
-    val songDuration: LiveData<Int> = mSongDuration
+    private val _currentProgressLiveData = MutableLiveData<Int>()
+    val currentProgressLiveData: LiveData<Int> = _currentProgressLiveData
+
+    private val _songDurationLiveData = MutableLiveData<Int>()
+    val songDurationLiveData: LiveData<Int> = _songDurationLiveData
 
     var errorListener: (CueMediaPlayer.(Exception) -> Unit)? = null
 
@@ -53,42 +55,43 @@ class CueMediaPlayer {
     }
 
     private fun preparePlay(song: SongBean, playWhenReady: Boolean) {
-        this.mCurrentSong = song
-        mCurrentProgress.value = 0
-        mSongDuration.value = song.duration.toInt()
-        mTimer?.pause()
-        mTimer = null
-        mTimer = Timer(0, song.duration.toInt()).apply {
+        this.playWhenReady = playWhenReady
+        this.currentSong = song
+        _currentProgressLiveData.value = 0
+        _songDurationLiveData.value = song.duration.toInt()
+        timer?.pause()
+        timer = null
+        timer = Timer(0, song.duration.toInt()).apply {
             setOnFinishedListener {
                 this@CueMediaPlayer.seekTo(song.startPosition.toInt())
                 completionListener?.invoke()
             }
             setOnUpdateListener {
-                mCurrentProgress.value = it
+                _currentProgressLiveData.value = it
             }
         }
-        mMediaPlayer.apply {
+        mediaPlayer.apply {
             reset()
             setOnSeekCompleteListener {
                 val currentPosition = when (song.startPosition) {
                     0L -> it.currentPosition
                     else -> it.currentPosition - song.startPosition
                 }.toInt()
-                mTimer?.setCurrentTime(currentPosition)
+                timer?.setCurrentTime(currentPosition)
             }
             setOnPreparedListener {
                 it.seekTo(song.startPosition.toInt())
-                if (playWhenReady) {
+                if (this@CueMediaPlayer.playWhenReady) {
                     this@CueMediaPlayer.start()
                 }
             }
             setOnCompletionListener {
-                mTimer?.pause()
+                this@CueMediaPlayer.pause()
                 completionListener?.invoke()
             }
             setOnErrorListener { _, i, i2 ->
-                mTimer?.pause()
-                mPause.value = true
+                timer?.pause()
+                this@CueMediaPlayer._pauseLiveData.value = true
                 errorListener?.invoke(this@CueMediaPlayer, MediaPlayerException(i, i2))
                 true
             }
@@ -105,10 +108,10 @@ class CueMediaPlayer {
      * 开始播放音乐。
      */
     fun start() {
-        if (!mMediaPlayer.isPlaying) {
-            mTimer?.start()
-            mPause.value = false
-            mMediaPlayer.start()
+        timer?.start()
+        this._pauseLiveData.value = false
+        if (!mediaPlayer.isPlaying) {
+            mediaPlayer.start()
         }
     }
 
@@ -116,10 +119,11 @@ class CueMediaPlayer {
      * 暂停播放音乐。
      */
     fun pause() {
-        if (mMediaPlayer.isPlaying) {
-            mTimer?.pause()
-            mPause.value = true
-            mMediaPlayer.pause()
+        timer?.pause()
+        this._pauseLiveData.value = true
+        playWhenReady = false
+        if (mediaPlayer.isPlaying) {
+            mediaPlayer.pause()
         }
     }
 
@@ -127,17 +131,17 @@ class CueMediaPlayer {
      * 设置音乐播放进度。
      */
     fun seekTo(position: Int) {
-        val currentSong = mCurrentSong ?: return
-        mCurrentProgress.value = position
+        val currentSong = currentSong ?: return
+        _currentProgressLiveData.value = position
         val currentPosition = when (currentSong.startPosition) {
             0L -> position
             else -> position + currentSong.startPosition
         }.toInt()
-        mMediaPlayer.seekTo(currentPosition)
+        mediaPlayer.seekTo(currentPosition)
     }
 
     fun setEnableEqualizer(enabled: Boolean) {
-        mEqualizer.enabled = enabled
+        equalizer.enabled = enabled
     }
 
     /**
@@ -146,7 +150,7 @@ class CueMediaPlayer {
      * @param level 频段级别
      */
     fun setBandLevel(band: Int, level: Int) {
-        mEqualizer.setBandLevel(band.toShort(), level.toShort())
+        equalizer.setBandLevel(band.toShort(), level.toShort())
     }
 
     /**
@@ -155,7 +159,7 @@ class CueMediaPlayer {
      * @return 频段级别
      */
     fun getBandLevel(band: Int): Int {
-        return mEqualizer.getBandLevel(band.toShort()).toInt()
+        return equalizer.getBandLevel(band.toShort()).toInt()
     }
 
     /**
@@ -163,8 +167,8 @@ class CueMediaPlayer {
      * @return 频段级别范围
      */
     fun getBandRange(): Range<Int> {
-        val minLevel = mEqualizer.bandLevelRange?.min() ?: 0
-        val maxLevel = mEqualizer.bandLevelRange?.max() ?: 0
+        val minLevel = equalizer.bandLevelRange?.min() ?: 0
+        val maxLevel = equalizer.bandLevelRange?.max() ?: 0
         return Range(minLevel.toInt(), maxLevel.toInt())
     }
 
@@ -173,12 +177,12 @@ class CueMediaPlayer {
      * @return 频段数量
      */
     fun getNumberOfBands(): Int {
-        return mEqualizer.numberOfBands.toInt()
+        return equalizer.numberOfBands.toInt()
     }
 
 
     fun getBandFreqRange(band: Int): IntArray {
-        return mEqualizer.getBandFreqRange(band.toShort()) ?: IntArray(0)
+        return equalizer.getBandFreqRange(band.toShort()) ?: IntArray(0)
     }
 
     /**
@@ -216,7 +220,7 @@ class CueMediaPlayer {
                     var time = currentTime
                     while (time < endTime) {
                         delay(updateTimeout.toLong())
-                        time = startTime + mMediaPlayer.currentPosition
+                        time = startTime + mediaPlayer.currentPosition
                         emit(time)
                     }
                 }.flowOn(Dispatchers.Main)
