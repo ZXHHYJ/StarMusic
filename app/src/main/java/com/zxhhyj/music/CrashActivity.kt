@@ -8,8 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
@@ -27,6 +26,11 @@ class CrashActivity : ComponentActivity() {
     companion object {
         const val CRASH_ACTIVITY_KEY = "CRASH_ACTIVITY_KEY"
 
+        /**
+         * 启动CrashActivity
+         * @param context 上下文
+         * @param log 报错信息
+         */
         fun startActivity(context: Context, log: String) {
             context.startActivity(Intent(context, CrashActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -37,8 +41,8 @@ class CrashActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-            WindowCompat.setDecorFitsSystemWindows(window, false)
             rememberSystemUiController().setSystemBarsColor(
                 Color.Transparent,
                 !isSystemInDarkTheme(),
@@ -48,15 +52,13 @@ class CrashActivity : ComponentActivity() {
                 AppScaffold(
                     topBar = {
                         AppCenterTopBar(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .statusBarsPadding(),
+                            modifier = Modifier.fillMaxWidth(),
                             title = { Text(text = stringResource(id = R.string.crash_info)) }
                         )
                     },
                     modifier = Modifier
                         .fillMaxSize()
-                        .navigationBarsPadding()
+                        .systemBarsPadding()
                 ) {
                     LazyColumn(modifier = Modifier.fillMaxSize()) {
                         item {

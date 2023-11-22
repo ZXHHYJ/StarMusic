@@ -38,8 +38,8 @@ import androidx.compose.material.icons.rounded.MoreHoriz
 import androidx.compose.material.icons.rounded.Source
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -57,7 +57,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.map
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
@@ -212,23 +211,20 @@ fun MainScreen() {
 
     val panelController = rememberPanelController(panelState = PanelState.COLLAPSED)
 
-    val isSystemInDarkMode = when (SettingRepository.ThemeMode) {
-        SettingRepository.ThemeModeEnum.AUTO.ordinal -> {
-            isSystemInDarkTheme()
-        }
+    val isSystemInDarkMode =
+        when (SettingRepository.ThemeModeEnum.entries[SettingRepository.ThemeMode]) {
+            SettingRepository.ThemeModeEnum.AUTO -> {
+                isSystemInDarkTheme()
+            }
 
-        SettingRepository.ThemeModeEnum.LIGHT.ordinal -> {
-            false
-        }
+            SettingRepository.ThemeModeEnum.LIGHT -> {
+                false
+            }
 
-        SettingRepository.ThemeModeEnum.DARK.ordinal -> {
-            true
+            SettingRepository.ThemeModeEnum.DARK -> {
+                true
+            }
         }
-
-        else -> {
-            isSystemInDarkTheme()
-        }
-    }
 
     rememberSystemUiController().setSystemBarsColor(
         Color.Transparent,
@@ -244,9 +240,8 @@ fun MainScreen() {
         panelController = panelController,
         panelAnimationSpec = if (SettingRepository.EnableLinkUI) tween(0) else PanelAnimation,
         content = {
-            val visibilityMediaController by PlayerManager.currentSongLiveData().map {
-                return@map it != null
-            }.observeAsState(false)
+            val currentSong by PlayerManager.currentSongFlow.collectAsState()
+            val visibilityMediaController = currentSong != null
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
                 controllerBar = {
@@ -274,7 +269,6 @@ fun MainScreen() {
                             ) {
                                 AppDivider(modifier = Modifier.fillMaxWidth())
                             }
-                            val song by PlayerManager.currentSongLiveData().observeAsState()
                             val android12ScreenRound =
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                                     val cornerRadius =
@@ -322,7 +316,7 @@ fun MainScreen() {
                                                 .clickable {
                                                     panelController.swipeTo(PanelState.EXPANDED)
                                                 },
-                                            albumUrl = song?.coverUrl,
+                                            albumUrl = currentSong?.coverUrl,
                                             paused = panelController.panelState != PanelState.COLLAPSED
                                         )
                                     }
@@ -343,34 +337,33 @@ fun MainScreen() {
                                                 onClick = {
                                                     panelController.swipeTo(PanelState.EXPANDED)
                                                 }),
-                                        data = song?.coverUrl
+                                        data = currentSong?.coverUrl
                                     )
 
                                     Text(
                                         modifier = Modifier
                                             .padding(start = horizontal)
                                             .weight(1.0f),
-                                        text = song?.songName ?: "",
+                                        text = currentSong?.songName ?: "",
                                         fontSize = 16.sp,
                                         maxLines = 1,
                                         fontWeight = FontWeight.Bold,
                                         color = Color.White
                                     )
-                                    val playPauseState by PlayerManager.pauseLiveData().map {
-                                        if (it) R.drawable.ic_play else R.drawable.ic_pause
-                                    }.observeAsState(R.drawable.ic_play)
+
+                                    val pauseState by PlayerManager.pauseFlow.collectAsState()
+                                    val playPauseIcon =
+                                        if (pauseState) R.drawable.ic_play else R.drawable.ic_pause
                                     val buttonSize = 36.dp
                                     AppIconButton(onClick = {
-                                        if (PlayerManager.pauseLiveData().value == true) {
+                                        if (pauseState) {
                                             PlayerManager.start()
                                         } else {
                                             PlayerManager.pause()
                                         }
                                     }) {
                                         Icon(
-                                            imageVector = ImageVector.vectorResource(
-                                                playPauseState
-                                            ),
+                                            imageVector = ImageVector.vectorResource(playPauseIcon),
                                             tint = Color.White,
                                             contentDescription = null,
                                             modifier = Modifier.size(buttonSize)
@@ -446,7 +439,9 @@ fun MainScreen() {
                 //避免导航时面板处于展开状态
                 LaunchedEffect(lastMainNavDestinationId) {
                     if (panelController.panelState == PanelState.EXPANDED && rememberLastMainNavDestinationId != lastMainNavDestinationId) {
-                        panelController.swipeTo(PanelState.COLLAPSED)
+                        if (rememberLastMainNavDestinationId != null) {
+                            panelController.swipeTo(PanelState.COLLAPSED)
+                        }
                         rememberLastMainNavDestinationId = lastMainNavDestinationId
                     }
                 }

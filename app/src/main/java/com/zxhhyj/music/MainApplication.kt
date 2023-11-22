@@ -17,8 +17,12 @@ import com.zxhhyj.music.logic.utils.MediaLibHelper
 import com.zxhhyj.music.service.StarMusicService
 import com.zxhhyj.music.service.playermanager.PlayerManager
 import io.fastkv.FastKVConfig
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.asExecutor
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlin.system.exitProcess
 
 
@@ -29,6 +33,7 @@ class MainApplication : Application() {
             private set
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate() {
         super.onCreate()
         context = this
@@ -115,16 +120,15 @@ class MainApplication : Application() {
             restore = { str -> adapterPlayMemoryBean.fromJson(str) }
         )
         //确保播放音乐时播放启动服务
-        PlayerManager.pauseLiveData()
-            .observeForever {
-                if (it == false)
-                    startPlayerService()
+        PlayerManager.pauseFlow.onEach {
+            if (!it) {
+                startPlayerService()
             }
-        PlayerManager.currentSongLiveData()
-            .observeForever {
-                if (it != null)
-                    startPlayerService()
-            }
+        }.launchIn(GlobalScope)
+        PlayerManager.currentSongFlow.onEach {
+            if (it != null)
+                startPlayerService()
+        }.launchIn(GlobalScope)
         //app启动后自动播放音乐
         if (SettingRepository.EnableAutoPlayMusic) {
             MediaLibHelper.songs.takeIf { it.isNotEmpty() }?.run {

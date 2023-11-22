@@ -3,8 +3,6 @@ package com.zxhhyj.music.service.playermanager
 import android.media.MediaPlayer
 import android.media.audiofx.Equalizer
 import android.util.Range
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.service.playermanager.exception.MediaPlayerException
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -12,6 +10,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
@@ -33,14 +33,14 @@ class CueMediaPlayer {
 
     private var timer: Timer? = null
 
-    private val _pauseLiveData = MutableLiveData(true)
-    val pauseLiveData: LiveData<Boolean> = _pauseLiveData
+    private val _pauseFlow = MutableStateFlow(true)
+    val pauseFlow: StateFlow<Boolean> = _pauseFlow
 
-    private val _currentProgressLiveData = MutableLiveData<Int>()
-    val currentProgressLiveData: LiveData<Int> = _currentProgressLiveData
+    private val _currentProgressFlow = MutableStateFlow(0)
+    val currentProgressFlow: StateFlow<Int> = _currentProgressFlow
 
-    private val _songDurationLiveData = MutableLiveData<Int>()
-    val songDurationLiveData: LiveData<Int> = _songDurationLiveData
+    private val _songDurationFlow = MutableStateFlow(0)
+    val songDurationFlow: StateFlow<Int> = _songDurationFlow
 
     var errorListener: (CueMediaPlayer.(Exception) -> Unit)? = null
 
@@ -57,8 +57,8 @@ class CueMediaPlayer {
     private fun preparePlay(song: SongBean, playWhenReady: Boolean) {
         this.playWhenReady = playWhenReady
         this.currentSong = song
-        _currentProgressLiveData.value = 0
-        _songDurationLiveData.value = song.duration.toInt()
+        _currentProgressFlow.value = 0
+        _songDurationFlow.value = song.duration.toInt()
         timer?.pause()
         timer = null
         timer = Timer(0, song.duration.toInt()).apply {
@@ -67,7 +67,7 @@ class CueMediaPlayer {
                 completionListener?.invoke()
             }
             setOnUpdateListener {
-                _currentProgressLiveData.value = it
+                _currentProgressFlow.value = it
             }
         }
         mediaPlayer.apply {
@@ -91,7 +91,7 @@ class CueMediaPlayer {
             }
             setOnErrorListener { _, i, i2 ->
                 timer?.pause()
-                this@CueMediaPlayer._pauseLiveData.value = true
+                this@CueMediaPlayer._pauseFlow.value = true
                 errorListener?.invoke(this@CueMediaPlayer, MediaPlayerException(i, i2))
                 true
             }
@@ -109,7 +109,7 @@ class CueMediaPlayer {
      */
     fun start() {
         timer?.start()
-        this._pauseLiveData.value = false
+        this._pauseFlow.value = false
         if (!mediaPlayer.isPlaying) {
             mediaPlayer.start()
         }
@@ -120,7 +120,7 @@ class CueMediaPlayer {
      */
     fun pause() {
         timer?.pause()
-        this._pauseLiveData.value = true
+        this._pauseFlow.value = true
         playWhenReady = false
         if (mediaPlayer.isPlaying) {
             mediaPlayer.pause()
@@ -132,7 +132,7 @@ class CueMediaPlayer {
      */
     fun seekTo(position: Int) {
         val currentSong = currentSong ?: return
-        _currentProgressLiveData.value = position
+        _currentProgressFlow.value = position
         val currentPosition = when (currentSong.startPosition) {
             0L -> position
             else -> position + currentSong.startPosition

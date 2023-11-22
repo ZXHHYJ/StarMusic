@@ -3,12 +3,12 @@
 package com.zxhhyj.music.service.playermanager
 
 import android.util.Range
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.zxhhyj.music.MainApplication
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.ui.common.ComposeToast
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import java.io.FileNotFoundException
 import kotlin.random.Random
 
@@ -21,88 +21,48 @@ object PlayerManager {
         SINGLE_LOOP, LIST_LOOP, RANDOM
     }
 
-    /**
-     * 播放模式
-     */
-    private val playModeLiveData = MutableLiveData(PlayMode.LIST_LOOP)
-
-    /**
-     * MediaPlayer
-     */
     private val cueMediaPlayer = CueMediaPlayer()
 
-    /**
-     * 当前播放的歌曲
-     */
-    private val currentSongLiveData = MutableLiveData<SongBean?>()
+    private val _playModeFlow = MutableStateFlow(PlayMode.LIST_LOOP)
+    val playModeFlow: StateFlow<PlayMode> = _playModeFlow
 
-    /**
-     * 播放列表
-     */
-    private val playListLiveData = MutableLiveData<List<SongBean>?>()
+    private val _currentSongFlow = MutableStateFlow<SongBean?>(null)
+    val currentSongFlow: StateFlow<SongBean?> = _currentSongFlow
 
-    /**
-     * 当前播放歌曲的下标
-     */
-    private val indexLiveData = MutableLiveData<Int>()
+    private val _playListFlow = MutableStateFlow<List<SongBean>?>(null)
+    val playListFlow: StateFlow<List<SongBean>?> = _playListFlow
 
-    /**
-     * 获取播放模式的 LiveData
-     */
-    fun playModeLiveData(): LiveData<PlayMode> = playModeLiveData
+    private val _indexFlow = MutableStateFlow<Int?>(null)
+    val indexFlow: StateFlow<Int?> = _indexFlow
 
-    /**
-     * 获取播放列表的 LiveData
-     */
-    fun playListLiveData(): LiveData<List<SongBean>?> = playListLiveData
+    val durationFlow = cueMediaPlayer.songDurationFlow
 
-    /**
-     * 获取当前播放进度的 LiveData
-     */
-    fun progressLiveData(): LiveData<Int> = cueMediaPlayer.currentProgressLiveData
+    val progressFlow = cueMediaPlayer.currentProgressFlow
 
-    /**
-     * 获取当前歌曲时长的 LiveData
-     */
-    fun durationLiveData(): LiveData<Int> = cueMediaPlayer.songDurationLiveData
+    val pauseFlow = cueMediaPlayer.pauseFlow
 
-    /**
-     * 获取当前播放的歌曲的 LiveData
-     */
-    fun currentSongLiveData(): LiveData<SongBean?> = currentSongLiveData
-
-    /**
-     * 获取暂停状态的 LiveData
-     */
-    fun pauseLiveData(): LiveData<Boolean> = cueMediaPlayer.pauseLiveData
-
-    fun indexLiveData(): LiveData<Int> = indexLiveData
-
-    /**
-     * 修改播放模式
-     */
     fun setPlayMode(playMode: PlayMode) {
-        playModeLiveData.value = playMode
+        _playModeFlow.value = playMode
     }
 
     /**
      * 播放歌曲列表中的指定歌曲
      */
     fun play(list: List<SongBean>, index: Int) {
-        playListLiveData.value = list
-        val song = playListLiveData.value?.getOrNull(index)
-        indexLiveData.value = index
+        _playListFlow.value = list
+        val song = _playListFlow.value?.getOrNull(index)
+        _indexFlow.value = index
         song?.let {
-            currentSongLiveData.value = it
+            _currentSongFlow.value = it
             cueMediaPlayer.preparePlay(it)
         }
     }
 
     fun install(list: List<SongBean>, index: Int) {
-        playListLiveData.value = list
+        _playListFlow.value = list
         list.getOrNull(index)?.let {
-            indexLiveData.value = index
-            currentSongLiveData.value = it
+            _indexFlow.value = index
+            _currentSongFlow.value = it
             cueMediaPlayer.prepare(it)
         }
     }
@@ -118,11 +78,11 @@ object PlayerManager {
      * 切换到上一首歌曲
      */
     fun skipToPrevious() {
-        val index = indexLiveData.value?.let { it - 1 } ?: return
-        val song = playListLiveData.value?.getOrNull(index)
+        val index = _indexFlow.value?.let { it - 1 } ?: return
+        val song = _playListFlow.value?.getOrNull(index)
         song?.let {
-            indexLiveData.value = index
-            currentSongLiveData.value = it
+            _indexFlow.value = index
+            _currentSongFlow.value = it
             cueMediaPlayer.preparePlay(it)
         }
     }
@@ -131,46 +91,45 @@ object PlayerManager {
      * 切换到下一首歌曲
      */
     fun skipToNext() {
-        when (playModeLiveData.value) {
+        when (_playModeFlow.value) {
             PlayMode.SINGLE_LOOP -> {
-                currentSongLiveData.value?.startPosition?.let {
+                _currentSongFlow.value?.startPosition?.let {
                     seekTo(it.toInt())
                 }
             }
 
             PlayMode.LIST_LOOP -> {
-                val index = indexLiveData.value!! + 1
-                val song = playListLiveData.value?.getOrNull(index)
+                val index = _indexFlow.value!! + 1
+                val song = _playListFlow.value?.getOrNull(index)
                 song?.let {
-                    indexLiveData.value = index
-                    currentSongLiveData.value = it
+                    _indexFlow.value = index
+                    _currentSongFlow.value = it
                     cueMediaPlayer.preparePlay(it)
                 }
             }
 
             PlayMode.RANDOM -> {
-                playListLiveData.value?.let { playlist ->
+                _playListFlow.value?.let { playlist ->
                     if (playlist.size >= 2) {
                         val randomNumber = if (playlist.size == 2) {
-                            if (indexLiveData.value == 0) 1 else 0
+                            if (_indexFlow.value == 0) 1 else 0
                         } else {
                             var newRandomNumber: Int
                             do {
                                 newRandomNumber = Random.nextInt(0, playlist.size - 1)
-                            } while (newRandomNumber == indexLiveData.value)
+                            } while (newRandomNumber == _indexFlow.value)
                             newRandomNumber
                         }
-                        val song = playListLiveData.value?.getOrNull(randomNumber)
-                        indexLiveData.value = randomNumber
+                        val song = _playListFlow.value?.getOrNull(randomNumber)
+                        _indexFlow.value = randomNumber
                         song?.let {
-                            currentSongLiveData.value = it
+                            _currentSongFlow.value = it
                             cueMediaPlayer.preparePlay(it)
                         }
                     }
                 }
             }
 
-            null -> {}
         }
     }
 
@@ -192,9 +151,9 @@ object PlayerManager {
      * 添加下一首播放的歌曲
      */
     fun addNextPlay(song: SongBean) {
-        playListLiveData.value?.let {
-            playListLiveData.value = it.toMutableList().apply {
-                add((indexLiveData.value ?: return) + 1, song)
+        _playListFlow.value?.let {
+            _playListFlow.value = it.toMutableList().apply {
+                add((_indexFlow.value ?: return) + 1, song)
             }
         }
     }
@@ -203,8 +162,8 @@ object PlayerManager {
      * 移除指定歌曲
      */
     fun removeSong(song: SongBean) {
-        currentSongLiveData.value?.takeIf { it == song }?.run { skipToNext() }
-        playListLiveData.value = playListLiveData.value?.minus(song)
+        _currentSongFlow.value?.takeIf { it == song }?.run { skipToNext() }
+        _playListFlow.value = _playListFlow.value?.minus(song)
     }
 
     /**
@@ -212,8 +171,8 @@ object PlayerManager {
      */
     fun clearPlayList() {
         cueMediaPlayer.pause()
-        currentSongLiveData.value = null
-        playListLiveData.value = null
+        _currentSongFlow.value = null
+        _playListFlow.value = null
     }
 
     fun setEnableEqualizer(enabled: Boolean) {

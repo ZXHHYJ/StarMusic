@@ -13,8 +13,8 @@ import androidx.compose.material.icons.rounded.RepeatOne
 import androidx.compose.material.icons.rounded.Shuffle
 import androidx.compose.material.icons.rounded.Timer
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
@@ -78,7 +78,7 @@ fun SongPanelSheet(
         }
         item {
             RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                val currentPlayMode by PlayerManager.playModeLiveData().observeAsState()
+                val currentPlayMode by PlayerManager.playModeFlow.collectAsState()
                 PlayerManager.PlayMode.values().forEachIndexed { index, playMode ->
                     ItemCheckbox(
                         icon = {

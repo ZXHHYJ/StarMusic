@@ -45,8 +45,8 @@ import androidx.compose.material.icons.rounded.Remove
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -69,7 +69,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.map
 import com.mxalbert.sharedelements.FadeMode
 import com.mxalbert.sharedelements.MaterialArcMotionFactory
 import com.mxalbert.sharedelements.SharedElement
@@ -157,10 +156,6 @@ fun PlayScreen(
     val navController = rememberNavController(startDestination = PlayScreenDestination.Controller)
 
     val lastDestination = navController.backstack.entries.last().destination
-
-    val coverUrl by PlayerManager.currentSongLiveData().map {
-        it?.coverUrl
-    }.observeAsState()
 
     if (panelController.panelState == PanelState.COLLAPSED) {
         navController.popUpTo {
@@ -263,11 +258,12 @@ fun PlayScreen(
                 }
 
                 false -> {
+                    val currentSong by PlayerManager.currentSongFlow.collectAsState()
                     AlbumMotionBlur(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(Color.DarkGray),
-                        albumUrl = coverUrl,
+                        albumUrl = currentSong?.coverUrl,
                         paused = panelController.panelState == PanelState.COLLAPSED
                     )
                 }
@@ -366,7 +362,7 @@ private fun PlayControllerScreen(sheetNavController: NavController<SheetDestinat
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            val song by PlayerManager.currentSongLiveData().observeAsState()
+            val currentSong by PlayerManager.currentSongFlow.collectAsState()
 
             SharedElement(
                 key = ShareAlbumKey,
@@ -383,7 +379,7 @@ private fun PlayControllerScreen(sheetNavController: NavController<SheetDestinat
                 ) {
                     AppAsyncImage(
                         modifier = Modifier.fillMaxSize(),
-                        data = song?.coverUrl
+                        data = currentSong?.coverUrl
                     )
                 }
             }
@@ -399,7 +395,7 @@ private fun PlayControllerScreen(sheetNavController: NavController<SheetDestinat
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = song?.songName ?: "",
+                        text = currentSong?.songName ?: "",
                         color = Color.White,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
@@ -407,7 +403,7 @@ private fun PlayControllerScreen(sheetNavController: NavController<SheetDestinat
                         maxLines = 1
                     )
                     Text(
-                        text = song?.artist?.name ?: "",
+                        text = currentSong?.artist?.name ?: "",
                         color = translucentWhiteColor,
                         fontSize = 16.sp,
                         overflow = TextOverflow.Ellipsis,
@@ -423,7 +419,7 @@ private fun PlayControllerScreen(sheetNavController: NavController<SheetDestinat
                         .clip(RoundedCornerShape(50))
                         .background(translucentWhiteFixBugColor)
                         .clickable {
-                            song?.let {
+                            currentSong?.let {
                                 sheetNavController.navigate(SheetDestination.SongPanel(it))
                             }
                         }
@@ -432,15 +428,15 @@ private fun PlayControllerScreen(sheetNavController: NavController<SheetDestinat
 
             ItemSpacer()
 
-            val progress by PlayerManager.progressLiveData().map { it.toFloat() }.observeAsState(0f)
+            val progress by PlayerManager.progressFlow.collectAsState()
 
-            val duration by PlayerManager.durationLiveData().map { it.toFloat() }.observeAsState(0f)
+            val duration by PlayerManager.durationFlow.collectAsState()
 
             val sliderHeight = 16.dp
 
             AppSlider(
-                value = progress,
-                valueRange = 0f..duration,
+                value = progress.toFloat(),
+                valueRange = 0f..duration.toFloat(),
                 onValueChange = {
                     PlayerManager.seekTo(it.toInt())
                 },
@@ -470,7 +466,7 @@ private fun PlayControllerScreen(sheetNavController: NavController<SheetDestinat
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = duration.toInt().toTimeString(),
+                    text = duration.toTimeString(),
                     color = translucentWhiteColor,
                     fontSize = 14.sp
                 )
@@ -488,9 +484,9 @@ private fun PlayControllerScreen(sheetNavController: NavController<SheetDestinat
                     LocalContentColor provides Color.White
                 ) {
                     val buttonSize = 64.dp
-                    val index by PlayerManager.indexLiveData().observeAsState()
-                    val playlistSize by PlayerManager.playListLiveData().map { it?.size }
-                        .observeAsState()
+                    val index by PlayerManager.indexFlow.collectAsState()
+                    val playlist by PlayerManager.playListFlow.collectAsState()
+
                     AppIconButton(
                         onClick = { PlayerManager.skipToPrevious() },
                         enabled = index != 0,
@@ -506,13 +502,13 @@ private fun PlayControllerScreen(sheetNavController: NavController<SheetDestinat
                         )
                     }
 
-                    val playPauseState by PlayerManager.pauseLiveData().map {
-                        if (it) R.drawable.ic_play else R.drawable.ic_pause
-                    }.observeAsState(R.drawable.ic_play)
+                    val pauseState by PlayerManager.pauseFlow.collectAsState()
+                    val playPauseIcon =
+                        if (pauseState) R.drawable.ic_play else R.drawable.ic_pause
 
                     AppIconButton(
                         onClick = {
-                            if (PlayerManager.pauseLiveData().value == true) {
+                            if (pauseState) {
                                 PlayerManager.start()
                             } else {
                                 PlayerManager.pause()
@@ -524,7 +520,7 @@ private fun PlayControllerScreen(sheetNavController: NavController<SheetDestinat
                             .scale(1.2f)
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(id = playPauseState),
+                            imageVector = ImageVector.vectorResource(id = playPauseIcon),
                             contentDescription = null,
                             modifier = Modifier.fillMaxSize()
                         )
@@ -532,7 +528,7 @@ private fun PlayControllerScreen(sheetNavController: NavController<SheetDestinat
 
                     AppIconButton(
                         onClick = { PlayerManager.skipToNext() },
-                        enabled = index != playlistSize?.let { it - 1 },
+                        enabled = index != playlist?.size?.let { it - 1 },
                         modifier = Modifier
                             .size(buttonSize)
                     ) {
@@ -553,17 +549,16 @@ private fun PlayControllerScreen(sheetNavController: NavController<SheetDestinat
 
 @Composable
 private fun ColumnScope.PlayLyricScreen() {
-    val pause by PlayerManager.pauseLiveData().observeAsState(true)
+    val pause by PlayerManager.pauseFlow.collectAsState()
     KeepScreenOn(enable = !pause)
-    val song by PlayerManager.currentSongLiveData().observeAsState()
-    val liveTime by PlayerManager.progressLiveData()
-        .observeAsState(0)
+    val currentSong by PlayerManager.currentSongFlow.collectAsState()
+    val liveTime by PlayerManager.progressFlow.collectAsState()
     val animDurationMillis = 1000
     Lyric(
         modifier = Modifier
             .fillMaxWidth()
             .weight(1.0f),
-        lyric = song?.lyric,
+        lyric = currentSong?.lyric,
         liveTime = liveTime,
         translation = SettingRepository.EnableLyricsTranslation,
         lyricScrollAnimationSpec = tween(animDurationMillis),
@@ -607,8 +602,8 @@ private fun ColumnScope.PlayLyricScreen() {
 
 @Composable
 private fun ColumnScope.PlayQueueScreen(panelController: PanelController) {
-    val playlist by PlayerManager.playListLiveData().observeAsState()
-    val song by PlayerManager.currentSongLiveData().observeAsState()
+    val playlist by PlayerManager.playListFlow.collectAsState()
+    val currentSong by PlayerManager.currentSongFlow.collectAsState()
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -626,7 +621,7 @@ private fun ColumnScope.PlayQueueScreen(panelController: PanelController) {
                 textAlign = TextAlign.Center
             )
             Text(
-                text = "${(playlist?.indexOf(song) ?: 0) + 1}/${playlist?.size}",
+                text = "${(playlist?.indexOf(currentSong) ?: 0) + 1}/${playlist?.size}",
                 color = translucentWhiteColor,
                 fontSize = 12.sp
             )
@@ -660,8 +655,6 @@ private fun ColumnScope.PlayQueueScreen(panelController: PanelController) {
         var selectItemBoxSize by remember {
             mutableStateOf(IntSize.Zero)
         }
-
-        val currentSong by PlayerManager.currentSongLiveData().observeAsState()
 
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -737,12 +730,12 @@ private fun ColumnScope.PlayQueueScreen(panelController: PanelController) {
             maxHeight.roundToPx()
         }
         LaunchedEffect(Unit) {
-            val position = playlist?.indexOf(song) ?: 0
+            val position = playlist?.indexOf(currentSong) ?: 0
             val height = (boxHeightPx - selectItemBoxSize.height) / 2
             lazyListState.scrollToItem(position.coerceAtLeast(0), -height)
         }
-        LaunchedEffect(song) {
-            val position = playlist?.indexOf(song) ?: 0
+        LaunchedEffect(currentSong) {
+            val position = playlist?.indexOf(currentSong) ?: 0
             val height = (boxHeightPx - selectItemBoxSize.height) / 2
             lazyListState.animateScrollToItem(position.coerceAtLeast(0), -height)
         }
@@ -755,7 +748,7 @@ private fun TopSongItem(
     navController: NavController<PlayScreenDestination>,
     sheetNavController: NavController<SheetDestination>,
 ) {
-    val songBean by PlayerManager.currentSongLiveData().observeAsState()
+    val currentSong by PlayerManager.currentSongFlow.collectAsState()
     Row(
         modifier = modifier.padding(horizontal = PlayScreen.PlayScreenContentHorizontal),
         verticalAlignment = Alignment.CenterVertically
@@ -777,7 +770,7 @@ private fun TopSongItem(
                         )
                     )
                     .size(albumHeight),
-                data = songBean?.coverUrl
+                data = currentSong?.coverUrl
             ) {
                 navController.moveToTop {
                     it == PlayScreenDestination.Controller
@@ -791,7 +784,7 @@ private fun TopSongItem(
             verticalArrangement = Arrangement.SpaceAround,
         ) {
             Text(
-                text = songBean?.songName ?: "",
+                text = currentSong?.songName ?: "",
                 color = Color.White,
                 fontSize = 16.sp,
                 maxLines = 1,
@@ -799,7 +792,7 @@ private fun TopSongItem(
                 overflow = TextOverflow.Ellipsis
             )
             Text(
-                text = songBean?.artist?.name ?: "",
+                text = currentSong?.artist?.name ?: "",
                 color = translucentWhiteColor,
                 fontSize = 14.sp,
                 maxLines = 1,
@@ -816,7 +809,7 @@ private fun TopSongItem(
                 .clip(RoundedCornerShape(50))
                 .background(translucentWhiteFixBugColor)
                 .clickable {
-                    songBean?.let {
+                    currentSong?.let {
                         sheetNavController.navigate(SheetDestination.SongPanel(it))
                     }
                 }

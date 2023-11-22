@@ -13,8 +13,8 @@ import androidx.compose.material.icons.rounded.HideSource
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
@@ -40,7 +40,7 @@ fun SongMenuSheet(
     dialogNavController: NavController<DialogDestination>,
     songBean: SongBean,
 ) {
-    val currentSong by PlayerManager.currentSongLiveData().observeAsState()
+    val currentSong by PlayerManager.currentSongFlow.collectAsState()
     LazyColumn {
         item {
             RoundColumn(modifier = Modifier.fillMaxWidth()) {

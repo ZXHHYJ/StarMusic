@@ -20,8 +20,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.FormatBold
 import androidx.compose.material.icons.rounded.Translate
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
@@ -32,7 +32,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.map
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playermanager.PlayerManager
@@ -71,25 +70,21 @@ fun LyricConfigScreen(paddingValues: PaddingValues) {
                             .fillMaxWidth()
                             .heightIn(max = 300.dp)
                     ) {
-                        val coverUrl by PlayerManager.currentSongLiveData().map {
-                            it?.coverUrl
-                        }.observeAsState()
+                        val currentSong by PlayerManager.currentSongFlow.collectAsState()
                         AlbumMotionBlur(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .background(Color.DarkGray),
-                            albumUrl = coverUrl,
+                            albumUrl = currentSong?.coverUrl,
                             paused = false
                         )
                         //这里参数与播放界面的歌词要保持一致
-                        val song by PlayerManager.currentSongLiveData().observeAsState()
-                        val liveTime by PlayerManager.progressLiveData()
-                            .observeAsState(0)
+                        val liveTime by PlayerManager.progressFlow.collectAsState()
                         val animDurationMillis = 1000
                         Lyric(
                             modifier = Modifier
                                 .fillMaxSize(),
-                            lyric = song?.lyric,
+                            lyric = currentSong?.lyric,
                             liveTime = liveTime,
                             translation = SettingRepository.EnableLyricsTranslation,
                             lyricScrollAnimationSpec = tween(animDurationMillis),

@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.core.view.WindowCompat
 import com.zxhhyj.music.logic.bean.PlayMemoryBean
 import com.zxhhyj.music.logic.repository.SettingRepository
@@ -27,8 +27,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         audioBecomingNoisyManager.setEnabled(true)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-            WindowCompat.setDecorFitsSystemWindows(window, false)
             StarMusicTheme {
                 MainScreen()
                 ComposeToast()
@@ -36,15 +36,13 @@ class MainActivity : ComponentActivity() {
             LaunchedEffect(SettingRepository.EnableEqualizer) {
                 PlayerManager.setEnableEqualizer(SettingRepository.EnableEqualizer)
             }
-            val playMode by PlayerManager.playModeLiveData().observeAsState()
+            val playMode by PlayerManager.playModeFlow.collectAsState()
             LaunchedEffect(playMode) {
-                playMode?.let {
-                    SettingRepository.PlayMode = it
-                }
+                SettingRepository.PlayMode = playMode
             }
             if (SettingRepository.EnablePlayMemory) {
-                val index by PlayerManager.indexLiveData().observeAsState()
-                val playlist by PlayerManager.playListLiveData().observeAsState()
+                val index by PlayerManager.indexFlow.collectAsState()
+                val playlist by PlayerManager.playListFlow.collectAsState()
                 LaunchedEffect(index, playlist) {
                     SettingRepository.PlayMemory = PlayMemoryBean(index, playlist)
                 }
