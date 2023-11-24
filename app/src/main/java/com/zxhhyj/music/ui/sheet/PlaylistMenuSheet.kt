@@ -38,7 +38,7 @@ fun PlaylistMenuSheet(
                     icon = { Icon(imageVector = Icons.Rounded.Edit, contentDescription = null) },
                     text = { Text(text = stringResource(id = R.string.edit_playlist_title)) },
                     subText = { }) {
-                    sheetNavController.pop()
+
                     dialogNavController.navigate(DialogDestination.EditPlayListTitle(playListBean))
                 }
                 ItemDivider()
@@ -46,7 +46,7 @@ fun PlaylistMenuSheet(
                     icon = { Icon(imageVector = Icons.Rounded.Delete, contentDescription = null) },
                     text = { Text(text = stringResource(id = R.string.delete)) },
                     subText = { }) {
-                    sheetNavController.pop()
+
                     mainNavController.popUpTo {
                         it == ScreenDestination.PlayList
                     }

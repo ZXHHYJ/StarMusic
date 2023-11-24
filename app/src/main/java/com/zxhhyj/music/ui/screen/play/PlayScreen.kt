@@ -222,7 +222,7 @@ fun PlayScreen(
                             PlayControllerScreen(sheetNavController)
                         }
 
-                        else -> {
+                        PlayScreenDestination.Lyric, PlayScreenDestination.PlayQueue -> {
                             Column(modifier = Modifier.fillMaxSize()) {
                                 if (visibilityTopMediaBar) {
                                     LazyColumn(userScrollEnabled = false) {
@@ -460,7 +460,7 @@ private fun PlayControllerScreen(sheetNavController: NavController<SheetDestinat
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = progress.toInt().toTimeString(),
+                    text = progress.toTimeString(),
                     color = translucentWhiteColor,
                     fontSize = 14.sp
                 )
@@ -656,14 +656,19 @@ private fun ColumnScope.PlayQueueScreen(panelController: PanelController) {
             mutableStateOf(IntSize.Zero)
         }
 
+        val currentIndex by PlayerManager.indexFlow.collectAsState()
+
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             state = lazyListState
         ) {
+            item {
+                Spacer(modifier = Modifier.height(vertical))
+            }
             playlist?.let { songBeans ->
                 itemsIndexed(songBeans) { index, model ->
                     AppCard(
-                        backgroundColor = if (currentSong == model) Color.White.copy(alpha = 0.2f) else Color.Transparent,
+                        backgroundColor = if (currentIndex == index) Color.White.copy(alpha = 0.2f) else Color.Transparent,
                         modifier = Modifier
                             .onSizeChanged {
                                 selectItemBoxSize = it
@@ -711,7 +716,7 @@ private fun ColumnScope.PlayQueueScreen(panelController: PanelController) {
                             },
                             actions = {
                                 AppIconButton(onClick = {
-                                    PlayerManager.removeSong(model)
+                                    PlayerManager.removeSong(index)
                                 }) {
                                     Icon(
                                         imageVector = Icons.Rounded.Remove,
@@ -734,10 +739,9 @@ private fun ColumnScope.PlayQueueScreen(panelController: PanelController) {
             val height = (boxHeightPx - selectItemBoxSize.height) / 2
             lazyListState.scrollToItem(position.coerceAtLeast(0), -height)
         }
-        LaunchedEffect(currentSong) {
-            val position = playlist?.indexOf(currentSong) ?: 0
+        LaunchedEffect(currentIndex) {
             val height = (boxHeightPx - selectItemBoxSize.height) / 2
-            lazyListState.animateScrollToItem(position.coerceAtLeast(0), -height)
+            lazyListState.animateScrollToItem(currentIndex?.coerceAtLeast(0) ?: 0, -height)
         }
     }
 }

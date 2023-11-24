@@ -134,6 +134,7 @@ import dev.olshevski.navigation.reimagined.material.BottomSheetProperties
 import dev.olshevski.navigation.reimagined.moveToTop
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop
+import dev.olshevski.navigation.reimagined.popAll
 import dev.olshevski.navigation.reimagined.rememberNavController
 
 /**
@@ -438,10 +439,8 @@ fun MainScreen() {
                 val lastMainNavDestinationId = "${mainNavController.backstack.entries.last().id}"
                 //避免导航时面板处于展开状态
                 LaunchedEffect(lastMainNavDestinationId) {
-                    if (panelController.panelState == PanelState.EXPANDED && rememberLastMainNavDestinationId != lastMainNavDestinationId) {
-                        if (rememberLastMainNavDestinationId != null) {
-                            panelController.swipeTo(PanelState.COLLAPSED)
-                        }
+                    if (panelController.panelState == PanelState.EXPANDED && mainNavController.backstack.action == NavAction.Navigate && rememberLastMainNavDestinationId != lastMainNavDestinationId) {
+                        panelController.swipeTo(PanelState.COLLAPSED)
                         rememberLastMainNavDestinationId = lastMainNavDestinationId
                     }
                 }
@@ -719,7 +718,7 @@ fun MainScreen() {
 
     BottomSheetNavHost(
         controller = sheetNavController,
-        onDismissRequest = { sheetNavController.pop() },
+        onDismissRequest = { sheetNavController.popAll() },
         sheetPropertiesSpec = {
             BottomSheetProperties(
                 animationSpec = if (SettingRepository.EnableLinkUI) tween(0) else BottomSheetAnimation,
@@ -728,7 +727,7 @@ fun MainScreen() {
         }
     ) { destination ->
         BackHandler {
-            sheetNavController.pop()
+            sheetNavController.popAll()
         }
         Column(
             modifier = Modifier

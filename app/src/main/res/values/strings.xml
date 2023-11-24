@@ -5,14 +5,13 @@
     <string name="singer">歌手</string>
     <string name="search">搜索</string>
     <string name="album">专辑</string>
-    <string name="next_play">下一首播放</string>
+    <string name="next_player">下一首播放</string>
     <string name="single">单曲</string>
     <string name="play_list">播放列表</string>
     <string name="total_n_songs">共%d首</string>
     <string name="scan_music">扫描音乐</string>
     <string name="no_lyrics">暂无歌词</string>
     <string name="delete">删除</string>
-    <string name="song_info">歌曲信息</string>
     <string name="bit_rate">比特率</string>
     <string name="song_duration">歌曲时长</string>
     <string name="sample_rate">采样率</string>
@@ -113,7 +112,7 @@
     <string name="single_loop">单曲循环</string>
     <string name="list_loop">列表循环</string>
     <string name="random">随机</string>
-    <string name="more_parameters">更多参数</string>
+    <string name="parameters_info">参数信息</string>
     <string name="clear">清除</string>
     <string name="play_memory">播放记忆</string>
 </resources>

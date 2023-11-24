@@ -7,7 +7,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Equalizer
 import androidx.compose.material.icons.rounded.Lyrics
-import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.Repeat
 import androidx.compose.material.icons.rounded.RepeatOne
 import androidx.compose.material.icons.rounded.Shuffle
@@ -57,17 +56,7 @@ fun SongPanelSheet(
     LazyColumn {
         item {
             RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                SongItem(songBean = songBean)
-                ItemDivider()
-                ItemArrowRight(
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Rounded.MoreVert,
-                            contentDescription = null
-                        )
-                    },
-                    text = { Text(text = stringResource(id = R.string.song_info)) },
-                    subText = { }) {
+                SongItem(sheetNavController = sheetNavController, songBean = songBean) {
                     sheetNavController.popAll()
                     sheetNavController.navigate(SheetDestination.SongMenu(songBean))
                 }

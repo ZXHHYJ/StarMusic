@@ -151,19 +151,33 @@ object PlayerManager {
      * 添加下一首播放的歌曲
      */
     fun addNextPlay(song: SongBean) {
-        _playListFlow.value?.let {
-            _playListFlow.value = it.toMutableList().apply {
-                add((_indexFlow.value ?: return) + 1, song)
-            }
+        _playListFlow.value = _playListFlow.value?.toMutableList()?.apply {
+            add((_indexFlow.value ?: return) + 1, song)
         }
     }
 
     /**
      * 移除指定歌曲
      */
-    fun removeSong(song: SongBean) {
-        _currentSongFlow.value?.takeIf { it == song }?.run { skipToNext() }
+    fun removeSong(songIndex: Int) {
+        val song = _playListFlow.value?.get(songIndex) ?: return
+        _currentSongFlow.value?.takeIf { it == song }?.run {
+            skipToNext()
+        }
         _playListFlow.value = _playListFlow.value?.minus(song)
+        when {
+            songIndex == _indexFlow.value -> {
+
+            }
+
+            songIndex > _indexFlow.value!! -> {
+
+            }
+
+            songIndex < _indexFlow.value!! -> {
+                _indexFlow.value = (_indexFlow.value!! - 1).coerceAtLeast(0)
+            }
+        }
     }
 
     /**

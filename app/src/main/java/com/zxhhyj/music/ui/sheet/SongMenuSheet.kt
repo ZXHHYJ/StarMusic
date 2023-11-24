@@ -21,6 +21,7 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.service.playermanager.PlayerManager
+import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.SheetDestination
@@ -42,6 +43,14 @@ fun SongMenuSheet(
 ) {
     val currentSong by PlayerManager.currentSongFlow.collectAsState()
     LazyColumn {
+        item {
+            RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                SongItem(songBean = songBean)
+            }
+        }
+        item {
+            ItemSpacer()
+        }
         item {
             RoundColumn(modifier = Modifier.fillMaxWidth()) {
                 ItemArrowRight(
@@ -66,7 +75,7 @@ fun SongMenuSheet(
         }
         item {
             RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                Item(
+                ItemArrowRight(
                     icon = { Icon(imageVector = Icons.Rounded.Add, contentDescription = null) },
                     text = { Text(text = stringResource(id = R.string.add_to_playlist)) },
                     subText = { }) {
@@ -81,17 +90,19 @@ fun SongMenuSheet(
                             contentDescription = null
                         )
                     },
-                    text = { Text(text = stringResource(id = R.string.next_play)) },
-                    subText = { }) {
+                    text = { Text(text = stringResource(id = R.string.next_player)) },
+                    subText = { },
+                    enabled = currentSong != null
+                ) {
                     sheetNavController.popAll()
                     PlayerManager.addNextPlay(songBean)
                 }
                 ItemDivider()
-                Item(
+                ItemArrowRight(
                     icon = { Icon(imageVector = Icons.Rounded.Info, contentDescription = null) },
                     text = {
                         Text(
-                            text = stringResource(id = R.string.more_parameters)
+                            text = stringResource(id = R.string.parameters_info)
                         )
                     },
                     subText = { }) {
