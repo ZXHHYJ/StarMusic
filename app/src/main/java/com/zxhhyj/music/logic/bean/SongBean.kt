@@ -1,11 +1,9 @@
 package com.zxhhyj.music.logic.bean
 
 import android.os.Parcelable
-import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-@JsonClass(generateAdapter = true)
 open class SongBean(
     // 歌曲封面路径
     open val coverUrl: String,
@@ -36,7 +34,6 @@ open class SongBean(
 ) : Parcelable {
 
     @Parcelize
-    @JsonClass(generateAdapter = true)
     data class Local(
         override val coverUrl: String,
         override val album: Album,
@@ -69,7 +66,6 @@ open class SongBean(
     )
 
     @Parcelize
-    @JsonClass(generateAdapter = true)
     data class WebDav(
         val webDavFile: WebDavFile,
         override val coverUrl: String,
@@ -103,12 +99,10 @@ open class SongBean(
 
     // 艺术家信息
     @Parcelize
-    @JsonClass(generateAdapter = true)
     data class Artist(val name: String) : Parcelable
 
     // 专辑信息
     @Parcelize
-    @JsonClass(generateAdapter = true)
     data class Album(val name: String) : Parcelable
 
 }

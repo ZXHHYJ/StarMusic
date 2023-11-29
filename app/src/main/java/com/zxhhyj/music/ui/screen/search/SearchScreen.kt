@@ -92,10 +92,7 @@ fun SearchScreen(
             .statusBarsPadding()
             .padding(paddingValues)
     ) {
-        AppCenterTopBar(
-            modifier = Modifier.fillMaxWidth(),
-            title = { Text(text = stringResource(id = R.string.search)) }
-        )
+        AppCenterTopBar(title = { Text(text = stringResource(id = R.string.search)) })
         val pagerState = rememberPagerState(
             initialPage = SearchScreenTabs.values().indexOf(start),
         ) { SearchScreenTabs.values().size }

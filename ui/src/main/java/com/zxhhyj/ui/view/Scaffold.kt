@@ -12,7 +12,7 @@ val LocalTopBarState = compositionLocalOf { TopBarState() }
 
 @Composable
 fun AppScaffold(
-    modifier: Modifier = Modifier,
+    modifier: Modifier,
     topBar: @Composable () -> Unit,
     content: @Composable () -> Unit
 ) {

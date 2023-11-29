@@ -14,3 +14,4 @@
 -dontwarn android.content.res.XmlResourceParser
 
 -keepnames class com.zxhhyj.** { *; }
+-keep class kotlin.reflect.** { *; }

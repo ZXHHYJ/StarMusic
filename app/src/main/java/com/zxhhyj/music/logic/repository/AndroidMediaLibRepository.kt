@@ -92,10 +92,10 @@ object AndroidMediaLibRepository {
                     val size = cursor.getLong(sizeIndex)
                     val id = cursor.getLong(idIndex)
                     val dateModified = cursor.getLong(dateModifiedIndex)
-                    val metadata = Metadata.getMetadata(data)
-                    val bitrate = metadata?.bitrate
-                    val sampleRate = metadata?.sampleRate
-                    val lyric = metadata?.properties?.get("LYRICS")?.getOrNull(0)?.trim()
+                    val metadata = Metadata.getMetadata(data) ?: continue
+                    val bitrate = metadata.bitrate
+                    val sampleRate = metadata.sampleRate
+                    val lyric = metadata.properties["LYRICS"]?.getOrNull(0)?.trim()
                     val coverUrl = "content://media/external/audio/albumart/${albumId}"
 
                     if (SettingRepository.EnableCueSupport) {

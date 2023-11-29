@@ -63,7 +63,6 @@ fun WebDavScreen(
             .padding(paddingValues)
     ) {
         AppCenterTopBar(
-            modifier = Modifier,
             title = { Text(text = stringResource(id = R.string.webdav)) },
             actions = {
                 AppIconButton(onClick = { dialogNavController.navigate(DialogDestination.SyncWebDavMediaLib) }) {

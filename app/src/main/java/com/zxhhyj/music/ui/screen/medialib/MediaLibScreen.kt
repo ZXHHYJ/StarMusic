@@ -61,7 +61,6 @@ fun MediaLibScreen(
         topBar = {
             val topBarState = LocalTopBarState.current
             AppTopBar(
-                modifier = Modifier.fillMaxWidth(),
                 title = {
                     Text(
                         text = stringResource(id = R.string.media_lib),

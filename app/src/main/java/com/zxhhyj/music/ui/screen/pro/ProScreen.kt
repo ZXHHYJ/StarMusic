@@ -1,11 +1,5 @@
 package com.zxhhyj.music.ui.screen.pro
 
-import android.content.Intent
-import android.os.Build
-import android.os.Environment
-import android.provider.Settings
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,16 +11,10 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.StarRate
-import androidx.compose.material.icons.rounded.CloudUpload
-import androidx.compose.material.icons.rounded.Colorize
-import androidx.compose.material.icons.rounded.LibraryMusic
+import androidx.compose.material.icons.rounded.Help
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -47,6 +35,7 @@ import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
+import com.zxhhyj.ui.view.item.Item
 import com.zxhhyj.ui.view.item.ItemArrowRight
 import com.zxhhyj.ui.view.item.ItemDivider
 import com.zxhhyj.ui.view.item.ItemSpacer
@@ -60,16 +49,21 @@ fun ProScreen(
     paddingValues: PaddingValues,
     mainNavController: NavController<ScreenDestination>
 ) {
+    if (!SettingRepository.EnableStarMusicPro) {
+        DisposableEffect(Unit) {
+            onDispose {
+                SettingRepository.EnableCueSupport = false
+                SettingRepository.ThemeMode = SettingRepository.ThemeModeClass.Default
+            }
+        }
+    }
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
-            AppCenterTopBar(
-                modifier = Modifier.fillMaxWidth(),
-                title = { Text(text = stringResource(id = R.string.star_music_pro)) }
-            )
+            AppCenterTopBar(title = { Text(text = stringResource(id = R.string.star_music_pro)) })
         }) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             when (SettingRepository.EnableStarMusicPro) {
@@ -97,84 +91,40 @@ fun ProScreen(
                     }
                     item {
                         RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                            var isExternalStorageManager by rememberSaveable {
-                                mutableStateOf(false)
-                            }
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                                isExternalStorageManager = Environment.isExternalStorageManager()
-                            }
-                            val launcher = rememberLauncherForActivityResult(
-                                contract = ActivityResultContracts.StartActivityForResult(),
-                                onResult = {
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                                        isExternalStorageManager =
-                                            Environment.isExternalStorageManager()
-                                        if (!isExternalStorageManager) {
-                                            SettingRepository.EnableCueSupport = false
-                                        }
-                                    }
-                                }
-                            )
-                            LaunchedEffect(SettingRepository.EnableCueSupport) {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && SettingRepository.EnableCueSupport && !isExternalStorageManager) {
-                                    launcher.launch(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
-                                }
-                            }
-                            ItemSwitcher(
-                                icon = {
-                                    Icon(
-                                        imageVector = Icons.Rounded.LibraryMusic,
-                                        contentDescription = null
-                                    )
-                                },
-                                text = {
-                                    Text(text = stringResource(id = R.string.cue_support))
-                                },
-                                subText = {
-                                    Text(text = stringResource(id = R.string.cue_support_info))
-                                },
-                                checked = SettingRepository.EnableCueSupport,
-                                onCheckedChange = {
-                                    SettingRepository.EnableCueSupport = it
-                                }
-                            )
-                            ItemDivider()
-                            ItemSwitcher(
-                                icon = {
-                                    Icon(
-                                        imageVector = Icons.Rounded.Colorize,
-                                        contentDescription = null
-                                    )
-                                },
-                                text = {
-                                    Text(text = stringResource(id = R.string.dynamic_colors_theme))
-                                },
-                                subText = {
-                                    Text(text = stringResource(id = R.string.dynamic_colors_theme_info))
-                                },
-                                checked = SettingRepository.EnableDynamicColors,
-                                onCheckedChange = {
-                                    SettingRepository.EnableDynamicColors = it
-                                }
-                            )
-                            ItemDivider()
-                            ItemArrowRight(
-                                icon = {
-                                    Icon(
-                                        imageVector = Icons.Rounded.CloudUpload,
-                                        contentDescription = null
-                                    )
-                                },
-                                text = { Text(text = stringResource(id = R.string.webdav)) },
-                                subText = { },
-                                enabled = SettingRepository.EnableStarMusicPro
-                            ) {
-                                mainNavController.navigate(ScreenDestination.WebDavConfig)
+                            ItemTint {
+                                Text(text = stringResource(id = R.string.membership_function))
                             }
                         }
                     }
                     item {
                         ItemSpacer()
+                    }
+                    item {
+                        RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                            Item(
+                                icon = {
+                                    Icon(
+                                        imageVector = Icons.Rounded.Help,
+                                        contentDescription = null
+                                    )
+                                },
+                                text = { Text(text = "了解cue分轨文件支持") },
+                                subText = { }) {
+                                mainNavController.navigate(ScreenDestination.MediaLibConfig)
+                            }
+                            ItemDivider()
+                            Item(
+                                icon = {
+                                    Icon(
+                                        imageVector = Icons.Rounded.Help,
+                                        contentDescription = null
+                                    )
+                                },
+                                text = { Text(text = "了解WebDav") },
+                                subText = { }) {
+                                mainNavController.navigate(ScreenDestination.WebDavConfig)
+                            }
+                        }
                     }
                 }
 

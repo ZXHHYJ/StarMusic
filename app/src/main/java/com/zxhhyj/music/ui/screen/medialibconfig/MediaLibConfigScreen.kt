@@ -1,7 +1,12 @@
 package com.zxhhyj.music.ui.screen.medialibconfig
 
 import android.Manifest
+import android.content.Intent
 import android.os.Build
+import android.os.Environment
+import android.provider.Settings
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,6 +24,10 @@ import androidx.compose.material.icons.rounded.LibraryMusic
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -28,6 +37,7 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playermanager.PlayerManager
+import com.zxhhyj.music.ui.common.VipIcon
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.ui.view.AppCenterTopBar
@@ -71,10 +81,7 @@ fun MediaLibConfigScreen(
             .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
-            AppCenterTopBar(
-                modifier = Modifier.fillMaxWidth(),
-                title = { Text(text = stringResource(id = R.string.media_lib)) }
-            )
+            AppCenterTopBar(title = { Text(text = stringResource(id = R.string.media_lib)) })
         }) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             item {
@@ -182,6 +189,58 @@ fun MediaLibConfigScreen(
             }
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                    var isExternalStorageManager by rememberSaveable {
+                        mutableStateOf(false)
+                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        isExternalStorageManager = Environment.isExternalStorageManager()
+                    }
+                    val launcher = rememberLauncherForActivityResult(
+                        contract = ActivityResultContracts.StartActivityForResult(),
+                        onResult = {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                                isExternalStorageManager =
+                                    Environment.isExternalStorageManager()
+                                if (!isExternalStorageManager) {
+                                    SettingRepository.EnableCueSupport = false
+                                }
+                            }
+                        }
+                    )
+                    LaunchedEffect(SettingRepository.EnableCueSupport) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && SettingRepository.EnableCueSupport && !isExternalStorageManager) {
+                            launcher.launch(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
+                        }
+                    }
+                    ItemSwitcher(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.LibraryMusic,
+                                contentDescription = null
+                            )
+                        },
+                        text = {
+                            Text(text = stringResource(id = R.string.cue_support))
+                        },
+                        subText = {
+                            VipIcon()
+                        },
+                        checked = SettingRepository.EnableCueSupport,
+                        onCheckedChange = onCheckedChange@{
+                            if (it && !SettingRepository.EnableStarMusicPro) {
+                                mainNavController.navigate(ScreenDestination.Pro)
+                                return@onCheckedChange
+                            }
+                            SettingRepository.EnableCueSupport = it
+                        }
+                    )
+                }
+            }
+            item {
+                ItemSpacer()
+            }
+            item {
+                RoundColumn(modifier = Modifier.fillMaxWidth()) {
                     ItemArrowRight(
                         icon = {
                             Icon(
@@ -190,9 +249,14 @@ fun MediaLibConfigScreen(
                             )
                         },
                         text = { Text(text = stringResource(id = R.string.webdav)) },
-                        subText = { },
-                        enabled = SettingRepository.EnableStarMusicPro
-                    ) {
+                        subText = {
+                            VipIcon()
+                        },
+                    ) onClick@{
+                        if (!SettingRepository.EnableStarMusicPro) {
+                            mainNavController.navigate(ScreenDestination.Pro)
+                            return@onClick
+                        }
                         mainNavController.navigate(ScreenDestination.WebDavConfig)
                     }
                 }

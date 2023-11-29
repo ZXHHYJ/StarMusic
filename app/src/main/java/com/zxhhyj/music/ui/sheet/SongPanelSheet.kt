@@ -6,6 +6,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Equalizer
+import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.Lyrics
 import androidx.compose.material.icons.rounded.Repeat
 import androidx.compose.material.icons.rounded.RepeatOne
@@ -31,6 +32,7 @@ import com.zxhhyj.ui.view.item.ItemDivider
 import com.zxhhyj.ui.view.item.ItemSpacer
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
+import dev.olshevski.navigation.reimagined.pop
 import dev.olshevski.navigation.reimagined.popAll
 
 private val PlayerManager.PlayMode.itemIcon
@@ -56,10 +58,17 @@ fun SongPanelSheet(
     LazyColumn {
         item {
             RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                SongItem(sheetNavController = sheetNavController, songBean = songBean) {
-                    sheetNavController.popAll()
-                    sheetNavController.navigate(SheetDestination.SongMenu(songBean))
-                }
+                SongItem(
+                    songBean = songBean,
+                    actions = {
+                        Icon(
+                            imageVector = Icons.Rounded.KeyboardArrowRight,
+                            contentDescription = null
+                        )
+                    },
+                    onClick = {
+                        sheetNavController.navigate(SheetDestination.SongMenu(songBean))
+                    })
             }
         }
         item {
@@ -110,7 +119,6 @@ fun SongPanelSheet(
                             }
                         }
                     }) {
-                    sheetNavController.popAll()
                     sheetNavController.navigate(SheetDestination.Timer)
                 }
             }
@@ -121,10 +129,15 @@ fun SongPanelSheet(
         item {
             RoundColumn(modifier = Modifier.fillMaxWidth()) {
                 ItemArrowRight(
-                    icon = { Icon(imageVector = Icons.Rounded.Lyrics, contentDescription = null) },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Rounded.Lyrics,
+                            contentDescription = null
+                        )
+                    },
                     text = { Text(text = stringResource(id = R.string.lyric)) },
                     subText = { }) {
-                    sheetNavController.popAll()
+                    sheetNavController.pop()
                     mainNavController.navigate(ScreenDestination.Lyric)
                 }
                 ItemDivider()
@@ -137,7 +150,7 @@ fun SongPanelSheet(
                     },
                     text = { Text(text = stringResource(id = R.string.eq)) },
                     subText = { }) {
-                    sheetNavController.popAll()
+                    sheetNavController.pop()
                     mainNavController.navigate(ScreenDestination.Equalizer)
                 }
             }

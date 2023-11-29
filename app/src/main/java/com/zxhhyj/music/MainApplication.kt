@@ -3,8 +3,8 @@ package com.zxhhyj.music
 import android.app.Application
 import android.content.Intent
 import android.os.Build
+import com.alibaba.fastjson2.JSON
 import com.funny.data_saver.core.DataSaverConverter.registerTypeConverters
-import com.squareup.moshi.Moshi
 import com.zxhhyj.music.logic.bean.Folder
 import com.zxhhyj.music.logic.bean.PlayListBean
 import com.zxhhyj.music.logic.bean.PlayListSongBean
@@ -45,79 +45,72 @@ class MainApplication : Application() {
         }
         //初始化FastKV
         FastKVConfig.setExecutor(Dispatchers.Default.asExecutor())
-        //初始化Moshi
-        val moshi = Moshi.Builder().build()
 
-        val adapterWebDavFile = moshi.adapter(WebDavFile::class.java)
         registerTypeConverters(
-            save = { bean -> adapterWebDavFile.toJson(bean) },
-            restore = { str -> adapterWebDavFile.fromJson(str) }
+            save = { bean -> JSON.toJSONString(bean) },
+            restore = { str -> JSON.parseObject(str, WebDavFile::class.java) }
         )
 
-        val adapterFolder = moshi.adapter(Folder::class.java)
         registerTypeConverters(
-            save = { bean -> adapterFolder.toJson(bean) },
-            restore = { str -> adapterFolder.fromJson(str) }
+            save = { bean -> JSON.toJSONString(bean) },
+            restore = { str -> JSON.parseObject(str, Folder::class.java) }
         )
 
-        val adapterSongBeanLocal = moshi.adapter(SongBean.Local::class.java)
         registerTypeConverters(
-            save = { bean -> adapterSongBeanLocal.toJson(bean) },
-            restore = { str -> adapterSongBeanLocal.fromJson(str) }
+            save = { bean -> JSON.toJSONString(bean) },
+            restore = { str -> JSON.parseObject(str, SongBean.Local::class.java) }
         )
 
-        val adapterSongBeanWebDav = moshi.adapter(SongBean.WebDav::class.java)
         registerTypeConverters(
-            save = { bean -> adapterSongBeanWebDav.toJson(bean) },
-            restore = { str -> adapterSongBeanWebDav.fromJson(str) }
+            save = { bean -> JSON.toJSONString(bean) },
+            restore = { str -> JSON.parseObject(str, SongBean.WebDav::class.java) }
         )
 
-        val adapterSongBeanAlbum = moshi.adapter(SongBean.Album::class.java)
         registerTypeConverters(
-            save = { bean -> adapterSongBeanAlbum.toJson(bean) },
-            restore = { str -> adapterSongBeanAlbum.fromJson(str) }
+            save = { bean -> JSON.toJSONString(bean) },
+            restore = { str -> JSON.parseObject(str, SongBean.Album::class.java) }
         )
 
-        val adapterSongBeanArtist = moshi.adapter(SongBean.Artist::class.java)
         registerTypeConverters(
-            save = { bean -> adapterSongBeanArtist.toJson(bean) },
-            restore = { str -> adapterSongBeanArtist.fromJson(str) }
+            save = { bean -> JSON.toJSONString(bean) },
+            restore = { str -> JSON.parseObject(str, SongBean.Artist::class.java) }
         )
 
-        val adapterWebDavConfig = moshi.adapter(WebDavConfig::class.java)
         registerTypeConverters(
-            save = { bean -> adapterWebDavConfig.toJson(bean) },
-            restore = { str -> adapterWebDavConfig.fromJson(str) }
+            save = { bean -> JSON.toJSONString(bean) },
+            restore = { str -> JSON.parseObject(str, WebDavConfig::class.java) }
         )
 
-        val adapterIntArray = moshi.adapter(IntArray::class.java)
         registerTypeConverters(
-            save = { bean -> adapterIntArray.toJson(bean) },
-            restore = { str -> adapterIntArray.fromJson(str) }
+            save = { bean -> JSON.toJSONString(bean) },
+            restore = { str -> JSON.parseObject(str, IntArray::class.java) }
         )
 
-        val adapterPlayMode = moshi.adapter(PlayerManager.PlayMode::class.java)
         registerTypeConverters(
-            save = { bean -> adapterPlayMode.toJson(bean) },
-            restore = { str -> adapterPlayMode.fromJson(str) }
+            save = { bean -> JSON.toJSONString(bean) },
+            restore = { str -> JSON.parseObject(str, PlayerManager.PlayMode::class.java) }
         )
 
-        val adapterPlayListBean = moshi.adapter(PlayListBean::class.java)
         registerTypeConverters(
-            save = { bean -> adapterPlayListBean.toJson(bean) },
-            restore = { str -> adapterPlayListBean.fromJson(str) }
+            save = { bean -> JSON.toJSONString(bean) },
+            restore = { str -> JSON.parseObject(str, PlayListBean::class.java) }
         )
 
-        val adapterPlayListSongBean = moshi.adapter(PlayListSongBean::class.java)
         registerTypeConverters(
-            save = { bean -> adapterPlayListSongBean.toJson(bean) },
-            restore = { str -> adapterPlayListSongBean.fromJson(str) }
+            save = { bean -> JSON.toJSONString(bean) },
+            restore = { str -> JSON.parseObject(str, PlayListSongBean::class.java) }
         )
 
-        val adapterPlayMemoryBean = moshi.adapter(PlayMemoryBean::class.java)
         registerTypeConverters(
-            save = { bean -> adapterPlayMemoryBean.toJson(bean) },
-            restore = { str -> adapterPlayMemoryBean.fromJson(str) }
+            save = { bean -> JSON.toJSONString(bean) },
+            restore = { str ->
+                JSON.parseObject(str, PlayMemoryBean::class.java)
+            }
+        )
+
+        registerTypeConverters(
+            save = { bean -> JSON.toJSONString(bean) },
+            restore = { str -> JSON.parseObject(str, SettingRepository.ThemeModeClass::class.java) }
         )
         //确保播放音乐时播放启动服务
         PlayerManager.pauseFlow.onEach {

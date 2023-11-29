@@ -660,11 +660,9 @@ private fun ColumnScope.PlayQueueScreen(panelController: PanelController) {
 
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            state = lazyListState
+            state = lazyListState,
+            contentPadding = PaddingValues(top = vertical)
         ) {
-            item {
-                Spacer(modifier = Modifier.height(vertical))
-            }
             playlist?.let { songBeans ->
                 itemsIndexed(songBeans) { index, model ->
                     AppCard(
@@ -735,9 +733,8 @@ private fun ColumnScope.PlayQueueScreen(panelController: PanelController) {
             maxHeight.roundToPx()
         }
         LaunchedEffect(Unit) {
-            val position = playlist?.indexOf(currentSong) ?: 0
             val height = (boxHeightPx - selectItemBoxSize.height) / 2
-            lazyListState.scrollToItem(position.coerceAtLeast(0), -height)
+            lazyListState.scrollToItem(currentIndex?.coerceAtLeast(0) ?: 0, -height)
         }
         LaunchedEffect(currentIndex) {
             val height = (boxHeightPx - selectItemBoxSize.height) / 2

@@ -31,12 +31,7 @@ fun FolderScreen(
 ) {
     AppScaffold(
         topBar = {
-            AppCenterTopBar(
-                modifier = Modifier.fillMaxWidth(),
-                title = { Text(text = stringResource(id = R.string.folder)) }
-            ) {
-
-            }
+            AppCenterTopBar(title = { Text(text = stringResource(id = R.string.folder)) })
         }, modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()

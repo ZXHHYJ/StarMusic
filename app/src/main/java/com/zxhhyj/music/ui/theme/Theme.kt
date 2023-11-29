@@ -36,14 +36,18 @@ import com.zxhhyj.ui.theme.starTextStyles
 fun StarMusicTheme(
     content: @Composable () -> Unit
 ) {
-    val isDark = when (SettingRepository.ThemeModeEnum.entries[SettingRepository.ThemeMode]) {
-        SettingRepository.ThemeModeEnum.AUTO -> isSystemInDarkTheme()
-        SettingRepository.ThemeModeEnum.LIGHT -> false
-        SettingRepository.ThemeModeEnum.DARK -> true
+    val isDark = when (SettingRepository.DarkModeEnum.entries[SettingRepository.DarkMode]) {
+        SettingRepository.DarkModeEnum.AUTO -> isSystemInDarkTheme()
+        SettingRepository.DarkModeEnum.LIGHT -> false
+        SettingRepository.DarkModeEnum.DARK -> true
     }
 
-    val colorScheme = when (SettingRepository.EnableDynamicColors) {
-        true -> {
+    val colorScheme = when (val themeMode = SettingRepository.ThemeMode) {
+        SettingRepository.ThemeModeClass.Default -> {
+            if (isDark) nightColorScheme else lightColorScheme
+        }
+
+        is SettingRepository.ThemeModeClass.Monet -> {
             val mainColor = mainColor
             var monetColor: Color by remember {
                 mutableStateOf(mainColor)
@@ -81,7 +85,7 @@ fun StarMusicTheme(
             val contrastLevel = 0.0
             val hct = Hct.fromInt(monetColor.toArgb())
             val colors = MaterialDynamicColors()
-            val scheme = when (PaletteStyle.entries[SettingRepository.M3PaletteStyle]) {
+            val scheme = when (themeMode.style) {
                 PaletteStyle.TonalSpot -> SchemeTonalSpot(hct, isDark, contrastLevel)
                 PaletteStyle.Neutral -> SchemeNeutral(hct, isDark, contrastLevel)
                 PaletteStyle.Vibrant -> SchemeVibrant(hct, isDark, contrastLevel)
@@ -103,8 +107,6 @@ fun StarMusicTheme(
                 disabled = Color(colors.onSecondaryContainer().getArgb(scheme)).copy(alpha = 0.8f)
             )
         }
-
-        false -> if (isDark) nightColorScheme else lightColorScheme
     }
 
     StarTheme(

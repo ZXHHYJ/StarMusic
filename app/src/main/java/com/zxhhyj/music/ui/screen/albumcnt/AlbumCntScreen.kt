@@ -54,7 +54,6 @@ fun AlbumCntScreen(
             .padding(paddingValues),
         topBar = {
             AppTopBar(
-                modifier = Modifier.fillMaxWidth(),
                 title = { Text(text = album.name) },
                 actions = {}
             ) {

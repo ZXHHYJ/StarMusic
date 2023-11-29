@@ -18,14 +18,18 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
+import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.ui.view.YesNoDialog
+import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.popAll
 import kotlinx.coroutines.launch
 import java.io.File
 
 @Composable
 fun DeleteSongDialog(
     onDismissRequest: () -> Unit,
-    songBean: SongBean
+    sheetNavController: NavController<SheetDestination>,
+    songBean: SongBean,
 ) {
     val deleteLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartIntentSenderForResult(),
@@ -33,6 +37,7 @@ fun DeleteSongDialog(
             if (it.resultCode == -1) {
                 AndroidMediaLibRepository.removeSong(songBean as SongBean.Local)
                 onDismissRequest.invoke()
+                sheetNavController.popAll()
             }
         }
     )
@@ -66,6 +71,7 @@ fun DeleteSongDialog(
                                 val file = File(songBean.data)
                                 if (file.delete()) {
                                     AndroidMediaLibRepository.removeSong(songBean)
+                                    sheetNavController.popAll()
                                 }
                             }
                         }
@@ -75,6 +81,7 @@ fun DeleteSongDialog(
                             if (file.delete()) {
                                 WebDavMediaLibRepository.removeSong(songBean)
                                 onDismissRequest.invoke()
+                                sheetNavController.popAll()
                             }
                         }
 
@@ -87,6 +94,7 @@ fun DeleteSongDialog(
                     modifier = Modifier.clickable {
                         AndroidMediaLibRepository.removeSong(songBean)
                         onDismissRequest.invoke()
+                        sheetNavController.popAll()
                     })
             }
         },

@@ -41,10 +41,7 @@ fun AboutScreen(
             .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
-            AppCenterTopBar(
-                modifier = Modifier,
-                title = { Text(text = stringResource(id = R.string.about)) }
-            )
+            AppCenterTopBar(title = { Text(text = stringResource(id = R.string.about)) })
         })
     {
         LazyColumn(modifier = Modifier.fillMaxSize()) {

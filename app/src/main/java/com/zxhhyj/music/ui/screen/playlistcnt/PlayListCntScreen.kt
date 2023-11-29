@@ -65,7 +65,6 @@ fun PlayListCntScreen(
             .padding(paddingValues),
         topBar = {
             AppTopBar(
-                modifier = Modifier.fillMaxWidth(),
                 title = { Text(text = findPlayListModel.name) },
                 actions = {
                     AppIconButton(onClick = {

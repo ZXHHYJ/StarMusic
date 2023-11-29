@@ -30,10 +30,7 @@ fun LabScreen(
             .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
-            AppCenterTopBar(
-                modifier = Modifier.fillMaxWidth(),
-                title = { Text(text = stringResource(id = R.string.lab)) }
-            )
+            AppCenterTopBar(title = { Text(text = stringResource(id = R.string.lab)) })
         }) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             item {

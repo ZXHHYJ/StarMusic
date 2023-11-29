@@ -27,12 +27,7 @@ fun FolderCntScreen(
 ) {
     AppScaffold(
         topBar = {
-            AppCenterTopBar(
-                modifier = Modifier.fillMaxWidth(),
-                title = { Text(text = folder.path.substringAfterLast("/")) }
-            ) {
-
-            }
+            AppCenterTopBar(title = { Text(text = folder.path.substringAfterLast("/")) })
         }, modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()

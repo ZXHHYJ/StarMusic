@@ -11,12 +11,9 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Label
 import androidx.compose.material.icons.rounded.Lyrics
-import androidx.compose.material.icons.rounded.ModeNight
-import androidx.compose.material.icons.rounded.Smartphone
-import androidx.compose.material.icons.rounded.WbSunny
+import androidx.compose.material.icons.rounded.Palette
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
@@ -30,27 +27,11 @@ import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.ItemArrowRight
-import com.zxhhyj.ui.view.item.ItemCheckbox
-import com.zxhhyj.ui.view.item.ItemDivider
 import com.zxhhyj.ui.view.item.ItemSpacer
 import com.zxhhyj.ui.view.item.ItemSwitcher
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.rememberNavController
-
-val SettingRepository.ThemeModeEnum.itemName: String
-    @Composable get() = when (this) {
-        SettingRepository.ThemeModeEnum.AUTO -> stringResource(id = R.string.follow_system)
-        SettingRepository.ThemeModeEnum.LIGHT -> stringResource(id = R.string.light_mode)
-        SettingRepository.ThemeModeEnum.DARK -> stringResource(id = R.string.dark_mode)
-    }
-
-val SettingRepository.ThemeModeEnum.itemIcon: ImageVector
-    @Composable get() = when (this) {
-        SettingRepository.ThemeModeEnum.AUTO -> Icons.Rounded.Smartphone
-        SettingRepository.ThemeModeEnum.LIGHT -> Icons.Rounded.WbSunny
-        SettingRepository.ThemeModeEnum.DARK -> Icons.Rounded.ModeNight
-    }
 
 @Composable
 fun PersonalizeScreen(
@@ -60,12 +41,7 @@ fun PersonalizeScreen(
 ) {
     AppScaffold(
         topBar = {
-            AppCenterTopBar(
-                modifier = Modifier.fillMaxWidth(),
-                title = { Text(text = stringResource(id = R.string.personalize)) }
-            ) {
-
-            }
+            AppCenterTopBar(title = { Text(text = stringResource(id = R.string.personalize)) })
         }, modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
@@ -145,24 +121,11 @@ fun PersonalizeScreen(
             }
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                    SettingRepository.ThemeModeEnum.values().forEachIndexed { index, type ->
-                        ItemCheckbox(
-                            icon = {
-                                Icon(
-                                    imageVector = type.itemIcon,
-                                    contentDescription = type.itemName
-                                )
-                            },
-                            text = { Text(text = type.itemName) },
-                            subText = { },
-                            checked = SettingRepository.ThemeMode == type.ordinal,
-                            onCheckedChange = {
-                                SettingRepository.ThemeMode = type.ordinal
-                            }
-                        )
-                        if (index != SettingRepository.ThemeModeEnum.values().size - 1) {
-                            ItemDivider()
-                        }
+                    ItemArrowRight(
+                        icon = { Icon(imageVector = Icons.Rounded.Palette, null) },
+                        text = { Text(text = stringResource(id = R.string.theme)) },
+                        subText = { }) {
+                        mainNavController.navigate(ScreenDestination.Theme)
                     }
                 }
             }

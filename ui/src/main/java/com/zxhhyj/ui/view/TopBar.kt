@@ -131,12 +131,13 @@ fun Modifier.bindTopBarState() = composed {
 
 @Composable
 fun AppCenterTopBar(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     title: @Composable () -> Unit = {},
     actions: @Composable () -> Unit = {}
 ) {
     val topBarState = LocalTopBarState.current
     Box(modifier = modifier
+        .fillMaxWidth()
         .onSizeChanged {
             topBarState.barSize = it
         }
@@ -175,8 +176,8 @@ fun AppCenterTopBar(
 
 @Composable
 fun AppTopBar(
+    modifier: Modifier = Modifier,
     topBarProperties: TopBarProperties = TopBarProperties(),
-    modifier: Modifier,
     title: @Composable () -> Unit = {},
     actions: @Composable () -> Unit = {},
     content: @Composable () -> Unit = {

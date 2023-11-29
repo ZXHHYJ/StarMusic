@@ -47,7 +47,6 @@ fun SingerCntScreen(
             .padding(paddingValues),
         topBar = {
             AppTopBar(
-                modifier = Modifier.fillMaxWidth(),
                 title = { Text(text = artist.name) },
             ) {
                 Row(

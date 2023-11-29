@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,11 +13,13 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.core.view.WindowCompat
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zxhhyj.music.ui.theme.StarMusicTheme
+import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
@@ -51,14 +54,13 @@ class CrashActivity : ComponentActivity() {
             StarMusicTheme {
                 AppScaffold(
                     topBar = {
-                        AppCenterTopBar(
-                            modifier = Modifier.fillMaxWidth(),
-                            title = { Text(text = stringResource(id = R.string.crash_info)) }
-                        )
+                        AppCenterTopBar(title = { Text(text = stringResource(id = R.string.crash_info)) })
                     },
                     modifier = Modifier
                         .fillMaxSize()
+                        .background(LocalColorScheme.current.background)
                         .systemBarsPadding()
+                        .clipToBounds()
                 ) {
                     LazyColumn(modifier = Modifier.fillMaxSize()) {
                         item {

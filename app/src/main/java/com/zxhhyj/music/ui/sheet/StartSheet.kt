@@ -41,7 +41,7 @@ import com.zxhhyj.ui.view.item.ItemDivider
 import com.zxhhyj.ui.view.item.ItemSpacer
 import com.zxhhyj.ui.view.item.ItemTint
 import dev.olshevski.navigation.reimagined.NavController
-import dev.olshevski.navigation.reimagined.popAll
+import dev.olshevski.navigation.reimagined.pop
 
 @Composable
 fun StartSheet(sheetNavController: NavController<SheetDestination>) {
@@ -133,7 +133,7 @@ fun StartSheet(sheetNavController: NavController<SheetDestination>) {
                     text = { Text(text = stringResource(id = R.string.read_and_agree)) },
                     subText = { }) {
                     SettingRepository.AgreePrivacyPolicy = true
-                    sheetNavController.popAll()
+                    sheetNavController.pop()
                 }
             }
         }

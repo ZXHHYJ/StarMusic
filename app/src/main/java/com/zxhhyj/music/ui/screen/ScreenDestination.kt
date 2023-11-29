@@ -141,6 +141,9 @@ sealed class ScreenDestination : Parcelable {
     @Parcelize
     data object WebDavConfig : ScreenDestination()
 
+    @Parcelize
+    data object Theme : ScreenDestination()
+
     /**
      * 歌手详情
      */

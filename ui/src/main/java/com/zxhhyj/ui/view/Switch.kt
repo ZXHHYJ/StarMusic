@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.rememberSwipeableState
+import androidx.compose.material.SwipeableState
 import androidx.compose.material.swipeable
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -36,8 +36,9 @@ fun AppSwitch(
     BoxWithConstraints(modifier = modifier.heightIn(max = 22.dp)) {
         val blockSize = min(maxHeight, maxWidth)
         val blockSizePx = with(LocalDensity.current) { blockSize.toPx() }
-        val swipeableState =
-            rememberSwipeableState(initialValue = if (checked) Status.OPEN else Status.CLOSE)
+        val swipeableState = remember {
+            SwipeableState(initialValue = if (checked) Status.OPEN else Status.CLOSE)
+        }
         LaunchedEffect(checked) {
             swipeableState.animateTo(if (checked) Status.OPEN else Status.CLOSE)
         }
@@ -61,10 +62,9 @@ fun AppSwitch(
             }
         }
         LaunchedEffect(swipeableState.currentValue) {
-            if (swipeableState.currentValue == Status.OPEN) {
-                onCheckedChange.invoke(true)
-            } else {
-                onCheckedChange.invoke(false)
+            val newValue = swipeableState.currentValue == Status.OPEN
+            if (checked != newValue) {
+                onCheckedChange.invoke(newValue)
             }
         }
         Card(

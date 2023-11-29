@@ -53,7 +53,6 @@ fun AlbumScreen(
                 .padding(paddingValues),
             topBar = {
                 AppCenterTopBar(
-                    modifier = Modifier.fillMaxWidth(),
                     title = { Text(text = stringResource(id = R.string.album)) },
                     actions = {
                         AppIconButton(onClick = {

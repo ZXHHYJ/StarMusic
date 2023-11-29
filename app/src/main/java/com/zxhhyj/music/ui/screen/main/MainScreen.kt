@@ -102,6 +102,7 @@ import com.zxhhyj.music.ui.screen.pro.ProScreen
 import com.zxhhyj.music.ui.screen.search.SearchScreen
 import com.zxhhyj.music.ui.screen.singer.SingerScreen
 import com.zxhhyj.music.ui.screen.singercnt.SingerCntScreen
+import com.zxhhyj.music.ui.screen.theme.ThemeScreen
 import com.zxhhyj.music.ui.screen.webdav.WebDavScreen
 import com.zxhhyj.music.ui.screen.webdavconfig.WebDavConfigScreen
 import com.zxhhyj.music.ui.screen.wechatpay.WeChatPayScreen
@@ -213,16 +214,16 @@ fun MainScreen() {
     val panelController = rememberPanelController(panelState = PanelState.COLLAPSED)
 
     val isSystemInDarkMode =
-        when (SettingRepository.ThemeModeEnum.entries[SettingRepository.ThemeMode]) {
-            SettingRepository.ThemeModeEnum.AUTO -> {
+        when (SettingRepository.DarkModeEnum.entries[SettingRepository.DarkMode]) {
+            SettingRepository.DarkModeEnum.AUTO -> {
                 isSystemInDarkTheme()
             }
 
-            SettingRepository.ThemeModeEnum.LIGHT -> {
+            SettingRepository.DarkModeEnum.LIGHT -> {
                 false
             }
 
-            SettingRepository.ThemeModeEnum.DARK -> {
+            SettingRepository.DarkModeEnum.DARK -> {
                 true
             }
         }
@@ -650,6 +651,10 @@ fun MainScreen() {
                                 mainNavController = mainNavController
                             )
                         }
+
+                        ScreenDestination.Theme -> {
+                            ThemeScreen(paddingValues = paddingValues)
+                        }
                     }
                 }
             }
@@ -707,7 +712,11 @@ fun MainScreen() {
             }
 
             is DialogDestination.DeleteSong -> {
-                DeleteSongDialog(onDismissRequest = onDismissRequest, songBean = it.songBean)
+                DeleteSongDialog(
+                    onDismissRequest = onDismissRequest,
+                    sheetNavController = sheetNavController,
+                    songBean = it.songBean
+                )
             }
 
             DialogDestination.CustomTimer -> {

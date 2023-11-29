@@ -27,10 +27,7 @@ import com.zxhhyj.ui.view.item.ItemSwitcher
 fun MiscScreen(paddingValues: PaddingValues) {
     AppScaffold(
         topBar = {
-            AppCenterTopBar(
-                modifier = Modifier.fillMaxWidth(),
-                title = { Text(text = stringResource(id = R.string.misc)) }
-            )
+            AppCenterTopBar(title = { Text(text = stringResource(id = R.string.misc)) })
         }, modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()

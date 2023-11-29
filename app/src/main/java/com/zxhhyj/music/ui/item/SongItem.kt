@@ -38,12 +38,7 @@ import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
 @Composable
-fun SongItem(
-    sheetNavController: NavController<SheetDestination>,
-    songBean: SongBean,
-    actions: @Composable () -> Unit = {},
-    onClick: () -> Unit
-) {
+fun SongItem(songBean: SongBean, actions: @Composable () -> Unit, onClick: () -> Unit) {
     Item(
         icon = {
             AppAsyncImage(
@@ -86,22 +81,38 @@ fun SongItem(
         actions = {
             CompositionLocalProvider(LocalContentColor provides LocalColorScheme.current.subText) {
                 actions.invoke()
-                AppIconButton(onClick = {
-                    sheetNavController.navigate(
-                        SheetDestination.SongMenu(
-                            songBean
-                        )
-                    )
-                }) {
-                    Icon(
-                        imageVector = Icons.Rounded.MoreVert,
-                        contentDescription = null
-                    )
-                }
             }
         }) {
         onClick.invoke()
     }
+}
+
+@Composable
+fun SongItem(
+    sheetNavController: NavController<SheetDestination>,
+    songBean: SongBean,
+    actions: @Composable () -> Unit = {},
+    onClick: () -> Unit
+) {
+    SongItem(
+        songBean = songBean,
+        actions = {
+            actions.invoke()
+            AppIconButton(onClick = {
+                sheetNavController.navigate(
+                    SheetDestination.SongMenu(
+                        songBean
+                    )
+                )
+            }) {
+                Icon(
+                    imageVector = Icons.Rounded.MoreVert,
+                    contentDescription = null
+                )
+            }
+        },
+        onClick = onClick
+    )
 }
 
 @Composable
@@ -148,10 +159,9 @@ fun SongItem(
                     overflow = TextOverflow.Ellipsis
                 )
             },
-            actions = {}) {
-            onClick.invoke()
-            //没有点击事件
-        }
+            actions = {},
+            onClick = onClick
+        )
         LinearProgressIndicator(
             progress = (downloadState?.progress ?: 0f),
             modifier = Modifier
@@ -165,39 +175,5 @@ fun SongItem(
 
 @Composable
 fun SongItem(songBean: SongBean) {
-    Item(
-        icon = {
-            AppAsyncImage(
-                modifier = Modifier
-                    .size(50.dp),
-                data = songBean.coverUrl
-            )
-        },
-        text = {
-            Text(
-                text = songBean.songName,
-                color = LocalColorScheme.current.text,
-                fontSize = 15.sp,
-                maxLines = 1,
-                textAlign = TextAlign.Center,
-                overflow = TextOverflow.Ellipsis
-            )
-        },
-        subText = {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                if (SettingRepository.EnableShowSoundQualityLabel) {
-                    SoundQualityIcon(song = songBean)
-                }
-                Text(
-                    text = songBean.artist.name,
-                    color = LocalColorScheme.current.subText,
-                    fontSize = 13.sp,
-                    maxLines = 1,
-                    textAlign = TextAlign.Center,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-        },
-        onClick = {}
-    )
+    SongItem(songBean = songBean, actions = {}) {}
 }

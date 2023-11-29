@@ -35,12 +35,7 @@ fun EqualizerScreen(paddingValues: PaddingValues) {
             .fillMaxSize()
             .statusBarsPadding()
             .padding(paddingValues), topBar = {
-            AppCenterTopBar(
-                modifier = Modifier.fillMaxWidth(),
-                title = { Text(text = stringResource(id = R.string.eq)) }
-            ) {
-
-            }
+            AppCenterTopBar(title = { Text(text = stringResource(id = R.string.eq)) })
         }) {
         Column(modifier = Modifier.fillMaxSize()) {
             RoundColumn(modifier = Modifier.fillMaxWidth()) {

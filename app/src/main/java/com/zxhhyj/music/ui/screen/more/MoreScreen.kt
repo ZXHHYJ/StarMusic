@@ -10,10 +10,10 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.StarRate
+import androidx.compose.material.icons.rounded.BorderColor
 import androidx.compose.material.icons.rounded.Equalizer
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.MiscellaneousServices
-import androidx.compose.material.icons.rounded.Palette
 import androidx.compose.material.icons.rounded.Science
 import androidx.compose.material.icons.rounded.Source
 import androidx.compose.runtime.Composable
@@ -43,10 +43,7 @@ fun MoreScreen(
             .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
-            AppCenterTopBar(
-                modifier = Modifier.fillMaxWidth(),
-                title = { Text(text = stringResource(id = R.string.more)) }
-            )
+            AppCenterTopBar(title = { Text(text = stringResource(id = R.string.more)) })
         }) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             item {
@@ -71,7 +68,7 @@ fun MoreScreen(
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
                     ItemArrowRight(
-                        icon = { Icon(imageVector = Icons.Rounded.Palette, null) },
+                        icon = { Icon(imageVector = Icons.Rounded.BorderColor, null) },
                         text = { Text(text = stringResource(id = R.string.personalize)) },
                         subText = { Text(text = stringResource(id = R.string.personalize_info)) }) {
                         mainNavController.navigate(ScreenDestination.Personalize)

@@ -43,7 +43,6 @@ fun PlayListScreen(
             .padding(paddingValues),
         topBar = {
             AppCenterTopBar(
-                modifier = Modifier,
                 title = { Text(text = stringResource(id = R.string.play_list)) },
                 actions = {
                     AppIconButton(onClick = { dialogNavController.navigate(DialogDestination.CreatePlayList) }) {

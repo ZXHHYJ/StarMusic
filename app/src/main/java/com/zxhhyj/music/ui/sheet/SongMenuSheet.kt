@@ -32,7 +32,6 @@ import com.zxhhyj.ui.view.item.ItemDivider
 import com.zxhhyj.ui.view.item.ItemSpacer
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
-import dev.olshevski.navigation.reimagined.popAll
 
 @Composable
 fun SongMenuSheet(
@@ -57,7 +56,6 @@ fun SongMenuSheet(
                     icon = { Icon(imageVector = Icons.Rounded.Album, contentDescription = null) },
                     text = { Text(text = songBean.album.name) },
                     subText = { Text(text = stringResource(id = R.string.album)) }) {
-                    sheetNavController.popAll()
                     mainNavController.navigate(ScreenDestination.AlbumCnt(songBean.album))
                 }
                 ItemDivider()
@@ -65,7 +63,6 @@ fun SongMenuSheet(
                     icon = { Icon(imageVector = Icons.Rounded.Person, contentDescription = null) },
                     text = { Text(text = songBean.artist.name) },
                     subText = { Text(text = stringResource(id = R.string.singer)) }) {
-                    sheetNavController.popAll()
                     mainNavController.navigate(ScreenDestination.SingerCnt(songBean.artist))
                 }
             }
@@ -79,7 +76,6 @@ fun SongMenuSheet(
                     icon = { Icon(imageVector = Icons.Rounded.Add, contentDescription = null) },
                     text = { Text(text = stringResource(id = R.string.add_to_playlist)) },
                     subText = { }) {
-                    sheetNavController.popAll()
                     sheetNavController.navigate(SheetDestination.AddToPlayList(songBean))
                 }
                 ItemDivider()
@@ -94,7 +90,6 @@ fun SongMenuSheet(
                     subText = { },
                     enabled = currentSong != null
                 ) {
-                    sheetNavController.popAll()
                     PlayerManager.addNextPlay(songBean)
                 }
                 ItemDivider()
@@ -106,7 +101,6 @@ fun SongMenuSheet(
                         )
                     },
                     subText = { }) {
-                    sheetNavController.popAll()
                     sheetNavController.navigate(SheetDestination.SongParameters(songBean))
                 }
                 ItemDivider()
@@ -125,7 +119,6 @@ fun SongMenuSheet(
                     subText = { },
                     enabled = currentSong != songBean && songBean is SongBean.Local
                 ) {
-                    sheetNavController.popAll()
                     AndroidMediaLibRepository.hideSong(songBean as SongBean.Local)
                 }
                 ItemDivider()
@@ -144,7 +137,6 @@ fun SongMenuSheet(
                     subText = { },
                     enabled = currentSong != songBean
                 ) {
-                    sheetNavController.popAll()
                     dialogNavController.navigate(DialogDestination.DeleteSong(songBean))
                 }
             }

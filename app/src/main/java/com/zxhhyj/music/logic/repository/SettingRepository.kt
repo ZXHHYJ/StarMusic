@@ -184,41 +184,23 @@ object SettingRepository {
         initialValue = PlayerManager.PlayMode.LIST_LOOP
     )
 
-    enum class ThemeModeEnum {
+    enum class DarkModeEnum {
         AUTO, LIGHT, DARK
     }
 
     /**
-     * 主题模式
+     * 深色模式
      */
-    var ThemeMode by mutableDataSaverStateOf(
+    var DarkMode by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
-        key = "ThemeMode",
-        initialValue = ThemeModeEnum.AUTO.ordinal
-    )
-
-    /**
-     * 动态颜色主题
-     */
-    var EnableDynamicColors by mutableDataSaverStateOf(
-        dataSaverInterface = DataSaverUtils,
-        key = "EnableDynamicColors",
-        initialValue = false
-    )
-
-    /**
-     * M3调色板
-     */
-    var M3PaletteStyle by mutableDataSaverStateOf(
-        dataSaverInterface = DataSaverUtils,
-        key = "PaletteStyle",
-        initialValue = PaletteStyle.TonalSpot.ordinal
+        key = "DarkMode",
+        initialValue = DarkModeEnum.AUTO.ordinal
     )
 
     /**
      * 播放记忆
      */
-    var PlayMemory :PlayMemoryBean? by mutableDataSaverStateOf(
+    var PlayMemory: PlayMemoryBean? by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "PlayMemory",
         initialValue = null
@@ -231,5 +213,16 @@ object SettingRepository {
         dataSaverInterface = DataSaverUtils,
         key = "EnablePlayMemory",
         initialValue = true
+    )
+
+    sealed class ThemeModeClass {
+        data object Default : ThemeModeClass()
+        class Monet(val style: PaletteStyle) : ThemeModeClass()
+    }
+
+    var ThemeMode: ThemeModeClass by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "ThemeMode_V2",
+        initialValue = ThemeModeClass.Default
     )
 }

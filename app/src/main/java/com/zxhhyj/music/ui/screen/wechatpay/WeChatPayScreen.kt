@@ -47,10 +47,7 @@ fun WeChatPayScreen(
             .statusBarsPadding()
             .padding(paddingValues),
         topBar = {
-            AppCenterTopBar(
-                modifier = Modifier,
-                title = { Text(text = stringResource(id = R.string.wechat_payment)) }
-            )
+            AppCenterTopBar(title = { Text(text = stringResource(id = R.string.wechat_payment)) })
         }) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             item {
