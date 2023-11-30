@@ -24,7 +24,7 @@ import com.zxhhyj.ui.view.item.Item
 import com.zxhhyj.ui.view.item.ItemSpacer
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
-import dev.olshevski.navigation.reimagined.pop
+import dev.olshevski.navigation.reimagined.popAll
 
 @Composable
 fun AddToPlayListSheet(
@@ -50,7 +50,7 @@ fun AddToPlayListSheet(
             items(PlayListRepository.playList) {
                 PlayListItem(it) {
                     it.addSong(songBean)
-                    sheetNavController.pop()
+                    sheetNavController.popAll()
                 }
             }
         }

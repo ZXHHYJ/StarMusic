@@ -31,7 +31,7 @@ import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppCard
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.AppTopBar
-import com.zxhhyj.ui.view.RoundColumn
+import com.zxhhyj.ui.view.roundColumn
 import dev.olshevski.navigation.reimagined.NavController
 
 @Composable
@@ -80,8 +80,8 @@ fun SingerCntScreen(
                 }
             }
         }) {
-        RoundColumn(modifier = Modifier.fillMaxWidth()) {
-            LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            roundColumn {
                 itemsIndexed(artist.songs) { index, item ->
                     SongItem(sheetNavController = sheetNavController, songBean = item) {
                         PlayerManager.play(artist.songs, index)

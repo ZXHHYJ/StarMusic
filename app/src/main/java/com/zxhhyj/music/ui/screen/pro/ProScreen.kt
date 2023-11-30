@@ -54,7 +54,7 @@ fun ProScreen(
         DisposableEffect(Unit) {
             onDispose {
                 SettingRepository.EnableCueSupport = false
-                SettingRepository.ThemeMode = SettingRepository.ThemeModeEnum.DEFAULT
+                SettingRepository.EnableWebDav = false
             }
         }
     }

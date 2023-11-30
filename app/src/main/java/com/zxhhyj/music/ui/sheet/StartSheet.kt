@@ -16,7 +16,6 @@ import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.PrivacyTip
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,15 +45,8 @@ import dev.olshevski.navigation.reimagined.pop
 @Composable
 fun StartSheet(sheetNavController: NavController<SheetDestination>) {
     val activity = LocalContext.current as Activity?
-    DisposableEffect(Unit) {
-        onDispose {
-            if (!SettingRepository.AgreePrivacyPolicy) {
-                activity?.finish()
-            }
-        }
-    }
     BackHandler {
-        //拦截返回键
+        activity?.finish()
     }
     Column(
         modifier = Modifier

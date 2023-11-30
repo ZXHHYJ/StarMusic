@@ -731,6 +731,7 @@ fun MainScreen() {
         sheetPropertiesSpec = {
             BottomSheetProperties(
                 animationSpec = if (SettingRepository.EnableLinkUI) tween(0) else BottomSheetAnimation,
+                confirmValueChange = { SettingRepository.AgreePrivacyPolicy },
                 skipHalfExpanded = true
             )
         }
@@ -774,7 +775,6 @@ fun MainScreen() {
                     PlaylistMenuSheet(
                         mainNavController = mainNavController,
                         dialogNavController = dialogNavController,
-                        sheetNavController = sheetNavController,
                         playListBean = destination.model
                     )
                 }

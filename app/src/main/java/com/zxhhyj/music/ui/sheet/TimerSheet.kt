@@ -39,7 +39,6 @@ fun TimerSheet(dialogNavController: NavController<DialogDestination>) {
         )
         timerTypeList.forEachIndexed { index, timerType ->
             ItemCheckbox(
-                icon = {},
                 text = { Text(text = timerType.itemName) },
                 subText = {
                     when (timerType) {
