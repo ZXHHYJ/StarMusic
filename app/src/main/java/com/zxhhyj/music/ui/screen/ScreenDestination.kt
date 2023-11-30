@@ -132,6 +132,9 @@ sealed class ScreenDestination : Parcelable {
     @Parcelize
     data object Equalizer : ScreenDestination()
 
+    /**
+     * WebDav
+     */
     @Parcelize
     data object WebDav : ScreenDestination()
 
@@ -141,6 +144,9 @@ sealed class ScreenDestination : Parcelable {
     @Parcelize
     data object WebDavConfig : ScreenDestination()
 
+    /**
+     * 主题
+     */
     @Parcelize
     data object Theme : ScreenDestination()
 

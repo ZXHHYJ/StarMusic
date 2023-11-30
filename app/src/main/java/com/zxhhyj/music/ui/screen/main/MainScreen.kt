@@ -214,7 +214,7 @@ fun MainScreen() {
     val panelController = rememberPanelController(panelState = PanelState.COLLAPSED)
 
     val isSystemInDarkMode =
-        when (SettingRepository.DarkModeEnum.entries[SettingRepository.DarkMode]) {
+        when (SettingRepository.DarkMode) {
             SettingRepository.DarkModeEnum.AUTO -> {
                 isSystemInDarkTheme()
             }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.LocalContentColor
@@ -16,13 +17,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.theme.LocalTextStyles
 import com.zxhhyj.ui.theme.StarDimens
 
+internal val DefaultMinHeight = 24.dp
+
 @Composable
 fun Item(
-    icon: @Composable () -> Unit,
+    icon: (@Composable () -> Unit)? = null,
     text: @Composable () -> Unit,
     subText: @Composable () -> Unit,
     actions: @Composable () -> Unit = {},
@@ -33,13 +37,16 @@ fun Item(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(enabled = enabled, onClick = onClick)
-            .padding(horizontal = StarDimens.horizontal, vertical = StarDimens.vertical),
+            .padding(horizontal = StarDimens.horizontal, vertical = StarDimens.vertical)
+            .heightIn(min = DefaultMinHeight),
         verticalAlignment = Alignment.CenterVertically
     ) {
         CompositionLocalProvider(LocalContentColor provides if (enabled) LocalColorScheme.current.highlight else LocalColorScheme.current.disabled) {
-            icon()
+            icon?.let {
+                it()
+                Spacer(modifier = Modifier.width(StarDimens.vertical))
+            }
         }
-        Spacer(modifier = Modifier.width(StarDimens.vertical))
         Column(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.weight(1.0f)

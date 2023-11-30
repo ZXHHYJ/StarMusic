@@ -36,18 +36,18 @@ import com.zxhhyj.ui.theme.starTextStyles
 fun StarMusicTheme(
     content: @Composable () -> Unit
 ) {
-    val isDark = when (SettingRepository.DarkModeEnum.entries[SettingRepository.DarkMode]) {
+    val isDark = when (SettingRepository.DarkMode) {
         SettingRepository.DarkModeEnum.AUTO -> isSystemInDarkTheme()
         SettingRepository.DarkModeEnum.LIGHT -> false
         SettingRepository.DarkModeEnum.DARK -> true
     }
 
-    val colorScheme = when (val themeMode = SettingRepository.ThemeMode) {
-        SettingRepository.ThemeModeClass.Default -> {
+    val colorScheme = when (SettingRepository.ThemeMode) {
+        SettingRepository.ThemeModeEnum.DEFAULT -> {
             if (isDark) nightColorScheme else lightColorScheme
         }
 
-        is SettingRepository.ThemeModeClass.Monet -> {
+        SettingRepository.ThemeModeEnum.MONET -> {
             val mainColor = mainColor
             var monetColor: Color by remember {
                 mutableStateOf(mainColor)
@@ -82,19 +82,62 @@ fun StarMusicTheme(
                 }
             }
 
-            val contrastLevel = 0.0
             val hct = Hct.fromInt(monetColor.toArgb())
             val colors = MaterialDynamicColors()
-            val scheme = when (themeMode.style) {
-                PaletteStyle.TonalSpot -> SchemeTonalSpot(hct, isDark, contrastLevel)
-                PaletteStyle.Neutral -> SchemeNeutral(hct, isDark, contrastLevel)
-                PaletteStyle.Vibrant -> SchemeVibrant(hct, isDark, contrastLevel)
-                PaletteStyle.Expressive -> SchemeExpressive(hct, isDark, contrastLevel)
-                PaletteStyle.Rainbow -> SchemeRainbow(hct, isDark, contrastLevel)
-                PaletteStyle.FruitSalad -> SchemeFruitSalad(hct, isDark, contrastLevel)
-                PaletteStyle.Monochrome -> SchemeMonochrome(hct, isDark, contrastLevel)
-                PaletteStyle.Fidelity -> SchemeFidelity(hct, isDark, contrastLevel)
-                PaletteStyle.Content -> SchemeContent(hct, isDark, contrastLevel)
+            val scheme = when (SettingRepository.MonetPaletteStyle) {
+                PaletteStyle.TonalSpot -> SchemeTonalSpot(
+                    hct,
+                    isDark,
+                    SettingRepository.MonetContrastLevel
+                )
+
+                PaletteStyle.Neutral -> SchemeNeutral(
+                    hct,
+                    isDark,
+                    SettingRepository.MonetContrastLevel
+                )
+
+                PaletteStyle.Vibrant -> SchemeVibrant(
+                    hct,
+                    isDark,
+                    SettingRepository.MonetContrastLevel
+                )
+
+                PaletteStyle.Expressive -> SchemeExpressive(
+                    hct,
+                    isDark,
+                    SettingRepository.MonetContrastLevel
+                )
+
+                PaletteStyle.Rainbow -> SchemeRainbow(
+                    hct,
+                    isDark,
+                    SettingRepository.MonetContrastLevel
+                )
+
+                PaletteStyle.FruitSalad -> SchemeFruitSalad(
+                    hct,
+                    isDark,
+                    SettingRepository.MonetContrastLevel
+                )
+
+                PaletteStyle.Monochrome -> SchemeMonochrome(
+                    hct,
+                    isDark,
+                    SettingRepository.MonetContrastLevel
+                )
+
+                PaletteStyle.Fidelity -> SchemeFidelity(
+                    hct,
+                    isDark,
+                    SettingRepository.MonetContrastLevel
+                )
+
+                PaletteStyle.Content -> SchemeContent(
+                    hct,
+                    isDark,
+                    SettingRepository.MonetContrastLevel
+                )
             }
             ColorScheme(
                 highlight = Color(colors.primary().getArgb(scheme)),

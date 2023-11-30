@@ -11,7 +11,8 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.StarRate
-import androidx.compose.material.icons.rounded.Help
+import androidx.compose.material.icons.rounded.AudioFile
+import androidx.compose.material.icons.rounded.CloudUpload
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
@@ -28,6 +29,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
+import com.zxhhyj.music.ui.common.VipIcon
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.theme.wechatColor
 import com.zxhhyj.ui.theme.ColorScheme
@@ -35,7 +37,6 @@ import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
-import com.zxhhyj.ui.view.item.Item
 import com.zxhhyj.ui.view.item.ItemArrowRight
 import com.zxhhyj.ui.view.item.ItemDivider
 import com.zxhhyj.ui.view.item.ItemSpacer
@@ -53,7 +54,7 @@ fun ProScreen(
         DisposableEffect(Unit) {
             onDispose {
                 SettingRepository.EnableCueSupport = false
-                SettingRepository.ThemeMode = SettingRepository.ThemeModeClass.Default
+                SettingRepository.ThemeMode = SettingRepository.ThemeModeEnum.DEFAULT
             }
         }
     }
@@ -101,27 +102,27 @@ fun ProScreen(
                     }
                     item {
                         RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                            Item(
+                            ItemArrowRight(
                                 icon = {
                                     Icon(
-                                        imageVector = Icons.Rounded.Help,
+                                        imageVector = Icons.Rounded.AudioFile,
                                         contentDescription = null
                                     )
                                 },
-                                text = { Text(text = "了解cue分轨文件支持") },
-                                subText = { }) {
+                                text = { Text(text = stringResource(id = R.string.cue_support)) },
+                                subText = { VipIcon() }) {
                                 mainNavController.navigate(ScreenDestination.MediaLibConfig)
                             }
                             ItemDivider()
-                            Item(
+                            ItemArrowRight(
                                 icon = {
                                     Icon(
-                                        imageVector = Icons.Rounded.Help,
+                                        imageVector = Icons.Rounded.CloudUpload,
                                         contentDescription = null
                                     )
                                 },
-                                text = { Text(text = "了解WebDav") },
-                                subText = { }) {
+                                text = { Text(text = stringResource(id = R.string.webdav)) },
+                                subText = { VipIcon() }) {
                                 mainNavController.navigate(ScreenDestination.WebDavConfig)
                             }
                         }

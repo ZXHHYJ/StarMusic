@@ -9,7 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.StarRate
+import androidx.compose.material.icons.filled.NightsStay
 import androidx.compose.material.icons.rounded.ModeNight
 import androidx.compose.material.icons.rounded.Palette
 import androidx.compose.material.icons.rounded.Smartphone
@@ -26,7 +26,11 @@ import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.ItemCheckbox
 import com.zxhhyj.ui.view.item.ItemDivider
+import com.zxhhyj.ui.view.item.ItemSlider
 import com.zxhhyj.ui.view.item.ItemSpacer
+import com.zxhhyj.ui.view.item.ItemSubTitle
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 private val SettingRepository.DarkModeEnum.itemName: String
     @Composable get() = when (this) {
@@ -61,15 +65,15 @@ fun ThemeScreen(paddingValues: PaddingValues) {
                     ItemCheckbox(
                         icon = {
                             Icon(
-                                imageVector = Icons.Filled.StarRate,
+                                imageVector = Icons.Filled.NightsStay,
                                 contentDescription = null
                             )
                         },
-                        text = { Text(text = "白月朱砂") },
+                        text = { Text(text = stringResource(id = R.string.white_moonlight_and_cinnabar)) },
                         subText = { },
-                        checked = SettingRepository.ThemeMode == SettingRepository.ThemeModeClass.Default,
+                        checked = SettingRepository.ThemeMode == SettingRepository.ThemeModeEnum.DEFAULT,
                         onCheckedChange = {
-                            SettingRepository.ThemeMode = SettingRepository.ThemeModeClass.Default
+                            SettingRepository.ThemeMode = SettingRepository.ThemeModeEnum.DEFAULT
                         }
                     )
                     ItemDivider()
@@ -82,16 +86,59 @@ fun ThemeScreen(paddingValues: PaddingValues) {
                         },
                         text = { Text(text = stringResource(id = R.string.dynamic_colors_theme)) },
                         subText = { },
-                        checked = SettingRepository.ThemeMode is SettingRepository.ThemeModeClass.Monet,
+                        checked = SettingRepository.ThemeMode == SettingRepository.ThemeModeEnum.MONET,
                         onCheckedChange = {
                             SettingRepository.ThemeMode =
-                                SettingRepository.ThemeModeClass.Monet(PaletteStyle.TonalSpot)
+                                SettingRepository.ThemeModeEnum.MONET
                         }
                     )
                 }
             }
+            if (SettingRepository.ThemeMode == SettingRepository.ThemeModeEnum.MONET) {
+                item {
+                    ItemSubTitle {
+                        Text(text = stringResource(id = R.string.palette))
+                    }
+                }
+                item {
+                    RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                        PaletteStyle.entries.forEach { style ->
+                            ItemCheckbox(
+                                text = { Text(text = style.name) },
+                                subText = { },
+                                checked = SettingRepository.MonetPaletteStyle == style,
+                                onCheckedChange = {
+                                    SettingRepository.MonetPaletteStyle = style
+                                }
+                            )
+                        }
+                    }
+                }
+                item { ItemSpacer() }
+                item {
+                    RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                        ItemSlider(
+                            text = { Text(text = stringResource(id = R.string.contrast)) },
+                            subText = {
+                                Text(
+                                    text = SettingRepository.MonetContrastLevel.toFloat().toString()
+                                )
+                            },
+                            value = SettingRepository.MonetContrastLevel.toFloat(),
+                            valueRange = -1f..1f,
+                            onValueChange = {
+                                SettingRepository.MonetContrastLevel =
+                                    BigDecimal(it.toDouble()).setScale(1, RoundingMode.HALF_UP)
+                                        .toDouble()
+                            }
+                        )
+                    }
+                }
+            }
             item {
-                ItemSpacer()
+                ItemSubTitle {
+                    Text(text = stringResource(id = R.string.dark_mode))
+                }
             }
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
@@ -105,9 +152,9 @@ fun ThemeScreen(paddingValues: PaddingValues) {
                             },
                             text = { Text(text = type.itemName) },
                             subText = { },
-                            checked = SettingRepository.DarkMode == type.ordinal,
+                            checked = SettingRepository.DarkMode == type,
                             onCheckedChange = {
-                                SettingRepository.DarkMode = type.ordinal
+                                SettingRepository.DarkMode = type
                             }
                         )
                         if (index != SettingRepository.DarkModeEnum.values().size - 1) {

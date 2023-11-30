@@ -16,6 +16,7 @@ import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.MediaLibHelper
 import com.zxhhyj.music.service.StarMusicService
 import com.zxhhyj.music.service.playermanager.PlayerManager
+import com.zxhhyj.music.ui.theme.PaletteStyle
 import io.fastkv.FastKVConfig
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -103,14 +104,22 @@ class MainApplication : Application() {
 
         registerTypeConverters(
             save = { bean -> JSON.toJSONString(bean) },
-            restore = { str ->
-                JSON.parseObject(str, PlayMemoryBean::class.java)
-            }
+            restore = { str -> JSON.parseObject(str, PlayMemoryBean::class.java) }
         )
 
         registerTypeConverters(
             save = { bean -> JSON.toJSONString(bean) },
-            restore = { str -> JSON.parseObject(str, SettingRepository.ThemeModeClass::class.java) }
+            restore = { str -> JSON.parseObject(str, SettingRepository.ThemeModeEnum::class.java) }
+        )
+
+        registerTypeConverters(
+            save = { bean -> JSON.toJSONString(bean) },
+            restore = { str -> JSON.parseObject(str, SettingRepository.DarkModeEnum::class.java) }
+        )
+
+        registerTypeConverters(
+            save = { bean -> JSON.toJSONString(bean) },
+            restore = { str -> JSON.parseObject(str, PaletteStyle::class.java) }
         )
         //确保播放音乐时播放启动服务
         PlayerManager.pauseFlow.onEach {

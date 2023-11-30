@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.AudioFile
 import androidx.compose.material.icons.rounded.CloudUpload
 import androidx.compose.material.icons.rounded.FilterAlt
 import androidx.compose.material.icons.rounded.Folder
@@ -215,7 +216,7 @@ fun MediaLibConfigScreen(
                     ItemSwitcher(
                         icon = {
                             Icon(
-                                imageVector = Icons.Rounded.LibraryMusic,
+                                imageVector = Icons.Rounded.AudioFile,
                                 contentDescription = null
                             )
                         },

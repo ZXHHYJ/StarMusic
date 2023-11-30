@@ -191,10 +191,10 @@ object SettingRepository {
     /**
      * 深色模式
      */
-    var DarkMode by mutableDataSaverStateOf(
+    var DarkMode: DarkModeEnum by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
-        key = "DarkMode",
-        initialValue = DarkModeEnum.AUTO.ordinal
+        key = "DarkMode_V2",
+        initialValue = DarkModeEnum.AUTO
     )
 
     /**
@@ -215,14 +215,31 @@ object SettingRepository {
         initialValue = true
     )
 
-    sealed class ThemeModeClass {
-        data object Default : ThemeModeClass()
-        class Monet(val style: PaletteStyle) : ThemeModeClass()
+    enum class ThemeModeEnum {
+        DEFAULT, MONET
     }
 
-    var ThemeMode: ThemeModeClass by mutableDataSaverStateOf(
+    var ThemeMode: ThemeModeEnum by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
-        key = "ThemeMode_V2",
-        initialValue = ThemeModeClass.Default
+        key = "ThemeMode_V3",
+        initialValue = ThemeModeEnum.DEFAULT
+    )
+
+    /**
+     * M3调色板
+     */
+    var MonetPaletteStyle: PaletteStyle by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "MonetPaletteStyle",
+        initialValue = PaletteStyle.TonalSpot
+    )
+
+    /**
+     * M3对比度等级
+     */
+    var MonetContrastLevel by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "MonetContrastLevel",
+        initialValue = 0.0
     )
 }

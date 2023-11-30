@@ -27,6 +27,7 @@ import com.zxhhyj.ui.view.item.Item
 import com.zxhhyj.ui.view.item.ItemArrowRight
 import com.zxhhyj.ui.view.item.ItemDivider
 import com.zxhhyj.ui.view.item.ItemSpacer
+import com.zxhhyj.ui.view.item.ItemSubTitle
 import com.zxhhyj.ui.view.item.ItemTint
 
 
@@ -61,14 +62,12 @@ fun AboutScreen(
                 }
             }
             item {
-                ItemSpacer()
+                ItemSubTitle {
+                    Text(text = stringResource(id = R.string.about_link))
+                }
             }
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                    ItemTint {
-                        Text(text = stringResource(id = R.string.about_link))
-                    }
-                    ItemDivider()
                     ItemArrowRight(
                         icon = {
                             Icon(

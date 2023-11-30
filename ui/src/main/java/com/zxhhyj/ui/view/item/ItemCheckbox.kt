@@ -8,7 +8,7 @@ import com.zxhhyj.ui.theme.LocalColorScheme
 
 @Composable
 fun ItemCheckbox(
-    icon: @Composable () -> Unit,
+    icon: (@Composable () -> Unit)? = null,
     text: @Composable () -> Unit,
     subText: @Composable () -> Unit,
     checked: Boolean,
