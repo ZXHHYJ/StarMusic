@@ -121,6 +121,7 @@ class MainApplication : Application() {
             save = { bean -> JSON.toJSONString(bean) },
             restore = { str -> JSON.parseObject(str, PaletteStyle::class.java) }
         )
+
         //确保播放音乐时播放启动服务
         PlayerManager.pauseFlow.onEach {
             if (!it) {

@@ -3,6 +3,7 @@ package com.zxhhyj.music.ui.sheet
 import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +14,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.PrivacyTip
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
@@ -35,9 +35,11 @@ import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.ui.theme.ColorScheme
 import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.RoundColumn
+import com.zxhhyj.ui.view.item.Item
 import com.zxhhyj.ui.view.item.ItemArrowRight
 import com.zxhhyj.ui.view.item.ItemDivider
 import com.zxhhyj.ui.view.item.ItemSpacer
+import com.zxhhyj.ui.view.item.ItemSubTitle
 import com.zxhhyj.ui.view.item.ItemTint
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.pop
@@ -87,22 +89,35 @@ fun StartSheet(sheetNavController: NavController<SheetDestination>) {
                         ) {
                             append(stringResource(id = R.string.privacy_policy))
                         }
-                    }, color = LocalColorScheme.current.text
+                    }, color = LocalColorScheme.current.text, modifier = Modifier.clickable {
+                        if (activity != null) {
+                            ActivityUtils.openUrl(activity, PrivacyPolicyURL)
+                        }
+                    }
                 )
             }
+        }
+        ItemSpacer()
+        ItemSubTitle {
+            Text(text = stringResource(id = R.string.request_permission))
+        }
+        RoundColumn(modifier = Modifier.fillMaxWidth()) {
+            Item(
+                text = { Text(text = stringResource(id = R.string.network_connection_permission)) },
+                subText = { Text(text = stringResource(id = R.string.network_connection_permission_info)) }) {
+
+            }
             ItemDivider()
-            ItemArrowRight(
-                icon = {
-                    Icon(
-                        imageVector = Icons.Rounded.PrivacyTip,
-                        contentDescription = null
-                    )
-                },
-                text = { Text(text = stringResource(id = R.string.privacy_policy)) },
-                subText = { }) {
-                if (activity != null) {
-                    ActivityUtils.openUrl(activity, PrivacyPolicyURL)
-                }
+            Item(
+                text = { Text(text = stringResource(id = R.string.read_internal_storage_permission)) },
+                subText = { Text(text = stringResource(id = R.string.read_internal_storage_permission_info)) }) {
+
+            }
+            ItemDivider()
+            Item(
+                text = { Text(text = stringResource(id = R.string.post_notifications_permission)) },
+                subText = { Text(text = stringResource(id = R.string.post_notifications_permission_info)) }) {
+
             }
         }
         ItemSpacer()

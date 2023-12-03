@@ -95,6 +95,7 @@ object PlayerManager {
             PlayMode.SINGLE_LOOP -> {
                 _currentSongFlow.value?.startPosition?.let {
                     seekTo(it.toInt())
+                    start()
                 }
             }
 

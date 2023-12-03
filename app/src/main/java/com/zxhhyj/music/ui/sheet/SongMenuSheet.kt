@@ -32,7 +32,7 @@ import com.zxhhyj.ui.view.item.ItemDivider
 import com.zxhhyj.ui.view.item.ItemSpacer
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
-import dev.olshevski.navigation.reimagined.pop
+import dev.olshevski.navigation.reimagined.popAll
 
 @Composable
 fun SongMenuSheet(
@@ -57,7 +57,7 @@ fun SongMenuSheet(
                     icon = { Icon(imageVector = Icons.Rounded.Album, contentDescription = null) },
                     text = { Text(text = songBean.album.name) },
                     subText = { Text(text = stringResource(id = R.string.album)) }) {
-                    sheetNavController.pop()
+                    sheetNavController.popAll()
                     mainNavController.navigate(ScreenDestination.AlbumCnt(songBean.album))
                 }
                 ItemDivider()
@@ -65,7 +65,7 @@ fun SongMenuSheet(
                     icon = { Icon(imageVector = Icons.Rounded.Person, contentDescription = null) },
                     text = { Text(text = songBean.artist.name) },
                     subText = { Text(text = stringResource(id = R.string.singer)) }) {
-                    sheetNavController.pop()
+                    sheetNavController.popAll()
                     mainNavController.navigate(ScreenDestination.SingerCnt(songBean.artist))
                 }
             }

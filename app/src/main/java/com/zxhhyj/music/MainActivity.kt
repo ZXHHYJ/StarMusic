@@ -1,5 +1,7 @@
 package com.zxhhyj.music
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -7,6 +9,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.core.view.WindowCompat
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionStatus
+import com.google.accompanist.permissions.rememberPermissionState
 import com.zxhhyj.music.logic.bean.PlayMemoryBean
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.AudioBecomingNoisyManager
@@ -24,6 +29,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @OptIn(ExperimentalPermissionsApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         audioBecomingNoisyManager.setEnabled(true)
@@ -45,6 +51,15 @@ class MainActivity : ComponentActivity() {
                 val playlist by PlayerManager.playListFlow.collectAsState()
                 LaunchedEffect(index, playlist) {
                     SettingRepository.PlayMemory = PlayMemoryBean(index, playlist)
+                }
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && SettingRepository.AgreePrivacyPolicy) {
+                val permissionState =
+                    rememberPermissionState(Manifest.permission.POST_NOTIFICATIONS)
+                LaunchedEffect(permissionState.status) {
+                    if (permissionState.status is PermissionStatus.Denied) {
+                        permissionState.launchPermissionRequest()
+                    }
                 }
             }
         }

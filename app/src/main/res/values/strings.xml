@@ -117,4 +117,11 @@
     <string name="white_moonlight_and_cinnabar">白月朱砂</string>
     <string name="palette">调色板</string>
     <string name="contrast">对比度</string>
+    <string name="request_permission">为了保证StarMusic的正常运行，需要申请以下权限</string>
+    <string name="network_connection_permission">连接网络</string>
+    <string name="network_connection_permission_info">提供WebDav的连接服务</string>
+    <string name="read_internal_storage_permission">读取设备存储</string>
+    <string name="read_internal_storage_permission_info">读取音频文件，cue分轨文件</string>
+    <string name="post_notifications_permission">弹出通知</string>
+    <string name="post_notifications_permission_info">在通知栏中显示媒体通知</string>
 </resources>

@@ -169,10 +169,10 @@ object SettingRepository {
     /**
      * 均衡器配置
      */
-    var EqualizerConfig by mutableDataSaverStateOf(
+    var EqualizerConfig: IntArray? by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "EqualizerConfig",
-        initialValue = intArrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+        initialValue = null
     )
 
     /**
@@ -219,6 +219,9 @@ object SettingRepository {
         DEFAULT, MONET
     }
 
+    /**
+     * 主题
+     */
     var ThemeMode: ThemeModeEnum by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "ThemeMode_V3",

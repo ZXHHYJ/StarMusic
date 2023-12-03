@@ -13,5 +13,5 @@
 -keep class org.xmlpull.v1.** { *; }
 -dontwarn android.content.res.XmlResourceParser
 
--keepnames class com.zxhhyj.** { *; }
+-keepnames class com.zxhhyj.music.** { *; }
 -keep class kotlin.reflect.** { *; }

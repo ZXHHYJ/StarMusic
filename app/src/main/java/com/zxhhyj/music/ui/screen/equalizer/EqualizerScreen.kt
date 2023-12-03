@@ -61,10 +61,14 @@ fun EqualizerScreen(paddingValues: PaddingValues) {
                     val bandCount = PlayerManager.getNumberOfBands()
                     val bandRange = PlayerManager.getBandRange()
 
+                    if (SettingRepository.EqualizerConfig == null) {
+                        SettingRepository.EqualizerConfig = IntArray(bandCount)
+                    }
+
                     for (bandIndex in 0 until bandCount) {
                         var bandLevel by remember {
                             mutableIntStateOf(
-                                SettingRepository.EqualizerConfig[bandIndex]
+                                SettingRepository.EqualizerConfig?.get(bandIndex) ?: 0
                             )
                         }
 
@@ -79,9 +83,8 @@ fun EqualizerScreen(paddingValues: PaddingValues) {
                                 PlayerManager.setBandLevel(bandIndex, newLevel.toInt())
                                 bandLevel = PlayerManager.getBandLevel(bandIndex)
                                 SettingRepository.EqualizerConfig =
-                                    SettingRepository.EqualizerConfig.copyOf().apply {
-                                        set(bandIndex, bandLevel)
-                                    }
+                                    SettingRepository.EqualizerConfig?.copyOf()
+                                        ?.apply { set(bandIndex, bandLevel) }
                             },
                             valueRange = bandRange.lower.toFloat()..bandRange.upper.toFloat()
                         )
