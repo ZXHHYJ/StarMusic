@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -50,36 +51,38 @@ fun StartSheet(sheetNavController: NavController<SheetDestination>) {
     BackHandler {
         activity?.finish()
     }
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
             .background(LocalColorScheme.current.background)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Icon(
-                imageVector = Icons.Filled.StarRate,
-                contentDescription = null,
-                tint = LocalColorScheme.current.highlight,
-                modifier = Modifier.size(80.dp)
-            )
-            Text(
-                text = stringResource(id = R.string.app_name),
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Bold,
-                color = LocalColorScheme.current.text
-            )
-        }
-        ItemSpacer()
-        RoundColumn(modifier = Modifier.fillMaxWidth()) {
-            ItemTint {
+        item {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.StarRate,
+                    contentDescription = null,
+                    tint = LocalColorScheme.current.highlight,
+                    modifier = Modifier.size(80.dp)
+                )
                 Text(
-                    text = buildAnnotatedString {
+                    text = stringResource(id = R.string.app_name),
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = LocalColorScheme.current.text
+                )
+            }
+        }
+        item { ItemSpacer() }
+        item {
+            RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                ItemTint {
+                    Text(text = buildAnnotatedString {
                         append(stringResource(id = R.string.splash_dialog_text))
                         withStyle(
                             style = SpanStyle(
@@ -93,57 +96,58 @@ fun StartSheet(sheetNavController: NavController<SheetDestination>) {
                         if (activity != null) {
                             ActivityUtils.openUrl(activity, PrivacyPolicyURL)
                         }
-                    }
-                )
-            }
-        }
-        ItemSpacer()
-        ItemSubTitle {
-            Text(text = stringResource(id = R.string.request_permission))
-        }
-        RoundColumn(modifier = Modifier.fillMaxWidth()) {
-            Item(
-                text = { Text(text = stringResource(id = R.string.network_connection_permission)) },
-                subText = { Text(text = stringResource(id = R.string.network_connection_permission_info)) }) {
-
-            }
-            ItemDivider()
-            Item(
-                text = { Text(text = stringResource(id = R.string.read_internal_storage_permission)) },
-                subText = { Text(text = stringResource(id = R.string.read_internal_storage_permission_info)) }) {
-
-            }
-            ItemDivider()
-            Item(
-                text = { Text(text = stringResource(id = R.string.post_notifications_permission)) },
-                subText = { Text(text = stringResource(id = R.string.post_notifications_permission_info)) }) {
-
-            }
-        }
-        ItemSpacer()
-        CompositionLocalProvider(
-            LocalColorScheme provides ColorScheme(
-                highlight = Color.White,
-                highBackground = LocalColorScheme.current.highlight,
-                text = Color.White,
-                subText = Color.White
-            )
-        ) {
-            RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                ItemArrowRight(
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Rounded.Check,
-                            contentDescription = null
-                        )
-                    },
-                    text = { Text(text = stringResource(id = R.string.read_and_agree)) },
-                    subText = { }) {
-                    SettingRepository.AgreePrivacyPolicy = true
-                    sheetNavController.pop()
+                    })
                 }
             }
         }
-        ItemSpacer()
+        item { ItemSpacer() }
+        item {
+            ItemSubTitle {
+                Text(text = stringResource(id = R.string.request_permission))
+            }
+        }
+        item {
+            RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                Item(text = { Text(text = stringResource(id = R.string.network_connection_permission)) },
+                    subText = { Text(text = stringResource(id = R.string.network_connection_permission_info)) }) {
+
+                }
+                ItemDivider()
+                Item(text = { Text(text = stringResource(id = R.string.read_internal_storage_permission)) },
+                    subText = { Text(text = stringResource(id = R.string.read_internal_storage_permission_info)) }) {
+
+                }
+                ItemDivider()
+                Item(text = { Text(text = stringResource(id = R.string.post_notifications_permission)) },
+                    subText = { Text(text = stringResource(id = R.string.post_notifications_permission_info)) }) {
+
+                }
+            }
+        }
+        item { ItemSpacer() }
+        item {
+            CompositionLocalProvider(
+                LocalColorScheme provides ColorScheme(
+                    highlight = Color.White,
+                    highBackground = LocalColorScheme.current.highlight,
+                    text = Color.White,
+                    subText = Color.White
+                )
+            ) {
+                RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                    ItemArrowRight(icon = {
+                        Icon(
+                            imageVector = Icons.Rounded.Check, contentDescription = null
+                        )
+                    },
+                        text = { Text(text = stringResource(id = R.string.read_and_agree)) },
+                        subText = { }) {
+                        SettingRepository.AgreePrivacyPolicy = true
+                        sheetNavController.pop()
+                    }
+                }
+            }
+        }
+        item { ItemSpacer() }
     }
 }

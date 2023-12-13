@@ -405,7 +405,7 @@ fun MainScreen() {
                         ) {
                             val bottomLastDestination =
                                 homeNavController.backstack.entries.last().destination
-                            HomeNavigationDestination.values().forEach { item ->
+                            HomeNavigationDestination.entries.forEach { item ->
                                 BottomNavigationItem(
                                     icon = {
                                         Icon(
@@ -647,8 +647,7 @@ fun MainScreen() {
                             WebDavScreen(
                                 paddingValues = paddingValues,
                                 sheetNavController = sheetNavController,
-                                dialogNavController = dialogNavController,
-                                mainNavController = mainNavController
+                                dialogNavController = dialogNavController
                             )
                         }
 

@@ -19,12 +19,15 @@ android {
         versionCode Integer.parseInt(code)
         versionName "${calendar.get(Calendar.YEAR)}.${calendar.get(Calendar.MONTH) + 1}.${calendar.get(Calendar.DAY_OF_MONTH)}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters "x86", "armeabi-v7a", "arm64-v8a", "x86_64"
+        }
     }
 
     composeOptions {
         kotlinCompilerExtensionVersion "$compose_compiler_version"
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility=JavaVersion.VERSION_1_8
+        targetCompatibility=JavaVersion.VERSION_1_8
     }
 
     signingConfigs {
@@ -46,14 +49,6 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
-        }
-    }
-
-    splits {
-        abi {
-            enable true
-            reset()
-            include "x86", "armeabi-v7a", "arm64-v8a", "x86_64"
         }
     }
 
@@ -85,13 +80,13 @@ dependencies {
     // https://github.com/thegrizzlylabs/sardine-android
     implementation "com.github.thegrizzlylabs:sardine-android:0.8"
     // https://github.com/BillyWei01/FastKV
-    implementation "io.github.billywei01:fastkv:2.3.0"
+    implementation 'io.github.billywei01:fastkv:2.4.1'
     // https://github.com/flavioarfaria/KenBurnsView
     implementation "com.flaviofaria:kenburnsview:1.0.7"
     // https://github.com/coil-kt/coil/
     implementation "io.coil-kt:coil-compose:2.5.0"
-    // https://github.com/alibaba/fastjson
-    implementation group: 'com.alibaba.fastjson2', name: 'fastjson2', version: '2.0.42.android4'
+    // https://github.com/google/gson
+    implementation 'com.google.code.gson:gson:2.10.1'
     // https://github.com/Kyant0/Tag
     implementation "com.github.Kyant0:Tag:2023.8.2"
     // https://github.com/Kyant0/m3color
@@ -103,9 +98,9 @@ dependencies {
     // https://github.com/mxalbert1996/compose-shared-elements
     implementation "com.mxalbert.sharedelements:shared-elements:0.1.0-SNAPSHOT"
     // https://github.com/FunnySaltyFish/ComposeDataSaver
-    implementation "com.github.FunnySaltyFish.ComposeDataSaver:data-saver:1.1.7"
+    implementation "com.github.FunnySaltyFish.ComposeDataSaver:data-saver:1.1.9"
 
-    implementation "androidx.media:media:1.6.0"
+    implementation "androidx.media:media:1.7.0"
 
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
     implementation "com.google.accompanist:accompanist-permissions:$accompanist_version"
@@ -121,7 +116,6 @@ dependencies {
     implementation "androidx.compose.ui:ui:$compose_ui_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
 
-    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     //implementation "androidx.compose.material3:material3-window-size-class:1.1.2"
 
     configurations { all*.exclude group: "androidx.appcompat", module: "appcompat" }

@@ -1,44 +1,40 @@
 package com.zxhhyj.ui.view
 
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.material.Tab
-import androidx.compose.material.TabPosition
-import androidx.compose.material.TabRow
-import androidx.compose.material.TabRowDefaults
-import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.LocalContentColor
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.zxhhyj.ui.theme.LocalColorScheme
+import com.zxhhyj.ui.theme.LocalTextStyles
+import com.zxhhyj.ui.theme.StarDimens
 
 @Composable
 fun AppTabRow(
-    selectedTabIndex: Int,
     modifier: Modifier = Modifier,
-    indicator: @Composable
-        (tabPositions: List<TabPosition>) -> Unit = @Composable { tabPositions ->
-        TabRowDefaults.Indicator(
-            modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
-            color = LocalColorScheme.current.highlight,
-            height = 2.dp
-        )
-    },
-    divider: @Composable () -> Unit = {},
     tabs: @Composable () -> Unit
 ) {
-    TabRow(
-        selectedTabIndex,
-        modifier.heightIn(min = 42.dp),
-        Color.Transparent,
-        LocalColorScheme.current.highlight,
-        indicator,
-        divider,
-        tabs
-    )
+    Row(
+        modifier = modifier
+            .padding(
+                horizontal = StarDimens.horizontal,
+                vertical = StarDimens.vertical
+            )
+    ) {
+        tabs()
+    }
 }
 
 @Composable
@@ -47,17 +43,25 @@ fun AppTab(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable (ColumnScope.() -> Unit)
 ) {
-    Tab(
-        selected,
-        onClick,
-        modifier,
-        enabled,
-        interactionSource,
-        LocalColorScheme.current.highlight,
-        LocalColorScheme.current.subText,
-        content
-    )
+    AppCard(
+        backgroundColor = if (selected) LocalColorScheme.current.highlight else Color.Transparent,
+        shape = RoundedCornerShape(50)
+    ) {
+        Column(
+            modifier
+                .heightIn(min = 28.dp)
+                .widthIn(min = 48.dp)
+                .clickable { onClick() },
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            CompositionLocalProvider(LocalContentColor provides if (enabled) (if (selected) LocalColorScheme.current.onText else LocalColorScheme.current.text) else LocalColorScheme.current.disabled,
+                LocalTextStyle provides LocalTextStyles.current.sub) {
+                content()
+            }
+        }
+    }
+
 }

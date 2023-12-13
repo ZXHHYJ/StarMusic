@@ -23,8 +23,10 @@ class StarMusicService : LifecycleService(), AudioFocusUtils.OnAudioFocusChangeL
 
     companion object {
 
+        // 静态常量NOTIFICATION_ID，用于标识通知的唯一ID
         private const val NOTIFICATION_ID = 12 + 13
 
+        // 使用Volatile关键字修饰isServiceAlive变量，确保多线程环境下的可见性
         @Volatile
         var isServiceAlive = false
             private set
@@ -35,7 +37,7 @@ class StarMusicService : LifecycleService(), AudioFocusUtils.OnAudioFocusChangeL
     @Synchronized
     private fun refreshMediaNotifications() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-            startForeground(NOTIFICATION_ID, mStarMusicNotification.build())
+            startForeground(NOTIFICATION_ID, mStarMusicNotification!!.build())
             if (PlayerManager.pauseFlow.value) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     stopForeground(STOP_FOREGROUND_DETACH)
@@ -45,24 +47,24 @@ class StarMusicService : LifecycleService(), AudioFocusUtils.OnAudioFocusChangeL
                 }
             }
         } else {
-            mNotificationManager.notify(NOTIFICATION_ID, mStarMusicNotification.build())
+            mNotificationManager!!.notify(NOTIFICATION_ID, mStarMusicNotification!!.build())
         }
     }
 
     /**
      * 媒体会话
      */
-    private lateinit var mMediaSession: MediaSessionCompat
+    private var mMediaSession: MediaSessionCompat? = null
 
     /**
      * 通知管理器
      */
-    private lateinit var mNotificationManager: NotificationManagerCompat
+    private var mNotificationManager: NotificationManagerCompat? = null
 
     /**
      * 媒体通知
      */
-    private lateinit var mStarMusicNotification: StarMusicNotification
+    private var mStarMusicNotification: StarMusicNotification? = null
 
     /**
      * 管理音频焦点
@@ -71,46 +73,52 @@ class StarMusicService : LifecycleService(), AudioFocusUtils.OnAudioFocusChangeL
 
     override fun onCreate() {
         isServiceAlive = true
+        // 将isServiceAlive设置为true，表示服务已启动
         super.onCreate()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mAudioFocusUtils.abandonAudioFocus()
-        mMediaSession.isActive = false
-        mMediaSession.release()
-        isServiceAlive = false
+        mAudioFocusUtils.abandonAudioFocus() // 放弃音频焦点
+        mMediaSession?.apply {
+            isActive = false // 设置媒体会话为非活动状态
+            release() // 释放媒体会话资源
+        }
+        isServiceAlive = false // 将isServiceAlive设置为false，表示服务已停止
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (!::mNotificationManager.isInitialized) {
+        if (mNotificationManager == null) {
             mNotificationManager = StarMusicNotification.createChannel(this)
         }
-        if (!::mMediaSession.isInitialized) {
+        if (mMediaSession == null) {
             mMediaSession =
-                MediaSessionCompat.fromMediaSession(this, MediaSession(this, packageName))
-            mMediaSession.isActive = true
-            mMediaSession.setSessionActivity(
-                PendingIntent.getActivity(
-                    this,
-                    0,
-                    Intent(this, MainActivity::class.java),
-                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-                )
-            )
-            mMediaSession.setCallback(MediaSessionCallback())
-            mStarMusicNotification = StarMusicNotification.Builder(this, mMediaSession)
+                MediaSessionCompat.fromMediaSession(this, MediaSession(this, packageName)).apply {
+                    isActive = true
+                    setSessionActivity(
+                        PendingIntent.getActivity(
+                            this@StarMusicService,
+                            0,
+                            Intent(this@StarMusicService, MainActivity::class.java),
+                            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                        )
+                    )
+                    setCallback(MediaSessionCallback())
+                }
+
+            mStarMusicNotification = StarMusicNotification.Builder(this, mMediaSession!!)
+
             PlayerManager.currentSongFlow.onEach {
                 if (it != null) {
-                    mStarMusicNotification.setSongBean(it)
+                    mStarMusicNotification?.setSongBean(it)
                     refreshMediaNotifications()
                 }
             }.launchIn(lifecycleScope)
             PlayerManager.progressFlow.onEach {
-                mStarMusicNotification.setPosition(it)
+                mStarMusicNotification?.setPosition(it)
             }.launchIn(lifecycleScope)
             PlayerManager.pauseFlow.onEach {
-                mStarMusicNotification.setPlaying(it)
+                mStarMusicNotification?.setPlaying(it)
                 refreshMediaNotifications()
 
                 if (!it) {
@@ -132,7 +140,7 @@ class StarMusicService : LifecycleService(), AudioFocusUtils.OnAudioFocusChangeL
             }.launchIn(lifecycleScope)
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            startForeground(NOTIFICATION_ID, mStarMusicNotification.build())
+            startForeground(NOTIFICATION_ID, mStarMusicNotification!!.build())
         }
         MediaButtonReceiver.handleIntent(mMediaSession, intent)
         return super.onStartCommand(intent, flags, startId)
@@ -221,7 +229,7 @@ class StarMusicService : LifecycleService(), AudioFocusUtils.OnAudioFocusChangeL
 
                         KeyEvent.KEYCODE_MEDIA_STOP -> {
                             PlayerManager.pause()
-                            mNotificationManager.cancelAll()
+                            mNotificationManager!!.cancelAll()
                             stopSelf()
                         }
                     }

@@ -1,7 +1,6 @@
 package com.zxhhyj.music.ui.screen.search
 
 import android.view.MotionEvent
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,8 +14,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
@@ -25,9 +22,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -52,15 +49,18 @@ import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.vertical
+import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppCenterTopBar
+import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.AppTab
 import com.zxhhyj.ui.view.AppTabRow
 import com.zxhhyj.ui.view.AppTextField
 import com.zxhhyj.ui.view.RoundColumn
-import com.zxhhyj.ui.view.item.ItemSpacer
 import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.NavHost
+import dev.olshevski.navigation.reimagined.moveToTop
 import dev.olshevski.navigation.reimagined.navigate
-import kotlinx.coroutines.launch
+import dev.olshevski.navigation.reimagined.rememberNavController
 
 enum class SearchScreenTabs {
     Single, Album, Singer
@@ -73,7 +73,7 @@ val SearchScreenTabs.tabName: String
         SearchScreenTabs.Singer -> stringResource(id = R.string.singer)
     }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchScreen(
     mainNavController: NavController<ScreenDestination>,
@@ -86,153 +86,159 @@ fun SearchScreen(
     var searchKey by rememberSaveable {
         mutableStateOf("")
     }
-    Column(
+    AppScaffold(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
-            .padding(paddingValues)
-    ) {
-        AppCenterTopBar(title = { Text(text = stringResource(id = R.string.search)) })
-        val pagerState = rememberPagerState(
-            initialPage = SearchScreenTabs.values().indexOf(start),
-        ) { SearchScreenTabs.values().size }
-        val coroutineScope = rememberCoroutineScope()
-        RoundColumn(modifier = Modifier.fillMaxWidth()) {
-            ItemSpacer()
-            AppTextField(
-                value = searchKey,
-                onValueChange = {
-                    searchKey = it
-                },
-                placeholder = {
-                    Text(text = stringResource(id = R.string.input_key))
-                },
-                keyboardActions = KeyboardActions(onSearch = {
-                    focusManager.clearFocus()
-                    keyboardController?.hide()
-                }),
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = horizontal),
-                singleLine = true,
-                leadingIcon = {
-                    Icon(imageVector = Icons.Rounded.Search, contentDescription = null)
-                }, trailingIcon = {
-                    if (searchKey.isNotEmpty()) {
-                        Icon(
-                            imageVector = Icons.Rounded.Clear,
-                            contentDescription = null,
-                            modifier = Modifier.clickable {
-                                searchKey = ""
-                            })
-                    }
-                }
-            )
-            AppTabRow(
-                modifier = Modifier.fillMaxWidth(),
-                selectedTabIndex = pagerState.currentPage
+            .padding(paddingValues),
+        topBar = { AppCenterTopBar(title = { Text(text = stringResource(id = R.string.search)) }) })
+    {
+        Column(modifier = Modifier.fillMaxSize()) {
+            CompositionLocalProvider(
+                LocalColorScheme provides LocalColorScheme.current.copy(
+                    background = LocalColorScheme.current.highBackground
+                )
             ) {
-                SearchScreenTabs.values()
-                    .forEachIndexed { index, searchTypeTabDestination ->
+                AppTextField(
+                    value = searchKey,
+                    onValueChange = {
+                        searchKey = it
+                    },
+                    placeholder = {
+                        Text(text = stringResource(id = R.string.input_key))
+                    },
+                    keyboardActions = KeyboardActions(onSearch = {
+                        focusManager.clearFocus()
+                        keyboardController?.hide()
+                    }),
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = horizontal),
+                    singleLine = true,
+                    leadingIcon = {
+                        Icon(imageVector = Icons.Rounded.Search, contentDescription = null)
+                    }, trailingIcon = {
+                        if (searchKey.isNotEmpty()) {
+                            Icon(
+                                imageVector = Icons.Rounded.Clear,
+                                contentDescription = null,
+                                modifier = Modifier.clickable {
+                                    searchKey = ""
+                                })
+                        }
+                    }
+                )
+            }
+            val navController = rememberNavController(startDestination = start)
+            AppTabRow(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                SearchScreenTabs.entries
+                    .forEach { destination ->
                         AppTab(
-                            selected = index == pagerState.currentPage,
+                            selected = destination == navController.backstack.entries.last().destination,
                             onClick = {
-                                coroutineScope.launch { pagerState.animateScrollToPage(index) }
+                                if (!navController.moveToTop {
+                                        it == destination
+                                    }) {
+                                    navController.navigate(destination)
+                                }
                             }
                         ) {
-                            Text(text = searchTypeTabDestination.tabName)
+                            Text(text = destination.tabName)
                         }
                     }
             }
-            HorizontalPager(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .pointerInteropFilter { event ->
-                        if (event.action == MotionEvent.ACTION_DOWN) {
-                            focusManager.clearFocus()
-                            keyboardController?.hide()
-                        }
-                        false
-                    },
-                state = pagerState
-            ) { t ->
-                when (SearchScreenTabs.values()[t]) {
-                    SearchScreenTabs.Single -> {
-                        val songs =
-                            (AndroidMediaLibRepository.songs + WebDavMediaLibRepository.songs).filter {
-                                it.songName.contains(searchKey) || it.artist.name.contains(
-                                    searchKey
-                                )
-                            }
-                        LazyColumn(modifier = Modifier.fillMaxSize()) {
-                            itemsIndexed(songs) { index, item ->
-                                SongItem(
-                                    sheetNavController = sheetNavController,
-                                    songBean = item
-                                ) {
-                                    PlayerManager.play(songs, index)
-                                }
-                            }
-                        }
-                    }
 
-                    SearchScreenTabs.Album -> {
-                        BoxWithPercentages(modifier = Modifier.fillMaxSize()) {
-                            var fixedCount = (maxWidth / 180.dp).toInt()
-                            if (fixedCount < 2) {
-                                fixedCount = 2
+            RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                NavHost(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .pointerInteropFilter { event ->
+                            if (event.action == MotionEvent.ACTION_DOWN) {
+                                focusManager.clearFocus()
+                                keyboardController?.hide()
                             }
-                            val albums = MediaLibHelper.albums.filter {
-                                it.name.contains(searchKey)
-                            }
-                            LazyVerticalGrid(
-                                modifier = Modifier
-                                    .fillMaxSize(),
-                                columns = GridCells.Fixed(fixedCount),
-                            ) {
-                                itemsIndexed(albums) { index, item ->
-                                    val column = index % fixedCount
-                                    val row: Int = index / fixedCount
-                                    val p =
-                                        (2 * horizontal + (fixedCount - 1) * horizontal) * 1f / fixedCount
-                                    val left = horizontal + column * (horizontal - p)
-                                    val right = p - left
-                                    AlbumItem(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .padding(
-                                                PaddingValues.Absolute(
-                                                    top = if (row == 0) vertical else vertical / 2,
-                                                    left = left,
-                                                    right = right
-                                                )
-                                            ), album = item
+                            false
+                        }, controller = navController
+                ) { it ->
+                    when (it) {
+                        SearchScreenTabs.Single -> {
+                            val songs =
+                                (AndroidMediaLibRepository.songs + WebDavMediaLibRepository.songs).filter {
+                                    it.songName.contains(searchKey) || it.artist.name.contains(
+                                        searchKey
+                                    )
+                                }
+                            LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                                itemsIndexed(songs) { index, item ->
+                                    SongItem(
+                                        sheetNavController = sheetNavController,
+                                        songBean = item
                                     ) {
-                                        mainNavController.navigate(
-                                            ScreenDestination.AlbumCnt(
-                                                item
-                                            )
-                                        )
+                                        PlayerManager.play(songs, index)
                                     }
                                 }
                             }
-
                         }
-                    }
 
-                    SearchScreenTabs.Singer -> {
-                        val artists = MediaLibHelper.artists.filter {
-                            it.name.contains(searchKey)
+                        SearchScreenTabs.Album -> {
+                            BoxWithPercentages(modifier = Modifier.fillMaxWidth()) {
+                                var fixedCount = (maxWidth / 180.dp).toInt()
+                                if (fixedCount < 2) {
+                                    fixedCount = 2
+                                }
+                                val albums = MediaLibHelper.albums.filter {
+                                    it.name.contains(searchKey)
+                                }
+                                LazyVerticalGrid(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    columns = GridCells.Fixed(fixedCount),
+                                ) {
+                                    itemsIndexed(albums) { index, item ->
+                                        val column = index % fixedCount
+                                        val row: Int = index / fixedCount
+                                        val p =
+                                            (2 * horizontal + (fixedCount - 1) * horizontal) * 1f / fixedCount
+                                        val left = horizontal + column * (horizontal - p)
+                                        val right = p - left
+                                        AlbumItem(
+                                            modifier = Modifier
+                                                .fillMaxSize()
+                                                .padding(
+                                                    PaddingValues.Absolute(
+                                                        top = if (row == 0) vertical else vertical / 2,
+                                                        left = left,
+                                                        right = right
+                                                    )
+                                                ), album = item
+                                        ) {
+                                            mainNavController.navigate(
+                                                ScreenDestination.AlbumCnt(
+                                                    item
+                                                )
+                                            )
+                                        }
+                                    }
+                                }
+
+                            }
                         }
-                        LazyColumn(modifier = Modifier.fillMaxSize()) {
-                            items(artists) {
-                                ArtistItem(artist = it) {
-                                    mainNavController.navigate(
-                                        ScreenDestination.SingerCnt(
-                                            it
+
+                        SearchScreenTabs.Singer -> {
+                            val artists = MediaLibHelper.artists.filter {
+                                it.name.contains(searchKey)
+                            }
+                            LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                                items(artists) {
+                                    ArtistItem(artist = it) {
+                                        mainNavController.navigate(
+                                            ScreenDestination.SingerCnt(
+                                                it
+                                            )
                                         )
-                                    )
+                                    }
                                 }
                             }
                         }

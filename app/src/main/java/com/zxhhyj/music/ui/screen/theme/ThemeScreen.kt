@@ -9,7 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.NightsStay
+import androidx.compose.material.icons.filled.Nightlight
 import androidx.compose.material.icons.rounded.ModeNight
 import androidx.compose.material.icons.rounded.Palette
 import androidx.compose.material.icons.rounded.Smartphone
@@ -65,7 +65,7 @@ fun ThemeScreen(paddingValues: PaddingValues) {
                     ItemCheckbox(
                         icon = {
                             Icon(
-                                imageVector = Icons.Filled.NightsStay,
+                                imageVector = Icons.Filled.Nightlight,
                                 contentDescription = null
                             )
                         },
@@ -142,7 +142,7 @@ fun ThemeScreen(paddingValues: PaddingValues) {
             }
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                    SettingRepository.DarkModeEnum.values().forEachIndexed { index, type ->
+                    SettingRepository.DarkModeEnum.entries.forEachIndexed { index, type ->
                         ItemCheckbox(
                             icon = {
                                 Icon(
@@ -157,7 +157,7 @@ fun ThemeScreen(paddingValues: PaddingValues) {
                                 SettingRepository.DarkMode = type
                             }
                         )
-                        if (index != SettingRepository.DarkModeEnum.values().size - 1) {
+                        if (index != SettingRepository.DarkModeEnum.entries.size - 1) {
                             ItemDivider()
                         }
                     }

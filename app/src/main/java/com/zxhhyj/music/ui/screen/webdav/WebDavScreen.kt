@@ -1,6 +1,5 @@
 package com.zxhhyj.music.ui.screen.webdav
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,14 +8,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
@@ -25,17 +21,21 @@ import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.service.webdavmanager.WebDavManager
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.DialogDestination
-import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.SheetDestination
-import com.zxhhyj.music.ui.screen.webdav.WebDavScreenTabs.*
+import com.zxhhyj.music.ui.screen.webdav.WebDavScreenTabs.All
+import com.zxhhyj.music.ui.screen.webdav.WebDavScreenTabs.CloudBased
+import com.zxhhyj.music.ui.screen.webdav.WebDavScreenTabs.Downloaded
+import com.zxhhyj.music.ui.screen.webdav.WebDavScreenTabs.entries
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppIconButton
 import com.zxhhyj.ui.view.AppTab
 import com.zxhhyj.ui.view.AppTabRow
 import com.zxhhyj.ui.view.RoundColumn
 import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.NavHost
+import dev.olshevski.navigation.reimagined.moveToTop
 import dev.olshevski.navigation.reimagined.navigate
-import kotlinx.coroutines.launch
+import dev.olshevski.navigation.reimagined.rememberNavController
 
 enum class WebDavScreenTabs {
     All, CloudBased, Downloaded
@@ -48,13 +48,11 @@ val WebDavScreenTabs.tabName: String
         Downloaded -> stringResource(id = R.string.downloaded)
     }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun WebDavScreen(
     paddingValues: PaddingValues,
     sheetNavController: NavController<SheetDestination>,
-    dialogNavController: NavController<DialogDestination>,
-    mainNavController: NavController<ScreenDestination>
+    dialogNavController: NavController<DialogDestination>
 ) {
     Column(
         modifier = Modifier
@@ -70,35 +68,32 @@ fun WebDavScreen(
                 }
             }
         )
-        RoundColumn(modifier = Modifier.fillMaxWidth()) {
-            val coroutineScope = rememberCoroutineScope()
-            val pagerState = rememberPagerState(
-                initialPage = 0,
-            ) { values().size }
-            AppTabRow(
-                modifier = Modifier.fillMaxWidth(),
-                selectedTabIndex = pagerState.currentPage
-            ) {
-                values()
-                    .forEachIndexed { index, searchTypeTabDestination ->
-                        AppTab(
-                            selected = index == pagerState.currentPage,
-                            onClick = {
-                                coroutineScope.launch { pagerState.animateScrollToPage(index) }
-                            }
-                        ) {
-                            Text(text = searchTypeTabDestination.tabName)
-                        }
-                    }
-            }
 
-            HorizontalPager(
-                modifier = Modifier.fillMaxSize(),
-                state = pagerState,
-                userScrollEnabled = true
-            ) { t ->
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    when (values()[t]) {
+        val navController =
+            rememberNavController(startDestination = All)
+        AppTabRow(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            entries
+                .forEach { destination ->
+                    AppTab(
+                        selected = destination == navController.backstack.entries.last().destination,
+                        onClick = {
+                            if (!navController.moveToTop {
+                                    it == destination
+                                }) {
+                                navController.navigate(destination)
+                            }
+                        }
+                    ) {
+                        Text(text = destination.tabName)
+                    }
+                }
+        }
+        RoundColumn(modifier = Modifier.fillMaxWidth()) {
+            NavHost(modifier = Modifier.fillMaxWidth(), controller = navController) { it ->
+                LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                    when (it) {
                         All -> {
                             items(WebDavMediaLibRepository.davFileList) { it ->
                                 SongItem(

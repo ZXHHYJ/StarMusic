@@ -3,8 +3,8 @@ package com.zxhhyj.music
 import android.app.Application
 import android.content.Intent
 import android.os.Build
-import com.alibaba.fastjson2.JSON
 import com.funny.data_saver.core.DataSaverConverter.registerTypeConverters
+import com.google.gson.GsonBuilder
 import com.zxhhyj.music.logic.bean.Folder
 import com.zxhhyj.music.logic.bean.PlayListBean
 import com.zxhhyj.music.logic.bean.PlayListSongBean
@@ -47,79 +47,81 @@ class MainApplication : Application() {
         //初始化FastKV
         FastKVConfig.setExecutor(Dispatchers.Default.asExecutor())
 
+        val gson = GsonBuilder().serializeNulls().create()
+
         registerTypeConverters(
-            save = { bean -> JSON.toJSONString(bean) },
-            restore = { str -> JSON.parseObject(str, WebDavFile::class.java) }
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, WebDavFile::class.java) }
         )
 
         registerTypeConverters(
-            save = { bean -> JSON.toJSONString(bean) },
-            restore = { str -> JSON.parseObject(str, Folder::class.java) }
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, Folder::class.java) }
         )
 
         registerTypeConverters(
-            save = { bean -> JSON.toJSONString(bean) },
-            restore = { str -> JSON.parseObject(str, SongBean.Local::class.java) }
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, SongBean.Local::class.java) }
         )
 
         registerTypeConverters(
-            save = { bean -> JSON.toJSONString(bean) },
-            restore = { str -> JSON.parseObject(str, SongBean.WebDav::class.java) }
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, SongBean.WebDav::class.java) }
         )
 
         registerTypeConverters(
-            save = { bean -> JSON.toJSONString(bean) },
-            restore = { str -> JSON.parseObject(str, SongBean.Album::class.java) }
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, SongBean.Album::class.java) }
         )
 
         registerTypeConverters(
-            save = { bean -> JSON.toJSONString(bean) },
-            restore = { str -> JSON.parseObject(str, SongBean.Artist::class.java) }
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, SongBean.Artist::class.java) }
+        )
+
+        registerTypeConverters<WebDavConfig>(
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, WebDavConfig::class.java) }
         )
 
         registerTypeConverters(
-            save = { bean -> JSON.toJSONString(bean) },
-            restore = { str -> JSON.parseObject(str, WebDavConfig::class.java) }
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, IntArray::class.java) }
         )
 
         registerTypeConverters(
-            save = { bean -> JSON.toJSONString(bean) },
-            restore = { str -> JSON.parseObject(str, IntArray::class.java) }
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, PlayerManager.PlayMode::class.java) }
         )
 
         registerTypeConverters(
-            save = { bean -> JSON.toJSONString(bean) },
-            restore = { str -> JSON.parseObject(str, PlayerManager.PlayMode::class.java) }
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, PlayListBean::class.java) }
         )
 
         registerTypeConverters(
-            save = { bean -> JSON.toJSONString(bean) },
-            restore = { str -> JSON.parseObject(str, PlayListBean::class.java) }
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, PlayListSongBean::class.java) }
         )
 
         registerTypeConverters(
-            save = { bean -> JSON.toJSONString(bean) },
-            restore = { str -> JSON.parseObject(str, PlayListSongBean::class.java) }
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, PlayMemoryBean::class.java) }
         )
 
         registerTypeConverters(
-            save = { bean -> JSON.toJSONString(bean) },
-            restore = { str -> JSON.parseObject(str, PlayMemoryBean::class.java) }
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, SettingRepository.ThemeModeEnum::class.java) }
         )
 
         registerTypeConverters(
-            save = { bean -> JSON.toJSONString(bean) },
-            restore = { str -> JSON.parseObject(str, SettingRepository.ThemeModeEnum::class.java) }
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, SettingRepository.DarkModeEnum::class.java) }
         )
 
         registerTypeConverters(
-            save = { bean -> JSON.toJSONString(bean) },
-            restore = { str -> JSON.parseObject(str, SettingRepository.DarkModeEnum::class.java) }
-        )
-
-        registerTypeConverters(
-            save = { bean -> JSON.toJSONString(bean) },
-            restore = { str -> JSON.parseObject(str, PaletteStyle::class.java) }
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, PaletteStyle::class.java) }
         )
 
         //确保播放音乐时播放启动服务

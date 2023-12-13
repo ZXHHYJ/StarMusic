@@ -31,6 +31,16 @@ import com.zxhhyj.ui.view.item.ItemDivider
 import com.zxhhyj.ui.view.item.ItemSpacer
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
+import java.util.Calendar
+
+private fun isTodayDecember13() = try {
+    val calendar = Calendar.getInstance()
+    calendar.set(Calendar.MONTH, Calendar.DECEMBER) // 设置月份为12月
+    calendar.set(Calendar.DAY_OF_MONTH, 13) // 设置日期为13日
+    calendar.time == Calendar.getInstance().time // 比较当前日期与设置的日期是否相等
+} catch (e: Exception) {
+    false
+}
 
 @Composable
 fun MoreScreen(
@@ -54,9 +64,22 @@ fun MoreScreen(
                         },
                         text = { Text(text = stringResource(id = R.string.star_music_pro)) },
                         subText = {
-                            if (SettingRepository.EnableStarMusicPro) {
-                                Text(text = stringResource(id = R.string.slogo))
-                            }
+                            if (isTodayDecember13()) {
+                                val birthday = Calendar.getInstance().apply {
+                                    set(2003, Calendar.DECEMBER, 13)
+                                }
+                                val currentDate = Calendar.getInstance()
+                                val age =
+                                    if (currentDate >= birthday) currentDate.get(Calendar.YEAR) - birthday.get(
+                                        Calendar.YEAR
+                                    ) else currentDate.get(Calendar.YEAR) - birthday.get(Calendar.YEAR) - 1
+                                Text(
+                                    text = stringResource(id = R.string.birthday_wish, age)
+                                )
+                            } else
+                                if (SettingRepository.EnableStarMusicPro) {
+                                    Text(text = stringResource(id = R.string.slogo))
+                                }
                         }) {
                         mainNavController.navigate(ScreenDestination.Pro)
                     }

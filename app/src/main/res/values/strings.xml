@@ -124,4 +124,5 @@
     <string name="read_internal_storage_permission_info">读取音频文件，cue分轨文件</string>
     <string name="post_notifications_permission">弹出通知</string>
     <string name="post_notifications_permission_info">在通知栏中显示媒体通知</string>
+    <string name="birthday_wish">今天是ZXHHYJ的%d岁生日</string>
 </resources>

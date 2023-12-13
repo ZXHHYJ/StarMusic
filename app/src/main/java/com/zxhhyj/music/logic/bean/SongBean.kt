@@ -3,35 +3,45 @@ package com.zxhhyj.music.logic.bean
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-@Parcelize
-open class SongBean(
+interface SongBean : Parcelable {
     // 歌曲封面路径
-    open val coverUrl: String,
+    val coverUrl: String
+
     // 歌曲所属专辑信息
-    open val album: Album,
+    val album: Album
+
     // 歌曲所属艺术家信息
-    open val artist: Artist,
+    val artist: Artist
+
     // 歌曲时长
-    open val duration: Long,
+    val duration: Long
+
     // 歌曲文件路径
-    open val data: String,
+    val data: String
+
     // 歌曲最后修改时间
-    open val dateModified: Long,
+    val dateModified: Long
+
     // 歌曲名称
-    open val songName: String,
+    val songName: String
+
     // 歌曲文件大小
-    open val size: Long,
+    val size: Long
+
     // 歌曲比特率
-    open val bitrate: Int?,
+    val bitrate: Int?
+
     // 歌曲采样率
-    open val samplingRate: Int?,
+    val samplingRate: Int?
+
     // 歌曲歌词
-    open val lyric: String?,
+    val lyric: String?
+
     // 开始位置
-    open val startPosition: Long,
+    val startPosition: Long
+
     // 结束位置
-    open val endPosition: Long
-) : Parcelable {
+    val endPosition: Long
 
     @Parcelize
     data class Local(
@@ -49,21 +59,7 @@ open class SongBean(
         override val lyric: String?,
         override val startPosition: Long,
         override val endPosition: Long
-    ) : SongBean(
-        coverUrl,
-        album,
-        artist,
-        duration,
-        data,
-        dateModified,
-        songName,
-        size,
-        bitrate,
-        samplingRate,
-        lyric,
-        startPosition,
-        endPosition
-    )
+    ) : SongBean
 
     @Parcelize
     data class WebDav(
@@ -81,21 +77,7 @@ open class SongBean(
         override val lyric: String?,
         override val startPosition: Long,
         override val endPosition: Long
-    ) : SongBean(
-        coverUrl,
-        album,
-        artist,
-        duration,
-        data,
-        dateModified,
-        songName,
-        size,
-        bitrate,
-        samplingRate,
-        lyric,
-        startPosition,
-        endPosition
-    )
+    ) : SongBean
 
     // 艺术家信息
     @Parcelize

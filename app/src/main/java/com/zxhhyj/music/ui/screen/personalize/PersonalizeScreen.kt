@@ -90,7 +90,7 @@ fun PersonalizeScreen(
                             "Nothing",
                             0,
                             0,
-                            0,
+                            Int.MAX_VALUE,
                             0,
                             null,
                             0,
