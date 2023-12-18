@@ -1,4 +1,4 @@
-@file:Suppress("UNCHECKED_CAST", "UNCHECKED_CAST")
+@file:Suppress("UNCHECKED_CAST", "UNCHECKED_CAST", "UNCHECKED_CAST")
 
 package com.zxhhyj.music.logic.config
 
@@ -8,7 +8,7 @@ import io.fastkv.FastKV
 
 val DataSaverUtils = object : DataSaverInterface() {
 
-    private val kv = FastKV.Builder(MainApplication.context, "fastkv").build();
+    private val kv = FastKV.Builder(MainApplication.context, "fastkv").build()
 
     private fun notifyExternalDataChanged(key: String, value: Any?) {
         if (senseExternalDataChange) externalDataChangedFlow?.tryEmit(key to value)

@@ -8,11 +8,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.PlayArrow
@@ -24,8 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.bean.SongBean
-import com.zxhhyj.music.logic.utils.MediaLibHelper.songs
+import com.zxhhyj.music.logic.utils.MediaLibHelper
 import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.item.SongItem
@@ -36,7 +35,7 @@ import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.AppButton
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.AppTopBar
-import com.zxhhyj.ui.view.RoundColumn
+import com.zxhhyj.ui.view.roundColumn
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -45,16 +44,16 @@ fun AlbumCntScreen(
     mainNavController: NavController<ScreenDestination>,
     sheetNavController: NavController<SheetDestination>,
     paddingValues: PaddingValues,
-    album: SongBean.Album
+    albumName: String
 ) {
+    val songs = MediaLibHelper.Album[albumName]
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .statusBarsPadding()
-            .padding(paddingValues),
+            .statusBarsPadding(),
         topBar = {
             AppTopBar(
-                title = { Text(text = album.name) },
+                title = { Text(text = albumName) },
                 actions = {}
             ) {
                 Column(
@@ -64,43 +63,42 @@ fun AlbumCntScreen(
                 ) {
                     AppAsyncImage(
                         modifier = Modifier.size(210.dp),
-                        data = album.songs.getOrNull(0)?.coverUrl
+                        data = songs.getOrNull(0)?.coverUrl
                     )
                     Spacer(
                         modifier = Modifier.height(vertical)
                     )
                     Text(
-                        text = album.name,
+                        text = albumName,
                         fontSize = 16.sp,
                         color = LocalColorScheme.current.text,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = album.songs.first().artist.name,
+                        text = songs.first().artistName!!,
                         fontSize = 14.sp,
                         color = LocalColorScheme.current.highlight,
                         modifier = Modifier.clickable {
-                            mainNavController.navigate(
-                                ScreenDestination.SingerCnt(
-                                    album.songs.first().artist
-                                )
-                            )
+                            mainNavController.navigate(ScreenDestination.SingerCnt(songs.first().artistName!!))
                         }
                     )
                     AppButton(
-                        onClick = { PlayerManager.play(album.songs, 0) },
-                        imageVector = Icons.Rounded.PlayArrow,
-                        text = stringResource(id = R.string.play_all),
-                        modifier = Modifier.padding(vertical = vertical / 2)
+                        onClick = { PlayerManager.play(songs, 0) },
+                        icon = {
+                            Icon(imageVector = Icons.Rounded.PlayArrow, contentDescription = null)
+                        },
+                        text = {
+                            Text(text = stringResource(id = R.string.play_all))
+                        }
                     )
                 }
             }
         }) {
-        RoundColumn(modifier = Modifier.fillMaxWidth()) {
-            LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                itemsIndexed(album.songs) { index, item ->
+        LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = paddingValues) {
+            roundColumn {
+                itemsIndexed(songs) { index, item ->
                     SongItem(songBean = item, sheetNavController = sheetNavController) {
-                        PlayerManager.play(album.songs, index)
+                        PlayerManager.play(songs, index)
                     }
                 }
             }

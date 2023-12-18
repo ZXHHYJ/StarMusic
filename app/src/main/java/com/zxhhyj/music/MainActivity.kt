@@ -13,8 +13,11 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
 import com.zxhhyj.music.logic.bean.PlayMemoryBean
+import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
+import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
 import com.zxhhyj.music.logic.utils.AudioBecomingNoisyManager
+import com.zxhhyj.music.logic.utils.MediaLibHelper
 import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.common.ComposeToast.ComposeToast
 import com.zxhhyj.music.ui.screen.main.MainScreen
@@ -49,8 +52,17 @@ class MainActivity : ComponentActivity() {
             if (SettingRepository.EnablePlayMemory) {
                 val index by PlayerManager.indexFlow.collectAsState()
                 val playlist by PlayerManager.playListFlow.collectAsState()
-                LaunchedEffect(index, playlist) {
-                    SettingRepository.PlayMemory = PlayMemoryBean(index, playlist)
+                LaunchedEffect(
+                    index,
+                    playlist,
+                    AndroidMediaLibRepository.songs,
+                    WebDavMediaLibRepository.songs
+                ) {
+                    SettingRepository.PlayMemory = playlist?.let { it ->
+                        PlayMemoryBean(
+                            index,
+                            it.map { MediaLibHelper.songs.indexOf(it) })
+                    }
                 }
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && SettingRepository.AgreePrivacyPolicy) {

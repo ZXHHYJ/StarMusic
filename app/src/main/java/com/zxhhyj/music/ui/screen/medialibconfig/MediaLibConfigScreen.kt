@@ -10,7 +10,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
@@ -21,6 +20,7 @@ import androidx.compose.material.icons.rounded.CloudUpload
 import androidx.compose.material.icons.rounded.FilterAlt
 import androidx.compose.material.icons.rounded.Folder
 import androidx.compose.material.icons.rounded.HideSource
+import androidx.compose.material.icons.rounded.InsertDriveFile
 import androidx.compose.material.icons.rounded.LibraryMusic
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.runtime.Composable
@@ -59,13 +59,23 @@ fun MediaLibConfigScreen(
     dialogNavController: NavController<DialogDestination>,
     paddingValues: PaddingValues
 ) {
-    val permissionState =
+    var isExternalStorageManager by rememberSaveable {
+        mutableStateOf(false)
+    }
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        isExternalStorageManager = Environment.isExternalStorageManager()
+    }
+
+    /**
+     * 提拉米苏上是READ_MEDIA_AUDIO权限，否则是READ_EXTERNAL_STORAGE
+     */
+    val mediaAudioPermissionState =
         rememberPermissionState(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) Manifest.permission.READ_MEDIA_AUDIO else Manifest.permission.READ_EXTERNAL_STORAGE)
-    LaunchedEffect(SettingRepository.EnableAndroidMediaLibs, permissionState.status) {
+    LaunchedEffect(SettingRepository.EnableAndroidMediaLibs, mediaAudioPermissionState.status) {
         if (SettingRepository.EnableAndroidMediaLibs) {
-            when (permissionState.status) {
+            when (mediaAudioPermissionState.status) {
                 is PermissionStatus.Denied -> {
-                    permissionState.launchPermissionRequest()
+                    mediaAudioPermissionState.launchPermissionRequest()
                 }
 
                 PermissionStatus.Granted -> {
@@ -79,12 +89,11 @@ fun MediaLibConfigScreen(
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .statusBarsPadding()
-            .padding(paddingValues),
+            .statusBarsPadding(),
         topBar = {
             AppCenterTopBar(title = { Text(text = stringResource(id = R.string.media_lib)) })
         }) {
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = paddingValues) {
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
                     ItemSwitcher(
@@ -108,8 +117,8 @@ fun MediaLibConfigScreen(
                         checked = SettingRepository.EnableAndroidMediaLibs,
                         onCheckedChange = {
                             SettingRepository.EnableAndroidMediaLibs = it
+                            PlayerManager.clearPlayList()
                             if (!it) {
-                                PlayerManager.clearPlayList()
                                 AndroidMediaLibRepository.clear()
                             }
                         }
@@ -147,6 +156,39 @@ fun MediaLibConfigScreen(
                         checked = SettingRepository.EnableExcludeSongsUnderOneMinute,
                         onCheckedChange = {
                             SettingRepository.EnableExcludeSongsUnderOneMinute = it
+                        }
+                    )
+                    ItemDivider()
+                    val externalLyricsLauncher = rememberLauncherForActivityResult(
+                        contract = ActivityResultContracts.StartActivityForResult(),
+                        onResult = {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                                isExternalStorageManager = Environment.isExternalStorageManager()
+                                if (!isExternalStorageManager) {
+                                    SettingRepository.EnableReadExternalLyrics = false
+                                }
+                            }
+                        }
+                    )
+                    LaunchedEffect(SettingRepository.EnableReadExternalLyrics) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && SettingRepository.EnableReadExternalLyrics && !isExternalStorageManager) {
+                            externalLyricsLauncher.launch(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
+                        }
+                    }
+                    ItemSwitcher(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.InsertDriveFile,
+                                contentDescription = null
+                            )
+                        },
+                        text = {
+                            Text(text = stringResource(id = R.string.read_external_lyrics))
+                        },
+                        subText = {},
+                        checked = SettingRepository.EnableReadExternalLyrics,
+                        onCheckedChange = onCheckedChange@{
+                            SettingRepository.EnableReadExternalLyrics = it
                         }
                     )
                 }
@@ -190,13 +232,7 @@ fun MediaLibConfigScreen(
             }
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                    var isExternalStorageManager by rememberSaveable {
-                        mutableStateOf(false)
-                    }
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        isExternalStorageManager = Environment.isExternalStorageManager()
-                    }
-                    val launcher = rememberLauncherForActivityResult(
+                    val cueSupportLauncher = rememberLauncherForActivityResult(
                         contract = ActivityResultContracts.StartActivityForResult(),
                         onResult = {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -210,7 +246,7 @@ fun MediaLibConfigScreen(
                     )
                     LaunchedEffect(SettingRepository.EnableCueSupport) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && SettingRepository.EnableCueSupport && !isExternalStorageManager) {
-                            launcher.launch(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
+                            cueSupportLauncher.launch(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
                         }
                     }
                     ItemSwitcher(

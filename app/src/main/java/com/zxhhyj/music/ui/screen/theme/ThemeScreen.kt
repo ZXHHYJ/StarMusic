@@ -3,7 +3,6 @@ package com.zxhhyj.music.ui.screen.theme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
@@ -26,11 +25,7 @@ import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.ItemCheckbox
 import com.zxhhyj.ui.view.item.ItemDivider
-import com.zxhhyj.ui.view.item.ItemSlider
-import com.zxhhyj.ui.view.item.ItemSpacer
 import com.zxhhyj.ui.view.item.ItemSubTitle
-import java.math.BigDecimal
-import java.math.RoundingMode
 
 private val SettingRepository.DarkModeEnum.itemName: String
     @Composable get() = when (this) {
@@ -51,15 +46,11 @@ fun ThemeScreen(paddingValues: PaddingValues) {
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .statusBarsPadding()
-            .padding(paddingValues),
+            .statusBarsPadding(),
         topBar = {
             AppCenterTopBar(title = { Text(text = stringResource(id = R.string.theme)) })
         }) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
+        LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = paddingValues) {
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
                     ItemCheckbox(
@@ -112,26 +103,6 @@ fun ThemeScreen(paddingValues: PaddingValues) {
                                 }
                             )
                         }
-                    }
-                }
-                item { ItemSpacer() }
-                item {
-                    RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                        ItemSlider(
-                            text = { Text(text = stringResource(id = R.string.contrast)) },
-                            subText = {
-                                Text(
-                                    text = SettingRepository.MonetContrastLevel.toFloat().toString()
-                                )
-                            },
-                            value = SettingRepository.MonetContrastLevel.toFloat(),
-                            valueRange = -1f..1f,
-                            onValueChange = {
-                                SettingRepository.MonetContrastLevel =
-                                    BigDecimal(it.toDouble()).setScale(1, RoundingMode.HALF_UP)
-                                        .toDouble()
-                            }
-                        )
                     }
                 }
             }

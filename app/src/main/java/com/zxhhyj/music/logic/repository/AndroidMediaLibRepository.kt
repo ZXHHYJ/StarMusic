@@ -1,29 +1,33 @@
 package com.zxhhyj.music.logic.repository
 
 import android.provider.MediaStore
-import androidx.core.database.getStringOrNull
 import com.funny.data_saver.core.mutableDataSaverListStateOf
-import com.kyant.tag.Metadata
 import com.zxhhyj.music.MainApplication
 import com.zxhhyj.music.logic.bean.Folder
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.config.DataSaverUtils
-import com.zxhhyj.music.logic.utils.CueParser
-import com.zxhhyj.music.logic.utils.FileUtils
-import com.zxhhyj.music.logic.utils.toMillis
+import com.zxhhyj.music.logic.utils.toSongBeanLocal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-
+/**
+ * Android 媒体库仓库类，用于管理媒体库中的歌曲和文件夹数据。
+ */
 object AndroidMediaLibRepository {
 
+    /**
+     * 歌曲列表
+     */
     var songs by mutableDataSaverListStateOf(
         dataSaverInterface = DataSaverUtils,
-        key = "local_songs_v2",
+        key = "local_songs_v3",
         initialValue = listOf<SongBean.Local>()
     )
         private set
 
+    /**
+     * 隐藏的歌曲列表
+     */
     var hideSongs by mutableDataSaverListStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "hide_songs",
@@ -31,6 +35,9 @@ object AndroidMediaLibRepository {
     )
         private set
 
+    /**
+     * 文件夹列表
+     */
     var folders by mutableDataSaverListStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "folders",
@@ -38,6 +45,9 @@ object AndroidMediaLibRepository {
     )
         private set
 
+    /**
+     * 隐藏的文件夹列表
+     */
     var hideFolders by mutableDataSaverListStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "hide_folders",
@@ -46,7 +56,7 @@ object AndroidMediaLibRepository {
         private set
 
     /**
-     * 扫描媒体
+     * 扫描媒体库中的歌曲
      */
     suspend fun scanMedia() {
         withContext(Dispatchers.IO) {
@@ -70,101 +80,9 @@ object AndroidMediaLibRepository {
                 null
             )
             query?.use { cursor ->
-                val albumIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)
-                val albumIdIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
-                val artistIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
-                val durationIndex =
-                    cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
-                val dataIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
-                val songNameIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
-                val sizeIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)
-                val idIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
-                val dateModifiedIndex =
-                    cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)
-
                 while (cursor.moveToNext()) {
-                    val album = cursor.getStringOrNull(albumIndex) ?: "<unknown>"
-                    val albumId = cursor.getLong(albumIdIndex)
-                    val artist = cursor.getStringOrNull(artistIndex) ?: "<unknown>"
-                    val duration = cursor.getLong(durationIndex)
-                    val data = cursor.getString(dataIndex)
-                    val songName = cursor.getString(songNameIndex)
-                    val size = cursor.getLong(sizeIndex)
-                    val id = cursor.getLong(idIndex)
-                    val dateModified = cursor.getLong(dateModifiedIndex)
-                    val metadata = Metadata.getMetadata(data) ?: continue
-                    val bitrate = metadata.bitrate
-                    val sampleRate = metadata.sampleRate
-                    val lyric = metadata.properties["LYRICS"]?.getOrNull(0)?.trim()
-                    val coverUrl = "content://media/external/audio/albumart/${albumId}"
-
-                    if (SettingRepository.EnableCueSupport) {
-                        runCatching {
-                            val cuePath = data.substringBeforeLast(".") + ".cue"
-                            val cueContent = FileUtils.readFromFile(cuePath)
-                            val cueData = CueParser.parseCueContent(cueContent)
-                            cueData.tracks.forEach { track ->
-                                val endPosition =
-                                    track.endPosition.toMillis().takeIf { it != 0L } ?: duration
-                                val startPosition = track.startPosition.toMillis()
-                                scanSongs.add(
-                                    SongBean.Local(
-                                        coverUrl = coverUrl,
-                                        album = SongBean.Album(album),
-                                        artist = SongBean.Artist(track.performer),
-                                        duration = endPosition - startPosition,
-                                        data = data,
-                                        dateModified = dateModified,
-                                        songName = track.title,
-                                        size = size,
-                                        id = id,
-                                        bitrate = bitrate,
-                                        samplingRate = sampleRate,
-                                        lyric = lyric,
-                                        startPosition = startPosition,
-                                        endPosition = endPosition,
-                                    )
-                                )
-                            }
-                        }.getOrElse {
-                            scanSongs.add(
-                                SongBean.Local(
-                                    coverUrl = coverUrl,
-                                    album = SongBean.Album(album),
-                                    artist = SongBean.Artist(artist),
-                                    duration = duration,
-                                    data = data,
-                                    dateModified = dateModified,
-                                    songName = songName,
-                                    size = size,
-                                    id = id,
-                                    bitrate = bitrate,
-                                    samplingRate = sampleRate,
-                                    lyric = lyric,
-                                    startPosition = 0,
-                                    endPosition = duration,
-                                )
-                            )
-                        }
-                    } else {
-                        scanSongs.add(
-                            SongBean.Local(
-                                coverUrl = coverUrl,
-                                album = SongBean.Album(album),
-                                artist = SongBean.Artist(artist),
-                                duration = duration,
-                                data = data,
-                                dateModified = dateModified,
-                                songName = songName,
-                                size = size,
-                                id = id,
-                                bitrate = bitrate,
-                                samplingRate = sampleRate,
-                                lyric = lyric,
-                                startPosition = 0,
-                                endPosition = duration,
-                            )
-                        )
+                    cursor.toSongBeanLocal()?.let {
+                        scanSongs.add(it)
                     }
                 }
             }
@@ -174,6 +92,9 @@ object AndroidMediaLibRepository {
         }
     }
 
+    /**
+     * 更新文件夹和歌曲列表
+     */
     private fun updateLibs() {
         hideFolders = hideFolders.mapNotNull {
             if (it.songs.isEmpty()) null else it
@@ -190,15 +111,23 @@ object AndroidMediaLibRepository {
         refreshSongs()
     }
 
+    /**
+     * 刷新歌曲列表
+     */
     private fun refreshSongs() {
         songs = folders
             .flatMap { it.songs }
             .filter {
-                if (SettingRepository.EnableExcludeSongsUnderOneMinute) it.duration > 60000 else true
+                if (SettingRepository.EnableExcludeSongsUnderOneMinute && it.duration != null) it.duration > 60000 else true
             }
             .distinctBy { it.data }
     }
 
+    /**
+     * 隐藏指定文件夹
+     *
+     * @param folder 要隐藏的文件夹
+     */
     fun hideFolder(folder: Folder) {
         if (folders.any { it.path == folder.path }) {
             folders = folders - folder
@@ -207,6 +136,11 @@ object AndroidMediaLibRepository {
         }
     }
 
+    /**
+     * 取消隐藏指定文件夹
+     *
+     * @param folder 要取消隐藏的文件夹
+     */
     fun unHideFolder(folder: Folder) {
         if (hideFolders.any { it.path == folder.path }) {
             folders = folders + folder
@@ -216,7 +150,9 @@ object AndroidMediaLibRepository {
     }
 
     /**
-     * 从媒体库中隐藏某个歌曲
+     * 隐藏指定歌曲
+     *
+     * @param song 要隐藏的歌曲
      */
     fun hideSong(song: SongBean.Local) {
         songs = songs - song
@@ -224,7 +160,9 @@ object AndroidMediaLibRepository {
     }
 
     /**
-     * 取消隐藏某个歌曲
+     * 取消隐藏指定歌曲
+     *
+     * @param song 要取消隐藏的歌曲
      */
     fun unHideSong(song: SongBean.Local) {
         hideSongs = hideSongs - song
@@ -232,7 +170,20 @@ object AndroidMediaLibRepository {
     }
 
     /**
-     * 从媒体库中移除某个歌曲
+     * 添加歌曲到媒体库
+     *
+     * @param song 要添加的歌曲
+     */
+    fun addSong(song: SongBean.Local) {
+        songs = songs + song
+        hideSongs = hideSongs - song
+        updateLibs()
+    }
+
+    /**
+     * 从媒体库中移除指定歌曲
+     *
+     * @param song 要移除的歌曲
      */
     fun removeSong(song: SongBean.Local) {
         songs = songs - song

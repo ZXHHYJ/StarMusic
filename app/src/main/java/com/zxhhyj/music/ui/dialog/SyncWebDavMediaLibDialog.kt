@@ -14,27 +14,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
+import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.common.ComposeToast
-import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.YesNoDialog
-import dev.olshevski.navigation.reimagined.NavController
-import dev.olshevski.navigation.reimagined.moveToTop
-import dev.olshevski.navigation.reimagined.navigate
 import kotlinx.coroutines.delay
 
 @Composable
 fun SyncWebDavMediaLibDialog(
-    onDismissRequest: () -> Unit,
-    mainNavController: NavController<ScreenDestination>
+    onDismissRequest: () -> Unit
 ) {
+    PlayerManager.clearPlayList()
     val context = LocalContext.current
     YesNoDialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
         title = stringResource(id = R.string.sync_webdav),
-        confirm = {},
-        dismiss = {})
+        positive = {},
+        negative = {})
     {
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator(
@@ -53,9 +50,6 @@ fun SyncWebDavMediaLibDialog(
             onDismissRequest.invoke()
             ComposeToast.postErrorToast(context.getString(R.string.link_error))
             return@LaunchedEffect
-        }
-        if (!mainNavController.moveToTop { it is ScreenDestination.WebDav }) {
-            mainNavController.navigate(ScreenDestination.WebDav)
         }
         onDismissRequest.invoke()
     }

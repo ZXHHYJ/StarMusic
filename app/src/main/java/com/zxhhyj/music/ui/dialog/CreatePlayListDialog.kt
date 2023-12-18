@@ -32,7 +32,7 @@ fun CreatePlayListDialog(onDismissRequest: () -> Unit) {
     YesNoDialog(
         onDismissRequest = onDismissRequest,
         title = stringResource(id = R.string.create_playlist),
-        confirm = {
+        positive = {
             Text(text = stringResource(id = R.string.create), modifier = Modifier.clickable {
                 if (title.isNotEmpty()) {
                     PlayListRepository.create(title)
@@ -40,7 +40,7 @@ fun CreatePlayListDialog(onDismissRequest: () -> Unit) {
                 }
             })
         },
-        dismiss = {
+        negative = {
             Text(
                 text = stringResource(id = R.string.cancel),
                 modifier = Modifier.clickable { onDismissRequest.invoke() })

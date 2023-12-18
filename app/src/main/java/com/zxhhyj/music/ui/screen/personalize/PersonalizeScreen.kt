@@ -3,7 +3,6 @@ package com.zxhhyj.music.ui.screen.personalize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
@@ -42,12 +41,12 @@ fun PersonalizeScreen(
     AppScaffold(
         topBar = {
             AppCenterTopBar(title = { Text(text = stringResource(id = R.string.personalize)) })
-        }, modifier = Modifier
+        },
+        modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
-            .padding(paddingValues)
     ) {
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = paddingValues) {
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
                     ItemSwitcher(
@@ -73,28 +72,26 @@ fun PersonalizeScreen(
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
                     val easterEggSong =
                         AndroidMediaLibRepository.songs.find {
-                            it.songName == "那一天从梦中醒来" && it.artist.name.contains(
-                                "双笙"
-                            )
+                            it.songName == "那一天从梦中醒来" && it.artistName?.contains("双笙") ?: false
                         }
                     SongItem(
                         sheetNavController = easterEggSong?.let { sheetNavController }
                             ?: rememberNavController(initialBackstack = emptyList()),
                         songBean = easterEggSong ?: SongBean.Local(
                             coverUrl = "",
-                            SongBean.Album("Nothing"),
-                            SongBean.Artist("Nothing"),
-                            0,
+                            "Nothing",
+                            "Nothing",
+                            null,
                             "",
                             0,
                             "Nothing",
                             0,
-                            0,
-                            Int.MAX_VALUE,
-                            0,
                             null,
-                            0,
-                            0
+                            null,
+                            null,
+                            null,
+                            null,
+                            null
                         )
                     ) {
                         if (easterEggSong != null) {

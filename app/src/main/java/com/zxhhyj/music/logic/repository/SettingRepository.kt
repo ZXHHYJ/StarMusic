@@ -2,7 +2,6 @@ package com.zxhhyj.music.logic.repository
 
 import com.funny.data_saver.core.mutableDataSaverStateOf
 import com.zxhhyj.music.logic.bean.PlayMemoryBean
-import com.zxhhyj.music.logic.bean.WebDavConfig
 import com.zxhhyj.music.logic.config.DataSaverUtils
 import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.theme.PaletteStyle
@@ -104,15 +103,6 @@ object SettingRepository {
     }
 
     /**
-     * 是否是降序
-     */
-    var Descending by mutableDataSaverStateOf(
-        dataSaverInterface = DataSaverUtils,
-        key = "Descending",
-        initialValue = false
-    )
-
-    /**
      * 歌词字体大小
      */
     var LyricFontSize by mutableDataSaverStateOf(
@@ -137,15 +127,6 @@ object SettingRepository {
         dataSaverInterface = DataSaverUtils,
         key = "EnableWebDav",
         initialValue = false
-    )
-
-    /**
-     * WebDav账户配置
-     */
-    var WebDavConfig by mutableDataSaverStateOf(
-        dataSaverInterface = DataSaverUtils,
-        key = "WebDavConfig",
-        initialValue = WebDavConfig(String(), String(), String())
     )
 
     /**
@@ -238,11 +219,21 @@ object SettingRepository {
     )
 
     /**
-     * M3对比度等级
+     * 读取外部歌词
      */
-    var MonetContrastLevel by mutableDataSaverStateOf(
+    var EnableReadExternalLyrics by mutableDataSaverStateOf(
         dataSaverInterface = DataSaverUtils,
-        key = "MonetContrastLevel",
-        initialValue = 0.0
+        key = "EnableReadExternalLyrics",
+        initialValue = false
     )
+
+    /**
+     * 设置WebDav的最大缓存（单位MB）
+     */
+    var AndroidVideoCacheSize by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "AndroidVideoCacheSize",
+        initialValue = 1024
+    )
+
 }

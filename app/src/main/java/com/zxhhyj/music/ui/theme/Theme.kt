@@ -88,55 +88,55 @@ fun StarMusicTheme(
                 PaletteStyle.TonalSpot -> SchemeTonalSpot(
                     hct,
                     isDark,
-                    SettingRepository.MonetContrastLevel
+                    0.0
                 )
 
                 PaletteStyle.Neutral -> SchemeNeutral(
                     hct,
                     isDark,
-                    SettingRepository.MonetContrastLevel
+                    0.0
                 )
 
                 PaletteStyle.Vibrant -> SchemeVibrant(
                     hct,
                     isDark,
-                    SettingRepository.MonetContrastLevel
+                    0.0
                 )
 
                 PaletteStyle.Expressive -> SchemeExpressive(
                     hct,
                     isDark,
-                    SettingRepository.MonetContrastLevel
+                    0.0
                 )
 
                 PaletteStyle.Rainbow -> SchemeRainbow(
                     hct,
                     isDark,
-                    SettingRepository.MonetContrastLevel
+                    0.0
                 )
 
                 PaletteStyle.FruitSalad -> SchemeFruitSalad(
                     hct,
                     isDark,
-                    SettingRepository.MonetContrastLevel
+                    0.0
                 )
 
                 PaletteStyle.Monochrome -> SchemeMonochrome(
                     hct,
                     isDark,
-                    SettingRepository.MonetContrastLevel
+                    0.0
                 )
 
                 PaletteStyle.Fidelity -> SchemeFidelity(
                     hct,
                     isDark,
-                    SettingRepository.MonetContrastLevel
+                    0.0
                 )
 
                 PaletteStyle.Content -> SchemeContent(
                     hct,
                     isDark,
-                    SettingRepository.MonetContrastLevel
+                    0.0
                 )
             }
             ColorScheme(

@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -44,12 +43,11 @@ fun WeChatPayScreen(
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .statusBarsPadding()
-            .padding(paddingValues),
+            .statusBarsPadding(),
         topBar = {
             AppCenterTopBar(title = { Text(text = stringResource(id = R.string.wechat_payment)) })
         }) {
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = paddingValues) {
             item {
                 RoundColumn(
                     modifier = Modifier.fillMaxWidth()

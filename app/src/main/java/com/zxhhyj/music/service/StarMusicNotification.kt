@@ -15,6 +15,7 @@ import androidx.media.session.MediaButtonReceiver
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.utils.BitmapUtils
+import java.io.File
 
 
 open class StarMusicNotification private constructor(
@@ -24,6 +25,8 @@ open class StarMusicNotification private constructor(
 
     class Builder(context: Context, sessionCompat: MediaSessionCompat) :
         StarMusicNotification(context, sessionCompat)
+
+    private val metadata = MediaMetadataCompat.Builder()
 
     private val notificationCompat = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
 
@@ -133,24 +136,29 @@ open class StarMusicNotification private constructor(
     }
 
     fun setSongBean(songBean: SongBean) {
-        val metadata = MediaMetadataCompat.Builder()
+        metadata
             .putString(MediaMetadataCompat.METADATA_KEY_TITLE, songBean.songName)
-            .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, songBean.artist.name)
-            .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, songBean.album.name)
-            .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, songBean.duration)
+            .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, songBean.artistName)
+            .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, songBean.albumName)
+
+        songBean.duration?.let {
+            metadata.putLong(MediaMetadataCompat.METADATA_KEY_DURATION, it)
+        }
 
         notificationCompat.apply {
             setContentTitle(songBean.songName)
-            setContentText(songBean.artist.name)
+            setContentText(songBean.artistName)
             try {
-                val contentResolver = context.contentResolver
-                contentResolver?.openInputStream(songBean.coverUrl.toUri())?.use { inputStream ->
-                    val bitmap = BitmapFactory.decodeStream(inputStream)
-                    val minBitmap = BitmapUtils.compressBitmap(bitmap)
-                    setLargeIcon(minBitmap)
-                    metadata.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, minBitmap)
+                songBean.coverUrl?.let {
+                    context.contentResolver?.openInputStream(File(it).toUri())?.use { inputStream ->
+                        val bitmap = BitmapFactory.decodeStream(inputStream)
+                        val minBitmap = BitmapUtils.compressBitmap(bitmap)
+                        setLargeIcon(minBitmap)
+                        metadata.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, minBitmap)
+                    }
                 }
-            } catch (_: Exception) {
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
 
@@ -177,6 +185,11 @@ open class StarMusicNotification private constructor(
                 0F
             ).build()
         )
+    }
+
+    fun setDuration(duration: Long) {
+        metadata.putLong(MediaMetadataCompat.METADATA_KEY_DURATION, duration)
+        sessionCompat.setMetadata(metadata.build())
     }
 
     companion object {

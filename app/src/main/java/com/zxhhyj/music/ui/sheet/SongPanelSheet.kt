@@ -33,7 +33,6 @@ import com.zxhhyj.ui.view.item.ItemSpacer
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop
-import dev.olshevski.navigation.reimagined.popAll
 
 private val PlayerManager.PlayMode.itemIcon
     get() = when (this) {
@@ -56,6 +55,9 @@ fun SongPanelSheet(
     songBean: SongBean
 ) {
     LazyColumn {
+        item {
+            ItemSpacer()
+        }
         item {
             RoundColumn(modifier = Modifier.fillMaxWidth()) {
                 SongItem(

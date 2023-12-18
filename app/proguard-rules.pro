@@ -8,6 +8,11 @@
     public static int e(...);
 }
 
+-assumenosideeffects class java.io.PrintStream {
+     public void println(%);
+     public void println(**);
+ }
+
 #https://github.com/thegrizzlylabs/sardine-android/issues/70
 -dontwarn org.xmlpull.v1.**
 -keep class org.xmlpull.v1.** { *; }

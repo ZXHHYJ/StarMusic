@@ -1,23 +1,25 @@
 package com.zxhhyj.music.logic.bean
 
 import android.os.Parcelable
+import com.zxhhyj.mediaplayer.impl.CueMediaInfo
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
-interface SongBean : Parcelable {
+sealed interface SongBean : CueMediaInfo, Parcelable {
     // 歌曲封面路径
-    val coverUrl: String
+    val coverUrl: String?
 
     // 歌曲所属专辑信息
-    val album: Album
+    val albumName: String?
 
     // 歌曲所属艺术家信息
-    val artist: Artist
+    val artistName: String?
 
     // 歌曲时长
-    val duration: Long
+    override val duration: Long?
 
     // 歌曲文件路径
-    val data: String
+    override val data: String
 
     // 歌曲最后修改时间
     val dateModified: Long
@@ -38,53 +40,49 @@ interface SongBean : Parcelable {
     val lyric: String?
 
     // 开始位置
-    val startPosition: Long
+    override val startPosition: Long?
 
     // 结束位置
-    val endPosition: Long
+    override val endPosition: Long?
 
     @Parcelize
     data class Local(
-        override val coverUrl: String,
-        override val album: Album,
-        override val artist: Artist,
-        override val duration: Long,
+        override val coverUrl: String?,
+        override val albumName: String?,
+        override val artistName: String?,
+        override val duration: Long?,
         override val data: String,
         override val dateModified: Long,
         override val songName: String,
         override val size: Long,
-        val id: Long,
+        val id: Long?,
         override val bitrate: Int?,
         override val samplingRate: Int?,
         override val lyric: String?,
-        override val startPosition: Long,
-        override val endPosition: Long
+        override val startPosition: Long?,
+        override val endPosition: Long?
     ) : SongBean
 
     @Parcelize
     data class WebDav(
-        val webDavFile: WebDavFile,
-        override val coverUrl: String,
-        override val album: Album,
-        override val artist: Artist,
-        override val duration: Long,
+        val webDavSource: WebDavSource,
+        override val coverUrl: String?,
+        override val albumName: String?,
+        override val artistName: String?,
+        override val duration: Long?,
         override val data: String,
         override val dateModified: Long,
         override val songName: String,
         override val size: Long,
         override val bitrate: Int?,
         override val samplingRate: Int?,
-        override val lyric: String?,
-        override val startPosition: Long,
-        override val endPosition: Long
-    ) : SongBean
+        override val lyric: String?
+    ) : SongBean {
+        @IgnoredOnParcel
+        override val startPosition: Long? = null
 
-    // 艺术家信息
-    @Parcelize
-    data class Artist(val name: String) : Parcelable
-
-    // 专辑信息
-    @Parcelize
-    data class Album(val name: String) : Parcelable
+        @IgnoredOnParcel
+        override val endPosition: Long? = null
+    }
 
 }

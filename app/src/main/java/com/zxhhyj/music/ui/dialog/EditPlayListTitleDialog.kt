@@ -34,7 +34,7 @@ fun EditPlayListTitleDialog(onDismissRequest: () -> Unit, playListBean: PlayList
     YesNoDialog(
         onDismissRequest = onDismissRequest,
         title = stringResource(id = R.string.edit_playlist_title),
-        confirm = {
+        positive = {
             Text(
                 stringResource(id = R.string.yes),
                 modifier = Modifier.clickable {
@@ -44,7 +44,7 @@ fun EditPlayListTitleDialog(onDismissRequest: () -> Unit, playListBean: PlayList
                     }
                 })
         },
-        dismiss = {
+        negative = {
             Text(
                 stringResource(id = R.string.cancel),
                 modifier = Modifier.clickable { onDismissRequest.invoke() })

@@ -2,8 +2,6 @@ package com.zxhhyj.music.ui.screen.singer
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -22,7 +20,7 @@ import com.zxhhyj.music.ui.screen.search.SearchScreenTabs
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppIconButton
 import com.zxhhyj.ui.view.AppScaffold
-import com.zxhhyj.ui.view.RoundColumn
+import com.zxhhyj.ui.view.roundColumn
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -34,8 +32,7 @@ fun SingerScreen(
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .statusBarsPadding()
-            .padding(paddingValues),
+            .statusBarsPadding(),
         topBar = {
             AppCenterTopBar(
                 title = { Text(text = stringResource(id = R.string.singer)) },
@@ -54,11 +51,11 @@ fun SingerScreen(
                     }
                 })
         }) {
-        RoundColumn(modifier = Modifier.fillMaxWidth()) {
-            LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                items(MediaLibHelper.artists) {
-                    ArtistItem(artist = it) {
-                        mainNavController.navigate(ScreenDestination.SingerCnt(it))
+        LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = paddingValues) {
+            roundColumn {
+                items(MediaLibHelper.artists.filterNotNull()) { artistName ->
+                    ArtistItem(artistName = artistName) {
+                        mainNavController.navigate(ScreenDestination.SingerCnt(artistName))
                     }
                 }
             }

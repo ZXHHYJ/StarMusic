@@ -38,10 +38,17 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
+        </activity>
+        <activity
+            android:name=".CrashActivity"
+            android:exported="false"
+            android:launchMode="singleInstance" />
+
+        <activity
+            android:name=".PreviewSongActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:theme="@style/Theme.Transparent">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -53,10 +60,6 @@
                 <data android:mimeType="audio/*" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".CrashActivity"
-            android:exported="false"
-            android:launchMode="singleInstance" />
 
         <receiver
             android:name="androidx.media.session.MediaButtonReceiver"

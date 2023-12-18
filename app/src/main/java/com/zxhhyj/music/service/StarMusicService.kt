@@ -23,10 +23,14 @@ class StarMusicService : LifecycleService(), AudioFocusUtils.OnAudioFocusChangeL
 
     companion object {
 
-        // 静态常量NOTIFICATION_ID，用于标识通知的唯一ID
+        /**
+         * 静态常量NOTIFICATION_ID，用于标识通知的唯一ID
+         */
         private const val NOTIFICATION_ID = 12 + 13
 
-        // 使用Volatile关键字修饰isServiceAlive变量，确保多线程环境下的可见性
+        /**
+         * 使用Volatile关键字修饰isServiceAlive变量，确保多线程环境下的可见性
+         */
         @Volatile
         var isServiceAlive = false
             private set
@@ -116,6 +120,9 @@ class StarMusicService : LifecycleService(), AudioFocusUtils.OnAudioFocusChangeL
             }.launchIn(lifecycleScope)
             PlayerManager.progressFlow.onEach {
                 mStarMusicNotification?.setPosition(it)
+            }.launchIn(lifecycleScope)
+            PlayerManager.durationFlow.onEach {
+                mStarMusicNotification?.setDuration(it.toLong())
             }.launchIn(lifecycleScope)
             PlayerManager.pauseFlow.onEach {
                 mStarMusicNotification?.setPlaying(it)

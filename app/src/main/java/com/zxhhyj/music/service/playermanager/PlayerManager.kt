@@ -3,12 +3,26 @@
 package com.zxhhyj.music.service.playermanager
 
 import android.util.Range
+import androidx.core.net.toFile
+import androidx.core.net.toUri
+import com.danikula.videocache.CacheListener
+import com.danikula.videocache.HttpProxyCacheServer
+import com.danikula.videocache.headers.HeaderInjector
+import com.thegrizzlylabs.sardineandroid.util.SardineUtil
+import com.zxhhyj.mediaplayer.CueMediaPlayer
+import com.zxhhyj.mediaplayer.impl.DataSource
 import com.zxhhyj.music.MainApplication
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
+import com.zxhhyj.music.logic.config.musicFilesDir
+import com.zxhhyj.music.logic.repository.SettingRepository
+import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
+import com.zxhhyj.music.logic.utils.toSongBeanWebDav
 import com.zxhhyj.music.ui.common.ComposeToast
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import okhttp3.Credentials
+import java.io.File
 import java.io.FileNotFoundException
 import kotlin.random.Random
 
@@ -17,11 +31,82 @@ import kotlin.random.Random
  */
 object PlayerManager {
 
+    object MediaCacheManager {
+
+        object WebDavHeadersInjector : HeaderInjector {
+            override fun addHeaders(url: String): Map<String, String> {
+                val webDavSongBean = _currentSongFlow.value as SongBean.WebDav?
+                webDavSongBean?.let {
+                    return hashMapOf(
+                        Pair(
+                            "Authorization",
+                            Credentials.basic(
+                                it.webDavSource.username,
+                                it.webDavSource.password,
+                                SardineUtil.standardUTF8()
+                            )
+                        )
+                    )
+                }
+                return emptyMap()
+            }
+        }
+
+        private val proxy by lazy {
+            HttpProxyCacheServer.Builder(MainApplication.context)
+                .cacheDirectory(musicFilesDir)
+                .maxCacheSize((SettingRepository.AndroidVideoCacheSize * 1024 * 1024).toLong())
+                .headerInjector(WebDavHeadersInjector)
+                .build()
+        }
+
+        fun isCached(url: String) = proxy.isCached(url)
+
+        fun getCacheFile(url: String): File? {
+            if (proxy.isCached(url)) {
+                return proxy.getProxyUrl(url).toUri().toFile()
+            }
+            return null
+        }
+
+        private val cacheListener = CacheListener { cacheFile, url, _ ->
+            if (!cacheFile.path.endsWith(".download")) {
+                (_currentSongFlow.value as SongBean.WebDav?)?.let { webDavSongBean ->
+                    cacheFile.toSongBeanWebDav(
+                        webDavSongBean.webDavSource,
+                        url
+                    )?.let { songBean ->
+                        WebDavMediaLibRepository.replaceSong(songBean)
+                        _playListFlow.value = _playListFlow.value?.toMutableList()?.apply {
+                            _indexFlow.value?.let {
+                                removeAt(it)
+                                add(it, songBean)
+                            }
+                        }
+                        _currentSongFlow.value = songBean
+                    }
+                }
+            }
+        }
+
+        object WebDavProxySource : DataSource {
+            override fun getDataSource(data: String): String {
+                val file = File(data)
+                return if (file.exists()) {
+                    data
+                } else {
+                    proxy.registerCacheListener(cacheListener, data)
+                    proxy.getProxyUrl(data)
+                }
+            }
+        }
+    }
+
     enum class PlayMode {
         SINGLE_LOOP, LIST_LOOP, RANDOM
     }
 
-    private val cueMediaPlayer = CueMediaPlayer()
+    private val cueMediaPlayer = CueMediaPlayer(MediaCacheManager.WebDavProxySource)
 
     private val _playModeFlow = MutableStateFlow(PlayMode.LIST_LOOP)
     val playModeFlow: StateFlow<PlayMode> = _playModeFlow

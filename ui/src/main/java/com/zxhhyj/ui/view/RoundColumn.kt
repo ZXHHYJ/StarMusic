@@ -36,7 +36,11 @@ class RoundColumnLazyListScope(private val lazyListScope: LazyListScope) : LazyL
         contentType: Any?,
         content: @Composable (LazyItemScope.() -> Unit)
     ) {
-        lazyListScope.stickyHeader(key, contentType, content)
+        lazyListScope.stickyHeader(key, contentType) {
+            RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                content()
+            }
+        }
     }
 
     override fun item(
@@ -44,7 +48,11 @@ class RoundColumnLazyListScope(private val lazyListScope: LazyListScope) : LazyL
         contentType: Any?,
         content: @Composable (LazyItemScope.() -> Unit)
     ) {
-        lazyListScope.item(key, contentType, content)
+        lazyListScope.item(key, contentType) {
+            RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                content()
+            }
+        }
     }
 
     override fun items(

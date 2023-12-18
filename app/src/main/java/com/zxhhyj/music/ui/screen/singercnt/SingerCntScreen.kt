@@ -20,8 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.zxhhyj.music.logic.bean.SongBean
-import com.zxhhyj.music.logic.utils.MediaLibHelper.songs
+import com.zxhhyj.music.logic.utils.MediaLibHelper
 import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.SheetDestination
@@ -38,16 +37,16 @@ import dev.olshevski.navigation.reimagined.NavController
 fun SingerCntScreen(
     sheetNavController: NavController<SheetDestination>,
     paddingValues: PaddingValues,
-    artist: SongBean.Artist
+    artistName: String
 ) {
+    val songs = MediaLibHelper.Artist[artistName]
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .statusBarsPadding()
-            .padding(paddingValues),
+            .statusBarsPadding(),
         topBar = {
             AppTopBar(
-                title = { Text(text = artist.name) },
+                title = { Text(text = artistName) },
             ) {
                 Row(
                     modifier = Modifier
@@ -56,7 +55,7 @@ fun SingerCntScreen(
                         .padding(bottom = vertical)
                 ) {
                     Text(
-                        text = artist.name,
+                        text = artistName,
                         fontSize = 26.sp,
                         fontWeight = FontWeight.Bold,
                         color = LocalColorScheme.current.highlight,
@@ -73,18 +72,18 @@ fun SingerCntScreen(
                             modifier = Modifier
                                 .size(32.dp)
                                 .clickable {
-                                    PlayerManager.play(artist.songs, 0)
+                                    PlayerManager.play(songs, 0)
                                 }
                         )
                     }
                 }
             }
         }) {
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = paddingValues) {
             roundColumn {
-                itemsIndexed(artist.songs) { index, item ->
+                itemsIndexed(songs) { index, item ->
                     SongItem(sheetNavController = sheetNavController, songBean = item) {
-                        PlayerManager.play(artist.songs, index)
+                        PlayerManager.play(songs, index)
                     }
                 }
             }

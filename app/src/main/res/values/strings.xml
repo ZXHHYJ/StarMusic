@@ -81,6 +81,7 @@
     <string name="is_playing_with_other_apps">与其他App同时播放</string>
     <string name="permanent_delete">永久删除</string>
     <string name="delete_from_media_library">从媒体库中删除</string>
+    <string name="delete_locally">仅本地删除</string>
     <string name="eq">均衡器</string>
     <string name="crash_info">崩溃信息</string>
     <string name="download_success">下载成功</string>
@@ -125,4 +126,22 @@
     <string name="post_notifications_permission">弹出通知</string>
     <string name="post_notifications_permission_info">在通知栏中显示媒体通知</string>
     <string name="birthday_wish">今天是ZXHHYJ的%d岁生日</string>
+    <string name="preview">预览</string>
+    <string name="play">播放</string>
+    <string name="pause">暂停</string>
+    <string name="read_external_lyrics">读取外置歌词(.lrc)</string>
+    <string name="add_to_media_libs">添加至媒体库</string>
+    <string name="create_webdav_source">创建WebDav源</string>
+    <string name="webdav_source">WebDav源</string>
+    <string name="edit_webdav_source">编辑WebDav源</string>
+    <string name="add_folder">添加文件夹</string>
+    <string name="webdav_remark">WebDav备注</string>
+    <string name="save_and_sync">保存并同步</string>
+    <string name="sort_by">排序方式</string>
+    <string name="shortcut_add">快捷方式</string>
+    <string name="unknown_album">未知专辑</string>
+    <string name="unknown_artist">未知歌手</string>
+    <string name="max_cache_size">最大缓存大小</string>
+    <string name="webdav_cache_song">当前WebDav歌曲缓存</string>
+    <string name="contact_label">联系方式</string>
 </resources>

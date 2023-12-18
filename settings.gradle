@@ -15,10 +15,11 @@ dependencyResolutionManagement {
         maven { url 'https://repo1.maven.org/maven2/' }
         google()
         mavenCentral()
+        maven { url 'https://maven.aliyun.com/repository/public' }
     }
 }
 
 rootProject.name = "star_music"
 include ':app'
 include ':ui'
-
+include ':mediaplayer'

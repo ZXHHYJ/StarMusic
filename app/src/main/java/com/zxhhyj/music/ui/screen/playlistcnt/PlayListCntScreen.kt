@@ -55,7 +55,7 @@ fun PlayListCntScreen(
     findPlayListModel ?: return
     val songs = findPlayListModel.songs.mapNotNull { playListSongBean ->
         MediaLibHelper.songs.find {
-            it.songName == playListSongBean.songName && it.artist.name == playListSongBean.artistName && it.album.name == playListSongBean.albumName
+            it.data == playListSongBean.data
         }
     }
     AppScaffold(
@@ -98,9 +98,13 @@ fun PlayListCntScreen(
                     )
                     AppButton(
                         onClick = { PlayerManager.play(songs, 0) },
-                        imageVector = Icons.Rounded.PlayArrow,
-                        text = stringResource(id = R.string.play_all),
-                        modifier = Modifier.padding(vertical = vertical / 2)
+                        icon = {
+                            Icon(imageVector = Icons.Rounded.PlayArrow, contentDescription = null)
+                        },
+                        text = {
+                            Text(text = stringResource(id = R.string.play_all))
+                        },
+                        enabled = songs.isNotEmpty()
                     )
                 }
             }

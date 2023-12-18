@@ -44,6 +44,9 @@ fun SongMenuSheet(
     val currentSong by PlayerManager.currentSongFlow.collectAsState()
     LazyColumn {
         item {
+            ItemSpacer()
+        }
+        item {
             RoundColumn(modifier = Modifier.fillMaxWidth()) {
                 SongItem(songBean = songBean)
             }
@@ -55,18 +58,36 @@ fun SongMenuSheet(
             RoundColumn(modifier = Modifier.fillMaxWidth()) {
                 ItemArrowRight(
                     icon = { Icon(imageVector = Icons.Rounded.Album, contentDescription = null) },
-                    text = { Text(text = songBean.album.name) },
-                    subText = { Text(text = stringResource(id = R.string.album)) }) {
-                    sheetNavController.popAll()
-                    mainNavController.navigate(ScreenDestination.AlbumCnt(songBean.album))
+                    text = {
+                        Text(
+                            text = songBean.albumName
+                                ?: stringResource(id = R.string.unknown_album)
+                        )
+                    },
+                    subText = { Text(text = stringResource(id = R.string.album)) },
+                    enabled = songBean.albumName != null
+                ) {
+                    songBean.albumName?.let {
+                        sheetNavController.popAll()
+                        mainNavController.navigate(ScreenDestination.AlbumCnt(it))
+                    }
                 }
                 ItemDivider()
                 ItemArrowRight(
                     icon = { Icon(imageVector = Icons.Rounded.Person, contentDescription = null) },
-                    text = { Text(text = songBean.artist.name) },
-                    subText = { Text(text = stringResource(id = R.string.singer)) }) {
-                    sheetNavController.popAll()
-                    mainNavController.navigate(ScreenDestination.SingerCnt(songBean.artist))
+                    text = {
+                        Text(
+                            text = songBean.artistName
+                                ?: stringResource(id = R.string.unknown_artist)
+                        )
+                    },
+                    subText = { Text(text = stringResource(id = R.string.singer)) },
+                    enabled = songBean.artistName != null
+                ) {
+                    songBean.artistName?.let {
+                        sheetNavController.popAll()
+                        mainNavController.navigate(ScreenDestination.SingerCnt(it))
+                    }
                 }
             }
         }

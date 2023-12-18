@@ -34,7 +34,7 @@ fun CustomTimerDialog(onDismissRequest: () -> Unit) {
     YesNoDialog(
         onDismissRequest = onDismissRequest,
         title = stringResource(id = R.string.custom_timer),
-        confirm = {
+        positive = {
             Text(text = stringResource(id = R.string.yes), modifier = Modifier.clickable {
                 minutes?.let {
                     PlayerTimerManager.startCustomTimer(it * 60 * 1000)
@@ -42,7 +42,7 @@ fun CustomTimerDialog(onDismissRequest: () -> Unit) {
                 }
             })
         },
-        dismiss = {
+        negative = {
             Text(
                 text = stringResource(id = R.string.cancel),
                 modifier = Modifier.clickable { onDismissRequest.invoke() })

@@ -12,6 +12,7 @@ import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.ItemCheckbox
 import com.zxhhyj.ui.view.item.ItemDivider
+import com.zxhhyj.ui.view.item.ItemSpacer
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 
@@ -28,6 +29,7 @@ private val PlayerTimerManager.TimerType.itemName
 
 @Composable
 fun TimerSheet(dialogNavController: NavController<DialogDestination>) {
+    ItemSpacer()
     RoundColumn(modifier = Modifier.fillMaxWidth()) {
         val timerTypeList = listOf(
             PlayerTimerManager.TimerType.Off,

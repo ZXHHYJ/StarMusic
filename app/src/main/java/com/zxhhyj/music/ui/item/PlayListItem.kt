@@ -36,7 +36,7 @@ fun PlayListItem(
 ) {
     val songs = playListBean.songs.mapNotNull { playListSongBean ->
         MediaLibHelper.songs.find {
-            it.songName == playListSongBean.songName && it.artist.name == playListSongBean.artistName && it.album.name == playListSongBean.albumName
+            it.data == playListSongBean.data
         }
     }
     Row(

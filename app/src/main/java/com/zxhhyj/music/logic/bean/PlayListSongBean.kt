@@ -4,5 +4,4 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class PlayListSongBean(val songName: String, val artistName: String, val albumName: String) :
-    Parcelable
+data class PlayListSongBean(val data: String) : Parcelable

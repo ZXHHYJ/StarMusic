@@ -18,6 +18,7 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
+import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.ui.view.YesNoDialog
 import dev.olshevski.navigation.reimagined.NavController
@@ -39,25 +40,20 @@ fun DeleteSongDialog(
                 onDismissRequest.invoke()
                 sheetNavController.popAll()
             }
-        }
-    )
+        })
     val lifecycleCoroutineScope = LocalLifecycleOwner.current.lifecycleScope
-    YesNoDialog(
-        onDismissRequest = onDismissRequest,
+    YesNoDialog(onDismissRequest = onDismissRequest,
         title = stringResource(id = R.string.delete),
-        confirm = {
-            Text(
-                text = stringResource(id = R.string.permanent_delete),
-                modifier = Modifier.clickable {
-                    when (songBean) {
-                        is SongBean.Local -> {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        positive = {
+            when (songBean) {
+                is SongBean.Local -> {
+                    Text(text = stringResource(id = R.string.permanent_delete),
+                        modifier = Modifier.clickable {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && songBean.id != null) {
                                 lifecycleCoroutineScope.launch {
-                                    val deleteUri =
-                                        ContentUris.withAppendedId(
-                                            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                                            songBean.id
-                                        )
+                                    val deleteUri = ContentUris.withAppendedId(
+                                        MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, songBean.id
+                                    )
                                     val pendingIntent = MediaStore.createDeleteRequest(
                                         MainApplication.context.contentResolver,
                                         listOf(deleteUri)
@@ -74,23 +70,24 @@ fun DeleteSongDialog(
                                     sheetNavController.popAll()
                                 }
                             }
-                        }
+                        })
+                }
 
-                        is SongBean.WebDav -> {
-                            val file = File(songBean.data)
-                            if (file.delete()) {
+                is SongBean.WebDav -> {
+                    Text(text = stringResource(id = R.string.delete_locally),
+                        modifier = Modifier.clickable {
+                            PlayerManager.MediaCacheManager.getCacheFile(songBean.data)
+                                ?.takeIf { it.delete() }?.let {
                                 WebDavMediaLibRepository.removeSong(songBean)
                                 onDismissRequest.invoke()
                                 sheetNavController.popAll()
                             }
-                        }
+                        })
+                }
+            }
 
-                        else -> {}
-                    }
-                })
             if (songBean is SongBean.Local) {
-                Text(
-                    text = stringResource(id = R.string.delete_from_media_library),
+                Text(text = stringResource(id = R.string.delete_from_media_library),
                     modifier = Modifier.clickable {
                         AndroidMediaLibRepository.removeSong(songBean)
                         onDismissRequest.invoke()
@@ -98,8 +95,7 @@ fun DeleteSongDialog(
                     })
             }
         },
-        dismiss = {})
-    {
+        negative = {}) {
         Text(text = "\"${songBean.songName}\"")
     }
 }

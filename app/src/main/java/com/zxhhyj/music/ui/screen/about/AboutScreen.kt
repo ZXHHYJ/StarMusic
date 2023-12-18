@@ -3,7 +3,6 @@ package com.zxhhyj.music.ui.screen.about
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
@@ -26,9 +25,7 @@ import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.Item
 import com.zxhhyj.ui.view.item.ItemArrowRight
 import com.zxhhyj.ui.view.item.ItemDivider
-import com.zxhhyj.ui.view.item.ItemSpacer
 import com.zxhhyj.ui.view.item.ItemSubTitle
-import com.zxhhyj.ui.view.item.ItemTint
 
 
 @Composable
@@ -39,13 +36,12 @@ fun AboutScreen(
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .statusBarsPadding()
-            .padding(paddingValues),
+            .statusBarsPadding(),
         topBar = {
             AppCenterTopBar(title = { Text(text = stringResource(id = R.string.about)) })
         })
     {
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = paddingValues) {
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
                     Item(
@@ -106,7 +102,9 @@ fun AboutScreen(
                 }
             }
             item {
-                ItemSpacer()
+                ItemSubTitle {
+                    Text(text = stringResource(id = R.string.contact_label))
+                }
             }
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {

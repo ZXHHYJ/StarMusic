@@ -22,6 +22,7 @@ import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.theme.LocalTextStyles
 import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.ItemDivider
+import com.zxhhyj.ui.view.item.ItemSpacer
 
 @Composable
 fun SongParametersSheet(
@@ -29,29 +30,36 @@ fun SongParametersSheet(
 ) {
     LazyColumn {
         item {
+            ItemSpacer()
+        }
+        item {
             RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                SongParameterItem(
-                    title = stringResource(id = R.string.song_duration),
-                    info = song.duration.toTimeString()
-                )
-                ItemDivider()
+                song.duration?.let {
+                    SongParameterItem(
+                        title = stringResource(id = R.string.song_duration),
+                        info = it.toTimeString()
+                    )
+                    ItemDivider()
+                }
                 SongParameterItem(
                     title = stringResource(id = R.string.album),
-                    info = song.album.name
+                    info = song.albumName ?: stringResource(id = R.string.unknown_album)
                 )
                 ItemDivider()
                 song.bitrate?.let {
                     SongParameterItem(
                         title = stringResource(id = R.string.bit_rate),
-                        info = "${song.bitrate} kbps"
+                        info = "$it kbps"
                     )
                     ItemDivider()
                 }
-                SongParameterItem(
-                    title = stringResource(id = R.string.sample_rate),
-                    info = "${song.samplingRate} Hz"
-                )
-                ItemDivider()
+                song.samplingRate?.let {
+                    SongParameterItem(
+                        title = stringResource(id = R.string.sample_rate),
+                        info = "$it Hz"
+                    )
+                    ItemDivider()
+                }
                 SongParameterItem(
                     title = stringResource(id = R.string.file_path),
                     info = song.data

@@ -1,53 +1,54 @@
 package com.zxhhyj.music.ui.item
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.bean.SongBean
-import com.zxhhyj.music.logic.utils.MediaLibHelper.songs
+import com.zxhhyj.music.logic.utils.MediaLibHelper
 import com.zxhhyj.music.ui.common.AppAsyncImage
-import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.ui.theme.LocalColorScheme
+import com.zxhhyj.ui.view.item.ItemArrowRight
 
 @Composable
 fun AlbumItem(
-    modifier: Modifier = Modifier,
-    album: SongBean.Album,
+    albumName: String,
     onClick: () -> Unit
 ) {
-    BoxWithPercentages(modifier = modifier) {
-        Column(modifier = Modifier.fillMaxSize()) {
+    val songs = MediaLibHelper.Album[albumName]
+    ItemArrowRight(
+        icon = {
             AppAsyncImage(
-                modifier = Modifier.size(maxWidth),
-                data = album.songs.getOrNull(0)?.coverUrl,
-                onClick = onClick
+                modifier = Modifier
+                    .size(50.dp),
+                data = songs.getOrNull(0)?.coverUrl
             )
-            Spacer(modifier = Modifier.height(2.dp))
+        },
+        text = {
             Text(
-                text = album.name,
+                text = albumName,
                 color = LocalColorScheme.current.text,
-                fontSize = 14.sp,
+                fontSize = 15.sp,
                 maxLines = 1,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                overflow = TextOverflow.Ellipsis
             )
-            Spacer(modifier = Modifier.weight(1.0f))
+        },
+        subText = {
             Text(
-                text = stringResource(id = R.string.total_n_songs, album.songs.size),
+                text = stringResource(id = R.string.total_n_songs, songs.size),
                 color = LocalColorScheme.current.subText,
-                fontSize = 11.sp,
+                fontSize = 13.sp,
                 maxLines = 1,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                overflow = TextOverflow.Ellipsis
             )
-        }
+        }) {
+        onClick.invoke()
     }
 }

@@ -2,9 +2,6 @@ package com.zxhhyj.music.ui.screen.folderpreview
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
@@ -14,7 +11,7 @@ import com.zxhhyj.music.logic.bean.Folder
 import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
-import com.zxhhyj.ui.view.RoundColumn
+import com.zxhhyj.ui.view.roundColumn
 
 @Composable
 fun FolderPreviewScreen(
@@ -24,17 +21,16 @@ fun FolderPreviewScreen(
     AppScaffold(
         topBar = {
             AppCenterTopBar(title = { Text(text = folder.path.substringAfterLast("/")) })
-        }, modifier = Modifier
-            .fillMaxSize()
-            .statusBarsPadding()
-            .padding(paddingValues)
+        },
+        modifier = Modifier.fillMaxSize()
     ) {
-        RoundColumn(modifier = Modifier.fillMaxWidth()) {
-            LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = paddingValues) {
+            roundColumn {
                 items(folder.songs) {
                     SongItem(songBean = it)
                 }
             }
+
         }
     }
 }

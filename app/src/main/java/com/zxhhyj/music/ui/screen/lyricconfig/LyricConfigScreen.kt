@@ -37,8 +37,8 @@ import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.common.AlbumMotionBlur
 import com.zxhhyj.music.ui.common.lyric.Lyric
-import com.zxhhyj.music.ui.screen.play.PlayScreen
 import com.zxhhyj.music.ui.theme.translucentWhiteColor
+import com.zxhhyj.ui.theme.StarDimens
 import com.zxhhyj.ui.view.AppCenterTopBar
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.RoundColumn
@@ -52,14 +52,14 @@ fun LyricConfigScreen(paddingValues: PaddingValues) {
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .statusBarsPadding()
-            .padding(paddingValues),
+            .statusBarsPadding(),
         topBar = {
             AppCenterTopBar(title = { Text(text = stringResource(id = R.string.lyric)) })
         }) {
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize(),
+            contentPadding = paddingValues
         ) {
             item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
@@ -104,7 +104,7 @@ fun LyricConfigScreen(paddingValues: PaddingValues) {
                                     modifier = modifier
                                         .padding(
                                             vertical = 18.dp,
-                                            horizontal = PlayScreen.PlayScreenContentHorizontal
+                                            horizontal = StarDimens.horizontal
                                         )
                                         .graphicsLayer {
                                             scaleX = textScale

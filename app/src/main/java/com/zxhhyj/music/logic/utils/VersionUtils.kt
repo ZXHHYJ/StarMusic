@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.zxhhyj.music.logic.utils
 
 import android.content.pm.PackageManager
@@ -7,6 +5,10 @@ import android.os.Build
 import com.zxhhyj.music.MainApplication
 
 object VersionUtils {
+
+    /**
+     * 获取应用程序的版本名称
+     */
     val VersionName: String by lazy {
         val packageManager = MainApplication.context.packageManager
         val packageName = MainApplication.context.packageName
@@ -18,6 +20,10 @@ object VersionUtils {
         }
     }
 
+    /**
+     * 获取应用程序的版本号
+     */
+    @Suppress("DEPRECATION")
     val VersionCode: Long by lazy {
         val packageManager = MainApplication.context.packageManager
         val packageName = MainApplication.context.packageName

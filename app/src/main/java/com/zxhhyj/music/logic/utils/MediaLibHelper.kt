@@ -1,44 +1,51 @@
 package com.zxhhyj.music.logic.utils
 
+import com.github.promeg.pinyinhelper.Pinyin
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
-import java.util.Collections
 
 object MediaLibHelper {
 
     val songs: List<SongBean>
-        get() = (AndroidMediaLibRepository.songs + WebDavMediaLibRepository.songs).sortedWith(
-            compareBy<SongBean> {
-                when (SettingRepository.SongSortEnum.values()[SettingRepository.SongSort]) {
-                    SettingRepository.SongSortEnum.SONG_NAME -> it.songName
-                    SettingRepository.SongSortEnum.SONG_DURATION -> it.duration
-                    SettingRepository.SongSortEnum.SINGER_NAME -> it.artist.name
-                    SettingRepository.SongSortEnum.DATE_MODIFIED -> it.dateModified
-                }
-            }.let { comparator ->
-                if (SettingRepository.Descending) {
-                    Collections.reverseOrder(comparator)
-                } else {
-                    comparator
-                }
-            })
+        get() = AndroidMediaLibRepository.songs.sortedBy { it ->
+            when (SettingRepository.SongSortEnum.entries[SettingRepository.SongSort]) {
+                SettingRepository.SongSortEnum.SONG_NAME -> Pinyin.toPinyin(it.songName[0])
+                SettingRepository.SongSortEnum.SONG_DURATION -> it.duration.toString()
+                SettingRepository.SongSortEnum.SINGER_NAME -> it.artistName?.get(0)
+                    ?.let { Pinyin.toPinyin(it) }
+
+                SettingRepository.SongSortEnum.DATE_MODIFIED -> it.dateModified.toString()
+            }
+        } + WebDavMediaLibRepository.songs.sortedBy {
+            when (SettingRepository.SongSortEnum.entries[SettingRepository.SongSort]) {
+                SettingRepository.SongSortEnum.SONG_NAME -> Pinyin.toPinyin(
+                    it.data.substringAfterLast(
+                        "/"
+                    )[0]
+                )
+
+                SettingRepository.SongSortEnum.SONG_DURATION -> null
+                SettingRepository.SongSortEnum.SINGER_NAME -> null
+                SettingRepository.SongSortEnum.DATE_MODIFIED -> null
+            }
+        }
 
     val artists
-        get() = songs.map { it.artist }
-            .distinctBy { it.name }
-            .map { it.copy() }
+        get() = songs.distinctBy { it.artistName }.map { it.artistName }
 
     val albums
-        get() = songs.map { it.album }
-            .distinctBy { it.name }
-            .map { it.copy() }
+        get() = songs.distinctBy { it.albumName }.map { it.albumName }
 
-    val SongBean.Album.songs: List<SongBean>
-        get() = MediaLibHelper.songs.filter { it.album.name == this.name }
+    object Album {
+        operator fun get(albumName: String) =
+            songs.filter { it.albumName == albumName }
+    }
 
-    val SongBean.Artist.songs: List<SongBean>
-        get() = MediaLibHelper.songs.filter { it.artist.name == this.name }
+    object Artist {
+        operator fun get(artistName: String) =
+            songs.filter { it.artistName == artistName }
+    }
 
 }

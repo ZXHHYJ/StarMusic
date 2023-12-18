@@ -7,6 +7,9 @@ import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.config.DataSaverUtils
 import java.util.UUID
 
+/**
+ * 播放列表的仓库类，用于管理播放列表的数据。
+ */
 object PlayListRepository {
 
     /**
@@ -21,22 +24,25 @@ object PlayListRepository {
 
     /**
      * 向播放列表添加歌曲
+     *
+     * @param songBean 要添加的歌曲
      */
     fun PlayListBean.addSong(songBean: SongBean) {
-        playList += this.copy(songs = this.songs.toMutableList().apply {
-            val songToAdd =
-                PlayListSongBean(songBean.songName, songBean.artist.name, songBean.album.name)
-            add(songToAdd)
+        playList += copy(songs = songs.toMutableList().apply {
+            add(PlayListSongBean(songBean.data))
         })
         playList -= this
     }
 
+    /**
+     * 从播放列表移除歌曲
+     *
+     * @param songBean 要移除的歌曲
+     */
     fun PlayListBean.removeSong(songBean: SongBean) {
-        playList += this.copy(songs = this.songs.toMutableList().apply {
+        playList += copy(songs = songs.toMutableList().apply {
             val songToRemove = songs.find { song ->
-                songBean.songName == song.songName &&
-                        songBean.artist.name == song.artistName &&
-                        songBean.album.name == song.albumName
+                songBean.data == song.data
             }
             remove(songToRemove)
         })
@@ -45,6 +51,8 @@ object PlayListRepository {
 
     /**
      * 重命名播放列表
+     *
+     * @param name 新的播放列表名称
      */
     fun PlayListBean.rename(name: String) {
         playList += this.copy(name = name)
@@ -53,6 +61,8 @@ object PlayListRepository {
 
     /**
      * 创建新的播放列表
+     *
+     * @param name 播放列表名称
      */
     fun create(name: String) {
         if (!playList.any { it.name == name }) {
@@ -62,6 +72,8 @@ object PlayListRepository {
 
     /**
      * 移除播放列表
+     *
+     * @param model 要移除的播放列表
      */
     fun remove(model: PlayListBean) {
         playList -= model

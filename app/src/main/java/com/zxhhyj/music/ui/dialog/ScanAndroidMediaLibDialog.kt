@@ -13,17 +13,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
+import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.YesNoDialog
 
 @Composable
 fun ScanAndroidMediaLibDialog(onDismissRequest: () -> Unit) {
+    PlayerManager.clearPlayList()
     YesNoDialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
         title = stringResource(id = R.string.scan_music),
-        confirm = {},
-        dismiss = {})
+        positive = {},
+        negative = {})
     {
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator(

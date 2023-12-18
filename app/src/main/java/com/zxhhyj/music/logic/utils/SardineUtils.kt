@@ -1,15 +1,15 @@
 package com.zxhhyj.music.logic.utils
 
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
-import com.zxhhyj.music.logic.repository.SettingRepository
+import com.zxhhyj.music.logic.bean.WebDavSource
 
 object SardineUtils {
-    fun createSardine(): OkHttpSardine {
-        return OkHttpSardine().apply {
-            setCredentials(
-                SettingRepository.WebDavConfig.username,
-                SettingRepository.WebDavConfig.password
-            )
-        }
+
+    fun WebDavSource.toSardine() = OkHttpSardine().apply {
+        setCredentials(
+            username,
+            password
+        )
     }
+
 }

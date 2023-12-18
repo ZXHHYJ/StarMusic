@@ -2,10 +2,10 @@ package com.zxhhyj.ui.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.LocalTextStyle
@@ -25,40 +25,40 @@ fun YesNoDialog(
     onDismissRequest: () -> Unit,
     properties: DialogProperties = DialogProperties(),
     title: String,
-    confirm: @Composable () -> Unit,
-    dismiss: @Composable () -> Unit,
-    content: @Composable () -> Unit
+    positive: @Composable () -> Unit,
+    negative: @Composable () -> Unit,
+    neutral: @Composable (() -> Unit)? = null,
+    content: @Composable ColumnScope.() -> Unit
 ) {
     Dialog(onDismissRequest = onDismissRequest, properties = properties) {
         AppCard(backgroundColor = LocalColorScheme.current.highBackground) {
             Column(
-                modifier = Modifier.padding(
-                    horizontal = StarDimens.horizontal,
-                    vertical = StarDimens.vertical
-                )
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = StarDimens.horizontal,
+                        vertical = StarDimens.vertical
+                    ), verticalArrangement = Arrangement.spacedBy(StarDimens.vertical)
             ) {
                 Text(
                     text = title,
                     color = LocalColorScheme.current.highlight,
                     style = LocalTextStyles.current.main
                 )
-                Spacer(modifier = Modifier.height(StarDimens.vertical))
-                content.invoke()
-                Spacer(modifier = Modifier.height(StarDimens.vertical))
+                content.invoke(this)
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(
-                        StarDimens.horizontal,
-                        Alignment.End
-                    ),
+                    horizontalArrangement = Arrangement.spacedBy(StarDimens.horizontal),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     CompositionLocalProvider(
                         LocalContentColor provides LocalColorScheme.current.highlight,
                         LocalTextStyle provides LocalTextStyles.current.main
                     ) {
-                        dismiss.invoke()
-                        confirm.invoke()
+                        neutral?.invoke()
+                        Spacer(modifier = Modifier.weight(1.0f))
+                        negative.invoke()
+                        positive.invoke()
                     }
                 }
             }

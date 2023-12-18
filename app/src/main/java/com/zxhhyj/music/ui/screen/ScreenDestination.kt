@@ -2,7 +2,6 @@ package com.zxhhyj.music.ui.screen
 
 import android.os.Parcelable
 import com.zxhhyj.music.logic.bean.PlayListBean
-import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.ui.screen.search.SearchScreenTabs
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
@@ -133,12 +132,6 @@ sealed class ScreenDestination : Parcelable {
     data object Equalizer : ScreenDestination()
 
     /**
-     * WebDav
-     */
-    @Parcelize
-    data object WebDav : ScreenDestination()
-
-    /**
      * WebDav配置设置
      */
     @Parcelize
@@ -154,18 +147,31 @@ sealed class ScreenDestination : Parcelable {
      * 歌手详情
      */
     @Parcelize
-    data class SingerCnt(val artist: @RawValue SongBean.Artist) : ScreenDestination()
+    data class SingerCnt(val artistName: String) : ScreenDestination()
 
     /**
      * 专辑详情
      */
     @Parcelize
-    data class AlbumCnt(val album: @RawValue SongBean.Album) : ScreenDestination()
+    data class AlbumCnt(val albumName: String) : ScreenDestination()
 
     /**
      * 专辑详情
      */
     @Parcelize
     data class PlayListCnt(val model: @RawValue PlayListBean) : ScreenDestination()
+
+    /**
+     * @see [com.zxhhyj.music.ui.screen.webdav.sourcemodify.WebDavSourceModifyScreen]
+     */
+    @Parcelize
+    data class WebDavSourceModify(val indexInWebDavSourceList: Int) : ScreenDestination()
+
+    /**
+     * @see [com.zxhhyj.music.ui.screen.webdav.foldermanager.WebDavFolderManagerScreen]
+     */
+    @Parcelize
+    data class WebDavFolderManager(val indexInWebDavSourceList: Int, val path: String) :
+        ScreenDestination()
 
 }

@@ -33,15 +33,6 @@ sealed class DialogDestination : Parcelable {
     data object SyncWebDavMediaLib : DialogDestination()
 
     @Parcelize
-    data object EditWebDavAddress : DialogDestination()
-
-    @Parcelize
-    data object EditWebDavUsername : DialogDestination()
-
-    @Parcelize
-    data object EditWebDavPassword : DialogDestination()
-
-    @Parcelize
     data class EditPlayListTitle(val model: @RawValue PlayListBean) : DialogDestination()
 
     @Parcelize

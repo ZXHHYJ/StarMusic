@@ -22,12 +22,14 @@ private val textFieldColors
     @Composable get() = TextFieldDefaults.textFieldColors(
         textColor = LocalColorScheme.current.text,
         cursorColor = LocalColorScheme.current.text,
-        backgroundColor = LocalColorScheme.current.background,
+        backgroundColor = LocalColorScheme.current.highBackground,
         placeholderColor = LocalColorScheme.current.subText,
         focusedIndicatorColor = LocalColorScheme.current.outline,
         unfocusedIndicatorColor = LocalColorScheme.current.outline,
         leadingIconColor = LocalColorScheme.current.text,
-        trailingIconColor = LocalColorScheme.current.text
+        trailingIconColor = LocalColorScheme.current.text,
+        focusedLabelColor = LocalColorScheme.current.highlight,
+        unfocusedLabelColor = LocalColorScheme.current.subText,
     )
 
 @Composable

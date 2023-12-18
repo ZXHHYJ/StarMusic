@@ -51,11 +51,7 @@ fun StartSheet(sheetNavController: NavController<SheetDestination>) {
     BackHandler {
         activity?.finish()
     }
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(LocalColorScheme.current.background)
-    ) {
+    LazyColumn(modifier = Modifier.background(LocalColorScheme.current.background)) {
         item {
             Column(
                 modifier = Modifier

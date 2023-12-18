@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.LocalTextStyle
@@ -52,13 +51,15 @@ fun AppTab(
         Column(
             modifier
                 .heightIn(min = 28.dp)
-                .widthIn(min = 48.dp)
-                .clickable { onClick() },
+                .clickable { onClick() }
+                .padding(horizontal = StarDimens.horizontal),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            CompositionLocalProvider(LocalContentColor provides if (enabled) (if (selected) LocalColorScheme.current.onText else LocalColorScheme.current.text) else LocalColorScheme.current.disabled,
-                LocalTextStyle provides LocalTextStyles.current.sub) {
+            CompositionLocalProvider(
+                LocalContentColor provides if (enabled) (if (selected) LocalColorScheme.current.onText else LocalColorScheme.current.text) else LocalColorScheme.current.disabled,
+                LocalTextStyle provides LocalTextStyles.current.sub
+            ) {
                 content()
             }
         }

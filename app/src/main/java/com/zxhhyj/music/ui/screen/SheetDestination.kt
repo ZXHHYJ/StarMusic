@@ -25,7 +25,7 @@ sealed class SheetDestination : Parcelable {
     data class PlaylistMenu(val model: @RawValue PlayListBean) : SheetDestination()
 
     @Parcelize
-    data object SongSort : SheetDestination()
+    data object MediaLibMenu : SheetDestination()
 
     @Parcelize
     data object Timer : SheetDestination()

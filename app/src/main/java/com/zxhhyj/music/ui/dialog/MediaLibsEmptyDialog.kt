@@ -20,13 +20,13 @@ fun MediaLibsEmptyDialog(
     YesNoDialog(
         onDismissRequest = onDismissRequest,
         title = stringResource(id = R.string.scan_music),
-        confirm = {
+        positive = {
             Text(text = stringResource(id = R.string.yes), modifier = Modifier.clickable {
                 onDismissRequest.invoke()
                 mainNavController.navigate(ScreenDestination.MediaLibConfig)
             })
         },
-        dismiss = {
+        negative = {
             Text(text = stringResource(id = R.string.cancel), modifier = Modifier.clickable {
                 onDismissRequest.invoke()
             })

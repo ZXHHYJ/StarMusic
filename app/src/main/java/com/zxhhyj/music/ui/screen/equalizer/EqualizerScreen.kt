@@ -1,11 +1,10 @@
 package com.zxhhyj.music.ui.screen.equalizer
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -33,64 +32,67 @@ fun EqualizerScreen(paddingValues: PaddingValues) {
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .statusBarsPadding()
-            .padding(paddingValues), topBar = {
+            .statusBarsPadding(),
+        topBar = {
             AppCenterTopBar(title = { Text(text = stringResource(id = R.string.eq)) })
         }) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                ItemSwitcher(
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Rounded.Equalizer,
-                            contentDescription = null
-                        )
-                    },
-                    text = { Text(text = stringResource(id = R.string.eq)) },
-                    subText = { },
-                    checked = SettingRepository.EnableEqualizer,
-                    onCheckedChange = {
-                        SettingRepository.EnableEqualizer = it
-                    }
-                )
-            }
-            ItemSpacer()
-            if (SettingRepository.EnableEqualizer) {
+        LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = paddingValues) {
+            item {
                 RoundColumn(modifier = Modifier.fillMaxWidth()) {
-
-                    val bandCount = PlayerManager.getNumberOfBands()
-                    val bandRange = PlayerManager.getBandRange()
-
-                    if (SettingRepository.EqualizerConfig == null) {
-                        SettingRepository.EqualizerConfig = IntArray(bandCount)
-                    }
-
-                    for (bandIndex in 0 until bandCount) {
-                        var bandLevel by remember {
-                            mutableIntStateOf(
-                                SettingRepository.EqualizerConfig?.get(bandIndex) ?: 0
+                    ItemSwitcher(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.Equalizer,
+                                contentDescription = null
                             )
+                        },
+                        text = { Text(text = stringResource(id = R.string.eq)) },
+                        subText = { },
+                        checked = SettingRepository.EnableEqualizer,
+                        onCheckedChange = {
+                            SettingRepository.EnableEqualizer = it
+                        }
+                    )
+                }
+            }
+            item {
+                ItemSpacer()
+            }
+            item {
+                if (SettingRepository.EnableEqualizer) {
+                    RoundColumn(modifier = Modifier.fillMaxWidth()) {
+
+                        val bandCount = PlayerManager.getNumberOfBands()
+                        val bandRange = PlayerManager.getBandRange()
+
+                        if (SettingRepository.EqualizerConfig == null) {
+                            SettingRepository.EqualizerConfig = IntArray(bandCount)
                         }
 
-                        val bandFreqRange = PlayerManager.getBandFreqRange(bandIndex)
-                        val bandFreqText = "${bandFreqRange.min()}-${bandFreqRange.max()}"
+                        for (bandIndex in 0 until bandCount) {
+                            var bandLevel by remember {
+                                mutableIntStateOf(
+                                    SettingRepository.EqualizerConfig?.get(bandIndex) ?: 0
+                                )
+                            }
+                            val bandFreqRange = PlayerManager.getBandFreqRange(bandIndex)
+                            ItemSlider(
+                                text = { Text(text = "${bandFreqRange.min() / 1000}Hz") },
+                                subText = { Text(text = "${bandLevel / 100}db") },
+                                value = bandLevel.toFloat(),
+                                onValueChange = { newLevel ->
+                                    PlayerManager.setBandLevel(bandIndex, newLevel.toInt())
+                                    bandLevel = PlayerManager.getBandLevel(bandIndex)
+                                    SettingRepository.EqualizerConfig =
+                                        SettingRepository.EqualizerConfig?.copyOf()
+                                            ?.apply { set(bandIndex, bandLevel) }
+                                },
+                                valueRange = bandRange.lower.toFloat()..bandRange.upper.toFloat()
+                            )
 
-                        ItemSlider(
-                            text = { Text(text = bandFreqText) },
-                            subText = { Text(text = "$bandLevel") },
-                            value = bandLevel.toFloat(),
-                            onValueChange = { newLevel ->
-                                PlayerManager.setBandLevel(bandIndex, newLevel.toInt())
-                                bandLevel = PlayerManager.getBandLevel(bandIndex)
-                                SettingRepository.EqualizerConfig =
-                                    SettingRepository.EqualizerConfig?.copyOf()
-                                        ?.apply { set(bandIndex, bandLevel) }
-                            },
-                            valueRange = bandRange.lower.toFloat()..bandRange.upper.toFloat()
-                        )
-
-                        if (bandIndex != bandCount - 1) {
-                            ItemDivider()
+                            if (bandIndex != bandCount - 1) {
+                                ItemDivider()
+                            }
                         }
                     }
                 }

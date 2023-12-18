@@ -6,15 +6,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.ContentAlpha
-import androidx.compose.material.Icon
 import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.Text
+import androidx.compose.material.LocalContentColor
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.theme.LocalTextStyles
@@ -44,8 +43,8 @@ fun AppIconButton(
 fun AppButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    imageVector: ImageVector,
-    text: String,
+    icon: (@Composable () -> Unit)? = null,
+    text: @Composable () -> Unit,
     enabled: Boolean = true
 ) {
     Button(
@@ -63,10 +62,15 @@ fun AppButton(
             hoveredElevation = 0.dp,
             focusedElevation = 0.dp
         ),
-        shape = RoundedCornerShape(StarDimens.round),
+        shape = RoundedCornerShape(50),
         contentPadding = PaddingValues(horizontal = StarDimens.horizontal / 2)
     ) {
-        Icon(imageVector = imageVector, contentDescription = null, tint = Color.White)
-        Text(text = text, style = LocalTextStyles.current.main, color = Color.White)
+        CompositionLocalProvider(
+            LocalTextStyle provides LocalTextStyles.current.sub,
+            LocalContentColor provides if (enabled) Color.White else LocalColorScheme.current.subText
+        ) {
+            icon?.invoke()
+            text()
+        }
     }
 }

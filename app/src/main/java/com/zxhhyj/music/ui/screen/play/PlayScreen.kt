@@ -75,7 +75,6 @@ import com.mxalbert.sharedelements.SharedElement
 import com.mxalbert.sharedelements.SharedElementsRoot
 import com.mxalbert.sharedelements.SharedElementsTransitionSpec
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.toTimeString
 import com.zxhhyj.music.service.playermanager.PlayerManager
@@ -85,9 +84,8 @@ import com.zxhhyj.music.ui.common.BoxWithPercentages
 import com.zxhhyj.music.ui.common.KeepScreenOn
 import com.zxhhyj.music.ui.common.PanelController
 import com.zxhhyj.music.ui.common.PanelState
-import com.zxhhyj.music.ui.common.SoundQualityIcon
-import com.zxhhyj.music.ui.common.WebDavIcon
 import com.zxhhyj.music.ui.common.lyric.Lyric
+import com.zxhhyj.music.ui.item.SongItem
 import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.music.ui.theme.horizontal
 import com.zxhhyj.music.ui.theme.round
@@ -100,7 +98,6 @@ import com.zxhhyj.ui.view.AppCard
 import com.zxhhyj.ui.view.AppDivider
 import com.zxhhyj.ui.view.AppIconButton
 import com.zxhhyj.ui.view.AppSlider
-import com.zxhhyj.ui.view.item.Item
 import com.zxhhyj.ui.view.item.ItemSpacer
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.NavController
@@ -109,38 +106,37 @@ import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.popUpTo
 import dev.olshevski.navigation.reimagined.rememberNavController
 
-
-enum class PlayScreenDestination {
+private enum class PlayScreenDestination {
     Controller,
     Lyric,
     PlayQueue,
 }
 
-val PlayScreenDestination.tabIcon
+private val PlayScreenDestination.tabIcon
     get() = when (this) {
         PlayScreenDestination.Controller -> throw RuntimeException()
         PlayScreenDestination.Lyric -> Icons.Rounded.FontDownload
         PlayScreenDestination.PlayQueue -> Icons.Rounded.FormatListBulleted
     }
 
-const val ShareAlbumKey = "album"
+private const val ShareAlbumKey = "album"
 
-val AnimDurationMillis
+private val AnimDurationMillis
     get() = if (!SettingRepository.EnableLinkUI) 300 else 0
 
-object PlayScreen {
+private object PlayScreen {
     val PlayScreenContentHorizontal = StarDimens.horizontal
     val PlayScreenHorizontal = 12.dp
 }
 
-val MaterialFadeInTransitionSpec
+private val MaterialFadeInTransitionSpec
     get() = SharedElementsTransitionSpec(
         pathMotionFactory = MaterialArcMotionFactory,
         durationMillis = AnimDurationMillis,
         fadeMode = FadeMode.In
     )
 
-val MaterialFadeOutTransitionSpec
+private val MaterialFadeOutTransitionSpec
     get() = SharedElementsTransitionSpec(
         pathMotionFactory = MaterialArcMotionFactory,
         durationMillis = AnimDurationMillis,
@@ -403,7 +399,7 @@ private fun PlayControllerScreen(sheetNavController: NavController<SheetDestinat
                         maxLines = 1
                     )
                     Text(
-                        text = currentSong?.artist?.name ?: "",
+                        text = currentSong?.artistName ?: "",
                         color = translucentWhiteColor,
                         fontSize = 16.sp,
                         overflow = TextOverflow.Ellipsis,
@@ -658,72 +654,40 @@ private fun ColumnScope.PlayQueueScreen(panelController: PanelController) {
 
         val currentIndex by PlayerManager.indexFlow.collectAsState()
 
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            state = lazyListState,
-            contentPadding = PaddingValues(top = vertical)
+        CompositionLocalProvider(
+            LocalColorScheme provides LocalColorScheme.current.copy(
+                text = Color.White,
+                subText = translucentWhiteColor
+            ), LocalContentColor provides translucentWhiteColor
         ) {
-            playlist?.let { songBeans ->
-                itemsIndexed(songBeans) { index, model ->
-                    AppCard(
-                        backgroundColor = if (currentIndex == index) Color.White.copy(alpha = 0.2f) else Color.Transparent,
-                        modifier = Modifier
-                            .onSizeChanged {
-                                selectItemBoxSize = it
-                            }
-                            .fillMaxWidth()
-                    ) {
-                        Item(
-                            icon = {
-                                AppAsyncImage(
-                                    modifier = Modifier
-                                        .size(50.dp),
-                                    data = model.coverUrl
-                                )
-                            },
-                            text = {
-                                Text(
-                                    text = model.songName,
-                                    color = Color.White,
-                                    fontSize = 15.sp,
-                                    maxLines = 1,
-                                    textAlign = TextAlign.Center,
-                                    overflow = TextOverflow.Ellipsis
-                                )
-                            },
-                            subText = {
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                                ) {
-                                    if (SettingRepository.EnableShowSoundQualityLabel) {
-                                        SoundQualityIcon(song = model)
-                                    }
-                                    if (model is SongBean.WebDav) {
-                                        WebDavIcon()
-                                    }
-                                    Text(
-                                        text = model.artist.name,
-                                        color = translucentWhiteColor,
-                                        fontSize = 13.sp,
-                                        maxLines = 1,
-                                        textAlign = TextAlign.Center,
-                                        overflow = TextOverflow.Ellipsis
-                                    )
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                state = lazyListState,
+                contentPadding = PaddingValues(top = vertical)
+            ) {
+                playlist?.let { songBeans ->
+                    itemsIndexed(songBeans) { index, model ->
+                        AppCard(
+                            backgroundColor = if (currentIndex == index) Color.White.copy(alpha = 0.2f) else Color.Transparent,
+                            modifier = Modifier
+                                .onSizeChanged {
+                                    selectItemBoxSize = it
                                 }
-                            },
-                            actions = {
-                                AppIconButton(onClick = {
-                                    PlayerManager.removeSong(index)
-                                }) {
-                                    Icon(
-                                        imageVector = Icons.Rounded.Remove,
-                                        contentDescription = null,
-                                        tint = translucentWhiteColor
-                                    )
-                                }
-                            }) {
-                            PlayerManager.play(songBeans, index)
+                                .fillMaxWidth()
+                        ) {
+                            SongItem(
+                                songBean = model,
+                                actions = {
+                                    AppIconButton(
+                                        onClick = {
+                                            PlayerManager.removeSong(index)
+                                        }) {
+                                        Icon(
+                                            imageVector = Icons.Rounded.Remove,
+                                            contentDescription = null,
+                                        )
+                                    }
+                                }) { PlayerManager.play(songBeans, index) }
                         }
                     }
                 }
@@ -793,7 +757,7 @@ private fun TopSongItem(
                 overflow = TextOverflow.Ellipsis
             )
             Text(
-                text = currentSong?.artist?.name ?: "",
+                text = currentSong?.artistName ?: "",
                 color = translucentWhiteColor,
                 fontSize = 14.sp,
                 maxLines = 1,

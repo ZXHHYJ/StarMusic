@@ -10,8 +10,7 @@ import com.zxhhyj.music.logic.bean.PlayListBean
 import com.zxhhyj.music.logic.bean.PlayListSongBean
 import com.zxhhyj.music.logic.bean.PlayMemoryBean
 import com.zxhhyj.music.logic.bean.SongBean
-import com.zxhhyj.music.logic.bean.WebDavConfig
-import com.zxhhyj.music.logic.bean.WebDavFile
+import com.zxhhyj.music.logic.bean.WebDavSource
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.MediaLibHelper
 import com.zxhhyj.music.service.StarMusicService
@@ -47,12 +46,7 @@ class MainApplication : Application() {
         //初始化FastKV
         FastKVConfig.setExecutor(Dispatchers.Default.asExecutor())
 
-        val gson = GsonBuilder().serializeNulls().create()
-
-        registerTypeConverters(
-            save = { bean -> gson.toJson(bean) },
-            restore = { str -> gson.fromJson(str, WebDavFile::class.java) }
-        )
+        val gson = GsonBuilder().create()
 
         registerTypeConverters(
             save = { bean -> gson.toJson(bean) },
@@ -67,21 +61,6 @@ class MainApplication : Application() {
         registerTypeConverters(
             save = { bean -> gson.toJson(bean) },
             restore = { str -> gson.fromJson(str, SongBean.WebDav::class.java) }
-        )
-
-        registerTypeConverters(
-            save = { bean -> gson.toJson(bean) },
-            restore = { str -> gson.fromJson(str, SongBean.Album::class.java) }
-        )
-
-        registerTypeConverters(
-            save = { bean -> gson.toJson(bean) },
-            restore = { str -> gson.fromJson(str, SongBean.Artist::class.java) }
-        )
-
-        registerTypeConverters<WebDavConfig>(
-            save = { bean -> gson.toJson(bean) },
-            restore = { str -> gson.fromJson(str, WebDavConfig::class.java) }
         )
 
         registerTypeConverters(
@@ -124,6 +103,11 @@ class MainApplication : Application() {
             restore = { str -> gson.fromJson(str, PaletteStyle::class.java) }
         )
 
+        registerTypeConverters(
+            save = { bean -> gson.toJson(bean) },
+            restore = { str -> gson.fromJson(str, WebDavSource::class.java) }
+        )
+
         //确保播放音乐时播放启动服务
         PlayerManager.pauseFlow.onEach {
             if (!it) {
@@ -146,10 +130,17 @@ class MainApplication : Application() {
         //记忆播放列表和下标
         SettingRepository.PlayMemory
             ?.takeIf { SettingRepository.EnablePlayMemory }
-            ?.takeIf { it.index != null }
-            ?.takeIf { it.playlist != null }
-            ?.let {
-                PlayerManager.install(it.playlist!!, it.index!!)
+            ?.let { it ->
+                if (it.index == null) return
+                if (it.songInSongsIndexList == null) return
+                val list = it.songInSongsIndexList.mapNotNull {
+                    try {
+                        MediaLibHelper.songs[it]
+                    } catch (_: Exception) {
+                        null
+                    }
+                }
+                PlayerManager.install(list, it.index)
             }
     }
 
