@@ -21,8 +21,8 @@ import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -57,7 +57,6 @@ import kotlinx.parcelize.Parcelize
 private sealed class SourceTabs : Parcelable {
     data object Local : SourceTabs()
     data class WebDav(val webDavSource: WebDavSource) : SourceTabs()
-    data object None : SourceTabs()
 }
 
 private val SourceTabs.tabName: String
@@ -67,8 +66,6 @@ private val SourceTabs.tabName: String
             ?: stringResource(
                 id = R.string.nothing
             )
-
-        SourceTabs.None -> throw RuntimeException()
     }
 
 @Composable
@@ -77,25 +74,12 @@ fun MediaLibScreen(
     sheetNavController: NavController<SheetDestination>,
     paddingValues: PaddingValues
 ) {
-    val tabs = when {
-        SettingRepository.EnableAndroidMediaLibs && SettingRepository.EnableWebDav -> {
-            listOf(SourceTabs.Local) + WebDavMediaLibRepository.WebDavSources.map {
-                SourceTabs.WebDav(it)
-            }
-        }
-
-        !SettingRepository.EnableAndroidMediaLibs && SettingRepository.EnableWebDav -> {
-            WebDavMediaLibRepository.WebDavSources.map {
-                SourceTabs.WebDav(it)
-            }
-        }
-
-        else -> {
-            listOf(SourceTabs.None)
-        }
-    }
-    var showTab: SourceTabs by rememberSaveable(tabs.size) {
-        mutableStateOf(tabs[0])
+    val tabs =
+        (listOf(if (SettingRepository.EnableAndroidMediaLibs) SourceTabs.Local else null) + if (SettingRepository.EnableWebDav) WebDavMediaLibRepository.WebDavSources.map {
+            SourceTabs.WebDav(it)
+        } else emptyList()).filterNotNull()
+    var showTab: SourceTabs? by remember {
+        mutableStateOf(tabs.getOrNull(0))
     }
     val lazyListState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
@@ -217,7 +201,7 @@ fun MediaLibScreen(
                         }
                     }
 
-                    SourceTabs.None -> {}
+                    else -> {}
                 }
             }
         }

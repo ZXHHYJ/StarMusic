@@ -70,7 +70,7 @@ import java.io.File
 
 class PreviewSongActivity : ComponentActivity() {
 
-    private val mediaPlayer by lazy { CueMediaPlayer() }
+    private val cueMediaPlayer = CueMediaPlayer(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,12 +99,12 @@ class PreviewSongActivity : ComponentActivity() {
                                 skipHalfExpanded = true
                             )
                         }) {
-                        val pause by mediaPlayer.pauseFlow.collectAsState()
+                        val pause by cueMediaPlayer.pauseFlow.collectAsState()
                         val songBean = getRealPathFromUri(
                             LocalContext.current, uri
                         )?.let { path -> File(path).toSongBeanLocal() }
                         songBean?.let {
-                            mediaPlayer.preparePlay(songBean)
+                            cueMediaPlayer.preparePlay(songBean)
                         }
                         AppCard(
                             backgroundColor = LocalColorScheme.current.background,
@@ -121,8 +121,8 @@ class PreviewSongActivity : ComponentActivity() {
                                     })
                                 }
                                 item {
-                                    val progress by mediaPlayer.currentProgressFlow.collectAsState()
-                                    val duration by mediaPlayer.songDurationFlow.collectAsState()
+                                    val progress by cueMediaPlayer.currentProgressFlow.collectAsState()
+                                    val duration by cueMediaPlayer.songDurationFlow.collectAsState()
                                     RoundColumn(modifier = Modifier.fillMaxWidth()) {
                                         Box(
                                             modifier = Modifier
@@ -188,7 +188,7 @@ class PreviewSongActivity : ComponentActivity() {
                                                         )
                                                     }
                                                 ) {
-                                                    mediaPlayer.seekTo(it)
+                                                    cueMediaPlayer.seekTo(it)
                                                 }
                                                 CompositionLocalProvider(
                                                     LocalColorScheme provides LocalColorScheme.current.copy(
@@ -203,7 +203,7 @@ class PreviewSongActivity : ComponentActivity() {
                                                         value = progress.toFloat(),
                                                         valueRange = 0f..duration.toFloat(),
                                                         onValueChange = {
-                                                            mediaPlayer.seekTo(it.toInt())
+                                                            cueMediaPlayer.seekTo(it.toInt())
                                                         }
                                                     )
                                                 }
@@ -231,10 +231,10 @@ class PreviewSongActivity : ComponentActivity() {
                                                 )
                                             },
                                             subText = {}) {
-                                            if (mediaPlayer.pauseFlow.value) {
-                                                mediaPlayer.start()
+                                            if (cueMediaPlayer.pauseFlow.value) {
+                                                cueMediaPlayer.start()
                                             } else {
-                                                mediaPlayer.pause()
+                                                cueMediaPlayer.pause()
                                             }
                                         }
                                         ItemDivider()
@@ -251,7 +251,7 @@ class PreviewSongActivity : ComponentActivity() {
                                             subText = {},
                                             enabled = SettingRepository.EnableAndroidMediaLibs
                                         ) {
-                                            mediaPlayer.pause()
+                                            cueMediaPlayer.pause()
                                             AndroidMediaLibRepository.addSong(songBean!!)
                                             startActivity(
                                                 Intent(
@@ -277,6 +277,6 @@ class PreviewSongActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mediaPlayer.release()
+        cueMediaPlayer.release()
     }
 }

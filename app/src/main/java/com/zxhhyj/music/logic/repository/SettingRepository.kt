@@ -236,4 +236,13 @@ object SettingRepository {
         initialValue = 1024
     )
 
+    /**
+     * 记录当前App版本号
+     */
+    var AppVersion by mutableDataSaverStateOf(
+        dataSaverInterface = DataSaverUtils,
+        key = "AppVersion",
+        initialValue = Long.MIN_VALUE
+    )
+
 }

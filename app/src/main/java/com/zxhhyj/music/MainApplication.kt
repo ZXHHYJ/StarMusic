@@ -118,12 +118,6 @@ class MainApplication : Application() {
             if (it != null)
                 startPlayerService()
         }.launchIn(GlobalScope)
-        //app启动后自动播放音乐
-        if (SettingRepository.EnableAutoPlayMusic) {
-            MediaLibHelper.songs.takeIf { it.isNotEmpty() }?.run {
-                PlayerManager.play(this, 0)
-            }
-        }
 
         //记忆播放模式
         PlayerManager.setPlayMode(SettingRepository.PlayMode)
@@ -142,6 +136,17 @@ class MainApplication : Application() {
                 }
                 PlayerManager.install(list, it.index)
             }
+
+        //app启动后自动播放音乐
+        if (SettingRepository.EnableAutoPlayMusic) {
+            PlayerManager.playListFlow.value?.takeIf { it.isNotEmpty() }?.let {
+                PlayerManager.start()
+            } ?: run {
+                MediaLibHelper.songs.takeIf { it.isNotEmpty() }?.run {
+                    PlayerManager.play(this, 0)
+                }
+            }
+        }
     }
 
     @Synchronized

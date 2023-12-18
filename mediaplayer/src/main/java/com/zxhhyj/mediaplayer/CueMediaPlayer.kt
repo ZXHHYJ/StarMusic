@@ -1,10 +1,17 @@
+@file:UnstableApi
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
+
 package com.zxhhyj.mediaplayer
 
-import android.media.MediaPlayer
+import android.content.Context
 import android.media.audiofx.Equalizer
 import android.util.Range
+import androidx.media3.common.MediaItem
+import androidx.media3.common.PlaybackException
+import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.exoplayer.ExoPlayer
 import com.zxhhyj.mediaplayer.impl.CueMediaInfo
-import com.zxhhyj.mediaplayer.exception.MediaPlayerException
 import com.zxhhyj.mediaplayer.impl.DataSource
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +28,7 @@ import kotlinx.coroutines.launch
  * 管理使用 MediaPlayer 播放歌曲。
  */
 class CueMediaPlayer(
+    context: Context,
     private val source: DataSource = object : DataSource {
         override fun getDataSource(data: String): String {
             return data
@@ -28,9 +36,58 @@ class CueMediaPlayer(
     }
 ) {
 
-    private val mediaPlayer = MediaPlayer()
+    private val listener = object : Player.Listener {
 
-    private var equalizer = Equalizer(0, mediaPlayer.audioSessionId).apply {
+        override fun onPlayerError(error: PlaybackException) {
+            super.onPlayerError(error)
+            errorListener?.invoke(this@CueMediaPlayer, error)
+        }
+
+        override fun onPlaybackStateChanged(playbackState: Int) {
+            super.onPlaybackStateChanged(playbackState)
+            when (playbackState) {
+                Player.STATE_READY -> {
+                    if (playWhenReady) {
+                        start()
+                    }
+                }
+
+                Player.STATE_BUFFERING -> {
+                }
+
+                Player.STATE_ENDED -> {
+                    this@CueMediaPlayer.pause()
+                    completionListener?.invoke()
+                }
+
+                Player.STATE_IDLE -> {
+                }
+            }
+        }
+
+        override fun onEvents(player: Player, events: Player.Events) {
+            super.onEvents(player, events)
+            if (player.isPlaying) {
+                timer.apply {
+                    start(
+                        0,
+                        player.duration.toInt(),
+                        player.currentPosition.toInt()
+                    )
+                    _songDurationFlow.value = currentSong?.duration?.toInt() ?: endTime
+                }
+            } else {
+                timer.pause()
+            }
+            _pauseFlow.value = !player.isPlaying
+        }
+    }
+
+    private val exoPlayer = ExoPlayer.Builder(context).build().apply {
+        addListener(listener)
+    }
+
+    private var equalizer = Equalizer(0, exoPlayer.audioSessionId).apply {
         enabled = true
     }
 
@@ -38,7 +95,25 @@ class CueMediaPlayer(
 
     private var currentSong: CueMediaInfo? = null
 
-    private var timer: Timer? = null
+    private val timer by lazy {
+        Timer().apply {
+            setOnFinishedListener {
+                currentSong?.takeIf { it.startPosition != null }?.let {
+                    this@CueMediaPlayer.seekTo(it.startPosition!!.toInt())
+                } ?: run {
+                    this@CueMediaPlayer.seekTo(0)
+                }
+                completionListener?.invoke()
+            }
+            setOnUpdateListener { newTime ->
+                currentSong?.takeIf { it.startPosition != null }?.let {
+                    _currentProgressFlow.value = (it.startPosition!! + newTime).toInt()
+                } ?: run {
+                    _currentProgressFlow.value = newTime
+                }
+            }
+        }
+    }
 
     private val _pauseFlow = MutableStateFlow(true)
     val pauseFlow: StateFlow<Boolean> = _pauseFlow
@@ -49,7 +124,7 @@ class CueMediaPlayer(
     private val _songDurationFlow = MutableStateFlow(0)
     val songDurationFlow: StateFlow<Int> = _songDurationFlow
 
-    var errorListener: (CueMediaPlayer.(Exception) -> Unit)? = null
+    var errorListener: (CueMediaPlayer.(PlaybackException) -> Unit)? = null
 
     var completionListener: (() -> Unit)? = null
 
@@ -63,139 +138,33 @@ class CueMediaPlayer(
 
     private fun preparePlay(song: CueMediaInfo, playWhenReady: Boolean) {
         this.playWhenReady = playWhenReady
-        this.currentSong = song
+        currentSong = song
         _currentProgressFlow.value = 0
-        song.duration?.let {
-            _songDurationFlow.value = it.toInt()
-        }
-
-        timer?.pause()
-        timer = null
-        //暂停并将timer置空
-        when {
-            song.duration != null && song.startPosition != null && song.endPosition != null -> {
-                timer = Timer(0, song.duration!!.toInt()).apply {
-                    setOnFinishedListener {
-                        this@CueMediaPlayer.seekTo(song.startPosition!!.toInt())
-                        completionListener?.invoke()
-                    }
-                    setOnUpdateListener {
-                        _currentProgressFlow.value = it
-                    }
-                }
-                mediaPlayer.apply {
-                    reset()
-                    setOnSeekCompleteListener {
-                        val currentPosition = when (song.startPosition) {
-                            0L -> it.currentPosition
-                            else -> it.currentPosition - song.startPosition!!
-                        }.toInt()
-                        timer?.setCurrentTime(currentPosition)
-                    }
-                    setOnPreparedListener {
-                        it.seekTo(song.startPosition!!.toInt())
-                        if (this@CueMediaPlayer.playWhenReady) {
-                            this@CueMediaPlayer.start()
-                        }
-                    }
-                    setOnCompletionListener {
-                        this@CueMediaPlayer.pause()
-                        completionListener?.invoke()
-                    }
-                    setOnErrorListener { _, i, i2 ->
-                        timer?.pause()
-                        this@CueMediaPlayer._pauseFlow.value = true
-                        errorListener?.invoke(
-                            this@CueMediaPlayer,
-                            MediaPlayerException(i, i2)
-                        )
-                        true
-                    }
-                    try {
-                        setDataSource(source.getDataSource(song.data))
-                        prepareAsync()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        errorListener?.invoke(this@CueMediaPlayer, e)
-                    }
-                }
-            }
-
-            else -> {
-                mediaPlayer.apply {
-                    reset()
-                    setOnSeekCompleteListener {
-                        timer?.setCurrentTime(currentPosition)
-                    }
-                    setOnPreparedListener {
-                        _songDurationFlow.value = mediaPlayer.duration
-                        timer = Timer(0, mediaPlayer.duration).apply {
-                            setOnFinishedListener {
-                                completionListener?.invoke()
-                            }
-                            setOnUpdateListener {
-                                _currentProgressFlow.value = it
-                            }
-                        }
-                        if (this@CueMediaPlayer.playWhenReady) {
-                            this@CueMediaPlayer.start()
-                        }
-                    }
-                    setOnCompletionListener {
-                        this@CueMediaPlayer.pause()
-                        completionListener?.invoke()
-                    }
-                    setOnErrorListener { _, i, i2 ->
-                        timer?.pause()
-                        this@CueMediaPlayer._pauseFlow.value = true
-                        errorListener?.invoke(
-                            this@CueMediaPlayer,
-                            MediaPlayerException(i, i2)
-                        )
-                        true
-                    }
-                    try {
-                        setDataSource(source.getDataSource(song.data))
-                        prepareAsync()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        errorListener?.invoke(this@CueMediaPlayer, e)
-                    }
-                }
-            }
-        }
+        exoPlayer.setMediaItem(MediaItem.fromUri(source.getDataSource(song.data)))
+        exoPlayer.prepare()
     }
 
     /**
      * 开始播放音乐。
      */
     fun start() {
-        timer?.start()
-        _pauseFlow.value = false
-        if (!mediaPlayer.isPlaying) {
-            mediaPlayer.start()
-        }
+        exoPlayer.play()
     }
 
     /**
      * 暂停播放音乐。
      */
     fun pause() {
-        timer?.pause()
-        _pauseFlow.value = true
         playWhenReady = false
-        if (mediaPlayer.isPlaying) {
-            mediaPlayer.pause()
-        }
+        exoPlayer.pause()
     }
 
     /**
      * 释放MediaPlayer
      */
     fun release() {
-        timer?.pause()
-        _pauseFlow.value = true
-        mediaPlayer.release()
+        exoPlayer.pause()
+        exoPlayer.release()
     }
 
     /**
@@ -205,15 +174,18 @@ class CueMediaPlayer(
         val currentSong = currentSong ?: return
         when {
             currentSong.startPosition != null && currentSong.endPosition != null -> {
-                _currentProgressFlow.value = position
                 val currentPosition = when (currentSong.startPosition) {
                     0L -> position
                     else -> position + currentSong.startPosition!!
-                }.toInt()
-                mediaPlayer.seekTo(currentPosition)
+                }.toLong()
+                exoPlayer.seekTo(currentPosition)
+                _currentProgressFlow.value = currentPosition.toInt()
             }
 
-            else -> mediaPlayer.seekTo(position)
+            else -> {
+                exoPlayer.seekTo(position.toLong())
+                _currentProgressFlow.value = position
+            }
         }
     }
 
@@ -263,14 +235,48 @@ class CueMediaPlayer(
     }
 
     /**
-     * 定时器内部类。
+     * 定时器
      */
-    private inner class Timer(private val startTime: Int, private val endTime: Int) {
+    class Timer {
+        companion object {
+            private const val updateTimeout = 100
+        }
+
+        var startTime: Int = 0
+            private set
+        var endTime: Int = 0
+            private set
+
         private var job: Job? = null
         private var currentTime = startTime
         private var onUpdateListener: ((Int) -> Unit)? = null
         private var onFinishedListener: (() -> Unit)? = null
-        private val updateTimeout = 100
+
+
+        @OptIn(DelicateCoroutinesApi::class)
+        fun start(startTime: Int, endTime: Int, currentTime: Int) {
+            this.startTime = startTime
+            this.endTime = endTime
+            this.currentTime = currentTime
+            job?.cancel()
+            job = GlobalScope.launch(Dispatchers.Main) {
+                flow {
+                    var time = currentTime
+                    while (time < endTime) {
+                        delay(updateTimeout.toLong())
+                        time += startTime + updateTimeout
+                        emit(time)
+                    }
+                }.flowOn(Dispatchers.Main)
+                    .collect { time ->
+                        this@Timer.currentTime = time
+                        onUpdateListener?.invoke(time)
+                    }
+                onFinishedListener?.invoke()
+                job?.cancel()
+            }
+            onUpdateListener?.invoke(currentTime)
+        }
 
         /**
          * 设置更新监听器。
@@ -287,49 +293,11 @@ class CueMediaPlayer(
         }
 
         /**
-         * 启动定时器。
-         */
-        @OptIn(DelicateCoroutinesApi::class)
-        fun start() {
-            job?.cancel()
-            job = GlobalScope.launch(Dispatchers.Main) {
-                flow {
-                    var time = currentTime
-                    while (time < endTime) {
-                        delay(updateTimeout.toLong())
-                        time = startTime + mediaPlayer.currentPosition
-                        emit(time)
-                    }
-                }.flowOn(Dispatchers.Main)
-                    .collect { time ->
-                        currentTime = time
-                        onUpdateListener?.invoke(time)
-                    }
-                onFinishedListener?.invoke()
-                job?.cancel()
-            }
-        }
-
-        /**
          * 暂停定时器。
          */
         fun pause() {
             job?.cancel()
             job = null
-        }
-
-        /**
-         * 设置当前时间并重新启动定时器。
-         */
-        fun setCurrentTime(newTime: Int) {
-            if (job !== null) {
-                job?.cancel()
-                currentTime = newTime
-                start()
-            } else {
-                currentTime = newTime
-            }
-            onUpdateListener?.invoke(newTime)
         }
     }
 }

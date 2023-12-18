@@ -106,7 +106,7 @@ object PlayerManager {
         SINGLE_LOOP, LIST_LOOP, RANDOM
     }
 
-    private val cueMediaPlayer = CueMediaPlayer(MediaCacheManager.WebDavProxySource)
+    private val cueMediaPlayer = CueMediaPlayer(MainApplication.context,MediaCacheManager.WebDavProxySource)
 
     private val _playModeFlow = MutableStateFlow(PlayMode.LIST_LOOP)
     val playModeFlow: StateFlow<PlayMode> = _playModeFlow

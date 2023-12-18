@@ -61,6 +61,8 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
+import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
+import com.zxhhyj.music.logic.utils.VersionUtils
 import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.common.AlbumMotionBlur
 import com.zxhhyj.music.ui.common.AppAsyncImage
@@ -780,6 +782,18 @@ fun MainScreen() {
     LaunchedEffect(Unit) {
         if (!SettingRepository.AgreePrivacyPolicy) {
             sheetNavController.navigate(SheetDestination.Start)
+        }
+    }
+
+    LaunchedEffect(SettingRepository.AgreePrivacyPolicy) {
+        if (SettingRepository.AgreePrivacyPolicy && SettingRepository.AppVersion != VersionUtils.VersionCode) {
+            if (SettingRepository.EnableAndroidMediaLibs) {
+                dialogNavController.navigate(DialogDestination.ScanAndroidMediaLib)
+            }
+            if (SettingRepository.EnableWebDav && WebDavMediaLibRepository.WebDavSources.isNotEmpty()) {
+                dialogNavController.navigate(DialogDestination.SyncWebDavMediaLib)
+            }
+            SettingRepository.AppVersion = VersionUtils.VersionCode
         }
     }
 

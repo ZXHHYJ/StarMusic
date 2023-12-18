@@ -81,8 +81,6 @@ dependencies {
     implementation "com.github.thegrizzlylabs:sardine-android:0.8"
     // https://github.com/BillyWei01/FastKV
     implementation 'io.github.billywei01:fastkv:2.4.2'
-    // https://github.com/flavioarfaria/KenBurnsView
-    implementation "com.flaviofaria:kenburnsview:1.0.7"
     // https://github.com/coil-kt/coil/
     implementation "io.coil-kt:coil-compose:2.5.0"
     // https://github.com/google/gson
@@ -95,14 +93,14 @@ dependencies {
     def reimagined_version = "1.5.0"
     implementation "dev.olshevski.navigation:reimagined:$reimagined_version"
     implementation "dev.olshevski.navigation:reimagined-material:$reimagined_version"
-    // https://github.com/mxalbert1996/compose-shared-elements
-    implementation "com.mxalbert.sharedelements:shared-elements:0.1.0-SNAPSHOT"
     // https://github.com/FunnySaltyFish/ComposeDataSaver
     implementation "com.github.FunnySaltyFish.ComposeDataSaver:data-saver:1.1.9"
     // https://github.com/promeG/TinyPinyin
     implementation 'com.github.promeg:tinypinyin:2.0.2'
     // https://square.github.io/okhttp/
     implementation "com.squareup.okhttp3:okhttp:4.12.0"
+    // https://github.com/danikula/AndroidVideoCache
+    implementation 'com.danikula:videocache:2.7.1'
 
     implementation "androidx.media:media:1.7.0"
 
@@ -117,7 +115,6 @@ dependencies {
     implementation "androidx.compose.material:material-icons-extended:$compose_ui_version"
     implementation "androidx.compose.material:material:$compose_ui_version"
     implementation "androidx.compose.ui:ui:$compose_ui_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
 
-    //implementation "androidx.compose.material3:material3-window-size-class:1.1.2"
+    implementation "androidx.compose.material3:material3-window-size-class:1.1.2"
 }
