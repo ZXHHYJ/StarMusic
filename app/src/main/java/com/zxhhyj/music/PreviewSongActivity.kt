@@ -70,7 +70,7 @@ import java.io.File
 
 class PreviewSongActivity : ComponentActivity() {
 
-    private val cueMediaPlayer = CueMediaPlayer(this)
+    private val cueMediaPlayer = CueMediaPlayer(MainApplication.context)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
