@@ -74,14 +74,16 @@ import com.zxhhyj.music.ui.dialog.CustomTimerDialog
 import com.zxhhyj.music.ui.dialog.DeleteSongDialog
 import com.zxhhyj.music.ui.dialog.EditPlayListTitleDialog
 import com.zxhhyj.music.ui.dialog.MediaLibsEmptyDialog
-import com.zxhhyj.music.ui.dialog.ScanAndroidMediaLibDialog
-import com.zxhhyj.music.ui.dialog.SyncWebDavMediaLibDialog
+import com.zxhhyj.music.ui.dialog.RefreshAndroidMediaLibDialog
+import com.zxhhyj.music.ui.dialog.RefreshWebDavMediaLibDialog
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.music.ui.screen.about.AboutScreen
 import com.zxhhyj.music.ui.screen.album.AlbumScreen
 import com.zxhhyj.music.ui.screen.albumcnt.AlbumCntScreen
+import com.zxhhyj.music.ui.screen.androidmedialibsettings.AndroidMediaLibSetting
+import com.zxhhyj.music.ui.screen.cachemanager.CacheManagerScreen
 import com.zxhhyj.music.ui.screen.equalizer.EqualizerScreen
 import com.zxhhyj.music.ui.screen.folder.FolderScreen
 import com.zxhhyj.music.ui.screen.foldercnt.FolderCntScreen
@@ -103,9 +105,9 @@ import com.zxhhyj.music.ui.screen.search.SearchScreen
 import com.zxhhyj.music.ui.screen.singer.SingerScreen
 import com.zxhhyj.music.ui.screen.singercnt.SingerCntScreen
 import com.zxhhyj.music.ui.screen.theme.ThemeScreen
-import com.zxhhyj.music.ui.screen.webdav.config.WebDavConfigScreen
-import com.zxhhyj.music.ui.screen.webdav.foldermanager.WebDavFolderManagerScreen
-import com.zxhhyj.music.ui.screen.webdav.sourcemodify.WebDavSourceModifyScreen
+import com.zxhhyj.music.ui.screen.webdavconfig.WebDavConfigScreen
+import com.zxhhyj.music.ui.screen.webdavfoldermanager.WebDavFolderManagerScreen
+import com.zxhhyj.music.ui.screen.webdavedit.WebDavEditScreen
 import com.zxhhyj.music.ui.screen.wechatpay.WeChatPayScreen
 import com.zxhhyj.music.ui.sheet.AddToPlayListSheet
 import com.zxhhyj.music.ui.sheet.MediaLibMenuSheet
@@ -136,7 +138,6 @@ import dev.olshevski.navigation.reimagined.material.BottomSheetNavHost
 import dev.olshevski.navigation.reimagined.material.BottomSheetProperties
 import dev.olshevski.navigation.reimagined.moveToTop
 import dev.olshevski.navigation.reimagined.navigate
-import dev.olshevski.navigation.reimagined.pop
 import dev.olshevski.navigation.reimagined.popAll
 import dev.olshevski.navigation.reimagined.rememberNavController
 
@@ -631,8 +632,8 @@ fun MainScreen() {
                             ThemeScreen(paddingValues = paddingValues)
                         }
 
-                        is ScreenDestination.WebDavSourceModify -> {
-                            WebDavSourceModifyScreen(
+                        is ScreenDestination.WebDavEdit -> {
+                            WebDavEditScreen(
                                 paddingValues = paddingValues,
                                 mainNavController = mainNavController,
                                 dialogNavController = dialogNavController,
@@ -648,6 +649,20 @@ fun MainScreen() {
                                 path = destination.path
                             )
                         }
+
+                        ScreenDestination.AndroidMediaLibSetting -> {
+                            AndroidMediaLibSetting(
+                                paddingValues = paddingValues,
+                                mainNavController = mainNavController,
+                                dialogNavController = dialogNavController
+                            )
+                        }
+
+                        ScreenDestination.CacheManager -> {
+                            CacheManagerScreen(
+                                paddingValues = paddingValues
+                            )
+                        }
                     }
                 }
             }
@@ -657,47 +672,42 @@ fun MainScreen() {
         )
     }
 
-    val onDismissRequest: () -> Unit = {
-        dialogNavController.pop()
-    }
     DialogNavHost(controller = dialogNavController) {
         when (it) {
             DialogDestination.MediaLibsEmpty -> {
                 MediaLibsEmptyDialog(
-                    onDismissRequest = onDismissRequest, mainNavController = mainNavController
+                    dialogNavController = dialogNavController, mainNavController = mainNavController
                 )
             }
 
             DialogDestination.CreatePlayList -> {
-                CreatePlayListDialog(onDismissRequest = onDismissRequest)
-            }
-
-            DialogDestination.ScanAndroidMediaLib -> {
-                ScanAndroidMediaLibDialog(onDismissRequest = onDismissRequest)
+                CreatePlayListDialog(dialogNavController = dialogNavController)
             }
 
             is DialogDestination.EditPlayListTitle -> {
                 EditPlayListTitleDialog(
-                    onDismissRequest = onDismissRequest, playListBean = it.model
-                )
-            }
-
-            DialogDestination.SyncWebDavMediaLib -> {
-                SyncWebDavMediaLibDialog(
-                    onDismissRequest = onDismissRequest
+                    dialogNavController = dialogNavController, playListBean = it.model
                 )
             }
 
             is DialogDestination.DeleteSong -> {
                 DeleteSongDialog(
-                    onDismissRequest = onDismissRequest,
+                    dialogNavController = dialogNavController,
                     sheetNavController = sheetNavController,
                     songBean = it.songBean
                 )
             }
 
             DialogDestination.CustomTimer -> {
-                CustomTimerDialog(onDismissRequest = onDismissRequest)
+                CustomTimerDialog(dialogNavController = dialogNavController)
+            }
+
+            DialogDestination.RefreshAndroidMediaLib -> {
+                RefreshAndroidMediaLibDialog(dialogNavController = dialogNavController)
+            }
+
+            DialogDestination.RefreshWebDavMediaLib -> {
+                RefreshWebDavMediaLibDialog(dialogNavController = dialogNavController)
             }
         }
     }
@@ -788,10 +798,10 @@ fun MainScreen() {
     LaunchedEffect(SettingRepository.AgreePrivacyPolicy) {
         if (SettingRepository.AgreePrivacyPolicy && SettingRepository.AppVersion != VersionUtils.VersionCode) {
             if (SettingRepository.EnableAndroidMediaLibs) {
-                dialogNavController.navigate(DialogDestination.ScanAndroidMediaLib)
+                dialogNavController.navigate(DialogDestination.RefreshAndroidMediaLib)
             }
             if (SettingRepository.EnableWebDav && WebDavMediaLibRepository.WebDavSources.isNotEmpty()) {
-                dialogNavController.navigate(DialogDestination.SyncWebDavMediaLib)
+                dialogNavController.navigate(DialogDestination.RefreshWebDavMediaLib)
             }
             SettingRepository.AppVersion = VersionUtils.VersionCode
         }

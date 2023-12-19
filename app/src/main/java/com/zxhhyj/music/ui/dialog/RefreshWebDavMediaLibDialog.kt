@@ -16,20 +16,25 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
 import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.common.ComposeToast
+import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.YesNoDialog
+import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.pop
 import kotlinx.coroutines.delay
 
 @Composable
-fun SyncWebDavMediaLibDialog(
-    onDismissRequest: () -> Unit
+fun RefreshWebDavMediaLibDialog(
+    dialogNavController: NavController<DialogDestination>,
 ) {
     PlayerManager.clearPlayList()
     val context = LocalContext.current
     YesNoDialog(
-        onDismissRequest = onDismissRequest,
+        onDismissRequest = {
+            dialogNavController.pop()
+        },
         properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
-        title = stringResource(id = R.string.sync_webdav),
+        title = stringResource(id = R.string.refresh_webdav_media_lib),
         positive = {},
         negative = {})
     {
@@ -47,10 +52,10 @@ fun SyncWebDavMediaLibDialog(
         } catch (_: Exception) {
             delay(100)
             //避免闪烁影响用户体验
-            onDismissRequest.invoke()
+            dialogNavController.pop()
             ComposeToast.postErrorToast(context.getString(R.string.link_error))
             return@LaunchedEffect
         }
-        onDismissRequest.invoke()
+        dialogNavController.pop()
     }
 }

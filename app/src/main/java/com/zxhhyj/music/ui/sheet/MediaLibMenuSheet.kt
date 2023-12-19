@@ -9,7 +9,6 @@ import androidx.compose.material.icons.rounded.Abc
 import androidx.compose.material.icons.rounded.AccessTime
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Refresh
-import androidx.compose.material.icons.rounded.Sync
 import androidx.compose.material.icons.rounded.Timer
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,7 +16,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.Item
@@ -60,25 +58,16 @@ fun MediaLibMenuSheet(dialogNavController: NavController<DialogDestination>) {
                             contentDescription = null
                         )
                     },
-                    text = { Text(text = stringResource(id = R.string.refresh_media_lib)) },
+                    text = { Text(text = stringResource(id = R.string.refresh_all_media_lib)) },
                     subText = { },
-                    enabled = SettingRepository.EnableAndroidMediaLibs
+                    enabled = SettingRepository.EnableAndroidMediaLibs || SettingRepository.EnableWebDav
                 ) {
-                    dialogNavController.navigate(DialogDestination.ScanAndroidMediaLib)
-                }
-                ItemDivider()
-                Item(
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Rounded.Sync,
-                            contentDescription = null
-                        )
-                    },
-                    text = { Text(text = stringResource(id = R.string.sync_webdav)) },
-                    subText = { },
-                    enabled = SettingRepository.EnableWebDav && WebDavMediaLibRepository.WebDavSources.isNotEmpty()
-                ) {
-                    dialogNavController.navigate(DialogDestination.SyncWebDavMediaLib)
+                    if (SettingRepository.EnableAndroidMediaLibs) {
+                        dialogNavController.navigate(DialogDestination.RefreshAndroidMediaLib)
+                    }
+                    if (SettingRepository.EnableWebDav) {
+                        dialogNavController.navigate(DialogDestination.RefreshWebDavMediaLib)
+                    }
                 }
             }
         }

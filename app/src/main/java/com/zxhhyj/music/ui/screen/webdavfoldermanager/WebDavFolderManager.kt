@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.screen.webdav.foldermanager
+package com.zxhhyj.music.ui.screen.webdavfoldermanager
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize

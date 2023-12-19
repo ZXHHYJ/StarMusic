@@ -133,7 +133,7 @@ fun Modifier.bindTopBarState() = composed {
 fun AppCenterTopBar(
     modifier: Modifier = Modifier,
     title: @Composable () -> Unit = {},
-    actions: @Composable () -> Unit = {}
+    actions: (@Composable () -> Unit)? = null
 ) {
     val topBarState = LocalTopBarState.current
     Box(modifier = modifier
@@ -167,8 +167,10 @@ fun AppCenterTopBar(
             modifier = Modifier.align(Alignment.CenterEnd),
             horizontalArrangement = Arrangement.spacedBy(StarDimens.horizontal / 2)
         ) {
-            CompositionLocalProvider(LocalContentColor provides LocalColorScheme.current.highlight) {
-                actions.invoke()
+            actions?.let {
+                CompositionLocalProvider(LocalContentColor provides LocalColorScheme.current.highlight) {
+                    it.invoke()
+                }
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.zxhhyj.music.ui.screen.webdav.sourcemodify
+package com.zxhhyj.music.ui.screen.webdavedit
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -49,7 +49,7 @@ import dev.olshevski.navigation.reimagined.pop
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun WebDavSourceModifyScreen(
+fun WebDavEditScreen(
     paddingValues: PaddingValues,
     mainNavController: NavController<ScreenDestination>,
     dialogNavController: NavController<DialogDestination>,
@@ -88,7 +88,7 @@ fun WebDavSourceModifyScreen(
     DisposableEffect(Unit) {
         onDispose {
             if (copyWebDavSource?.username != username || copyWebDavSource?.password != password || copyWebDavSource?.address != address && webDavSource?.folders?.isNotEmpty() == true) {
-                dialogNavController.navigate(DialogDestination.SyncWebDavMediaLib)
+                dialogNavController.navigate(DialogDestination.RefreshWebDavMediaLib)
             }
         }
     }
@@ -97,7 +97,7 @@ fun WebDavSourceModifyScreen(
             .fillMaxSize()
             .statusBarsPadding(),
         topBar = {
-            AppCenterTopBar(title = { Text(text = stringResource(id = R.string.edit_webdav_source)) })
+            AppCenterTopBar(title = { Text(text = stringResource(id = R.string.edit_webdav)) })
         }) {
         val scrollState = rememberLazyListState()
         if (scrollState.isScrollInProgress) {
@@ -111,7 +111,7 @@ fun WebDavSourceModifyScreen(
         ) {
             item {
                 ItemSubTitle {
-                    Text(text = stringResource(id = R.string.webdav_address))
+                    Text(text = stringResource(id = R.string.address))
                 }
             }
             roundColumn {
@@ -126,7 +126,7 @@ fun WebDavSourceModifyScreen(
             }
             item {
                 ItemSubTitle {
-                    Text(text = stringResource(id = R.string.webdav_user))
+                    Text(text = stringResource(id = R.string.user))
                 }
             }
             roundColumn {
@@ -141,7 +141,7 @@ fun WebDavSourceModifyScreen(
             }
             item {
                 ItemSubTitle {
-                    Text(text = stringResource(id = R.string.webdav_password))
+                    Text(text = stringResource(id = R.string.password))
                 }
             }
             roundColumn {
@@ -156,7 +156,7 @@ fun WebDavSourceModifyScreen(
             }
             item {
                 ItemSubTitle {
-                    Text(text = stringResource(id = R.string.webdav_remark))
+                    Text(text = stringResource(id = R.string.remark))
                 }
             }
             roundColumn {

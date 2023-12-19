@@ -6,7 +6,9 @@ import com.zxhhyj.music.logic.bean.SongBean
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
-
+/**
+ * 定义所有Sheet级别的导航
+ */
 sealed class SheetDestination : Parcelable {
 
     @Parcelize

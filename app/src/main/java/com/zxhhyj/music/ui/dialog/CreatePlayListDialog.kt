@@ -18,32 +18,35 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.PlayListRepository
+import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.ui.view.AppTextField
 import com.zxhhyj.ui.view.YesNoDialog
+import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.pop
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun CreatePlayListDialog(onDismissRequest: () -> Unit) {
+fun CreatePlayListDialog(dialogNavController: NavController<DialogDestination>) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
     var title by rememberSaveable {
         mutableStateOf("")
     }
     YesNoDialog(
-        onDismissRequest = onDismissRequest,
+        onDismissRequest = { dialogNavController.pop() },
         title = stringResource(id = R.string.create_playlist),
         positive = {
             Text(text = stringResource(id = R.string.create), modifier = Modifier.clickable {
                 if (title.isNotEmpty()) {
                     PlayListRepository.create(title)
-                    onDismissRequest.invoke()
+                    dialogNavController.pop()
                 }
             })
         },
         negative = {
             Text(
                 text = stringResource(id = R.string.cancel),
-                modifier = Modifier.clickable { onDismissRequest.invoke() })
+                modifier = Modifier.clickable { dialogNavController.pop() })
         }) {
         AppTextField(
             modifier = Modifier

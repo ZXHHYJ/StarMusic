@@ -20,19 +20,25 @@ import androidx.compose.ui.text.input.TextFieldValue
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.PlayListBean
 import com.zxhhyj.music.logic.repository.PlayListRepository.rename
+import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.ui.view.AppTextField
 import com.zxhhyj.ui.view.YesNoDialog
+import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.pop
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun EditPlayListTitleDialog(onDismissRequest: () -> Unit, playListBean: PlayListBean) {
+fun EditPlayListTitleDialog(
+    dialogNavController: NavController<DialogDestination>,
+    playListBean: PlayListBean
+) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
     var titleValue by remember {
         mutableStateOf(TextFieldValue(playListBean.name, TextRange(playListBean.name.length)))
     }
     YesNoDialog(
-        onDismissRequest = onDismissRequest,
+        onDismissRequest = { dialogNavController.pop() },
         title = stringResource(id = R.string.edit_playlist_title),
         positive = {
             Text(
@@ -40,14 +46,14 @@ fun EditPlayListTitleDialog(onDismissRequest: () -> Unit, playListBean: PlayList
                 modifier = Modifier.clickable {
                     if (titleValue.text.isNotEmpty()) {
                         playListBean.rename(titleValue.text)
-                        onDismissRequest.invoke()
+                        dialogNavController.pop()
                     }
                 })
         },
         negative = {
             Text(
                 stringResource(id = R.string.cancel),
-                modifier = Modifier.clickable { onDismissRequest.invoke() })
+                modifier = Modifier.clickable { dialogNavController.pop() })
         }) {
         AppTextField(
             modifier = Modifier

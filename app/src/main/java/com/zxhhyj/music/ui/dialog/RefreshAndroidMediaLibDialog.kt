@@ -14,16 +14,21 @@ import androidx.compose.ui.window.DialogProperties
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.service.playermanager.PlayerManager
+import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.ui.theme.LocalColorScheme
 import com.zxhhyj.ui.view.YesNoDialog
+import dev.olshevski.navigation.reimagined.NavController
+import dev.olshevski.navigation.reimagined.pop
 
 @Composable
-fun ScanAndroidMediaLibDialog(onDismissRequest: () -> Unit) {
+fun RefreshAndroidMediaLibDialog(dialogNavController: NavController<DialogDestination>) {
     PlayerManager.clearPlayList()
     YesNoDialog(
-        onDismissRequest = onDismissRequest,
+        onDismissRequest = {
+            dialogNavController.pop()
+        },
         properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
-        title = stringResource(id = R.string.scan_music),
+        title = stringResource(id = R.string.refresh_android_media_lib),
         positive = {},
         negative = {})
     {
@@ -37,6 +42,6 @@ fun ScanAndroidMediaLibDialog(onDismissRequest: () -> Unit) {
     }
     LaunchedEffect(Unit) {
         AndroidMediaLibRepository.scanMedia()
-        onDismissRequest.invoke()
+        dialogNavController.pop()
     }
 }

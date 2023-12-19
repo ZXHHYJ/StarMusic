@@ -6,7 +6,9 @@ import com.zxhhyj.music.ui.screen.search.SearchScreenTabs
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
-
+/**
+ * 定义所有屏幕级别的导航
+ */
 sealed class ScreenDestination : Parcelable {
 
     /**
@@ -161,17 +163,16 @@ sealed class ScreenDestination : Parcelable {
     @Parcelize
     data class PlayListCnt(val model: @RawValue PlayListBean) : ScreenDestination()
 
-    /**
-     * @see [com.zxhhyj.music.ui.screen.webdav.sourcemodify.WebDavSourceModifyScreen]
-     */
     @Parcelize
-    data class WebDavSourceModify(val indexInWebDavSourceList: Int) : ScreenDestination()
+    data class WebDavEdit(val indexInWebDavSourceList: Int) : ScreenDestination()
 
-    /**
-     * @see [com.zxhhyj.music.ui.screen.webdav.foldermanager.WebDavFolderManagerScreen]
-     */
     @Parcelize
     data class WebDavFolderManager(val indexInWebDavSourceList: Int, val path: String) :
         ScreenDestination()
 
+    @Parcelize
+    data object AndroidMediaLibSetting : ScreenDestination()
+
+    @Parcelize
+    data object CacheManager : ScreenDestination()
 }

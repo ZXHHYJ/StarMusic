@@ -6,6 +6,9 @@ import com.zxhhyj.music.logic.bean.SongBean
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
+/**
+ * 定义所有Dialog级别的导航
+ */
 sealed class DialogDestination : Parcelable {
 
     /**
@@ -21,16 +24,16 @@ sealed class DialogDestination : Parcelable {
     data object CreatePlayList : DialogDestination()
 
     /**
-     * 扫描Android媒体库
+     * 刷新Android媒体库
      */
     @Parcelize
-    data object ScanAndroidMediaLib : DialogDestination()
+    data object RefreshAndroidMediaLib : DialogDestination()
 
     /**
-     * 扫描WebDav媒体库
+     * 刷新WebDav媒体库
      */
     @Parcelize
-    data object SyncWebDavMediaLib : DialogDestination()
+    data object RefreshWebDavMediaLib : DialogDestination()
 
     @Parcelize
     data class EditPlayListTitle(val model: @RawValue PlayListBean) : DialogDestination()
