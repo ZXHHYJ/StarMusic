@@ -1,11 +1,9 @@
 package com.zxhhyj.music.logic.bean
 
 import android.os.Parcelable
-import com.zxhhyj.mediaplayer.impl.CueMediaInfo
-import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
-sealed interface SongBean : CueMediaInfo, Parcelable {
+sealed interface SongBean : Parcelable {
     // 歌曲封面路径
     val coverUrl: String?
 
@@ -16,10 +14,10 @@ sealed interface SongBean : CueMediaInfo, Parcelable {
     val artistName: String?
 
     // 歌曲时长
-    override val duration: Long?
+    val duration: Long?
 
     // 歌曲文件路径
-    override val data: String
+    val data: String
 
     // 歌曲最后修改时间
     val dateModified: Long
@@ -39,12 +37,6 @@ sealed interface SongBean : CueMediaInfo, Parcelable {
     // 歌曲歌词
     val lyric: String?
 
-    // 开始位置
-    override val startPosition: Long?
-
-    // 结束位置
-    override val endPosition: Long?
-
     @Parcelize
     data class Local(
         override val coverUrl: String?,
@@ -58,9 +50,7 @@ sealed interface SongBean : CueMediaInfo, Parcelable {
         val id: Long?,
         override val bitrate: Int?,
         override val samplingRate: Int?,
-        override val lyric: String?,
-        override val startPosition: Long?,
-        override val endPosition: Long?
+        override val lyric: String?
     ) : SongBean
 
     @Parcelize
@@ -77,12 +67,6 @@ sealed interface SongBean : CueMediaInfo, Parcelable {
         override val bitrate: Int?,
         override val samplingRate: Int?,
         override val lyric: String?
-    ) : SongBean {
-        @IgnoredOnParcel
-        override val startPosition: Long? = null
-
-        @IgnoredOnParcel
-        override val endPosition: Long? = null
-    }
+    ) : SongBean
 
 }

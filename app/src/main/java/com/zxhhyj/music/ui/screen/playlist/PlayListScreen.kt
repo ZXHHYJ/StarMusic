@@ -67,7 +67,7 @@ fun PlayListScreen(
                             }
                         },
                         onClick = {
-                            mainNavController.navigate(ScreenDestination.PlayListCnt(it))
+                            mainNavController.navigate(ScreenDestination.PlayListCnt(it.uuid))
                         })
                 }
             }

@@ -1,7 +1,7 @@
 package com.zxhhyj.music.ui.screen
 
 import android.os.Parcelable
-import com.zxhhyj.music.logic.bean.PlayListBean
+import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.ui.screen.search.SearchScreenTabs
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
@@ -99,8 +99,7 @@ sealed class ScreenDestination : Parcelable {
      * 文件夹内容预览
      */
     @Parcelize
-    data class FolderPreview(val folder: @RawValue com.zxhhyj.music.logic.bean.Folder) :
-        ScreenDestination()
+    data class SongsPreview(val songs: List<SongBean>) : ScreenDestination()
 
     /**
      * 文件夹内容
@@ -159,9 +158,10 @@ sealed class ScreenDestination : Parcelable {
 
     /**
      * 专辑详情
+     * @param id [com.zxhhyj.music.logic.bean.PlayListBean.uuid]
      */
     @Parcelize
-    data class PlayListCnt(val model: @RawValue PlayListBean) : ScreenDestination()
+    data class PlayListCnt(val id: String) : ScreenDestination()
 
     @Parcelize
     data class WebDavEdit(val indexInWebDavSourceList: Int) : ScreenDestination()

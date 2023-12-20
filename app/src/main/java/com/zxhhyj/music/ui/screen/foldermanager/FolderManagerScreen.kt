@@ -78,7 +78,7 @@ fun FolderManagerScreen(
                                 })
                         }
                     ) {
-                        mainNavController.navigate(ScreenDestination.FolderPreview(folder))
+                        mainNavController.navigate(ScreenDestination.SongsPreview(folder.songs))
                     }
                 }
             }

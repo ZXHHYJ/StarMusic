@@ -39,9 +39,7 @@ object AndroidMediaLibRepository {
      * 文件夹列表
      */
     var folders by mutableDataSaverListStateOf(
-        dataSaverInterface = DataSaverUtils,
-        key = "folders",
-        initialValue = listOf<Folder>()
+        dataSaverInterface = DataSaverUtils, key = "folders", initialValue = listOf<Folder>()
     )
         private set
 
@@ -49,9 +47,7 @@ object AndroidMediaLibRepository {
      * 隐藏的文件夹列表
      */
     var hideFolders by mutableDataSaverListStateOf(
-        dataSaverInterface = DataSaverUtils,
-        key = "hide_folders",
-        initialValue = listOf<Folder>()
+        dataSaverInterface = DataSaverUtils, key = "hide_folders", initialValue = listOf<Folder>()
     )
         private set
 
@@ -62,10 +58,7 @@ object AndroidMediaLibRepository {
         withContext(Dispatchers.IO) {
             val scanSongs = mutableListOf<SongBean.Local>()
             val formatCollection = listOf(
-                "audio/x-wav",
-                "audio/ogg",
-                "audio/aac",
-                "audio/midi"
+                "audio/x-wav", "audio/ogg", "audio/aac", "audio/midi"
             )
             val selectionBuilder = StringBuilder("${MediaStore.Audio.Media.IS_MUSIC}!=0")
             for (i in formatCollection) {
@@ -73,11 +66,7 @@ object AndroidMediaLibRepository {
             }
             val selection = selectionBuilder.toString()
             val query = MainApplication.context.contentResolver.query(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                null,
-                selection,
-                null,
-                null
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, selection, null, null
             )
             query?.use { cursor ->
                 while (cursor.moveToNext()) {
@@ -100,13 +89,9 @@ object AndroidMediaLibRepository {
             if (it.songs.isEmpty()) null else it
         }.distinctBy { it.path }
 
-        folders = songs
-            .map { it.data.substringBeforeLast("/") }
-            .distinct()
-            .map { path ->
+        folders = songs.map { it.data.substringBeforeLast("/") }.distinct().map { path ->
                 Folder(path, songs.filter { it.data.startsWith(path) })
-            }
-            .filter { it !in hideFolders }
+            }.filter { it !in hideFolders }
 
         refreshSongs()
     }
@@ -115,12 +100,9 @@ object AndroidMediaLibRepository {
      * 刷新歌曲列表
      */
     private fun refreshSongs() {
-        songs = folders
-            .flatMap { it.songs }
-            .filter {
+        songs = folders.flatMap { it.songs }.filter {
                 if (SettingRepository.EnableExcludeSongsUnderOneMinute && it.duration != null) it.duration > 60000 else true
-            }
-            .distinctBy { it.data }
+            }.distinctBy { it.data }
     }
 
     /**

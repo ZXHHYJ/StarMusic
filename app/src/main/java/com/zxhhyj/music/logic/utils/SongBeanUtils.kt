@@ -48,69 +48,20 @@ private fun createSongBeanLocal(data: String, id: Long?): SongBean.Local? {
             }.getOrNull()
         }
     fd.close()
-    if (SettingRepository.EnableCueSupport) {
-        runCatching {
-            val cuePath = songFile.path.substringBeforeLast(".") + ".cue"
-            val cueContent = FileUtils.readFromFile(cuePath)
-            val cueData = CueParser.parseCueContent(cueContent)
-            cueData.tracks.forEach { track ->
-                val endPosition =
-                    track.endPosition.toMillis().takeIf { it != 0L } ?: duration
-                val startPosition = track.startPosition.toMillis()
-                return SongBean.Local(
-                    coverUrl = coverFile?.path,
-                    albumName = album,
-                    artistName = track.performer,
-                    duration = endPosition - startPosition,
-                    data = songFile.path,
-                    dateModified = songFile.lastModified(),
-                    songName = track.title,
-                    size = songFile.length(),
-                    id = id,
-                    bitrate = bitrate,
-                    samplingRate = sampleRate,
-                    lyric = lyric,
-                    startPosition = startPosition,
-                    endPosition = endPosition,
-                )
-            }
-        }.getOrElse {
-            return SongBean.Local(
-                coverUrl = coverFile?.path,
-                albumName = album,
-                artistName = artist,
-                duration = duration,
-                data = data,
-                dateModified = songFile.lastModified(),
-                songName = songName,
-                size = songFile.length(),
-                id = id,
-                bitrate = bitrate,
-                samplingRate = sampleRate,
-                lyric = lyric,
-                startPosition = 0,
-                endPosition = duration,
-            )
-        }
-    } else {
-        return SongBean.Local(
-            coverUrl = coverFile?.path,
-            albumName = album,
-            artistName = artist,
-            duration = duration,
-            data = data,
-            dateModified = songFile.lastModified(),
-            songName = songName,
-            size = songFile.length(),
-            id = id,
-            bitrate = bitrate,
-            samplingRate = sampleRate,
-            lyric = lyric,
-            startPosition = 0,
-            endPosition = duration,
-        )
-    }
-    return null
+    return SongBean.Local(
+        coverUrl = coverFile?.path,
+        albumName = album,
+        artistName = artist,
+        duration = duration,
+        data = data,
+        dateModified = songFile.lastModified(),
+        songName = songName,
+        size = songFile.length(),
+        id = id,
+        bitrate = bitrate,
+        samplingRate = sampleRate,
+        lyric = lyric,
+    )
 }
 
 fun File.toSongBeanLocal(): SongBean.Local? {

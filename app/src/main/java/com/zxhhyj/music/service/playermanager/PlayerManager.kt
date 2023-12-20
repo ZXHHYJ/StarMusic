@@ -9,10 +9,9 @@ import com.danikula.videocache.CacheListener
 import com.danikula.videocache.HttpProxyCacheServer
 import com.danikula.videocache.headers.HeaderInjector
 import com.thegrizzlylabs.sardineandroid.util.SardineUtil
-import com.zxhhyj.mediaplayer.CueMediaPlayer
+import com.zxhhyj.mediaplayer.MediaPlayer
 import com.zxhhyj.mediaplayer.impl.DataSource
 import com.zxhhyj.music.MainApplication
-import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.SongBean
 import com.zxhhyj.music.logic.config.musicFilesDir
 import com.zxhhyj.music.logic.repository.SettingRepository
@@ -23,7 +22,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import okhttp3.Credentials
 import java.io.File
-import java.io.FileNotFoundException
 import kotlin.random.Random
 
 /**
@@ -106,7 +104,8 @@ object PlayerManager {
         SINGLE_LOOP, LIST_LOOP, RANDOM
     }
 
-    private val cueMediaPlayer = CueMediaPlayer(MainApplication.context,MediaCacheManager.WebDavProxySource)
+    private val mediaPlayer =
+        MediaPlayer(MainApplication.context, MediaCacheManager.WebDavProxySource)
 
     private val _playModeFlow = MutableStateFlow(PlayMode.LIST_LOOP)
     val playModeFlow: StateFlow<PlayMode> = _playModeFlow
@@ -120,11 +119,11 @@ object PlayerManager {
     private val _indexFlow = MutableStateFlow<Int?>(null)
     val indexFlow: StateFlow<Int?> = _indexFlow
 
-    val durationFlow = cueMediaPlayer.songDurationFlow
+    val durationFlow = mediaPlayer.songDurationFlow
 
-    val progressFlow = cueMediaPlayer.currentProgressFlow
+    val progressFlow = mediaPlayer.currentProgressFlow
 
-    val pauseFlow = cueMediaPlayer.pauseFlow
+    val pauseFlow = mediaPlayer.pauseFlow
 
     fun setPlayMode(playMode: PlayMode) {
         _playModeFlow.value = playMode
@@ -139,7 +138,7 @@ object PlayerManager {
         _indexFlow.value = index
         song?.let {
             _currentSongFlow.value = it
-            cueMediaPlayer.preparePlay(it)
+            mediaPlayer.preparePlay(it.data)
         }
     }
 
@@ -148,7 +147,7 @@ object PlayerManager {
         list.getOrNull(index)?.let {
             _indexFlow.value = index
             _currentSongFlow.value = it
-            cueMediaPlayer.prepare(it)
+            mediaPlayer.prepare(it.data)
         }
     }
 
@@ -156,7 +155,7 @@ object PlayerManager {
      * 设置音乐播放进度
      */
     fun seekTo(position: Int) {
-        cueMediaPlayer.seekTo(position)
+        mediaPlayer.seekTo(position)
     }
 
     /**
@@ -168,7 +167,7 @@ object PlayerManager {
         song?.let {
             _indexFlow.value = index
             _currentSongFlow.value = it
-            cueMediaPlayer.preparePlay(it)
+            mediaPlayer.preparePlay(it.data)
         }
     }
 
@@ -178,10 +177,8 @@ object PlayerManager {
     fun skipToNext() {
         when (_playModeFlow.value) {
             PlayMode.SINGLE_LOOP -> {
-                _currentSongFlow.value?.startPosition?.let {
-                    seekTo(it.toInt())
-                    start()
-                }
+                seekTo(0)
+                start()
             }
 
             PlayMode.LIST_LOOP -> {
@@ -190,7 +187,7 @@ object PlayerManager {
                 song?.let {
                     _indexFlow.value = index
                     _currentSongFlow.value = it
-                    cueMediaPlayer.preparePlay(it)
+                    mediaPlayer.preparePlay(it.data)
                 }
             }
 
@@ -210,7 +207,7 @@ object PlayerManager {
                         _indexFlow.value = randomNumber
                         song?.let {
                             _currentSongFlow.value = it
-                            cueMediaPlayer.preparePlay(it)
+                            mediaPlayer.preparePlay(it.data)
                         }
                     }
                 }
@@ -223,14 +220,14 @@ object PlayerManager {
      * 开始播放音乐
      */
     fun start() {
-        cueMediaPlayer.start()
+        mediaPlayer.start()
     }
 
     /**
      * 暂停播放音乐
      */
     fun pause() {
-        cueMediaPlayer.pause()
+        mediaPlayer.pause()
     }
 
     /**
@@ -270,50 +267,42 @@ object PlayerManager {
      * 清空播放列表
      */
     fun clearPlayList() {
-        cueMediaPlayer.pause()
+        mediaPlayer.pause()
         _currentSongFlow.value = null
         _playListFlow.value = null
     }
 
     fun setEnableEqualizer(enabled: Boolean) {
-        cueMediaPlayer.setEnableEqualizer(enabled)
+        mediaPlayer.setEnableEqualizer(enabled)
     }
 
     fun setBandLevel(band: Int, level: Int) {
-        cueMediaPlayer.setBandLevel(band, level)
+        mediaPlayer.setBandLevel(band, level)
     }
 
     fun getBandLevel(band: Int): Int {
-        return cueMediaPlayer.getBandLevel(band)
+        return mediaPlayer.getBandLevel(band)
     }
 
     fun getBandRange(): Range<Int> {
-        return cueMediaPlayer.getBandRange()
+        return mediaPlayer.getBandRange()
     }
 
     fun getNumberOfBands(): Int {
-        return cueMediaPlayer.getNumberOfBands()
+        return mediaPlayer.getNumberOfBands()
     }
 
     fun getBandFreqRange(band: Int): IntArray {
-        return cueMediaPlayer.getBandFreqRange(band)
+        return mediaPlayer.getBandFreqRange(band)
     }
 
     init {
-        cueMediaPlayer.apply {
+        mediaPlayer.apply {
             completionListener = {
                 skipToNext()
             }
             errorListener = {
-                when (it) {
-                    is FileNotFoundException -> {
-                        ComposeToast.postErrorToast(MainApplication.context.getString(R.string.song_file_missing))
-                    }
-
-                    else -> {
-                        ComposeToast.postErrorToast(MainApplication.context.getString(R.string.unknown_error))
-                    }
-                }
+                ComposeToast.postErrorToast(it.errorCodeName)
                 pause()
             }
         }

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,34 +25,38 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.bean.PlayListBean
 import com.zxhhyj.music.logic.repository.PlayListRepository
 import com.zxhhyj.music.logic.repository.PlayListRepository.removeSong
 import com.zxhhyj.music.logic.utils.MediaLibHelper
 import com.zxhhyj.music.service.playermanager.PlayerManager
 import com.zxhhyj.music.ui.common.AppAsyncImage
 import com.zxhhyj.music.ui.item.SongItem
+import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.music.ui.theme.vertical
 import com.zxhhyj.ui.view.AppButton
 import com.zxhhyj.ui.view.AppIconButton
 import com.zxhhyj.ui.view.AppScaffold
 import com.zxhhyj.ui.view.AppTopBar
-import com.zxhhyj.ui.view.RoundColumn
+import com.zxhhyj.ui.view.roundColumn
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
+import dev.olshevski.navigation.reimagined.popUpTo
 
 @Composable
 fun PlayListCntScreen(
-    playListBean: PlayListBean,
+    paddingValues: PaddingValues,
+    id: String,
+    mainNavController: NavController<ScreenDestination>,
     sheetNavController: NavController<SheetDestination>,
-    paddingValues: PaddingValues
 ) {
-    val findPlayListModel = PlayListRepository.playList.firstOrNull {
-        it.uuid == playListBean.uuid
+    val playListBean = PlayListRepository.playList.firstOrNull {
+        it.uuid == id
+    } ?: run {
+        mainNavController.popUpTo { it == ScreenDestination.PlayList }
+        return
     }
-    findPlayListModel ?: return
-    val songs = findPlayListModel.songs.mapNotNull { playListSongBean ->
+    val songs = playListBean.songs.mapNotNull { playListSongBean ->
         MediaLibHelper.songs.find {
             it.data == playListSongBean.data
         }
@@ -61,68 +64,54 @@ fun PlayListCntScreen(
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()
-            .statusBarsPadding()
-            .padding(paddingValues),
+            .statusBarsPadding(),
         topBar = {
-            AppTopBar(
-                title = { Text(text = findPlayListModel.name) },
-                actions = {
-                    AppIconButton(onClick = {
-                        sheetNavController.navigate(
-                            SheetDestination.PlaylistMenu(
-                                findPlayListModel
-                            )
+            AppTopBar(title = { Text(text = playListBean.name) }, actions = {
+                AppIconButton(onClick = {
+                    sheetNavController.navigate(
+                        SheetDestination.PlaylistMenu(
+                            playListBean
                         )
-                    }) {
-                        Icon(
-                            imageVector = Icons.Rounded.MoreVert,
-                            contentDescription = null
-                        )
-                    }
+                    )
+                }) {
+                    Icon(
+                        imageVector = Icons.Rounded.MoreVert, contentDescription = null
+                    )
                 }
-            ) {
+            }) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     AppAsyncImage(
-                        modifier = Modifier.size(210.dp),
-                        data = songs.firstOrNull()?.coverUrl
+                        modifier = Modifier.size(210.dp), data = songs.firstOrNull()?.coverUrl
                     )
                     Spacer(modifier = Modifier.height(vertical))
                     Text(
-                        text = findPlayListModel.name,
+                        text = playListBean.name,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
                     )
-                    AppButton(
-                        onClick = { PlayerManager.play(songs, 0) },
-                        icon = {
-                            Icon(imageVector = Icons.Rounded.PlayArrow, contentDescription = null)
-                        },
-                        text = {
-                            Text(text = stringResource(id = R.string.play_all))
-                        },
-                        enabled = songs.isNotEmpty()
+                    AppButton(onClick = { PlayerManager.play(songs, 0) }, icon = {
+                        Icon(imageVector = Icons.Rounded.PlayArrow, contentDescription = null)
+                    }, text = {
+                        Text(text = stringResource(id = R.string.play_all))
+                    }, enabled = songs.isNotEmpty()
                     )
                 }
             }
         }) {
-        RoundColumn(modifier = Modifier.fillMaxWidth()) {
-            LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = paddingValues) {
+            roundColumn {
                 itemsIndexed(songs) { index, item ->
-                    SongItem(
-                        songBean = item,
-                        sheetNavController = sheetNavController,
-                        actions = {
-                            AppIconButton(onClick = { findPlayListModel.removeSong(item) }) {
-                                Icon(imageVector = Icons.Rounded.Remove, contentDescription = null)
-                            }
-                        },
-                        onClick = {
-                            PlayerManager.play(songs, index)
-                        })
+                    SongItem(songBean = item, sheetNavController = sheetNavController, actions = {
+                        AppIconButton(onClick = { playListBean.removeSong(item) }) {
+                            Icon(imageVector = Icons.Rounded.Remove, contentDescription = null)
+                        }
+                    }, onClick = {
+                        PlayerManager.play(songs, index)
+                    })
                 }
             }
         }

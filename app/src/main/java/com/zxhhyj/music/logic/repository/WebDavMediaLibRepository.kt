@@ -36,28 +36,27 @@ object WebDavMediaLibRepository {
     )
         private set
 
-    /**
-     * 创建一个[WebDavSource]并返回它在[WebDavSources]中的下标
-     */
     fun createWebSource(): Int {
         WebDavSources = WebDavSources.toMutableList().apply {
-            add(WebDavSource(String(), String(), String(), String(), emptyList()))
+            add(
+                WebDavSource(
+                    String(),
+                    String(),
+                    String(),
+                    String(),
+                    emptyList()
+                )
+            )
         }
         return WebDavSources.lastIndex
     }
 
-    /**
-     * 从[WebDavSources]中删除对应下标[index]的元素
-     */
     fun deleteWebSource(index: Int) {
         WebDavSources = WebDavSources.toMutableList().apply {
             removeAt(index)
         }
     }
 
-    /**
-     * 向指定的WebDavSource对象添加一个文件夹
-     */
     fun WebDavSource.addFolder(folder: String) {
         val index = WebDavSources.indexOf(this)
         if (index != -1) {
@@ -72,9 +71,6 @@ object WebDavMediaLibRepository {
         }
     }
 
-    /**
-     * 从指定的WebDavSource对象中删除一个文件夹
-     */
     fun WebDavSource.removeFolder(folder: String) {
         val index = WebDavSources.indexOf(this)
         if (index != -1) {
@@ -89,9 +85,6 @@ object WebDavMediaLibRepository {
         }
     }
 
-    /**
-     * 替换指定下标的WebDavSource对象
-     */
     fun replace(index: Int, webDavSource: WebDavSource) {
         WebDavSources = WebDavSources.toMutableList().apply {
             set(index, webDavSource)
@@ -202,13 +195,6 @@ object WebDavMediaLibRepository {
             }
         }
         return false
-    }
-
-    /**
-     * 清空媒体库
-     */
-    fun clear() {
-        songs = emptyList()
     }
 
 }

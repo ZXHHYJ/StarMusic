@@ -13,7 +13,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AudioFile
 import androidx.compose.material.icons.rounded.CloudUpload
-import androidx.compose.material.icons.rounded.HideSource
 import androidx.compose.material.icons.rounded.LibraryMusic
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.runtime.Composable
@@ -169,26 +168,6 @@ fun MediaLibConfigScreen(
                         if (SettingRepository.EnableWebDav) {
                             dialogNavController.navigate(DialogDestination.RefreshWebDavMediaLib)
                         }
-                    }
-                }
-            }
-            item {
-                ItemSpacer()
-            }
-            item {
-                RoundColumn(modifier = Modifier.fillMaxWidth()) {
-                    ItemArrowRight(
-                        icon = {
-                            Icon(
-                                imageVector = Icons.Rounded.HideSource,
-                                contentDescription = null
-                            )
-                        },
-                        text = { Text(text = stringResource(id = R.string.hidden_songs)) },
-                        subText = { },
-                        enabled = SettingRepository.EnableAndroidMediaLibs
-                    ) {
-                        mainNavController.navigate(ScreenDestination.HiddenSong)
                     }
                 }
             }

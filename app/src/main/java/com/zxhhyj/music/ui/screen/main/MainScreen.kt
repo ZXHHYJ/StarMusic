@@ -88,7 +88,6 @@ import com.zxhhyj.music.ui.screen.equalizer.EqualizerScreen
 import com.zxhhyj.music.ui.screen.folder.FolderScreen
 import com.zxhhyj.music.ui.screen.foldercnt.FolderCntScreen
 import com.zxhhyj.music.ui.screen.foldermanager.FolderManagerScreen
-import com.zxhhyj.music.ui.screen.folderpreview.FolderPreviewScreen
 import com.zxhhyj.music.ui.screen.hidesong.HiddenSongScreen
 import com.zxhhyj.music.ui.screen.lab.LabScreen
 import com.zxhhyj.music.ui.screen.lyricconfig.LyricConfigScreen
@@ -104,10 +103,11 @@ import com.zxhhyj.music.ui.screen.pro.ProScreen
 import com.zxhhyj.music.ui.screen.search.SearchScreen
 import com.zxhhyj.music.ui.screen.singer.SingerScreen
 import com.zxhhyj.music.ui.screen.singercnt.SingerCntScreen
+import com.zxhhyj.music.ui.screen.songspreview.SongsPreviewScreen
 import com.zxhhyj.music.ui.screen.theme.ThemeScreen
 import com.zxhhyj.music.ui.screen.webdavconfig.WebDavConfigScreen
-import com.zxhhyj.music.ui.screen.webdavfoldermanager.WebDavFolderManagerScreen
 import com.zxhhyj.music.ui.screen.webdavedit.WebDavEditScreen
+import com.zxhhyj.music.ui.screen.webdavfoldermanager.WebDavFolderManagerScreen
 import com.zxhhyj.music.ui.screen.wechatpay.WeChatPayScreen
 import com.zxhhyj.music.ui.sheet.AddToPlayListSheet
 import com.zxhhyj.music.ui.sheet.MediaLibMenuSheet
@@ -556,9 +556,10 @@ fun MainScreen() {
 
                         is ScreenDestination.PlayListCnt -> {
                             PlayListCntScreen(
-                                playListBean = destination.model,
-                                sheetNavController = sheetNavController,
-                                paddingValues = paddingValues
+                                paddingValues = paddingValues,
+                                id = destination.id,
+                                mainNavController = mainNavController,
+                                sheetNavController = sheetNavController
                             )
                         }
 
@@ -610,9 +611,9 @@ fun MainScreen() {
                             )
                         }
 
-                        is ScreenDestination.FolderPreview -> {
-                            FolderPreviewScreen(
-                                paddingValues = paddingValues, folder = destination.folder
+                        is ScreenDestination.SongsPreview -> {
+                            SongsPreviewScreen(
+                                paddingValues = paddingValues, songs = destination.songs
                             )
                         }
 
@@ -756,10 +757,9 @@ fun MainScreen() {
 
                 is SheetDestination.PlaylistMenu -> {
                     PlaylistMenuSheet(
-                        mainNavController = mainNavController,
                         dialogNavController = dialogNavController,
                         sheetNavController = sheetNavController,
-                        playListBean = destination.model
+                        playListBean = destination.playListBean
                     )
                 }
 

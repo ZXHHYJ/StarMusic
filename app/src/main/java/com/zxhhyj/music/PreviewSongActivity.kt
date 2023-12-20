@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.zxhhyj.mediaplayer.CueMediaPlayer
+import com.zxhhyj.mediaplayer.MediaPlayer
 import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.utils.getRealPathFromUri
@@ -70,7 +70,7 @@ import java.io.File
 
 class PreviewSongActivity : ComponentActivity() {
 
-    private val cueMediaPlayer = CueMediaPlayer(MainApplication.context)
+    private val mediaPlayer = MediaPlayer(MainApplication.context)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,12 +99,12 @@ class PreviewSongActivity : ComponentActivity() {
                                 skipHalfExpanded = true
                             )
                         }) {
-                        val pause by cueMediaPlayer.pauseFlow.collectAsState()
+                        val pause by mediaPlayer.pauseFlow.collectAsState()
                         val songBean = getRealPathFromUri(
                             LocalContext.current, uri
                         )?.let { path -> File(path).toSongBeanLocal() }
                         songBean?.let {
-                            cueMediaPlayer.preparePlay(songBean)
+                            mediaPlayer.preparePlay(songBean.data)
                         }
                         AppCard(
                             backgroundColor = LocalColorScheme.current.background,
@@ -121,8 +121,8 @@ class PreviewSongActivity : ComponentActivity() {
                                     })
                                 }
                                 item {
-                                    val progress by cueMediaPlayer.currentProgressFlow.collectAsState()
-                                    val duration by cueMediaPlayer.songDurationFlow.collectAsState()
+                                    val progress by mediaPlayer.currentProgressFlow.collectAsState()
+                                    val duration by mediaPlayer.songDurationFlow.collectAsState()
                                     RoundColumn(modifier = Modifier.fillMaxWidth()) {
                                         Box(
                                             modifier = Modifier
@@ -188,7 +188,7 @@ class PreviewSongActivity : ComponentActivity() {
                                                         )
                                                     }
                                                 ) {
-                                                    cueMediaPlayer.seekTo(it)
+                                                    mediaPlayer.seekTo(it)
                                                 }
                                                 CompositionLocalProvider(
                                                     LocalColorScheme provides LocalColorScheme.current.copy(
@@ -203,7 +203,7 @@ class PreviewSongActivity : ComponentActivity() {
                                                         value = progress.toFloat(),
                                                         valueRange = 0f..duration.toFloat(),
                                                         onValueChange = {
-                                                            cueMediaPlayer.seekTo(it.toInt())
+                                                            mediaPlayer.seekTo(it.toInt())
                                                         }
                                                     )
                                                 }
@@ -231,10 +231,10 @@ class PreviewSongActivity : ComponentActivity() {
                                                 )
                                             },
                                             subText = {}) {
-                                            if (cueMediaPlayer.pauseFlow.value) {
-                                                cueMediaPlayer.start()
+                                            if (mediaPlayer.pauseFlow.value) {
+                                                mediaPlayer.start()
                                             } else {
-                                                cueMediaPlayer.pause()
+                                                mediaPlayer.pause()
                                             }
                                         }
                                         ItemDivider()
@@ -251,7 +251,7 @@ class PreviewSongActivity : ComponentActivity() {
                                             subText = {},
                                             enabled = SettingRepository.EnableAndroidMediaLibs
                                         ) {
-                                            cueMediaPlayer.pause()
+                                            mediaPlayer.pause()
                                             AndroidMediaLibRepository.addSong(songBean!!)
                                             startActivity(
                                                 Intent(
@@ -277,6 +277,6 @@ class PreviewSongActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        cueMediaPlayer.release()
+        mediaPlayer.release()
     }
 }

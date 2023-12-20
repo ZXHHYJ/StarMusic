@@ -15,9 +15,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AudioFile
 import androidx.compose.material.icons.rounded.FilterAlt
 import androidx.compose.material.icons.rounded.Folder
+import androidx.compose.material.icons.rounded.HideSource
 import androidx.compose.material.icons.rounded.InsertDriveFile
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.runtime.Composable
@@ -34,7 +34,6 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
-import com.zxhhyj.music.ui.common.VipIcon
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.ui.view.AppCenterTopBar
@@ -139,46 +138,6 @@ fun AndroidMediaLibSetting(
                             SettingRepository.EnableReadExternalLyrics = it
                         }
                     )
-                    ItemDivider()
-                    val cueSupportLauncher = rememberLauncherForActivityResult(
-                        contract = ActivityResultContracts.StartActivityForResult(),
-                        onResult = {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                                isExternalStorageManager =
-                                    Environment.isExternalStorageManager()
-                                if (!isExternalStorageManager) {
-                                    SettingRepository.EnableCueSupport = false
-                                }
-                            }
-                        }
-                    )
-                    LaunchedEffect(SettingRepository.EnableCueSupport) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && SettingRepository.EnableCueSupport && !isExternalStorageManager) {
-                            cueSupportLauncher.launch(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
-                        }
-                    }
-                    ItemSwitcher(
-                        icon = {
-                            Icon(
-                                imageVector = Icons.Rounded.AudioFile,
-                                contentDescription = null
-                            )
-                        },
-                        text = {
-                            Text(text = stringResource(id = R.string.cue_support))
-                        },
-                        subText = {
-                            VipIcon()
-                        },
-                        checked = SettingRepository.EnableCueSupport,
-                        onCheckedChange = onCheckedChange@{
-                            if (it && !SettingRepository.EnableStarMusicPro) {
-                                mainNavController.navigate(ScreenDestination.Pro)
-                                return@onCheckedChange
-                            }
-                            SettingRepository.EnableCueSupport = it
-                        }
-                    )
                 }
             }
             item {
@@ -198,6 +157,26 @@ fun AndroidMediaLibSetting(
                         enabled = SettingRepository.EnableAndroidMediaLibs
                     ) {
                         mainNavController.navigate(ScreenDestination.FolderManager)
+                    }
+                }
+            }
+            item {
+                ItemSpacer()
+            }
+            item {
+                RoundColumn(modifier = Modifier.fillMaxWidth()) {
+                    ItemArrowRight(
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.HideSource,
+                                contentDescription = null
+                            )
+                        },
+                        text = { Text(text = stringResource(id = R.string.hidden_songs)) },
+                        subText = { },
+                        enabled = SettingRepository.EnableAndroidMediaLibs
+                    ) {
+                        mainNavController.navigate(ScreenDestination.HiddenSong)
                     }
                 }
             }

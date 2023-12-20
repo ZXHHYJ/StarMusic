@@ -15,7 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
-import com.zxhhyj.music.logic.bean.SongBean
+import com.zxhhyj.music.logic.config.nothingSong
 import com.zxhhyj.music.logic.repository.AndroidMediaLibRepository
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.service.playermanager.PlayerManager
@@ -77,22 +77,7 @@ fun PersonalizeScreen(
                     SongItem(
                         sheetNavController = easterEggSong?.let { sheetNavController }
                             ?: rememberNavController(initialBackstack = emptyList()),
-                        songBean = easterEggSong ?: SongBean.Local(
-                            coverUrl = "",
-                            "Nothing",
-                            "Nothing",
-                            null,
-                            "",
-                            0,
-                            "Nothing",
-                            0,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null
-                        )
+                        songBean = easterEggSong ?: nothingSong
                     ) {
                         if (easterEggSong != null) {
                             PlayerManager.play(listOf(easterEggSong), 0)

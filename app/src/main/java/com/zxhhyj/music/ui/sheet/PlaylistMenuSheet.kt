@@ -14,7 +14,6 @@ import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.bean.PlayListBean
 import com.zxhhyj.music.logic.repository.PlayListRepository
 import com.zxhhyj.music.ui.screen.DialogDestination
-import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.music.ui.screen.SheetDestination
 import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.Item
@@ -23,11 +22,9 @@ import com.zxhhyj.ui.view.item.ItemSpacer
 import dev.olshevski.navigation.reimagined.NavController
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.pop
-import dev.olshevski.navigation.reimagined.popUpTo
 
 @Composable
 fun PlaylistMenuSheet(
-    mainNavController: NavController<ScreenDestination>,
     dialogNavController: NavController<DialogDestination>,
     sheetNavController: NavController<SheetDestination>,
     playListBean: PlayListBean
@@ -50,9 +47,6 @@ fun PlaylistMenuSheet(
                     text = { Text(text = stringResource(id = R.string.delete)) },
                     subText = { }) {
                     PlayListRepository.remove(playListBean)
-                    mainNavController.popUpTo {
-                        it == ScreenDestination.PlayList
-                    }
                     sheetNavController.pop()
                 }
             }

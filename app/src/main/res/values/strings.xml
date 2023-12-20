@@ -42,7 +42,6 @@
     <string name="new_title">新的标题</string>
     <string name="title">标题</string>
     <string name="lab">实验室</string>
-    <string name="cue_support">cue分轨文件支持</string>
     <string name="star_music_pro">StarMusic Pro</string>
     <string name="slogo">无限进步</string>
     <string name="more">更多</string>
@@ -83,12 +82,7 @@
     <string name="follow_system">跟随系统</string>
     <string name="light_mode">浅色模式</string>
     <string name="dark_mode">深色模式</string>
-    <string name="unknown_error">未知错误</string>
-    <string name="song_file_missing">歌曲文件丢失</string>
-    <string name="star_music_pro_member">StarMusic Pro诚信会员</string>
-    <string name="membership_function">会员功能:\n1.支持扫描cue分轨文件\n2.开启WebDav功能</string>
     <string name="wechat_payment">微信支付</string>
-    <string name="previously_purchased">曾购买过?</string>
     <string name="dynamic_colors_theme">动态颜色主题</string>
     <string name="qq_group">QQ群组</string>
     <string name="timer">定时器</string>
@@ -135,4 +129,6 @@
     <string name="refresh_webdav_media_lib">刷新WebDav媒体库</string>
     <string name="refresh_all_media_lib">刷新所有媒体库</string>
     <string name="add_webdav">添加WebDav</string>
+    <string name="songs_preview">歌曲预览</string>
+    <string name="pro_function">会员功能</string>
 </resources>
