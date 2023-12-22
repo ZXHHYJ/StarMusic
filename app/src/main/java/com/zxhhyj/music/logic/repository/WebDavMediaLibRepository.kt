@@ -16,9 +16,6 @@ import kotlinx.coroutines.withContext
 
 object WebDavMediaLibRepository {
 
-    /**
-     * 全部歌曲的集合
-     */
     var songs by mutableDataSaverListStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "webdav_songs_v2",
@@ -26,9 +23,6 @@ object WebDavMediaLibRepository {
     )
         private set
 
-    /**
-     * WebDav账户配置
-     */
     var WebDavSources by mutableDataSaverListStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "WebDavAccountConfigs",
@@ -37,24 +31,19 @@ object WebDavMediaLibRepository {
         private set
 
     fun createWebSource(): Int {
-        WebDavSources = WebDavSources.toMutableList().apply {
-            add(
-                WebDavSource(
-                    String(),
-                    String(),
-                    String(),
-                    String(),
-                    emptyList()
-                )
-            )
-        }
+        val newWebDavSource = WebDavSource(
+            String(),
+            String(),
+            String(),
+            String(),
+            emptyList()
+        )
+        WebDavSources += newWebDavSource
         return WebDavSources.lastIndex
     }
 
     fun deleteWebSource(index: Int) {
-        WebDavSources = WebDavSources.toMutableList().apply {
-            removeAt(index)
-        }
+        WebDavSources = WebDavSources.toMutableList().apply { removeAt(index) }
     }
 
     fun WebDavSource.addFolder(folder: String) {
@@ -63,9 +52,7 @@ object WebDavMediaLibRepository {
             WebDavSources = WebDavSources.toMutableList().apply {
                 set(
                     index,
-                    copy(folders = folders.toMutableList().apply {
-                        add(folder)
-                    })
+                    copy(folders = folders.toMutableList() + folder)
                 )
             }
         }
@@ -77,37 +64,24 @@ object WebDavMediaLibRepository {
             WebDavSources = WebDavSources.toMutableList().apply {
                 set(
                     index,
-                    copy(folders = folders.toMutableList().apply {
-                        remove(folder)
-                    })
+                    copy(folders = folders.toMutableList().apply { remove(folder) })
                 )
             }
         }
     }
 
     fun replace(index: Int, webDavSource: WebDavSource) {
-        WebDavSources = WebDavSources.toMutableList().apply {
-            set(index, webDavSource)
-        }
+        WebDavSources = WebDavSources.toMutableList().apply { set(index, webDavSource) }
     }
 
-    /**
-     * 此函数仅允许[MediaCacheManager]缓存歌曲完成后调用！！！
-     * 谨记
-     */
     fun replaceSong(song: SongBean.WebDav) {
         songs = songs.toMutableList().apply {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                replaceAll {
-                    if (it.data == song.data && it.webDavSource == song.webDavSource) song else it
-                }
+                replaceAll { if (it.data == song.data && it.webDavSource == song.webDavSource) song else it }
             }
         }
     }
 
-    /**
-     * 从歌曲列表中移除指定的歌曲对象
-     */
     fun removeSong(song: SongBean.WebDav) {
         val index = songs.indexOf(song)
         if (index != -1) {
@@ -132,9 +106,6 @@ object WebDavMediaLibRepository {
         }
     }
 
-    /**
-     * 扫描媒体文件，从WebDav账户中获取歌曲信息，并将其添加到歌曲列表中。
-     */
     suspend fun scanMedia() {
         withContext(Dispatchers.IO) {
             val newSongs = mutableListOf<SongBean.WebDav>()
@@ -184,17 +155,10 @@ object WebDavMediaLibRepository {
         }
     }
 
-    /**
-     * 检查文件名是否包含支持的音频格式。
-     */
+
     private fun containsSongExtension(fileName: String): Boolean {
         val songExtensions = listOf(".mp3", ".flac")
-        for (extension in songExtensions) {
-            if (fileName.contains(extension, ignoreCase = true)) {
-                return true
-            }
-        }
-        return false
+        return songExtensions.any { fileName.contains(it, ignoreCase = true) }
     }
 
 }

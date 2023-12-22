@@ -108,9 +108,6 @@ fun MediaLibConfigScreen(
                                 onCheckedChange = {
                                     SettingRepository.EnableAndroidMediaLibs = it
                                     PlayerManager.clearPlayList()
-                                    if (!it) {
-                                        AndroidMediaLibRepository.clear()
-                                    }
                                 })
                         },
                         enabled = SettingRepository.EnableAndroidMediaLibs

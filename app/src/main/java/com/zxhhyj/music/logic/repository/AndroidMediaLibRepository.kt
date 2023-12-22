@@ -173,14 +173,4 @@ object AndroidMediaLibRepository {
         updateLibs()
     }
 
-    /**
-     * 清空媒体库
-     */
-    fun clear() {
-        songs = emptyList()
-        hideSongs = emptyList()
-        folders = emptyList()
-        hideFolders = emptyList()
-    }
-
 }
