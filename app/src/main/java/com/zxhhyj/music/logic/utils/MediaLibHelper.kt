@@ -8,8 +8,8 @@ import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
 
 object MediaLibHelper {
 
-    val songs: List<SongBean>
-        get() = AndroidMediaLibRepository.songs.sortedBy { it ->
+    private val androidMediaLibSongs = if (SettingRepository.EnableAndroidMediaLibs) {
+        AndroidMediaLibRepository.songs.sortedBy { it ->
             when (SettingRepository.SongSortEnum.entries[SettingRepository.SongSort]) {
                 SettingRepository.SongSortEnum.SONG_NAME -> Pinyin.toPinyin(it.songName[0])
                 SettingRepository.SongSortEnum.SONG_DURATION -> it.duration.toString()
@@ -18,7 +18,11 @@ object MediaLibHelper {
 
                 SettingRepository.SongSortEnum.DATE_MODIFIED -> it.dateModified.toString()
             }
-        } + WebDavMediaLibRepository.songs.sortedBy {
+        }
+    } else emptyList()
+
+    private val webdavMediaLibSongs = if (SettingRepository.EnableWebDav) {
+        WebDavMediaLibRepository.songs.sortedBy {
             when (SettingRepository.SongSortEnum.entries[SettingRepository.SongSort]) {
                 SettingRepository.SongSortEnum.SONG_NAME -> Pinyin.toPinyin(
                     it.data.substringAfterLast(
@@ -31,6 +35,10 @@ object MediaLibHelper {
                 SettingRepository.SongSortEnum.DATE_MODIFIED -> null
             }
         }
+    } else emptyList()
+
+    val songs: List<SongBean>
+        get() = androidMediaLibSongs + webdavMediaLibSongs
 
     val artists
         get() = songs.distinctBy { it.artistName }.map { it.artistName }

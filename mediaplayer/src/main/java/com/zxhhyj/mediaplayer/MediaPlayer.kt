@@ -66,12 +66,11 @@ class MediaPlayer(
         override fun onEvents(player: Player, events: Player.Events) {
             super.onEvents(player, events)
             if (player.isPlaying) {
-                if (positionUpdateJob == null) {
-                    positionUpdateJob = GlobalScope.launch(Dispatchers.Main) {
-                        while (true) {
-                            _currentProgressFlow.value = player.currentPosition.toInt()
-                            delay(100)
-                        }
+                positionUpdateJob?.cancel()
+                positionUpdateJob = GlobalScope.launch(Dispatchers.Main) {
+                    while (true) {
+                        _currentProgressFlow.value = player.currentPosition.toInt()
+                        delay(100)
                     }
                 }
             } else {

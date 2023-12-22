@@ -88,7 +88,7 @@ dependencies {
     // https://github.com/Kyant0/taglib
     implementation 'com.github.Kyant0:taglib:8f008ae137'
     // https://github.com/Kyant0/m3color
-    implementation "com.github.Kyant0:m3color:2023.11.1"
+    implementation "com.github.Kyant0:m3color:2023.12.2"
     // https://github.com/olshevski/compose-navigation-reimagined
     def reimagined_version = "1.5.0"
     implementation "dev.olshevski.navigation:reimagined:$reimagined_version"
