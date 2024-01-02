@@ -8,34 +8,36 @@ import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
 
 object MediaLibHelper {
 
-    private val androidMediaLibSongs = if (SettingRepository.EnableAndroidMediaLibs) {
-        AndroidMediaLibRepository.songs.sortedBy { it ->
-            when (SettingRepository.SongSortEnum.entries[SettingRepository.SongSort]) {
-                SettingRepository.SongSortEnum.SONG_NAME -> Pinyin.toPinyin(it.songName[0])
-                SettingRepository.SongSortEnum.SONG_DURATION -> it.duration.toString()
-                SettingRepository.SongSortEnum.SINGER_NAME -> it.artistName?.get(0)
-                    ?.let { Pinyin.toPinyin(it) }
+    private val androidMediaLibSongs
+        get() = if (SettingRepository.EnableAndroidMediaLibs) {
+            AndroidMediaLibRepository.songs.sortedBy { it ->
+                when (SettingRepository.SongSortEnum.entries[SettingRepository.SongSort]) {
+                    SettingRepository.SongSortEnum.SONG_NAME -> Pinyin.toPinyin(it.songName[0])
+                    SettingRepository.SongSortEnum.SONG_DURATION -> it.duration.toString()
+                    SettingRepository.SongSortEnum.SINGER_NAME -> it.artistName?.get(0)
+                        ?.let { Pinyin.toPinyin(it) }
 
-                SettingRepository.SongSortEnum.DATE_MODIFIED -> it.dateModified.toString()
+                    SettingRepository.SongSortEnum.DATE_MODIFIED -> it.dateModified.toString()
+                }
             }
-        }
-    } else emptyList()
+        } else emptyList()
 
-    private val webdavMediaLibSongs = if (SettingRepository.EnableWebDav) {
-        WebDavMediaLibRepository.songs.sortedBy {
-            when (SettingRepository.SongSortEnum.entries[SettingRepository.SongSort]) {
-                SettingRepository.SongSortEnum.SONG_NAME -> Pinyin.toPinyin(
-                    it.data.substringAfterLast(
-                        "/"
-                    )[0]
-                )
+    private val webdavMediaLibSongs
+        get() = if (SettingRepository.EnableWebDav) {
+            WebDavMediaLibRepository.songs.sortedBy {
+                when (SettingRepository.SongSortEnum.entries[SettingRepository.SongSort]) {
+                    SettingRepository.SongSortEnum.SONG_NAME -> Pinyin.toPinyin(
+                        it.data.substringAfterLast(
+                            "/"
+                        )[0]
+                    )
 
-                SettingRepository.SongSortEnum.SONG_DURATION -> null
-                SettingRepository.SongSortEnum.SINGER_NAME -> null
-                SettingRepository.SongSortEnum.DATE_MODIFIED -> null
+                    SettingRepository.SongSortEnum.SONG_DURATION -> null
+                    SettingRepository.SongSortEnum.SINGER_NAME -> null
+                    SettingRepository.SongSortEnum.DATE_MODIFIED -> null
+                }
             }
-        }
-    } else emptyList()
+        } else emptyList()
 
     val songs: List<SongBean>
         get() = androidMediaLibSongs + webdavMediaLibSongs

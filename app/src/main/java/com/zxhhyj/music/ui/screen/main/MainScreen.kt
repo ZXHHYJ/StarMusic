@@ -105,6 +105,7 @@ import com.zxhhyj.music.ui.screen.singer.SingerScreen
 import com.zxhhyj.music.ui.screen.singercnt.SingerCntScreen
 import com.zxhhyj.music.ui.screen.songspreview.SongsPreviewScreen
 import com.zxhhyj.music.ui.screen.theme.ThemeScreen
+import com.zxhhyj.music.ui.screen.webdav.WebDavScreen
 import com.zxhhyj.music.ui.screen.webdavconfig.WebDavConfigScreen
 import com.zxhhyj.music.ui.screen.webdavedit.WebDavEditScreen
 import com.zxhhyj.music.ui.screen.webdavfoldermanager.WebDavFolderManagerScreen
@@ -664,6 +665,13 @@ fun MainScreen() {
                                 paddingValues = paddingValues
                             )
                         }
+
+                        ScreenDestination.WebDav -> {
+                            WebDavScreen(
+                                paddingValues = paddingValues,
+                                sheetNavController = sheetNavController
+                            )
+                        }
                     }
                 }
             }
@@ -800,7 +808,7 @@ fun MainScreen() {
             if (SettingRepository.EnableAndroidMediaLibs) {
                 dialogNavController.navigate(DialogDestination.RefreshAndroidMediaLib)
             }
-            if (SettingRepository.EnableWebDav && WebDavMediaLibRepository.WebDavSources.isNotEmpty()) {
+            if (SettingRepository.EnableWebDav && WebDavMediaLibRepository.webDavSources.isNotEmpty()) {
                 dialogNavController.navigate(DialogDestination.RefreshWebDavMediaLib)
             }
             SettingRepository.AppVersion = VersionUtils.VersionCode

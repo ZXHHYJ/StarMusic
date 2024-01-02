@@ -23,7 +23,7 @@ object WebDavMediaLibRepository {
     )
         private set
 
-    var WebDavSources by mutableDataSaverListStateOf(
+    var webDavSources by mutableDataSaverListStateOf(
         dataSaverInterface = DataSaverUtils,
         key = "WebDavAccountConfigs",
         initialValue = listOf<WebDavSource>()
@@ -38,18 +38,18 @@ object WebDavMediaLibRepository {
             String(),
             emptyList()
         )
-        WebDavSources += newWebDavSource
-        return WebDavSources.lastIndex
+        webDavSources += newWebDavSource
+        return webDavSources.lastIndex
     }
 
     fun deleteWebSource(index: Int) {
-        WebDavSources = WebDavSources.toMutableList().apply { removeAt(index) }
+        webDavSources = webDavSources.toMutableList().apply { removeAt(index) }
     }
 
     fun WebDavSource.addFolder(folder: String) {
-        val index = WebDavSources.indexOf(this)
+        val index = webDavSources.indexOf(this)
         if (index != -1) {
-            WebDavSources = WebDavSources.toMutableList().apply {
+            webDavSources = webDavSources.toMutableList().apply {
                 set(
                     index,
                     copy(folders = folders.toMutableList() + folder)
@@ -59,9 +59,9 @@ object WebDavMediaLibRepository {
     }
 
     fun WebDavSource.removeFolder(folder: String) {
-        val index = WebDavSources.indexOf(this)
+        val index = webDavSources.indexOf(this)
         if (index != -1) {
-            WebDavSources = WebDavSources.toMutableList().apply {
+            webDavSources = webDavSources.toMutableList().apply {
                 set(
                     index,
                     copy(folders = folders.toMutableList().apply { remove(folder) })
@@ -71,7 +71,7 @@ object WebDavMediaLibRepository {
     }
 
     fun replace(index: Int, webDavSource: WebDavSource) {
-        WebDavSources = WebDavSources.toMutableList().apply { set(index, webDavSource) }
+        webDavSources = webDavSources.toMutableList().apply { set(index, webDavSource) }
     }
 
     fun replaceSong(song: SongBean.WebDav) {
@@ -111,7 +111,7 @@ object WebDavMediaLibRepository {
             val newSongs = mutableListOf<SongBean.WebDav>()
             val jobs = mutableListOf<Deferred<List<SongBean.WebDav>>>()
 
-            WebDavSources.forEach { source ->
+            webDavSources.forEach { source ->
                 val sardine = source.toSardine()
                 (source.folders + listOf(source.address)).forEach { folder ->
                     val job = async {

@@ -175,4 +175,7 @@ sealed class ScreenDestination : Parcelable {
 
     @Parcelize
     data object CacheManager : ScreenDestination()
+
+    @Parcelize
+    data object WebDav : ScreenDestination()
 }

@@ -45,8 +45,8 @@ fun WebDavFolderManagerScreen(
     indexInWebDavSourceList: Int,
     path: String
 ) {
-    val webDavSource by rememberSaveable(WebDavMediaLibRepository.WebDavSources[indexInWebDavSourceList]) {
-        mutableStateOf(WebDavMediaLibRepository.WebDavSources[indexInWebDavSourceList])
+    val webDavSource by rememberSaveable(WebDavMediaLibRepository.webDavSources[indexInWebDavSourceList]) {
+        mutableStateOf(WebDavMediaLibRepository.webDavSources[indexInWebDavSourceList])
     }
     val sardine = webDavSource.toSardine()
     AppScaffold(

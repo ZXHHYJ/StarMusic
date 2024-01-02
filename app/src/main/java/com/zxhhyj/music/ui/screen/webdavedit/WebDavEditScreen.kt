@@ -36,6 +36,7 @@ import com.zxhhyj.ui.view.AppTextField
 import com.zxhhyj.ui.view.RoundColumn
 import com.zxhhyj.ui.view.item.Item
 import com.zxhhyj.ui.view.item.ItemArrowRight
+import com.zxhhyj.ui.view.item.ItemSpacer
 import com.zxhhyj.ui.view.item.ItemSubTitle
 import com.zxhhyj.ui.view.roundColumn
 import dev.olshevski.navigation.reimagined.NavController
@@ -45,7 +46,7 @@ import dev.olshevski.navigation.reimagined.pop
 
 /**
  * 编辑[WebDavSource]的信息
- * @param indexInWebDavSourceList 在[com.zxhhyj.music.logic.repository.WebDavMediaLibRepository.WebDavSources]中的下标[indexInWebDavSourceList]
+ * @param indexInWebDavSourceList 在[com.zxhhyj.music.logic.repository.WebDavMediaLibRepository.webDavSources]中的下标[indexInWebDavSourceList]
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -57,8 +58,8 @@ fun WebDavEditScreen(
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
-    val webDavSource by remember(WebDavMediaLibRepository.WebDavSources) {
-        mutableStateOf(WebDavMediaLibRepository.WebDavSources.getOrNull(indexInWebDavSourceList))
+    val webDavSource by remember(WebDavMediaLibRepository.webDavSources) {
+        mutableStateOf(WebDavMediaLibRepository.webDavSources.getOrNull(indexInWebDavSourceList))
     }
     val copyWebDavSource by rememberSaveable {
         mutableStateOf(webDavSource)
@@ -110,62 +111,70 @@ fun WebDavEditScreen(
             state = scrollState
         ) {
             item {
-                ItemSubTitle {
-                    Text(text = stringResource(id = R.string.address))
-                }
+                ItemSpacer()
             }
             roundColumn {
                 item {
-                    AppTextField(modifier = Modifier.fillMaxWidth(),
+                    AppTextField(
+                        modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
                         value = address,
                         onValueChange = {
                             address = it
+                        },
+                        placeholder = {
+                            Text(text = stringResource(id = R.string.address))
                         })
                 }
             }
             item {
-                ItemSubTitle {
-                    Text(text = stringResource(id = R.string.user))
-                }
+                ItemSpacer()
             }
             roundColumn {
                 item {
-                    AppTextField(modifier = Modifier.fillMaxWidth(),
+                    AppTextField(
+                        modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
                         value = username,
                         onValueChange = {
                             username = it
+                        },
+                        placeholder = {
+                            Text(text = stringResource(id = R.string.user))
                         })
                 }
             }
             item {
-                ItemSubTitle {
-                    Text(text = stringResource(id = R.string.password))
-                }
+                ItemSpacer()
             }
             roundColumn {
                 item {
-                    AppTextField(modifier = Modifier.fillMaxWidth(),
+                    AppTextField(
+                        modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
                         value = password,
                         onValueChange = {
                             password = it
+                        },
+                        placeholder = {
+                            Text(text = stringResource(id = R.string.password))
                         })
                 }
             }
             item {
-                ItemSubTitle {
-                    Text(text = stringResource(id = R.string.remark))
-                }
+                ItemSpacer()
             }
             roundColumn {
                 item {
-                    AppTextField(modifier = Modifier.fillMaxWidth(),
+                    AppTextField(
+                        modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
                         value = remark,
                         onValueChange = {
                             remark = it
+                        },
+                        placeholder = {
+                            Text(text = stringResource(id = R.string.remark))
                         })
                 }
             }

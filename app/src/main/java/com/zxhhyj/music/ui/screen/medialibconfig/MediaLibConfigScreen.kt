@@ -140,11 +140,7 @@ fun MediaLibConfigScreen(
                                 })
                         },
                         enabled = SettingRepository.EnableWebDav,
-                    ) onClick@{
-                        if (!SettingRepository.EnableStarMusicPro) {
-                            mainNavController.navigate(ScreenDestination.Pro)
-                            return@onClick
-                        }
+                    ) {
                         mainNavController.navigate(ScreenDestination.WebDavConfig)
                     }
                     ItemDivider()

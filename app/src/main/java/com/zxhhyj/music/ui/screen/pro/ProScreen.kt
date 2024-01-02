@@ -11,7 +11,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material.icons.rounded.CloudUpload
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
@@ -32,13 +31,6 @@ fun ProScreen(
     paddingValues: PaddingValues,
     mainNavController: NavController<ScreenDestination>
 ) {
-    if (!SettingRepository.EnableStarMusicPro) {
-        DisposableEffect(Unit) {
-            onDispose {
-                SettingRepository.EnableWebDav = false
-            }
-        }
-    }
     AppScaffold(
         modifier = Modifier
             .fillMaxSize()

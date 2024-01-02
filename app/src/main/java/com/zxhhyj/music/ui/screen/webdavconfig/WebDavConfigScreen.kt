@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import com.zxhhyj.music.R
 import com.zxhhyj.music.logic.repository.SettingRepository
 import com.zxhhyj.music.logic.repository.WebDavMediaLibRepository
+import com.zxhhyj.music.ui.common.VipIcon
 import com.zxhhyj.music.ui.screen.DialogDestination
 import com.zxhhyj.music.ui.screen.ScreenDestination
 import com.zxhhyj.ui.view.AppCenterTopBar
@@ -55,8 +56,12 @@ fun WebDavConfigScreen(
                             )
                         },
                         text = { Text(text = stringResource(id = R.string.add_webdav)) },
-                        subText = { },
-                    ) {
+                        subText = { VipIcon() },
+                    ) onClick@{
+                        if (!SettingRepository.EnableStarMusicPro) {
+                            mainNavController.navigate(ScreenDestination.Pro)
+                            return@onClick
+                        }
                         mainNavController.navigate(
                             ScreenDestination.WebDavEdit(
                                 WebDavMediaLibRepository.createWebSource()
@@ -69,7 +74,7 @@ fun WebDavConfigScreen(
                 ItemSpacer()
             }
             roundColumn {
-                items(WebDavMediaLibRepository.WebDavSources) {
+                items(WebDavMediaLibRepository.webDavSources) {
                     ItemArrowRight(
                         icon = {
                             Icon(
@@ -89,7 +94,7 @@ fun WebDavConfigScreen(
                         }) {
                         mainNavController.navigate(
                             ScreenDestination.WebDavEdit(
-                                WebDavMediaLibRepository.WebDavSources.indexOf(it)
+                                WebDavMediaLibRepository.webDavSources.indexOf(it)
                             )
                         )
                     }
@@ -109,7 +114,7 @@ fun WebDavConfigScreen(
                         },
                         text = { Text(text = stringResource(id = R.string.refresh_webdav_media_lib)) },
                         subText = { },
-                        enabled = SettingRepository.EnableWebDav && WebDavMediaLibRepository.WebDavSources.isNotEmpty() && WebDavMediaLibRepository.WebDavSources.any { it.folders.isNotEmpty() }
+                        enabled = SettingRepository.EnableWebDav && WebDavMediaLibRepository.webDavSources.isNotEmpty() && WebDavMediaLibRepository.webDavSources.any { it.folders.isNotEmpty() }
                     ) {
                         dialogNavController.navigate(DialogDestination.RefreshWebDavMediaLib)
                     }

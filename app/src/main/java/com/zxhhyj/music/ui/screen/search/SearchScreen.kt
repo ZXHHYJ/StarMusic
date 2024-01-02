@@ -77,9 +77,10 @@ fun SearchScreen(
     var searchKey by rememberSaveable {
         mutableStateOf("")
     }
-    AppScaffold(modifier = Modifier
-        .fillMaxSize()
-        .statusBarsPadding(),
+    AppScaffold(
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding(),
         topBar = { AppCenterTopBar(title = { Text(text = stringResource(id = R.string.search)) }) }) {
         Column(modifier = Modifier.fillMaxSize()) {
             AppTextField(value = searchKey,
@@ -115,21 +116,22 @@ fun SearchScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 SearchScreenTabs.entries.forEach { destination ->
-                        AppTab(selected = destination == navController.backstack.entries.last().destination,
-                            onClick = {
-                                if (!navController.moveToTop {
-                                        it == destination
-                                    }) {
-                                    navController.navigate(destination)
-                                }
-                            }) {
-                            Text(text = destination.tabName)
-                        }
+                    AppTab(selected = destination == navController.backstack.entries.last().destination,
+                        onClick = {
+                            if (!navController.moveToTop {
+                                    it == destination
+                                }) {
+                                navController.navigate(destination)
+                            }
+                        }) {
+                        Text(text = destination.tabName)
                     }
+                }
             }
             NavHost(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .weight(1.0f)
                     .pointerInteropFilter { event ->
                         if (event.action == MotionEvent.ACTION_DOWN) {
                             focusManager.clearFocus()
